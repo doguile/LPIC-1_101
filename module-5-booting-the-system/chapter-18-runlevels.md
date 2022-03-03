@@ -1,0 +1,402 @@
+# Chapter 18: Runlevels
+
+#### Key terms
+
+| Key terms          | Meaning                                                                                                                                                                      |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/etc/init.d`      | Contains **scritps used by System V init tools** (SysVinit)                                                                                                                  |
+| `/etc/inittab`     | Configuration file read by init when it starts up to **determine what process to start for various run levels**                                                              |
+| `/etc/systemd`     | The location of various **unit files that control services** controlled by systemd                                                                                           |
+| `/usr/lib/systemd` | **Location of services** provided by installed packages.                                                                                                                     |
+| `init`             | The **parent of all processes on the system**, it is **executed by the kerne**l and is responsible for starting all other processes.                                         |
+| `systemctl`        | The interface to systemd, the init system used by many Linux distributions. **Can use for instance to enable/disable services permanently** or only for the current session. |
+| `telinit`          | Signal init to **change the system's runlevel**. telinit is actually just a link to init.                                                                                    |
+| `wall`             | **Displays a messages**, or the contents of a file, or otherwise its standard input, **on the terminals of all currently logged in users**.                                  |
+
+## Introduction
+
+Linux uses the concept of different _runlevels_ to define what services or processes will be running. Although the Linux Kernel can recognize runlevel values from 0 to 9.
+
+> Typically only runlevels 0 through 6 are used.
+
+Traditionally, `init` and **Upstart** used these runleves to define which services were started according to the needs of a particular runlevel.
+
+These programs have been replaced on many distributions by **systemd**. It does something similar to runlevels called _targets_, which are shown in the following table with their runlevel equivalent.
+
+| Runlevel | Purpose                                                                   | systemd Target      |
+| -------- | ------------------------------------------------------------------------- | ------------------- |
+| 0        | Halt or shut off the system                                               | `poweroff.target`   |
+| 1        | Single-user mode for administrative tasks                                 | `rescue.target`     |
+| 2        | Multi-user mode without configured network interfaces or network services | `multi-user.target` |
+| 3        | Normal startup of the system                                              | `multi-user.target` |
+| 4        | User-definable                                                            | `multi-user.target` |
+| 5        | Start the system normally with a graphical display manager                | `graphical.target`  |
+| 6        | Restart the system                                                        | `reboot.target`     |
+
+## Default Runlevel
+
+Systems using traditional `init` can specify the default runlevel by modifying the `/etc/inittab` file entry that looks like the following:
+
+```
+id:5:initdefault:
+```
+
+> For most Linux systems, runlevel 5 provides the highest level of functionality, including providing a GUI interface.
+
+Servers typically don't offer a GUI interface, so the `initdefault` entry might look like:
+
+```
+id:3:initdefault:
+```
+
+If the system is using **Upstart** instead of the traditional`init` process, then the default reunlevel may also be set in the `/etc/inittab` file, as is the case with distributions derived from RHE Linux 6. On the other hand, distributions like Ubuntu (the distribution that developed **Upstart**) can be changed by setting the DEFAULT\_RUNLEVEL environmental variable in the `/etc/init/rc-sysinit.conf` file.
+
+{% hint style="warning" %}
+systemd doesn't natively use runlevels, but it has something similar called _targets._
+{% endhint %}
+
+To set a default target, create a symbolic link from the target definition found in the `/lib/systemd` directory to the `/etc/systemd/system/default.target` file. This file is a symbolic link that controls where the system first boots into.
+
+## Viewing current runlevel
+
+One of the commands that displays the current runlevel is the `runlevel` command, which shows the previous runlevel first, followed by the current runlevel. If no previous runlevel was achieved, then it will show N for the previous runlevel.
+
+```
+root@ubuntu:~# runlevel
+N 2
+```
+
+The `who -r` command also displays the current system runlevel. One benefit of this technique is that it will display the date and time that the current runlevel was reached:
+
+## Changing runLevels and Targets
+
+Both the traditional _SysVinit_ and _Upstart_ support passing runlevels to the kernel as parameters from the bootloader to override the default runlevel.
+
+To specify a different runlevel at boot time on a system that uses **systemd**, append to the kernel parameters an option with the following syntax where DESIRED.TARGET is one of the systemd targets.
+
+```
+systemd.unit=multiuser.target
+```
+
+The root user can also change runlevels while the operating system is running by using several commands, including the `init` and `telinit` commands, which allow the desired runlevel to be specified.
+
+## The `init` and `telinit` Commands
+
+To directly specify the runlevel to go to, either use <mark style="color:red;">`init`</mark> or <mark style="color:red;">`telinit`</mark>`.` The `telinit` command in some distro has a `-t` option, which allows for a time delay in seconds to be specified; otherwise the `init` and `telinit` command are functionally identical.&#x20;
+
+To use these commands, simply specify the desired runlevel as an argument.&#x20;
+
+```
+init 5
+telinit 6
+```
+
+With the **systemd** replacement for init, the <mark style="color:red;">`init`</mark> command can still be used to modify the runlevel; **systemd will translate the desired runlevel to a target.**&#x20;
+
+To have systemd natively switch to a target state, with root privileges execute:
+
+```
+systemctl isolate DESIRED.TARGET
+systemctl isolate rescue.target
+```
+
+### The halt, poweroff, reboot, and shutdown Commands
+
+To bring the system down to runlevel zero, execute the `halt` ,`poweroff` or `shutdown` command.&#x20;
+
+While the <mark style="color:red;">`halt`</mark> and <mark style="color:red;">`poweroff`</mark> commands will begin shutting down the system immediately, the <mark style="color:red;">`shutdown`</mark> command requires a time argument to indicate when the shutdown should begin. A message will appear in the terminals of all users can also be specified with the `shutdown` command.
+
+```
+root@localhost:~# shutdown now "System going down for repairs"
+```
+
+Oddly enough, if an option is not specified, then the `shutdown` command will actually take the system down to _runlevel_ 1. **The `shutdown` command used with the `-r` option is similar to using the `reboot`** command and will cause the system to go to runlevel 6. The `shutdown` command used with the `-h` option is similar to using the `halt` command and will cause the system to go to runlevel 0.
+
+## The `wall` Command
+
+The <mark style="color:red;">`wall`</mark> command can be used to display messages or the contents of a file to all users on the system.&#x20;
+
+```bash
+sysadmin@localhost:~$ echo -e "The server will be offline on Saturday
+from\n6:00PM to 12:00PM for scheduled maintenance" | wall
+Broadcast message from sysadmin@localhost (console) (Wed May 29 22:13:59
+2019):
+
+The server will be offline on Saturday from
+```
+
+The `wall` command accepts standard input or the name of a file. To display a file, the `wall` command either requires the user to have root privileges or the contents to be piped from another command, such as `cat` command.&#x20;
+
+```
+sysadmin@localhost:~/Documents$ cat letters.txt | wall
+
+Broadcast message from sysadmin@localhost (console) (Wed May 29 22:17:44
+2019):
+
+HOLA 
+```
+
+The `-n` option can be used by the `wall` command to suppress the leading banner. (only available for root)
+
+## Managing system services
+
+Typically, administrators will want to automate the management of services, so when the system is taken to a specific runlevel or taget state, they will know what services should automatically be available.
+
+If a system is using traditional `init` process to manage system services, then the scripts in the `/etc/rc.d/init` directory are used to manage the state of those services. For convenience, this directory, will usually have a symbolic link from the `/etc/init.d` file. The scripts in this directory are often referred to as `init` scripts.
+
+Instead of having to type the full path name to the script, many systems provide a `service` script that allows the `init` script to be executed without having to type the full path name to the script.&#x20;
+
+```
+[root@localhost ~]# service httpd start
+[root@localhost ~]# service httpd stop
+```
+
+## Runlevel Directories
+
+With traditional `init` process, specific directories are used to manage which services will be automatically started or stopped at different runlevels. ** **<mark style="color:red;">**In many Linux distro, these directories all exis within the**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`/etc`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**directory**</mark>** ** and have the following path names:
+
+* rc0.d
+* rc1.d
+* rc2.d
+* rc3.d
+* rc4.d
+* rc5.d
+* rc6.d
+
+The number in the directory name represents the runlevel that it manages, for example, `rc0.d` is for runlevel 0 and `rc1.d` is for runlevel 1.&#x20;
+
+```bash
+sysadmin@localhost:/etc$ ls -d rc*
+rc0.d  rc1.d  rc2.d  rc3.d  rc4.d  rc5.d  rc6.d  rcS.d
+```
+
+To have a service started in a runlevel, a symbolic link to the `init` script in the `/etc/rc.d/init.d` directory can be created in the appropiate runlevel directory.
+
+{% hint style="info" %}
+This link name must start with the letter `S` ,followed by a number from 1 to 99, and the same of the `init` script that it is linked to.
+{% endhint %}
+
+```bash
+sysadmin@localhost:/etc/rc2.d$ ls
+S01bind9             S01cron  S01irqbalance  S01rsync    S01ssh
+S01console-setup.sh  S01dbus  S01plymouth    S01rsyslog  S01uuidd
+```
+
+To manually create this link, you would execute the following command:
+
+```
+[root@localhost ~]# ln -s /etc/rc.d/init.d/httpd /etc/rc.d/rc5.d/S85httpd
+```
+
+Just as the `S` file links in a runlevel directory will indicate that a service is supposed to be _started_, the `K` file links in a runlevel directory will indicate that a service is supposed to be stopped (_killed_)
+
+So, what number is supposed to be provided to a specific script for `S` and `K` ?Look at the script itself for the line that contains <mark style="color:red;">`chkconfig`</mark>.
+
+```
+[root@localhost ~]# grep chkconfig /etc/init.d/httpd
+# chkconfig: - 85 15
+```
+
+## The `chkconfig` command
+
+The <mark style="color:red;">`chkconfig`</mark> command can be used to **view what services will be started for different runlevels**. This command can also be used to **turn on or turn off a service for specific runlevels**.&#x20;
+
+{% hint style="danger" %}
+On Linux distro that are not Red Hat-derived, this tool may not be available.
+{% endhint %}
+
+To view all the services that are set to start or stop automatically, the administrator can execute the `chkconfig --list` command and the output would look like the following:
+
+```bash
+[root@localhost ~]# chkconfig --list
+auditd          0:off   1:off   2:on    3:on    4:on    5:on    6:off
+crond           0:off   1:off   2:on    3:on    4:on    5:on    6:off
+httpd           0:off   1:off   2:off   3:off   4:off   5:off   6:off
+iptables        0:off   1:off   2:on    3:on    4:on    5:on    6:off
+netconsole      0:off   1:off   2:off   3:off   4:off   5:off   6:off
+```
+
+The output of each line shows the name of the script file found in the `/etc/rc.d/init.d` directory, followed by each runlevel number, a colon, and wether the service is set be on or off.
+
+To view a single service's settings, use the `chkconfig --list SCRIPT` command where SCRIPT is the name of a script file found in the `/etc/rc.d/init.d` directory.&#x20;
+
+```
+[root@localhost ~]# chkconfig --list httpd
+httpd            0:off   1:off   2:off    3:off    4:off    5:off    6:off
+```
+
+To enable the service to start for most runlevels, use the `chkconfig SERVICE on` command.
+
+```
+[root@localhost ~]# chkconfig httpd on
+```
+
+In the `/etc/rc.d/init.d` script, there is a line that contains the following:
+
+```
+[root@localhost ~]# chkconfig: - 85 15
+```
+
+The `-` indicates that the **service is not enabled in any runlevels automatically** when it is first added to `chkconfig` management. In other words, this service is not set to start automatically unless an administrator uses the `chkconfig httpd on` command.
+
+Some scripts have a different `chkconfig` value; for example, the `etc/rc.d/init.d/atd` script has the following line:
+
+```
+[root@localhost ~]# chkconfig:   345 95 5
+```
+
+The `345` means that `atd` defaults to being enabled in runlevels 3, 4, and 5. The second value (95) is the start number for the script, and the third value (5) is the stop value for the script.
+
+To turn on or off services for a non-default level, the `--level` option can be used with the `chkconfig` command. For example, the following two commands would ensure that the `atd` service was available in runlevels 2 and 4, but not available in runlevels 3 and 5:&#x20;
+
+```bash
+[root@localhost ~]# chkconfig --level 24 atd on
+[root@localhost ~]# chkconfig --level 35 atd off
+```
+
+Two other `chkconfig` options should also be mentioned, although they are rarely used directly. The `chkconfig` options <mark style="color:red;">`--add`</mark> and <mark style="color:red;">`--del`</mark> can be used manually, but normally they are automatically used when an administrator either installs a new service software package or removes it.
+
+If an administrator were to create an `init` script named `serviced` and store it in the `/etc/rc.d/init.d` directory, the `chkconfig --add SERVICE` command would need to be executed first before using either the `chkconfig SERVICE on` or `chkconfig SERVICE off` command.&#x20;
+
+## The `/etc/init` Directory
+
+For users of Debian-derived Linux distributions, the /etc/init directory is used to store **Upstart** scripts. These scripts will start or stop different services based upon different events, including going to a specific runlevel.
+
+If an administrator wants to change the runlevels of a service, the configuration file for that service can be modified in the `/etc/init` directory. Within the `/etc/init/SERVICE` file should be two lines which define the runlevels to start and stop.
+
+```
+start on runlevel [2345]
+stop on runlevel [!2345]
+```
+
+To disable a service without uninstalling it, an override file can be created in the `/etc/init/` directory. This file should have the same name as the service configuration file, but ending in `.override` instead of `.conf` .This is the preferred technique over commenting out the "start on" lines.
+
+## The `systemctl` command
+
+The <mark style="color:red;">`systemctl`</mark> command is used in systems that have systemd as a replacement for the traditional `init` process.
+
+The `systemctl` command looks in the `/usr/lib/systemd` directory for information about which symbolic links enables a specific service.
+
+It is also possible to edit service files in order to modify the service; however, these changes should be made to service files found in the `/etc/systemd` directory instead.
+
+To manually control the state of a service, use the `systemctl` command to start, stop or check the status of that service.&#x20;
+
+```
+systemctl start httpd.service
+systemctl stop httpd.service
+systemctl status httpd.service
+```
+
+To view the status of all services:
+
+```
+systemctl -a
+systemctl --all
+```
+
+To configure a service to start automatically, use:
+
+```
+systemctl enable httpd.service
+```
+
+To configure a service not start automatically use:
+
+```
+systemctl disable httpd.service
+```
+
+It is possible to change to a different runlevel with the `systemctl` command.
+
+```
+systemctl isolate DESIRED.TARGET
+```
+
+The `systemctl` command can also manage the low or no power states of the system with command lines such as:
+
+```
+systemctl hibernate
+systemctl suspend
+systemctl poweroff
+systemctl reboot
+```
+
+Similar to the `chkconfig --list` command, all the services that are supposed to be enabled for a specific target within systemd can be viewed by using a `systemctl list-dependencies` command for that target, such as:
+
+```
+[root@localhost ~]# systemctl list-dependencies graphical.target
+```
+
+{% hint style="info" %}
+**Consider This**
+
+Because there are three different types of boot systems, traditional `init`, Upstart and systemd, the logical question is, "Which one does my system use?" The easy answer to this question is to check for the existence of two directories: the `/etc/init` and the `/etc/systemd` directory.
+
+If your system has a `/etc/init` directory, then your system is using Upstart. If your system has a `/etc/systemd` directory, then your system is using systemd. Otherwise, your system is using traditional `init`.
+{% endhint %}
+
+## Boot Target
+
+Many modern systems use the systemd rather than init for setting boot targets.&#x20;
+
+| Runlevel | Purpose                                                                   | systemd Target      |
+| -------- | ------------------------------------------------------------------------- | ------------------- |
+| 0        | Halt or shut off the system                                               | `poweroff.target`   |
+| 1        | Single-user mode for administrative tasks                                 | `rescue.target`     |
+| 2        | Multi-user mode without configured network interfaces or network services | `multi-user.target` |
+| 3        | Normal startup of the system                                              | `multi-user.target` |
+| 4        | User-definable                                                            | `multi-user.target` |
+| 5        | Start the system normally with a graphical display manager                | `graphical.target`  |
+| 6        | Restart the system                                                        | `reboot.target`     |
+
+To check the current runlevel on a Linux system, list the `/etc/systemd/systemd/default.target` file using the `ls -l` command
+
+```
+[root@localhost ~]# ls -l /etc/systemd/system/default.target
+lrwxrwxrwx 1 root root 37 Dec  4 14:39 /etc/systemd/system/default.target ->/lib/systemd/system/multi-user.target
+```
+
+If you need to set the system to boot into a single-user mode for troubleshooting or recovery operations, use the `systemctl enable rescue.target` command, followed by `systemctl set-default rescue.target` command.
+
+To change the system to graphical mode after booting, use the `systemctl isolate graphical.target` command.
+
+## `acpid`
+
+Linux systems use the Advanced Configuration and Power Interface (acpi) event daemon <mark style="color:red;">`acpid`</mark> to norify user-space programs of ACPI events. The ACPI allows the kernel to configure hardware components and manage the system's power settings, such as battery status monitoring, temperature, and more.
+
+One example of using `acpid` for power management would be having the system shut down after the user presses the power button. On modern systems, `acpid` is normally started as a background process during bootup and opens an event file in the `/proc/acpi` directory.&#x20;
+
+When the kernel sends out an ACPI event, `acpi` will determine the next steps based on rules defined in configuration files in the `/etc/acpi` directory.&#x20;
+
+{% hint style="info" %}
+The `acpi` command is used to display information about **system hardware ACPI settings**.&#x20;
+{% endhint %}
+
+There are many options available to the <mark style="color:red;">`acpi`</mark> command to display various information for power management.&#x20;
+
+| Option                                                 | Purpose                                                                                         |
+| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| <p><code>-b</code></p><p><code>--battery</code></p>    | Displays battery information                                                                    |
+| <p><code>-a</code></p><p><code>--ac-adapter</code></p> | Displays ac adapter information                                                                 |
+| <p><code>-t</code></p><p><code>--thermal</code></p>    | Displays thermal information                                                                    |
+| <p><code>-c</code></p><p><code>--cooling</code></p>    | Displays cooling device information                                                             |
+| <p><code>-s</code></p><p><code>--show-empty</code></p> | Displays non-operational devices                                                                |
+| <p><code>-f</code></p><p><code>--fahrenheit</code></p> | Uses Fahrenheit as the temperature unit instead of the default, Celsius                         |
+| <p><code>-i</code></p><p><code>--details</code></p>    | Displays additional details if they are available; battery capacity and temperature trip points |
+
+\
+
+
+
+
+
+
+
+
+
+
+
+
+\
+
+

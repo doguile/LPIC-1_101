@@ -328,7 +328,7 @@ The third filed is the filesystem type.&#x20;
 
 #### Mount options field
 
-This field is used to pass parameters to the filesystem driver, such as to make the device read-only  or to adjust timeouts.&#x20;
+This fourth field is used to pass parameters to the filesystem driver, such as to make the device read-only  or to adjust timeouts.&#x20;
 
 The most common mount options is the `defaults` option. The `defaults` mount option implies a number of standard mount options are in effect. The following table list the mounts options that are in effect when `defaults` is used.&#x20;
 
@@ -398,7 +398,28 @@ The `systemd-mount` utility is the mechanism that systemd uses to create and sta
 
 ## loop Option
 
+The `loop` option to the `mount` command is used to mount special filesystems that are stored within a file.
 
+These files have the extension of `.img` or `.iso`, which contain complete filesystems that can be mounted with the `mount` command by using the `loop` option.
+
+```
+mount -o loop fs.img /mnt
+mount -o loop crdom.iso /mnt
+```
+
+## Monitoring Filesystems
+
+The `df` command can also be used to view mounted filesystems. The output of this command displays the usage of the filesystem, where it's mounted, and the space usage of the device.
+
+Use the `-T` option ot have the `df` command displays the filesystem type:
+
+```
+root@localhost:~# df -hT
+Filesystem    Type    Size  Used Avail Use% Mounted on
+/dev/sda2     ext4    6.3G  3.2G  2.9G  53% /
+tmpfs        tmpfs    351M   84K  351M   1% /dev/shm
+/dev/sda1     ext4    485M   52M  408M  12% /boot
+```
 
 
 

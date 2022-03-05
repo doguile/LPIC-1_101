@@ -21,4 +21,5 @@
   * [Chapter 18: Runlevels](module-5-booting-the-system/chapter-18-runlevels.md)
 * [Module 6: Partitioning](module-6-partitioning/README.md)
   * [Chapter 20: Creating Partitions](module-6-partitioning/chapter-20-creating-partitions.md)
-* [Module 7: Administration of Filesystem](module-7-administration-of-filesystem.md)
+* [Module 7: Administration of Filesystem](module-7-administration-of-filesystem/README.md)
+  * [Chapter 22: Maintaining Integrity](module-7-administration-of-filesystem/chapter-22-maintaining-integrity.md)

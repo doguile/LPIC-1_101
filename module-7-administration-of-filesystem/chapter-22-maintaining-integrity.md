@@ -93,7 +93,65 @@ sysadmin@localhost:~$ du --exclude=School Documents
 1100    Documents
 ```
 
+In addition to displaying file space by filesystem or directory structure, you also want to know how to display other information about filesystems. Execute the following to display filesystem information
 
+```
+[root@centos~]# dumpe2fs /dev/sda1 | head
+dumpe2fs 1.42.9 (28-Dec-2013)
+Filesystem volume name:    <none>
+Last mounted on:           /boot
+Filesystem UUID:           5dac1ba0-cdbc-4ba2-99dd-17f298456819
+Filesystem magic number:   0xEF53
+Filesystem revision #:     1 (dynamic)
+```
+
+## The `tune2fs` Command
+
+The `tune2fs` command can view and change some of the settings for ext2, ext3, and ext4 filesystems. Generally, this command is considered safe.&#x20;
+
+By default, each filesystem will have a full system check during the boot process either every 180 days or after 30 mounts, whichever comes first. Automatic filesystem checking can be disabled by executing the following:
+
+```bash
+root@localhost:~# tune2fs -c0 -i0 /dev/sdb1
+```
+
+The <mark style="color:red;">`-c`</mark> option will change the maximum number of times that a filesystem may be mounted before it is required to have a full filesystem check. The default value of 30 times has been disabled by setting the value to 0.
+
+The <mark style="color:red;">`-i`</mark> option will change the maximum time interval between when a filesystem is forced to have a full filesystem check. This default value of 180 days has been disabled by setting the interval 0.
+
+To automatically have the `acl` and `user_xattr` **mount options** apply the <mark style="color:red;">`-o`</mark> option any time a filesystem is mounted, execute the following command:
+
+```
+root@localhost:~# tune2fs -o acl,user_xattr /dev/sdb1
+```
+
+The `-o` option in the command above specifies the default mount options.
+
+Finally, to verify the changes have been saved, list the superblock information for the filesystem by using the `-l` option:
+
+```
+root@localhost:~# tune2fs -l /dev/sdb1
+```
+
+To summarize, the following is a table of options available for `tune2fs` to tune a ext2, ext3, or ext4 filesystems.
+
+| Option | Effect                                                                                                                                                                                                                                        |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `-l`   | List the superblock information for a filesystem.                                                                                                                                                                                             |
+| `-c`   | Change the maximum number of times that a filesystem may be mounted before it is required to have a full filesystem check. The default value is normally 30 times. This can be disabled by setting the value to 0.                            |
+| `-i`   | Change the maximum time interval between when a filesystem is forced to have a full filesystem check. The default value is 180, meaning 180 days. This can be disabled by setting the interval to 0.                                          |
+| `-j`   | Create a journal file for an ext2 filesystem, allowing it to be mounted as an ext3 or ext2 filesystem.                                                                                                                                        |
+| `-m`   | Specify the percentage of space to be reserved for the root user or privileged processes. The default value of 5% is often unnecessarily large for large filesystems.                                                                         |
+| `-o`   | Specify default mount options. By default, the RedHat derived distributions specify that `acl` and `user_xattr`options are added to filesystems created during installation. When applying multiple options, they need to be comma separated. |
+
+
+
+| Option | Effect                                                                                                                                                                                                                                                                                                                                                                         |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `-b`   | Allows the block size to be specified. Valid block sizes are 1024, 2048, or 4096 bytes (some systems allow a block size of 8192). If the "wrong" block size is used, the filesystem may run out of data blocks before running out of inodes. If the average file size is smaller than 4 KiB, it may be beneficial to use a smaller block size closer to the average file size. |
+| `-I`   | Allows the size of an inode to be specified. By default, `mke2fs` will make an inode size of 128 bytes. If the system uses SELinux or SambaV4, it may be beneficial to set this size to 256 bytes to allow space extended attributes that SELinux and sambaV4 use.                                                                                                             |
+| `-i`   | Allows a bytes/inode ratio to be specified. To avoid either running out of data blocks while still having inodes, or vice versa, set a ratio that will be close to the average file size. As each file requires at least one inode to store its meta-information, this is a critical value.                                                                                    |
+| `-N`   | If the size of the average file is unknown, but the number of files required is known, use this option to specify exactly how many inodes to create                                                                                                                                                                                                                            |
 
 
 

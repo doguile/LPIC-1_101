@@ -29,7 +29,7 @@ Linux distributions that have replaced the traditional SysVinit daemon with syst
 
 ## Monitoring Disk Info
 
-Two storages-related statistics that should be monitored closely to ensure a system will continue to run correctly are free data block space and free inodes. The `df` command can help monitor both of these important numbers.
+Two storages-related statistics that should be monitored closely to ensure a system will continue to run correctly are free **data block space** and **free inodes**. The <mark style="color:red;">`df`</mark> command can help monitor both of these important numbers.
 
 Data block space is used to store the contents of a file (the file's data)
 
@@ -39,7 +39,7 @@ Each file created in a filesystem is assigned a unique identifier by the filesys
 Inodes are important because in order to create a file**, an inode is needed to store the metadata about the file**. In fact, inodes stores everything about the file excepts its name and its contents.
 {% endhint %}
 
-To determine how many files have been created and how many inodes are still available for a filesystem, use the `-i` option to the `df` command.
+To determine how many files have been created and how many inodes are still available for a filesystem, use the <mark style="color:red;">`-i`</mark> option to the `df` command.
 
 ```
 sysadmin@localhost:~$ df -i
@@ -51,7 +51,47 @@ tmpfs       	16501830      14  16501816    1% /sys/fs/cgroup
 
 ## The `du` command
 
+One of the next logical steps to address this concern would be to figure out what directory or subdirectory within a filesystem might be using the most data blocks.
 
+The _directory_ usage <mark style="color:red;">`du`</mark> command will report the size of files and directories; this can be helpful for finding the largest ones.
+
+The default output of the `du` command shows just two columns of information: **the file size and the path name for the file**. The `du` command is automatically recursive, so it will normally process not only the current directory but also all of its directory.
+
+```bash
+sysadmin@localhost:~$ du  | sort  -n  | tail  -10
+4   	./Pictures
+4   	./Public
+4   	./Templates
+4   	./Videos
+8   	./Documents/School/Art
+8   	./Documents/School/Engineering
+```
+
+Two options used often with the `du` command are the _human-readable_ <mark style="color:red;">`-h`</mark> option and the _summary_ <mark style="color:red;">`-s`</mark> option to only display a summary of the entire directory. For example, executing the command below would display a human-readable summary of how much space is used by the `/bin` directory.
+
+```
+sysadmin@localhost:~$ du -sh /bin /user/bin
+6.6M	/bin
+```
+
+A couple of other options to the `du` command that can be useful include the <mark style="color:red;">`--max-depth`</mark> and  <mark style="color:red;">`--exclude`</mark> options
+
+To limit the depth of how recursive the `du` command will be, provide a numerical argument to the <mark style="color:red;">`--max-depth`</mark> option to indicate how many directories deep to display.
+
+```bash
+sysadmin@localhost:~$ du --max-depth=1 Documents
+28      Documents/School
+4       Documents/Work
+1128    Documents
+```
+
+If there are files or directories that shouldn't be included, use one or more `--exclude` options. Glob characters can be used as well to form the pattern to be used by the `--exclude` option.
+
+```bash
+sysadmin@localhost:~$ du --exclude=School Documents
+4       Documents/Work
+1100    Documents
+```
 
 
 

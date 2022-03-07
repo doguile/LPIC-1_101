@@ -4,11 +4,11 @@
 
 <summary>Key terms</summary>
 
-`df` Command used to report file system disk space usage.&#x20;
+**`df`** Command used to report file system disk space usage.&#x20;
 
-`du` Command used to estimate file usage on a disk.&#x20;
+**`du`** Command used to estimate file usage on a disk.&#x20;
 
-`tune2fs` Command that allows a system administrator to adjust various tunable filesystem parameters such as mount count and maximum mount counts before a file system check needs completed
+**`tune2fs`** Command that allows a system administrator to adjust various tunable filesystem parameters such as mount count and maximum mount counts before a file system check needs completed
 
 </details>
 
@@ -144,18 +144,9 @@ To summarize, the following is a table of options available for `tune2fs` to tun
 | `-m`   | Specify the percentage of space to be reserved for the root user or privileged processes. The default value of 5% is often unnecessarily large for large filesystems.                                                                         |
 | `-o`   | Specify default mount options. By default, the RedHat derived distributions specify that `acl` and `user_xattr`options are added to filesystems created during installation. When applying multiple options, they need to be comma separated. |
 
-
-
 | Option | Effect                                                                                                                                                                                                                                                                                                                                                                         |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `-b`   | Allows the block size to be specified. Valid block sizes are 1024, 2048, or 4096 bytes (some systems allow a block size of 8192). If the "wrong" block size is used, the filesystem may run out of data blocks before running out of inodes. If the average file size is smaller than 4 KiB, it may be beneficial to use a smaller block size closer to the average file size. |
 | `-I`   | Allows the size of an inode to be specified. By default, `mke2fs` will make an inode size of 128 bytes. If the system uses SELinux or SambaV4, it may be beneficial to set this size to 256 bytes to allow space extended attributes that SELinux and sambaV4 use.                                                                                                             |
 | `-i`   | Allows a bytes/inode ratio to be specified. To avoid either running out of data blocks while still having inodes, or vice versa, set a ratio that will be close to the average file size. As each file requires at least one inode to store its meta-information, this is a critical value.                                                                                    |
 | `-N`   | If the size of the average file is unknown, but the number of files required is known, use this option to specify exactly how many inodes to create                                                                                                                                                                                                                            |
-
-
-
-
-
-
-

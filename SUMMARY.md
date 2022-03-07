@@ -23,3 +23,4 @@
   * [Chapter 20: Creating Partitions](module-6-partitioning/chapter-20-creating-partitions.md)
 * [Module 7: Administration of Filesystem](module-7-administration-of-filesystem/README.md)
   * [Chapter 22: Maintaining Integrity](module-7-administration-of-filesystem/chapter-22-maintaining-integrity.md)
+  * [Chapter 23: Fixing Filesystems](module-7-administration-of-filesystem/chapter-23-fixing-filesystems.md)

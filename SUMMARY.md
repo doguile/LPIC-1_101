@@ -24,3 +24,4 @@
 * [Module 7: Administration of Filesystem](module-7-administration-of-filesystem/README.md)
   * [Chapter 22: Maintaining Integrity](module-7-administration-of-filesystem/chapter-22-maintaining-integrity.md)
   * [Chapter 23: Fixing Filesystems](module-7-administration-of-filesystem/chapter-23-fixing-filesystems.md)
+* [Module 8: Package Management](module-8-package-management.md)

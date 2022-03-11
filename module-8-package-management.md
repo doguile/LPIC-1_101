@@ -140,6 +140,13 @@ Always remember that RPM queries require the use of the <mark style="color:red;"
 | `-R`         | List the capabilities that this package requires                            |
 | `--scripts`  | List the scripts that are used before and after installation of the package |
 | `-s`         | Display the state of each package file as normal, not installed or replaced |
+| `-U`         | Install a package if doesn't exist or update it if is already installed     |
+| `-F`         | Update a package already installed                                          |
+| `h`          | Show the progress of the update or install                                  |
+| `v`          | show the progress for every package                                         |
+| `-e`         | Delete a package                                                            |
+| `-V`         | Verify a package                                                            |
+| `-f`         | Determine which package owns a file                                         |
 
 #### Querying Scripts
 
@@ -182,7 +189,7 @@ bash-4.2.46-31.el7.src.rpm
 package pickle is not installed
 ```
 
-The `*` glob character may be useful if the exact package name is not known. For example, if you knew that the package name contained `python`, but you were unsure of the rest, then execute the following:
+The **`*`** glob character may be useful **if the exact package name is not known**. For example, if you knew that the package name contained `python`, but you were unsure of the rest, then execute the following:
 
 ```bash
 [sysadmin@localhost ~]$ rpm -qa *python*
@@ -201,4 +208,173 @@ To get an alphabetical list of all installed packages, execute the <mark style="
 
 ### Installing Packages with `rpm`
 
-``
+A depency is a software package that is required for another package to be installed and function correctly.&#x20;
+
+For example, to install the `x3270-x11-3.3.6-10.5.el6.i686.rpm` package, execute:
+
+```
+rpm -i x3270-x11-3.3.6-10.5.el6.i686.rpm
+```
+
+Most administrators determine package dependencies by examining the output of a failed RPM package install. However, it is also possible to check the requirements and dependencies of a package in advance with the following <mark style="color:red;">**`rpm`**</mark> query:
+
+```
+rpm -qpR x3270-x11-3.3.6-10.5.el6.i686.rpm
+/bin/sh
+/usr/bin/mkfontdir
+gtk2 >= 2.6
+libICE.so.6
+libicuuc.so.42
+libnsl.so.1
+libssl.so.10
+libutil.so.1
+```
+
+{% hint style="warning" %}
+**Note**
+
+To see what each packages provides, perform a query with the `--provides` option.
+
+```
+[sysadmin@localhost ~]$ rpm -qp --provides x3270-3.3.6-10.5.el6.i686.rpm
+config(x3270) = 3.3.6-10.5.el6
+x3270 = 3.3.6-10.5.el6
+```
+{% endhint %}
+
+Normally, the `rpm` command will refuse to install a package that is already installed, but it can be forced by adding the `--force` option.
+
+```
+rpm --force -i x3270-3.3.6-10.5.el6.i686.rpm
+```
+
+### Erasing package with `rpm`
+
+The <mark style="color:red;">**`rpm`**</mark> command can be used to erase (remove) packages from the system with the <mark style="color:red;">**`-e`**</mark> option.
+
+The **`rpm`** command will not allows a package to be erased if it is a requirement of another package.
+
+```
+rpm -e x3270-3.3.6-10.5.el6.i686.rpm
+```
+
+### Updating pakacges with `rpm`
+
+To update a package with a new version or newer release, use the `rpm` command with either the <mark style="color:red;">**`-U`**</mark> or the <mark style="color:red;">**`-F`**</mark> option.
+
+The <mark style="color:red;">**`-U`**</mark> option  can be used with the `rpm` command to either install or update a package.
+
+```
+rpm -U x3270-3.3.6-10.5.el6.i686.rpm
+```
+
+On the other hand, when using the **`rpm`** command with the <mark style="color:red;">**`-F`**</mark> option, the package will only be updated if the package is already installed; this is called _freshening_ the package:
+
+```
+rpm -F x3270-3.3.6-10.5.el6.i686.rpm
+```
+
+### Using `rpm2cpio`
+
+The <mark style="color:red;">**`rpm2cpio`**</mark> command accepts an `.rpm` file as an argument ( or reads data that is in a package format from standard input) and outputs a <mark style="color:red;">**`cpio`**</mark> archive.
+
+{% hint style="info" %}
+This capability can be used to list the contents of an `.rpm` file or to extract one or more files from within the original `.rpm` file.
+{% endhint %}
+
+For example, to list the contents of the `telnet-server-0.17-47.el6_3.1.i686.rpm` file, execute the following command.
+
+```bash
+rmp2cpio telnet-server-0.17-47.el6_3.1.i686.rpm | cpio -t
+./etc/xinetd.d/telnet
+./usr/sbin/in.telnetd
+./usr/share/man/man5/issue.net.5.gz
+./usr/share/man/man8/in.telnetd.8.gz
+./usr/share/man/man8/telnetd.8.gz
+512 blocks
+```
+
+> The output shows the files contained within the `.rpm` file and the total number of 512KiB blocks that those files would use if executed.
+
+To copy these files from the `.rpm` file, use the following command to extract these files to the current directory.
+
+```bash
+rpm2cpio telnet-server-0.17-47.el6_3.1.i686.rpm | cpio -imud
+```
+
+Several options for the `cpio` command are listed in the table below:
+
+| Option | Purpose                                                                 |
+| ------ | ----------------------------------------------------------------------- |
+| `-i`   | Extract                                                                 |
+| `-m`   | Retain the original modification times on the files                     |
+| `-u`   | Unconditionally replace any existing files                              |
+| `-d`   | Create any parent directories of the files contained within the archive |
+
+{% hint style="info" %}
+**Consider This**
+
+Why use the <mark style="color:red;">**`rpm2cpio`**</mark> command? Consider a situation where a key package file is accidentally removed from the system. Reinstalling the entire package may be overkill if only a single file is needed. Using the <mark style="color:red;">**`rpm2cpio`**</mark> command, the **file that is missing can be extracted and copied back** into the appropriate directory.
+{% endhint %}
+
+## Manage Packages with `yum`
+
+The <mark style="color:red;">**`yum`**</mark> command can locate and download packages on the internet and **resolve dependencies automatically.**
+
+> Although it is possible to resolve dependency issues manually with the `rpm` command, they can be solved automatically with the `yum` command.
+
+The big advantage of the <mark style="color:red;">**`yum`**</mark>** ** command is that it can be configured to automatically download packages and resolved package dependencies. In addition, the <mark style="color:red;">**`yum`**</mark> command **can display package information for packages that aren't even on the system** by accessing this data from a server called repository.
+
+Typically, the <mark style="color:red;">**`yum`**</mark> command is configured by editing the **`/etc/yum.conf`** file and the files found in the **`/etc/yum.repos.d`** directory.
+
+{% hint style="info" %}
+These configuration files are used to **specify servers (the repositories) on the internet** where the <mark style="color:red;">**`yum`**</mark> command can obtain the RPM files automatically.
+{% endhint %}
+
+{% hint style="danger" %}
+If the system does not have networking enabled or **doesn't have access to the internet**, then it **will not be able to use** the <mark style="color:red;">**`yum`**</mark> command to manage packages. In those situations, the <mark style="color:red;">**`rpm`**</mark> command can be used for package management.
+{% endhint %}
+
+One **`rpm`** query that was not mentioned previously is the <mark style="color:red;">**`-f`**</mark> option:
+
+```bash
+rpm -qf /bin/bash
+bash-4.1.2-15.el6_4.x86_64
+```
+
+This query is used to **determine which package owns** the `/bin/bash` **file**.&#x20;
+
+{% hint style="warning" %}
+This query only succeeds if the `bash` package is already installed on the system.
+{% endhint %}
+
+On the other hand, the `yum` command can be used to determine which package owns the file because the `yum` command searches the database of the repository servers
+
+```
+yum provides /usr/lib/libicuuc.so.42
+```
+
+Or a glob pattern can be used:
+
+```bash
+yum provides "*/libicuuc.so.42"
+```
+
+The other distinct advantage of using the **`yum`** command  is the **ability to search for a package in the repositories (installed or available for install)**, based upon the name or description of the package.
+
+```bash
+[sysadmin@localhost ~]$ yum search terminal
+Loaded plugins: fastestmirror, refresh-packagekit, security
+Loading mirror speeds from cached hostfile
+ * base: centosb6.centos.org
+ * extras: centosi5.centos.org
+ * updates: centosb6.centos.org
+============================ N/S Matched: terminal =============================
+gnome-terminal.i686 : Terminal emulator for GNOME
+nautilus-open-terminal.i686 : Nautilus extension for an open terminal shortcut
+kbd.i696 : Tools for configuring the console (keyboard, virtual terminals, etc.)
+minicom.i686 : A text-based modem control and terminal emulation program
+ncurses-base.i686 : Descriptions of common terminals
+ncurses-term.i686 : terminal descriptions
+```
+

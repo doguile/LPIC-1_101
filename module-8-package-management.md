@@ -468,4 +468,77 @@ The <mark style="color:red;">**`synaptic`**</mark> command is a graphical user i
 
 ### Installing Software with `dpkg`
 
-``
+To install a software package in a Debian-based distribution, use the `-i` option with the `dpkg` command.&#x20;
+
+```
+dpkg -i joe_3.7-2.3_i386.deb
+```
+
+Debian packages also may have dependencies. There are four categories of dependencies: depends, recommends, suggests, and enhances.&#x20;
+
+### Removing software with the `dpkg`
+
+There are a couple of ways that an administrator may remove a package, using the `-r` and `-P` options to the <mark style="color:red;">**`dpkg`**</mark> command.&#x20;
+
+The <mark style="color:red;">**`-r`**</mark> options **removes** the package and the <mark style="color:red;">**`-P`**</mark> option **purges** the package. When a package is removed, almost all of its file are removed except for its configuration files. When a package is purged, all of the packages file are removed, including the configuration files.
+
+### Listing packages with the `dpkg`
+
+The `dpkg` command can retrieve a list of packages that are installed on the system, or list the files that are in a package. For example, to see all the packages that are currently installed on a system, execute the `dpkg -l` command:
+
+```bash
+sysadmin@localhost:~$ dpkg -l
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+||/ Name           Version      Architecture Description
++++-==============-============-============-=================================
+ii  adduser        3.113+nmu3ub all          add and remove users and groups
+ii  apt            1.0.1ubuntu2 amd64        command-line package manager
+ii  apt-file       2.5.2ubuntu1 all          search for files within Debian pa
+```
+
+The output of the <mark style="color:red;">**`dpkg -l`**</mark> command contains five pieces of information:
+
+* The first two pieces of this information are represented by a two-letter code:
+  * The **first letter reflect the desired status of the package**, which can be `i` for installed, `u` for unknown, `r` for remove of `h` for hold.
+  * The **second letter represents the actual status of the package**, where `i` means installed, and `n` means not installed.
+  * The most common two-letter codes are **`ii`** for fully installed and **`un` ** for not installed.&#x20;
+* The remaining columns show the package name, version, the architecture, and the description of the package if it is available.
+
+The `dpkg -l PACKAGE-NAME-PATTERN` command can also be used to list packages based on a glob pattern. For example, to view all packages that might contain `perl` in the package name, use the `dpkg -l "*perl*"` command.
+
+```
+sysadmin@localhost:~$ dpkg -l "*perl*"
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+||/ Name           Version      Architecture Description
++++-==============-============-============-=================================
+un  dh-make-perl   <none>       <none>       (no description available)
+un  libalien-wxwid <none>       <none>       (no description available)
+```
+
+Using the <mark style="color:red;">**`-L`**</mark> option with the `dpkg` will <mark style="color:orange;">**list the files that a package contains**</mark>. For example to view, the files that are a part of the package named `perl` ,execute the <mark style="color:red;">**`dpkg -L perl`**</mark> command:
+
+```
+sysadmin@localhost:~$ dpkg -L perl
+/.
+/etc
+/etc/perl
+/etc/perl/CPAN
+/etc/perl/Net
+/etc/perl/Net/libnet.cfg
+/usr
+```
+
+I
+
+
+
+
+
+
+
+
+

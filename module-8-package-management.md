@@ -378,3 +378,94 @@ ncurses-base.i686 : Descriptions of common terminals
 ncurses-term.i686 : terminal descriptions
 ```
 
+## Installing Packages with DNF
+
+Dandified Yum, or DNF, is the next upcoming version of the `yum` command. <mark style="color:orange;">**DNF is designed to solve package management dependency issues**</mark>, also referred to as _depsolve_ problems, that were present in `yum`.
+
+Another benefit of DNF over `yum` is a <mark style="color:orange;">**clearley documented Application Programming Interface (API)**</mark>. The API is the interface that allows applications to work with other application. DNF is <mark style="color:orange;">**designed with a strict API for plugins and extensions**</mark> and it mostly maintains command line compatibility with `yum`.
+
+{% hint style="info" %}
+In the case of DNF, a plugin refers to software that provides extra functionality to DNF and modifies the DNF installation itself.
+
+Extensions are programs that import DNF functionality through DNF's python libraries. They do not modify the DNF installation.
+{% endhint %}
+
+To start using DNF, the `dnf` command can be executed using the following syntax:
+
+```
+dnf [OPTIONS] <COMMAND> [<ARGUMENTS>...]
+```
+
+The <mark style="color:red;">**`dnf`**</mark> command uses the <mark style="color:red;">**`list`**</mark> command with the <mark style="color:red;">**`--available`**</mark> argument to list all available packages on the system:
+
+```bash
+dnf list --available
+Last metadata expiration check: 0:25:49 ago on Sat Jun 22 23:41:27 2019.
+Available Packages
+cowsay.noarch                    3.04-4.el7                     
+```
+
+The output above indicates that the `cowsay.noarch` package is available for install. To install the `cowsay.noarch` package, the `install` option can be used:
+
+```bash
+dnf install cowsay.noarch
+added from: file:///mnt/local_repo/             935 kB/s | 1.6 kB     00:00
+Dependencies resolved.
+================================================================================
+ Package        Arch           Version            Repository               Size
+================================================================================
+Installing:
+ cowsay         noarch         3.04-4.el7         mnt_local_repo_          42 k
+
+Transaction Summary
+================================================================================
+Install  1 Package
+```
+
+To verify that the `cowsay.noarch` package was successfully installed, list the recently installed packages using the `list` command with the `--installed` option:
+
+```bash
+dnf list --installed
+```
+
+## Debian Package Management
+
+Debian's package management system is based upon the format used to package the software files for the Debian distribution; **these package file names end in the **<mark style="color:red;">**`.deb`**</mark>** extension**. These `.deb` files are archives that contain the software and the information to configure it for installation or removal.
+
+{% hint style="info" %}
+**The **<mark style="color:red;">**`.deb`**</mark>** packages contain binary files compiled to execute** on a particular computer architecture. In the Debian's package management system, **the source packages**, which contain the original source, **have the **<mark style="color:red;">**`.dsc`**</mark>** extension**.
+{% endhint %}
+
+The primary configuration files that is used to **locate these repositories is the **<mark style="color:red;">**`/etc/apt/source.list`**</mark>** file.**
+
+Before working with the packages, run the `apt-get update` command. This will ensure that the system has a current list of packages that are available in the repositories listed in the `/etc/apt/source.list` file.
+
+Debian packages files follow a naming convention that makes it easy to determine the package name, version, release, and architecture. For example, the `bat_0.20.0_amd64.deb` file uses this generic pattern:
+
+```
+package-name_version-release_architecture.deb
+```
+
+#### Package Name
+
+`bat_0`The package name is the first part of the file name up to ther first underscore \_ character.
+
+#### Version
+
+`20.0` The version is the second part of the file name. It start after the first underscore and continues unilt a hyphe - character is found.
+
+#### Release
+
+The third part of the file name is the release. The release is set by the organization that packages and distributes the package file.
+
+#### Architecture
+
+`amd64`The final part of the file name after the release, but before `.deb` is the architecture for which the package was compiled. Not only does Debian support multiple PC architectures, including `amd64`, `i386`, and `ia64` ,but numeroues other architectures like armel, armhf, mips, mipsel, powerpc, s390, s390x, and sparc.
+
+The <mark style="color:red;">**`dpkg`**</mark> command is the most direct tool availabel for managing `.deb` packages. It can be used for installing, removing, and querying packages information, although other higher-level tools like <mark style="color:red;">**`synaptic`**</mark> ,or the **Advanced Package Tool (APT)** provide more powerful capabilities for managing dependencies between packages.
+
+The <mark style="color:red;">**`synaptic`**</mark> command is a graphical user interface that allows an administrator to install, remove, and update packages by navigation menus.
+
+### Installing Software with `dpkg`
+
+``

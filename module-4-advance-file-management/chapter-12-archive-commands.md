@@ -11,6 +11,8 @@ File archiving is used when one or more files need to be transmitted or stored a
 Files can be compressed individually, or multiple files can be combined into a single one archive and then subsequently compressed.&#x20;
 {% endhint %}
 
+## Compression
+
 ## The `gzip` and `gunzip` commands
 
 _<mark style="background-color:red;">**Compression**</mark>_ <mark style="background-color:red;"></mark><mark style="background-color:red;"></mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">**reduces the amount of data**</mark> needed to store or transmit a file while storing it in such a way that the file can be restored. The compressed version of the file is not typically viewed or utilized; instead, it is uncompressed before use.

@@ -611,4 +611,193 @@ Just as the `dpkg` command is able to either remove or purge a package, so can t
 
 An administrator can execute the <mark style="color:red;">**`apt-get remove PACKAGE`**</mark> command to remove a package or the <mark style="color:red;">**`apt-get purge PACKAGE`**</mark> command to purge a package completely from the system.
 
-\
+## Verifying Files with Checksums
+
+A checksum is a small piece of complementary data used to verify the integrity of a file. If checksums do not mach, the copied file is corrupted and untrustworthy.
+
+{% hint style="danger" %}
+A checksum verifies the integrity of the downloaded file, but does not verify the authenticity of the sender.
+{% endhint %}
+
+### md5sum
+
+The <mark style="color:red;">**`md5sum`**</mark> command, based on the MD5 algorithm, creates a 128 bit hash using the original file.&#x20;
+
+```
+md5sum [OPTIONS]... [FILE]...
+```
+
+The `md5sum` can also be used to authenticate the file with the check `-c` option. This is used to verify the integrity of the file by comparing the computed checksum of the file with the previously generated
+
+### sha256sum
+
+The <mark style="color:red;">**`sha256sum`**</mark> comands creates a 256-bit cheksum number that can be used to verify a file.&#x20;
+
+```
+sha256sum [OPTIONS]... [FILE]...
+```
+
+### sha512sum
+
+The <mark style="color:red;">**`sha512sum`**</mark> command creates an even more secur 512-bit checksum for verifying files using the similar syntax.
+
+```
+sha516sum [OPTIONS]... [FILE]...
+```
+
+## SUSE Package Management
+
+Several distributions use the **ZYpp/libzypp** package management engine, which primarly runs on openSUSE, SUSE Linux Enterprise, and Ark.  Lipzipp was designed to perform as the software package management scheme for SUSE products as well as the failed and now mostly dormant Zenworks Linux management suite from Novell.
+
+While **ZYpp/libzypp** is the background package management engine, which is in charge of satisfying the dependencies between packages, most system operators will interact mainly with the <mark style="color:red;">**`zypper`**</mark> command line tool.
+
+Repositories come in several varieties:
+
+* The first being those that are official and supported, such as the subscription channels/repositories that the SCC (SUSE Customer Center) provides for those with support subscriptions.
+* The next variety is a 3rd-party repository. An excellent example of this is the Packman repository for the openSUSE community.
+* The last variety is the local mirror or synchronized repository that an organization will use to maintain a local copy of the software that can be used by their internal or public-facing systems.
+
+The <mark style="color:red;">**`zypper`**</mark> command is used to query, install, remove, update, manage repositories, and more; **it depends on the **<mark style="color:red;">**`rpm`**</mark>** command's abilities** to accomplish most of these tasks.
+
+Using `zypper` to install the same packages is much easier, as it will do the hard work of reading the desired package's dependencies, query the database of installed packages for those, and if they are not found, determine which software repository from the list of configured repositories that they may be obtained from.
+
+The syntax used for the `zypper` command examples is the following:
+
+```
+zypper [--GLOBAL-OPTS] COMMAND [--COMMAND-OPTS] [COMMAND-ARGUMENTS]
+```
+
+### Searching for Packages with `zypper`
+
+It is critical to refresh the information that <mark style="color:red;">**`zypper`**</mark> has about the repositories that the commands in this section will be querying and installing software from. The refresh <mark style="color:red;">**`ref`**</mark> command can be used to refresh the repository.
+
+```bash
+localhost:~ # zypper ref
+Repository 'sle-module-basesystem' is up to date.                               Repository 'sle-module-desktop-applications' is up to date.                     Repository 'sle-module-development-tools' is up to date.                        Repository 'Non-OSS' is up to date.
+Repository 'SLES15-15-0' is up to date.
+Repository 'SLES' is up to date.
+Repository 'sle-module-server-applications' is up to da the date. 
+```
+
+To **find a package** to install, use the search <mark style="color:red;">**`se`**</mark> command to query the configured repositories on the system
+
+```
+zypper se gvim
+```
+
+### Installing Packages with `zypper`
+
+The **`zypper`** command can be used with the install <mark style="color:red;">**`in`**</mark> command to install packages.
+
+```
+zypper in PACKAGE
+```
+
+```
+localhost:~ # zypper in gvim
+Loading repository data...
+Reading installed packages...
+Resolving package dependencies...
+
+The following NEW package is going to be installed:
+  gvim
+
+1 new package to install.
+```
+
+To reinstall (and force the overwriting of) the `gvim` package, as the root user, use the <mark style="color:red;">`-f`</mark> option to the `zypper` command:
+
+```bash
+localhost:~$ zypper in -f gvim
+Loading repository data...
+Reading installed packages...
+Forcing installation of 'gvim-8.0.1568-3.20.x86_64' from repository 'sle-module-desktop-applications'.
+Resolving package dependencies...
+
+The following package is going to be reinstalled:
+  gvim
+
+1 package to reinstall.
+Overall download size: 1.6 MiB. Already cached: 0 B. No additional space will be used or freed after the operation.
+Continue? [y/n/...? shows all options] (y): y
+```
+
+### Managing repositories with `zypper`
+
+To query the software repositories on a system, use the **`zypper`** command with the _**list repositories**_** **<mark style="color:red;">**`lr`**</mark> option:
+
+```
+localhost:~ # zypper lr
+Repository priorities in effect:                                               (See 'zypper lr -P' for details)
+      99 (default priority) :  6 repositories
+     100 (lowered priority) :  1 repository
+
+# | Alias                            | Name                            |Enabled | GPG Check | Refresh
+--+----------------------------------+---------------------------------+---------+-----------+--------
+1 | Basesystem-Module_15-0           | sle-module-basesystem           | Yes     | (r ) Yes  | No
+2 | Desktop-Applications-Module_15-0 | sle-module-desktop-applications | Yes     | (r ) Yes  | No
+3 | Development-Tools-Module_15-0    | sle-module-development-tools    | Yes     | (r ) Yes  | No
+4 | Non-OSS                          | Non-OSS                         | Yes     | (r ) Yes  | No
+5 | SLES15-15-0                      | SLES15-15-0                     | Yes     | (r ) Yes  | No
+```
+
+**To **_**add a repository**_** to install additional software** from, first find the repository URL, the use t repository <mark style="color:red;">**`-ar`**</mark> option:
+
+```
+localhost:~ # zypper ar -f http://packman.inode.at/suse/openSUSE_Leap_15.1/ packman
+Adding repository 'packman'.............................................[done]
+Repository 'packman' successfully added
+
+URI         : http://packman.inode.at/suse/openSUSE_Leap_15.1/
+```
+
+At this time, the `zypper ref` command would be run again to update the system with the latest metadata from all repositories, which will prompt for trusting the repository key.
+
+When the query of the new repository is successful, the system can be updated or software operations are undertaken.
+
+```bash
+localhost:~ # zypper list-updates -t package
+retrieving repository 'packman' metadata -------------------------------------------------------------------[|]
+
+New repository or package signing key received:
+
+  Repository:       packman
+  Key Name:         PackMan Project (signing key) <packman@links2linux.de>
+  Key Fingerprint:  F8875B88 0D518B6B 8C530D13 45A1D067 1ABD1AFB
+  Key Created:      Mon Sep 15 16:18:00 2014
+  Key Expires:      Thu Sep 12 16:17:21 2024
+  Rpm Name:         gpg-pubkey-1abd1afb-54176598
+```
+
+### Updating Packages with `zypper`
+
+The `zypper` command can also be used to **update the packages in a repository**
+
+```
+zypper -list-updates PACKAGE
+```
+
+To see a listing of all the packages that are available for update from your repositories, you would use the <mark style="color:red;">**`list-updates`**</mark> command:
+
+```
+localhost:~ # zypper list-updates -t gvim
+Loading repository data...
+Reading installed packages...
+No updates found.
+```
+
+To perform an update of the system, (which will locate all updates in the configured repositories and perform a dependency-solve on them) use the `update` command:
+
+```
+localhost:~ # zypper update
+Loading repository data...
+Reading installed packages...
+No updates found.
+```
+
+
+
+
+
+
+

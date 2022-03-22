@@ -532,9 +532,58 @@ sysadmin@localhost:~$ dpkg -L perl
 /usr
 ```
 
-I
+If you know the pahtname for a file, then it is possible to determine which package was responsible for providing that file by using the <mark style="color:red;">**`-S`**</mark>option with the **`dpkg`** command.
 
+For example, to discover the package that provide the `/usr/bin/perldoc` file, execute the following command:
 
+```bash
+sysadmin@localhost:~$ dpkg -S /usr/bin/perldoc
+perl: /usr/bin/perldoc
+```
+
+By using the `dpkg` command with the `-s` option and a package name, the following package information will be displayed:
+
+* Status
+* Size
+* Organization that mantains the package
+* Dependencies
+* Description
+
+### Configuration Packages with `dpkg-reconfigure`
+
+If the package needs to be reconfigured at some later point, execute the <mark style="color:red;">**`dpkg-reconfigure`**</mark> command.
+
+```
+dpkg-reconfigure [OPTIONS...] PACKAGES...
+```
+
+A good example of using the `dpkg-reconfigure` command is with the **`tzdata`** package. When this package is configured, the administrator sets the time zone information for the computer's current location. If a system is moved to another location, particularly in a different time zone, then this package should be reconfigured by executing the `dpkg-reconfigure tzdata` command.
+
+### Searching for packages with `apt-cache`
+
+If the system has the appropriate repositories configured in the `/etc/apt/sources.list` file and the administrator has already refreshed the cached information about which packages are available by executing the `apt-get update` command, then any user can search for packages by using the <mark style="color:red;">**`apt-cache search`**</mark> command:
+
+```
+apt-cache search KEYWORD
+```
+
+The `apt-cache` command can also search for packages in a different way. To find out which dependencies a package has, the <mark style="color:red;">**`apt-cache depends PACKAGE`**</mark> command will list the packages required by the package-name.
+
+```bash
+ $ apt-cache depends wfuzz
+wfuzz
+  Depende: python3-pycurl
+  Depende: python3-pyparsing
+  Depende: python3-chardet
+  Depende: python3-future
+  Depende: python3-six
+  Depende: <python3:any>
+    python3:i386
+    python3
+
+```
+
+The <mark style="color:red;">**`apt-cache show PACKAGE`**</mark> command can also display the status of a package with information similar to the output of the `dpkg -s PACKAGE` command, but the `apt-cache` command displays more detailed information.
 
 
 

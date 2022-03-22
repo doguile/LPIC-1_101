@@ -532,7 +532,7 @@ sysadmin@localhost:~$ dpkg -L perl
 /usr
 ```
 
-If you know the pahtname for a file, then it is possible to determine which package was responsible for providing that file by using the <mark style="color:red;">**`-S`**</mark>option with the **`dpkg`** command.
+If you know the pathname for a file, then it is possible to determine which package was responsible for providing that file by using the <mark style="color:red;">**`-S`**</mark>option with the **`dpkg`** command.
 
 For example, to discover the package that provide the `/usr/bin/perldoc` file, execute the following command:
 
@@ -541,7 +541,7 @@ sysadmin@localhost:~$ dpkg -S /usr/bin/perldoc
 perl: /usr/bin/perldoc
 ```
 
-By using the `dpkg` command with the `-s` option and a package name, the following package information will be displayed:
+By using the **`dpkg`** command with the <mark style="color:red;">**`-s`**</mark> option and a package name, **the following package information will be displayed:**
 
 * Status
 * Size

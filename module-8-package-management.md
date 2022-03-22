@@ -585,9 +585,30 @@ wfuzz
 
 The <mark style="color:red;">**`apt-cache show PACKAGE`**</mark> command can also display the status of a package with information similar to the output of the `dpkg -s PACKAGE` command, but the `apt-cache` command displays more detailed information.
 
+### Installing/Updating Packages with `apt-get`
 
+After searching for a package, you may want to install that package and its required dependencies. Using the <mark style="color:red;">**`apt-get install PACKAGE`**</mark> command will download and prompt the administrator to install that package as well as its dependencies.&#x20;
 
+For example, to install the `apache2` package and its dependencies, execute the `apt-get install apache2` command with administrative privileges:
 
+{% hint style="info" %}
+If the package is installed and a newer version is available, execute the <mark style="color:red;">**`apt-get -only-upgrade install PACKAGE`**</mark> command
 
+```
+sysadmin@localhost:~$ sudo apt-get --only-upgrade install apache2        
+```
+{% endhint %}
 
+To update all packages of the system, two commands are executed. First, the <mark style="color:red;">**`apt-get update`**</mark> command to **update the cache of all packages available** should be executed. Second, execute the <mark style="color:red;">**`apt-get upgrade`**</mark> command; **all packages and dependencies will be updated**
 
+### Removing/Purging Packages with `apt-get`
+
+Just as the `dpkg` command is able to either remove or purge a package, so can the `apt-get` command.
+
+{% hint style="warning" %}
+**Recall that the difference between the two is that purging deletes all packages files, whiel removing deletes all but the configuration files for the packages.**
+{% endhint %}
+
+An administrator can execute the <mark style="color:red;">**`apt-get remove PACKAGE`**</mark> command to remove a package or the <mark style="color:red;">**`apt-get purge PACKAGE`**</mark> command to purge a package completely from the system.
+
+\

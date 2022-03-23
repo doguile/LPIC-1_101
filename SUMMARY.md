@@ -26,3 +26,4 @@
   * [Chapter 23: Fixing Filesystems](module-7-administration-of-filesystem/chapter-23-fixing-filesystems.md)
 * [Module 8: System Software](module-8-system-software/README.md)
   * [Chapter 25: Managing Shared Libraries](module-8-system-software/chapter-25-managing-shared-libraries.md)
+  * [Chapter 26: Virtualization](module-8-system-software/chapter-26-virtualization.md)

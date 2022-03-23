@@ -74,7 +74,7 @@ It will match any character except for the new line character.&#x20;
 
 The `r..t` pattern will find any line that contained the letter `r` followed by exactly two characters (can be any character) and then the letter `t`
 
-![](<../.gitbook/assets/image (10).png>)
+![](<../.gitbook/assets/image (10) (1).png>)
 
 {% hint style="warning" %}
 The line doest not have to be an exact match, it simply must contain the pattern.
@@ -374,7 +374,7 @@ To look for a literal asterisk `*` character, escape it by placing a backslash `
 grep 're\*' newhome.txtas
 ```
 
-![](<../.gitbook/assets/image (20).png>)
+![](<../.gitbook/assets/image (20) (1).png>)
 
 ## The Realm of Basic Regular Expresssions
 

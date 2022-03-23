@@ -50,7 +50,7 @@ In order for these library files to be able to be loaded, create a `/etc/ld.so.c
 
 After adding or removing files in the `/etc/ld.so.conf.d` directory, the administrator needs to execute the <mark style="color:red;">**`ldconfig`**</mark> command to update the `/etc/ld.so.cache` cache file.
 
-To display the name and path information for all the libraries that have been added to the cache use the <mark style="color:red;">**`ldconfig`**</mark> command with the <mark style="color:red;">**`-p`**</mark> option:
+To **display the name and path information for all the libraries** that have been added to the cache use the <mark style="color:red;">**`ldconfig`**</mark> command with the <mark style="color:red;">**`-p`**</mark> option:
 
 ```bash
 sysadmin@localhost:~$ ldconfig -p | head -n 20
@@ -68,7 +68,7 @@ sysadmin@localhost:~$ ldconfig -p | head -n 20
 	libx86emu.so.1 (libc6,x86-64) => /usr/lib64/libx86emu.so.1
 ```
 
-To display the list of libraries directories that are configured as well as their contents, the `-v` option can be used:
+To display the **list of libraries directories that are configured as well as their contents**, the <mark style="color:red;">**`-v`**</mark> option can be used:
 
 ```bash
 sysadmin@localhost:~$ ldconfig -v | head -n 20

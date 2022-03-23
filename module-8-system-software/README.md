@@ -2,7 +2,7 @@
 description: 'Weight: 6'
 ---
 
-# Module 8: Package Management
+# Module 8: System Software
 
 <details>
 
@@ -37,6 +37,8 @@ description: 'Weight: 6'
 **`zypper`** The command line tool for the ZYpp/Libzypp is the background package management engine.
 
 </details>
+
+## Chapter 24: Package Management
 
 ## Intro
 

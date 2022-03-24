@@ -1,5 +1,17 @@
 # Module 1: Getting Started
 
+<details>
+
+<summary>Key Terms</summary>
+
+**`bash`** Bourne Again SHell - an sh-compatible command language interpreter that executes commands read from the standard input or  from a file
+
+**`ls`** Command that will list information about files. The current directory is listed by default.
+
+</details>
+
+## CHAPTER 1: INTRODUCTION
+
 ## Introduction
 
 The definition of the word Linux depends on the context in which it is used. Technically speaking, <mark style="background-color:red;">**Linux is the Kernel of the system**</mark>, which is the central controller of everything that happens on the computer.
@@ -14,13 +26,13 @@ The 3 main components of an operating system are the <mark style="background-col
 
 The kernel dictates which program gets which pieces of memory, it starts and kill programs, it interprets instructions given to it by the user, and it handles common and simple task.&#x20;
 
-The kernel also handles the switching of applications. The kernel takes care of unloading tasks and loading new tasks, and can manage multiple tasks across multiple CPUs. **When the current task has run a sufficient amount of time , the CPU pauses the task so that another may run. This is called **_<mark style="background-color:red;">**preemptive multitasking.(Multi-tareas preventivo)**</mark>_
+The kernel also handles the switching of applications. The kernel takes care of unloading tasks and loading new tasks, and can manage multiple tasks across multiple CPUs. **When the current task has run a sufficient amount of time , the CPU pauses the task so that another may run.** This is called _<mark style="background-color:red;">**preemptive multitasking.(Multi-tareas preventivo)**</mark>_
 
 {% hint style="info" %}
-_Multitasking_ means that the computer is doing several tasks at once,and _preemptive_ means that the kernel is deciding when to switch focus between tasks.
+_**Multitasking**_ means that the computer is doing **several tasks at once**,and _**Preemptive**_ means that the kernel is deciding **when to switch focus between tasks**.
 {% endhint %}
 
-When the computer starts up, it loads a small piece of code called a **** _bootloader_. **The bootloader’s job is to give you a choice (if configured) of options to load one or more versions of Linux**, or even other operating systems, and then to load the kernel of the chosen option and get it started.
+When the computer starts up, it loads a small piece of code called a **** _<mark style="background-color:red;">bootloader</mark>_. **The bootloader’s job is to give you a choice (if configured) of options to load one or more versions of Linux**, or even other operating systems, and then to load the kernel of the chosen option and get it started.
 
 ### Applications
 
@@ -94,11 +106,11 @@ commands [options] [arguments]
 Commands entered are considered _<mark style="background-color:red;">standard input (stdin)</mark>_, whether they are typed by an operator, entered by a script, or as the result of another command. Text returned to the console can be either <mark style="background-color:red;">standard output (stdout)</mark>, or _<mark style="background-color:red;">standard error (stderr)</mark>_.
 
 {% hint style="warning" %}
-An administrator can use the <mark style="color:red;">`usermod`</mark> command to specify a different default shell after the account has been created.
+An administrator can use the <mark style="color:red;">**`usermod`**</mark> command to **specify a different default shell after the account has been created.**
 
-As user, you can use the <mark style="color:red;">`chsh`</mark> command to change your default shell.
+As **user**, you can use the <mark style="color:red;">**`chsh`**</mark> command to **change your default shell.**
 
-The location where the system stores the default shell for user accounts is the **`/etc/passwd`** file.
+The location where the system stores the **default shell for user accounts** is the <mark style="color:red;">**`/etc/passwd`**</mark> file.
 {% endhint %}
 
 ### Accessing the shell

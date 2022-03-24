@@ -1,5 +1,24 @@
 # Chapter 2: Using the shell
 
+<details>
+
+<summary>Key terms</summary>
+
+**`Quoting`** Enclosing special characters in quotes will prevent the shell from interpreting special  characters.
+
+* _Double qoutes_ will prevent the shell from interpreting some of these special characters.
+* _Single quotes_ prevent the shell from interpreting any special characters
+
+**`echo`** Echo the STRING(s) to standard output. Useful with scripts
+
+**`man`** An interface to the on-line reference manuals
+
+**`pwd`** Print the name of the current working directory
+
+**`uname`** Print certain system information such as kernel name, network node hostname, kernel release, kernel version, etc.
+
+</details>
+
 ## Commands
 
 Is a software program that when executed on the command line, performs an action on the computer.
@@ -8,8 +27,8 @@ A command runs a process on the operating system, which then causes the computer
 
 However, there is another way of looking at what a command is: look at its source. The source is where the command "comes from" and there are several different sources of commands within the shell of your CLI:
 
-* **Internal Commands:** Also called _<mark style="color:red;">built-in</mark>_ <mark style="color:red;"></mark><mark style="color:red;">commands</mark>, these commands are built-in to the shell itself. An example is the <mark style="color:red;">`cd`</mark> command as it is part of the Bash shell.
-* **External Commands:** These commands are stored in files that are searched by the shell. If you type the _ls_ command, then the shell searches through a predetermined list of directories to try to find a file named `ls` that it can execute. _<mark style="background-color:red;">These commands can also be executed by typing the complete path to the command.</mark>_
+* **Internal Commands:** Also called _<mark style="color:red;">**built-in**</mark>_<mark style="color:red;">** **</mark><mark style="color:red;">**commands**</mark>, these commands are built-in to the shell itself. An example is the <mark style="color:red;">`cd`</mark> command as it is part of the Bash shell.
+* **External Commands:** These commands are stored in files that are searched by the shell. If you type the _<mark style="color:red;">**ls**</mark> _ command, then the shell searches through a predetermined list of directories to try to find a file named <mark style="color:red;">**`ls`**</mark> that it can execute. _<mark style="background-color:red;">These commands can also be executed by typing the complete path to the command.</mark>_
 * **Aliases:** An alias <mark style="background-color:red;">can override a bulit-in command</mark>, function or a command that is found in a file. Aliases can be useful for creating new commands built from existing functions and commands.
 * **Functions:** Functions can also be built using existing commands to either create new commands, override commands built-in to the shell or commands stored in files.
 
@@ -23,7 +42,7 @@ It is possible to view available software packages, binary programs that can be 
 `apt-cache search gcc | grep source`
 {% endhint %}
 
-The <mark style="color:red;">`apt-cache`</mark> commands allows us to display information from the APT database cache. It is commonly used to find information about programs you wish to install and the components required to make them work.
+The <mark style="color:red;">**`apt-cache`**</mark> commands <mark style="background-color:purple;">**allows us to display information from the APT database cache**</mark>. It is commonly used to find information about programs you wish to install and the components required to make them work.
 
 {% hint style="warning" %}
 The Free Software Foundation (FSF) distributes the GNU Compiler Collection (GCC) to make this process easier. **The GCC provides a compiler system** (the special programs used to convert source code into usable binary programs) **with front ends for many different programming languages.**
@@ -116,7 +135,14 @@ Using no quotes will failed because the shell interprets the <mark style="color:
 echo "Hello world!!"
 ```
 
-**Using double quotes preserves the literal value of all characters that they enclose except metacharacters** such as the <mark style="color:red;">`$`</mark>dollar sign character, the <mark style="color:red;">`´`</mark>bakcquote character, the <mark style="color:red;">`\`</mark>backslash character and the <mark style="color:red;">`!`</mark>exclamation point character. **These characters (**<mark style="color:red;">**`$ \ !`**</mark>**), called **<mark style="background-color:red;">**wildcards, are used for**</mark><mark style="background-color:red;">** **</mark>_<mark style="background-color:red;">**globbing**</mark>,_ and are interpreted by the shell itself before it attempts to run any command.
+**Using double quotes preserves the literal value of all characters that they enclose **<mark style="background-color:red;">**except metacharacters**</mark>** ** such as:
+
+* The <mark style="color:red;">`$`</mark>dollar sign character
+* The <mark style="color:red;">`´`</mark>bakcquote character
+* The <mark style="color:red;">`\`</mark>backslash character
+* The <mark style="color:red;">`!`</mark>exclamation point character.&#x20;
+
+These characters **(**<mark style="color:red;">**`$ \ !`**</mark>**),** called ** **<mark style="background-color:red;">**wildcards,**</mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">are</mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">**used for**</mark><mark style="background-color:red;">** **</mark>_<mark style="background-color:red;">**globbing**</mark>,_ and are interpreted by the shell itself before it attempts to run any command.
 
 > **Glob characters are useful because they allow you to specify patterns that make it easier to match file names in the command line.**
 
@@ -145,13 +171,13 @@ By default, the <mark style="color:red;">`ls`</mark>command prints the results i
 The expection to this is when an options requires an argument.
 {% endhint %}
 
-For example, the `-w`options to the `ls`command specifies the _width_ of the output desired and therefore requires an argument. **If combined with other options, the `-w`option can be specified last, followed by its argument and still be valid.**
+For example, the <mark style="color:red;">**`-w`**</mark>options to the **`ls`**command specifies the _width_ of the output desired and therefore requires an argument. **If combined with other options, the `-w`option can be specified last, followed by its argument and still be valid.**
 
 {% hint style="danger" %}
 <mark style="background-color:green;">If you are using multiple options that require arguments, don't combine them.</mark>
 {% endhint %}
 
-For example, the `-T`option, which specifies _tab size,_ also requires an argument. In order to accommodate both argumnets, each option is given separately.
+For example, the <mark style="color:red;">**`-T`**</mark>option, which specifies _tab size,_ also requires an argument. In order to accommodate both argumnets, each option is given separately.
 
 ```
 ls -w 40 -T 12
@@ -166,7 +192,7 @@ ls --all
 ls --all --reverse -t
 ```
 
-Commands that support long options will often also support arguments that may be specified with or without an equal symbol (the output of both commands is the same):
+**Commands that support long options will often also support arguments that may be specified with or without an equal symbol** (the output of both commands is the same):
 
 ```bash
 ls --sort time
@@ -174,7 +200,7 @@ ls --sort=time
 ```
 
 {% hint style="info" %}
-A special options exists, the _<mark style="color:red;">lone double hyphen</mark>_ `--`option, which can be used to **indicate the end of all options for the command.**
+A special options exists, the _<mark style="color:red;">**lone double hyphen**</mark>_ `--`option, which can be used to **indicate the end of all options for the command.**
 {% endhint %}
 
 ```
@@ -225,14 +251,14 @@ In the first prompt above, the blue tilde `~` character is equivalent to `/home/
 
 ## Command Information
 
-The <mark style="color:red;">`type`</mark>command displays information about a command type. For example, if you entered `type ls`at the command prompt, it will return that the `ls`command is actually an alias for the <mark style="color:red;">`ls --color=auto`</mark>command:
+The <mark style="color:red;">**`type`**</mark>command **displays information about a command type**. For example, if you entered **`type ls`**at the command prompt, it will return that the `ls`command is actually an alias for the <mark style="color:red;">`ls --color=auto`</mark>command:
 
 ```
 sysadmin@localhost:~$ type ls                                                   
 ls is aliased to `ls --color=auto'
 ```
 
-Using the <mark style="color:red;">`-a`</mark>option with the `type`command will **return all locations of the files that contain a command**; also called an _executable_ file:
+Using the <mark style="color:red;">**`-a`**</mark>option with the <mark style="color:red;">**`type`**</mark> command will **return all locations of the files that contain a command**; also called an _executable_ file:
 
 ```bash
 sysadmin@localhost:~$ type -a ls                                                
@@ -249,7 +275,7 @@ sysadmin@localhost:~$ type pwd
 pwd is a shell builtin
 ```
 
-{% hint style="info" %}
+{% hint style="danger" %}
 The <mark style="color:red;">`/bin`</mark>directory contains executable programs needed for **booting a system**, commonly used commands, and other **programs needed for basic system functionality**
 
 The <mark style="color:red;">`/sbin`</mark>directory also contains executable programs; mainly commands and **tools designed for system administration**
@@ -310,7 +336,7 @@ The ellipses `...` following `[OPTION]`, indicate that `[OPTION]` may be repeate
 
 To organize all of these man pages, the pages are categorized by sections, much like each individual man page is broken into sections.
 
-By default, there are nine sections of man pages:
+By default, there are **nine** **sections** of man pages:
 
 1. Executable programs or shell commands
 2. System calls (functions provided by the kernel)
@@ -336,7 +362,7 @@ To specify a different section, provide the number of the section as the first a
 
 ### Searching by Name
 
-The `-f`option to the `man`command will display man pages that match, or partially match, a specific name and provide a brief description of each man page:
+The <mark style="color:red;">**`-f`**</mark>option to the <mark style="color:red;">**`man`**</mark>command will display man pages that match, or partially match, a specific name and provide a brief description of each man page:
 
 ```bash
 sysadmin@localhost:~$ man -f passwd
@@ -346,12 +372,12 @@ passwd (5)           - the password file
 ```
 
 {% hint style="info" %}
-Note that on most Linux distributions, the <mark style="color:red;">`whatis`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command does the same thing as <mark style="color:red;">`man -f`</mark>. On those distributions, both will produce the same output.
+Note that on most Linux distributions, the <mark style="color:red;">**`whatis`**</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command **does the same thing** as <mark style="color:red;">**`man -f`**</mark>. On those distributions, both will produce the same output.
 {% endhint %}
 
 ### Searching by Keyword
 
-You can search for man pages that match a keyword by using the <mark style="color:red;">`-k`</mark>option to the <mark style="color:red;">`man`</mark>command.
+You can search for man pages that match a keyword by using the <mark style="color:red;">**`-k`**</mark>option to the <mark style="color:red;">**`man`**</mark>**command**.
 
 ```
 sysadmin@localhost:~$ man -k password
@@ -363,5 +389,5 @@ cppw (8)             - copy with locking the given file to the password or gr..
 ```
 
 {% hint style="info" %}
-Note that on most Linux distributions, the <mark style="color:red;">`apropos`</mark> command does the same thing as <mark style="color:red;">`man -k`</mark>. On those distributions, both will produce the same output.
+Note that on most Linux distributions, the <mark style="color:red;">**`apropos`**</mark> command **does the same thing** as <mark style="color:red;">**`man -k`**</mark>. On those distributions, both will produce the same output.
 {% endhint %}

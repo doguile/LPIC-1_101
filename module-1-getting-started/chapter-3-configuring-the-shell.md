@@ -1,8 +1,26 @@
 # Chapter 3: Configuring the Shell
 
+<details>
+
+<summary>Key terms</summary>
+
+**`.bash_history`** File used to store the current history list when the shell is closed
+
+**`env`** Print a list of the current environment variables or change to an alternate enviroment
+
+**`export`** Makes an assigned variable available to sub-processes.
+
+**`history`** Print a list of previously executed commands or "re-execute" previously executed commands.
+
+**`set`** Display all variables
+
+**`unset`** Remove one or more variables
+
+</details>
+
 ## Shell variables
 
-A _variable_ is a identifier that can be assigned a value. You assign a value to a variable by typing the name of the variable immediately followed by the equal sign = character and then the value.
+A _<mark style="color:red;">variable</mark> _ is a identifier that can be assigned a value. You assign a value to a variable by typing the name of the variable immediately followed by the equal sign = character and then the value.
 
 ```
 name="Bob Smith"
@@ -14,7 +32,7 @@ For the shell, <mark style="background-color:red;"></mark> <mark style="backgrou
 
 ## Local and Environment Variables
 
-A _local variable_ is only available to the shell in which it was created. An environment variable is available to the shell in which it was created, and it is passed into all other commands/programs started by the shell.
+A <mark style="color:red;"></mark> <mark style="color:red;"></mark>_<mark style="color:red;">local variable</mark> _ is **only available to the shell in which it was created**. An _<mark style="color:red;">environment variable</mark>_ is **available to the shell in which it was created**, and it is passed into all other commands/programs started by the shell.
 
 If the variable already exists, the value of the variable is modified. If the variable does not exist, the shell creates a new local variable and sets the value.
 
@@ -24,21 +42,21 @@ Lowercase characters are used to create local variables names, and Uppercase cha
 PD: This is not a rule
 {% endhint %}
 
-An _environment variable_ can be created directly by using the <mark style="color:red;">`export`</mark> command.
+An _<mark style="color:red;">environment variable</mark> _ can be created directly by using the <mark style="color:red;">**`export`**</mark> command.
 
 ```bash
 export BOB=engineer
 ```
 
-To display the value of the variable, use the `$` character followed by the variable name as an argument to the <mark style="color:red;">`echo`</mark> command.
+To display the value of the variable, use the <mark style="color:red;">**`$`**</mark> character followed by the variable name as an argument to the <mark style="color:red;">**`echo`**</mark> command.
 
 ```bash
 echo $BOB
 ```
 
-The local variables are not available in new shells because by default, **when a variable is assigned in the Bash shell, it is initially set as a local variable**. When you exit the original shell, only the environment variable will be available.
+The _<mark style="color:red;">local variables</mark>_ are not available in new shells because by default, **when a variable is assigned in the Bash shell, it is initially set as a local variable**. When you exit the original shell, only the environment variable will be available.
 
-Local variable can be exported with the <mark style="color:red;">`export`</mark> command.
+_Local variable_ can be exported with the <mark style="color:red;">**`export`**</mark> command.
 
 ```
 export variable
@@ -49,14 +67,14 @@ NAME=pedro
 export NAME
 ```
 
-The <mark style="color:red;">`declare`</mark> and <mark style="color:red;">`typeset`</mark> command can be used with the export <mark style="color:red;">`-x`</mark> option to declare a variable to be an environment variable. These commands are synonymous and work the same way.
+The <mark style="color:red;">**`declare`**</mark> and <mark style="color:red;">**`typeset`**</mark> command can be used with the export <mark style="color:red;">**`-x`**</mark> option to **declare a variable to be an environment variable**. These commands are synonymous and work the same way.
 
 ```
 declare -x PERSON=Juan
 typeset -x LASTNAME=Gomez
 ```
 
-The <mark style="color:red;">`env`</mark> command is used to **run commands in a modified environment**. It can also be used to temporarily create or change environment variables that are only passed to a single command execution.
+The <mark style="color:red;">**`env`**</mark> command is used to **run commands in a modified environment**. It can also be used to temporarily create or change environment variables that are only passed to a single command execution.
 
 ```
 env NAME=value command
@@ -67,13 +85,13 @@ env TZ=EST date
 
 ### Displaying Variables
 
-The <mark style="color:red;">`set`</mark> command by itself **will display all variable** (local and environment).
+The <mark style="color:red;">`set`</mark> command by itself **will display all variable** <mark style="background-color:red;">**(local and environment)**</mark>.
 
 ```bash
 set | less
 ```
 
-To display only _environment variables_, you can use several commands that provide nearly the same output:
+To display **only** _**environment variables**_, you can use several commands that provide nearly the same output:
 
 ```bash
 env
@@ -83,7 +101,7 @@ export -x
 env | tail
 ```
 
-To display the value of a specific variable, use the <mark style="color:red;">`echo`</mark> command with a name of the variable prefixed by the `E`
+To display the value of a specific variable, use the <mark style="color:red;">`echo`</mark> command with a name of the variable prefixed by the <mark style="color:red;">**`E`**</mark>
 
 ### Unsetting Variables
 

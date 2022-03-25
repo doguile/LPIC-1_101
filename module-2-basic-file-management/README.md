@@ -66,7 +66,7 @@ sysadmin@localhost:/usr/bin$ echo w??*
 w.procps wall watch wget whatis whereis which who whoami write
 ```
 
-### Brackets \[ ] characters
+### Brackets <mark style="color:red;">`[ ]`</mark> characters
 
 By using the square brackets \[ ] characters, a set of characters can be enclosed that will be used to **match exactly one character specified inside the brackets**.
 
@@ -82,7 +82,7 @@ Just as with the other wildcard characters, the square brackets can appear multi
 $ echo *[0-9][0-9]*
 ```
 
-The square brackets also support negating the set of characters (also called _complementation_). If the first character inside of the square brackets is either an exclamation `!` character or a caret `^` character, then that first character has the meaning of _**not the following characters.**_
+The **square brackets also support negating the set of characters** (also called _complementation_). If the first character inside of the square brackets is either an exclamation `!` character or a caret `^` character, then that first character has the meaning of _**not the following characters.**_
 
 ```bash
 #Would match a file name that does not begin with a letter a through v

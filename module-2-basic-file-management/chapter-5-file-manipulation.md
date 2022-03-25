@@ -2,7 +2,7 @@
 
 Everything is considered a file in Linux. Even directories are considered a files since they are special files that are used to contain other files.
 
-There are 3 types of permissions: read, write, and execute. Each has different meaning depending on whether they are applied to a _file_ or a _directory._
+There are 3 types of permissions: **`read`**, **`write`**, and **`execute`**. Each has different meaning depending on whether they are applied to a _file_ or a _directory._
 
 * Read:
   * On a file, this allows processes to read the contents of the file, meaning the contents can be viewed and copied.
@@ -14,7 +14,7 @@ There are 3 types of permissions: read, write, and execute. Each has different m
   * A file can be executed or run as a process.
   * On a directory, the user can use the `cd` command to "get into" the directory and use the directory in a path-name to access files.
 
-Typically, there are two places where you should always have the _write_ and _execute_ permissions on the directory: your home directory (for permanent files) and `/tmp` directory (for temporary files).
+Typically, there are two places where you should always have the _write_ and _execute_ permissions on the directory: **your home directory** (for permanent files) and **`/tmp` directory** (for temporary files).
 
 ## Listing Files
 
@@ -56,15 +56,15 @@ This indicates the time that the file's contents were last modified. Using the `
 
 The output of the `ls` command is sorted alphabetically by filename. It can sort by other methods as well:&#x20;
 
-| Option | Function                  |
-| ------ | ------------------------- |
-| `-S`   | Sorts files by size       |
-| `-t`   | Sorts by timestamp        |
-| `-r`   | Reverses any type of sort |
+| Option                                   | Function                  |
+| ---------------------------------------- | ------------------------- |
+| <mark style="color:red;">**`-S`**</mark> | Sorts files by size       |
+| <mark style="color:red;">**`-t`**</mark> | Sorts by timestamp        |
+| <mark style="color:red;">**`-r`**</mark> | Reverses any type of sort |
 
 #### Recursion
 
-When the recursive option is used with file management commands, it means to apply that command to not only the specified directory, but also to all sub-directories and all of the files within all sub-directories.
+When the recursive option <mark style="color:red;">**`-R`**</mark> is used with file management commands, it means to apply that command to not only the specified directory, but also to all sub-directories and all of the files within all sub-directories.
 
 ```
 ls -lR /var/log
@@ -72,7 +72,7 @@ ls -lR /var/log
 
 ## Creating and Modifying files
 
-The touch command performs two functions. It can create an empty file or update the modification timestamp on an existing file.
+The <mark style="color:red;">**`touch`**</mark> command performs two functions. It can **create an empty file or update the modification timestamp on an existing file**.
 
 ```
 touch NEWFILE
@@ -81,8 +81,8 @@ touch NEWFILE
 Each file has 3 timestamps:
 
 * The last time the file's contents were modified. This is the timestamp provided by the `ls -l`
-* The last time the file was accessed. To modify this timestamp, use the <mark style="color:red;">`-a`</mark> option with the <mark style="color:red;">`touch`</mark> command
-* The last time the file attributes(permissions and file ownership) were modified. To modify this timestamp, use the <mark style="color:red;">`-c`</mark> option with the <mark style="color:red;">`touch`</mark> command.
+* The last time the file was accessed. To **modify this timestamp**, use the <mark style="color:red;">**`-a`**</mark> option with the <mark style="color:red;">`touch`</mark> command
+* The last time the **file attributes** (permissions and file ownership) were modified. To **modify** **this** timestamp, use the <mark style="color:red;">**`-c`**</mark> option with the <mark style="color:red;">`touch`</mark> command.
 
 The <mark style="color:red;">`touch`</mark> command will normally update the specified time to the current time, but the <mark style="color:red;">`-t`</mark> option with a timestamp value can be use instead.
 
@@ -103,7 +103,7 @@ In the above command, the date/time syntax for the `touch` command is `CCYYMMDDH
 
 Optionally add SS for the seconds.
 
-In order to view all three timestamps that are kept for a file, use the <mark style="color:red;">`stat`</mark> command with the path to the file.
+In order <mark style="background-color:red;">**to view all three timestamps that are kept for a file**</mark>, use the <mark style="color:red;">**`stat`**</mark> command with the path to the file.
 
 ```
  stat Documents/alpha.txt                                       
@@ -119,16 +119,16 @@ Change: 2019-02-22 16:37:01.149507126 +0000
 
 ## Copying Files
 
-The <mark style="color:red;">`cp`</mark> command is used to copy files.
+The <mark style="color:red;">**`cp`**</mark> command is used to copy files.
 
-Using the <mark style="color:red;">`-v`</mark> option makes the `cp` command print verbose output, so you can always tell what copies succeed as well as those that fail.
+Using the <mark style="color:red;">**`-v`**</mark> option makes the <mark style="color:red;">**`cp`**</mark> command **print verbose output**, so you can always tell what copies succeed as well as those that fail.
 
-In order to copy a directory, its contents must be copied as well, including all files within the directories and all of its sub-directories. This can be done by using the <mark style="color:red;">`-r`</mark> or <mark style="color:red;">`-R`</mark> recursive options.
+In order to copy a directory, its **contents must be copied as well**, including all files within the directories and all of its sub-directories. This can be done by using the <mark style="color:red;">**`-r`**</mark> or <mark style="color:red;">**`-R`**</mark> recursive options.
 
 {% hint style="info" %}
-The archive <mark style="color:red;">`-a`</mark> option of the <mark style="color:red;">`cp`</mark> command copies the contents of the file and also attempts to **maintain the original timestamps and file ownership**.&#x20;
+The archive <mark style="color:red;">**`-a`**</mark> option of the <mark style="color:red;">**`cp`**</mark> command copies the contents of the file and also attempts to **maintain the original timestamps and file ownership**.&#x20;
 
-The <mark style="color:red;">`-a`</mark> option also implies that recursion will be done. Therefore, it can also be used to copy a directory.
+The <mark style="color:red;">**`-a`**</mark> option also **implies that recursion will be done**. Therefore, it can also be used to copy a directory.
 {% endhint %}
 
 ## Creating Directories

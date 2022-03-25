@@ -1,4 +1,30 @@
+---
+description: '103.3: Perform basic file management v2  Weight: 4'
+---
+
 # Chapter 5: File Manipulation
+
+<details>
+
+<summary>Key terms</summary>
+
+**`cp`** Command used to copy files and directories
+
+**`file`** Command used to determine the type of file. There are 3 sets of tests, performed in this order: filesystem test, magic test, and language tests
+
+**`ls`** Command that will list information about files.
+
+**`mkdir`** Command used to create directories, if they do not already exists.
+
+**`rm`** Command used to remove files or directories. By default the `rm` command will not remove directories.
+
+**`rmdir`** Command that is used to remove empty directories in the filesystem
+
+**`touch`** Command used to change the file timestamps or allow a user to update the access and modification times of each FILE to the current time
+
+</details>
+
+## Introduction
 
 Everything is considered a file in Linux. Even directories are considered a files since they are special files that are used to contain other files.
 
@@ -50,7 +76,20 @@ The first character of each line indicates the type of file. These types are:
 -rw-r--r-- 1 root   adm   85083 Feb 22 16:32 dmesg
 ```
 
-This indicates the time that the file's contents were last modified. Using the `ls` command with the <mark style="color:red;">`--full-time`</mark> option will display timestamps in full detail.
+This indicates the time that the file's contents were last modified. Using the <mark style="color:red;">**`ls`**</mark> command with the <mark style="color:red;">**`--full-time`**</mark> option will display timestamps in full detail.
+
+```bash
+sysadmin@localhost:~$ ls -t --full-time                                         
+total 32                                                                        
+drwxr-xr-x 2 sysadmin sysadmin 4096 2019-02-22 16:32:34.000000000 +0000 Desktop
+drwxr-xr-x 4 sysadmin sysadmin 4096 2019-02-22 16:32:34.000000000 +0000 Documents  
+drwxr-xr-x 2 sysadmin sysadmin 4096 2019-02-22 16:32:34.000000000 +0000 Downloads  
+drwxr-xr-x 2 sysadmin sysadmin 4096 2019-02-22 16:32:34.000000000 +0000 Music   
+drwxr-xr-x 2 sysadmin sysadmin 4096 2019-02-22 16:32:34.000000000 +0000 Pictures
+drwxr-xr-x 2 sysadmin sysadmin 4096 2019-02-22 16:32:34.000000000 +0000 Public  
+drwxr-xr-x 2 sysadmin sysadmin 4096 2019-02-22 16:32:34.000000000 +0000 Templates  
+drwxr-xr-x 2 sysadmin sysadmin 4096 2019-02-22 16:32:34.000000000 +0000 Videos
+```
 
 #### Sorting
 
@@ -70,6 +109,28 @@ When the recursive option <mark style="color:red;">**`-R`**</mark> is used with 
 ls -lR /var/log
 ```
 
+## Viewing File Types
+
+To avoid viewing binary files, use the <mark style="color:red;">**`file`**</mark> command. The <mark style="color:red;">**`file`**</mark> command "looks at" the contents of a file to report what kind of file it is; it does this by matching the content to known types stored in a _magic file._
+
+{% hint style="info" %}
+It is a good idea to use the <mark style="color:red;">**`file`**</mark> command before attempting to access a file to make sure that it does contain text
+{% endhint %}
+
+```bash
+sysadmin@localhost:~$ file Documents/newhome.txt
+Documents/newhome.txt: ASCII text
+```
+
+While the `cat` command is able to output the contents of binary files, the terminal application may not handle displaying the content of binary files correctly.
+
+```bash
+sysadmin@localhost:~$ file /mbin/ls
+/bin/ls: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically lin
+ked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[sha1]
+=9567f9a28e66f4d7ec4baf31cfbf68d0410f0ae6, stripped
+```
+
 ## Creating and Modifying files
 
 The <mark style="color:red;">**`touch`**</mark> command performs two functions. It can **create an empty file or update the modification timestamp on an existing file**.
@@ -81,8 +142,8 @@ touch NEWFILE
 Each file has 3 timestamps:
 
 * The last time the file's contents were modified. This is the timestamp provided by the `ls -l`
-* The last time the file was accessed. To **modify this timestamp**, use the <mark style="color:red;">**`-a`**</mark> option with the <mark style="color:red;">`touch`</mark> command
-* The last time the **file attributes** (permissions and file ownership) were modified. To **modify** **this** timestamp, use the <mark style="color:red;">**`-c`**</mark> option with the <mark style="color:red;">`touch`</mark> command.
+* The last time the file was accessed. To **modify this timestamp**, use the <mark style="color:red;">**`-a`**</mark> option with the <mark style="color:red;">**`touch`**</mark> command
+* The last time the **file attributes** (permissions and file ownership) were modified. To **modify** **this** timestamp of file attributes, use the <mark style="color:red;">**`-c`**</mark> option with the <mark style="color:red;">**`touch`**</mark> command.
 
 The <mark style="color:red;">`touch`</mark> command will normally update the specified time to the current time, but the <mark style="color:red;">`-t`</mark> option with a timestamp value can be use instead.
 
@@ -123,7 +184,7 @@ The <mark style="color:red;">**`cp`**</mark> command is used to copy files.
 
 Using the <mark style="color:red;">**`-v`**</mark> option makes the <mark style="color:red;">**`cp`**</mark> command **print verbose output**, so you can always tell what copies succeed as well as those that fail.
 
-In order to copy a directory, its **contents must be copied as well**, including all files within the directories and all of its sub-directories. This can be done by using the <mark style="color:red;">**`-r`**</mark> or <mark style="color:red;">**`-R`**</mark> recursive options.
+In order to copy a directory, its **contents must be copied as well**, including all files within the **directories and all of its sub-directories**. This can be done by using the <mark style="color:red;">**`-r`**</mark> or <mark style="color:red;">**`-R`**</mark> recursive options.
 
 {% hint style="info" %}
 The archive <mark style="color:red;">**`-a`**</mark> option of the <mark style="color:red;">**`cp`**</mark> command copies the contents of the file and also attempts to **maintain the original timestamps and file ownership**.&#x20;
@@ -133,7 +194,39 @@ The <mark style="color:red;">**`-a`**</mark> option also **implies that recursio
 
 ## Creating Directories
 
-The `mkdir` command allows you to create (make) a directory.
+The <mark style="color:red;">**`mkdir`**</mark> command allows you to create (make) a directory.
 
-By adding the <mark style="color:red;">`-p`</mark> option, the `mkdir` command automatically creates the _parent directories_ for any child directories about to be created. This is especially useful for making deep path names.
+By adding the <mark style="color:red;">**`-p`**</mark> option, the <mark style="color:red;">**`mkdir`**</mark> command automatically creates the _parent directories_ for any child directories about to be created. This is especially useful for making deep path names.
 
+```bash
+sysadmin@localhost:~$ mkdir -p /home/sysadmin/red/blue/yellow/green
+sysadmin@localhost:~$ ls -R red
+red:
+blue
+ 
+red/blue:
+yellow
+ 
+red/blue/yellow:
+green
+ 
+red/blue/yellow/green:
+```
+
+## Removing Directories
+
+The `rmdir` command is used to remove empty directories
+
+```
+rmdir [OPTION]... DIRECTORY...
+```
+
+Using the `-p` option with the `rmdir` command will remove directory path, but only if all of the directories contain other empty directories.
+
+```
+sysadmin@localhost:~$ rmdir red
+rmdir: failed to remove 'red': Directory not empty
+sysadmin@localhost:~$ rmdir -p red/blue/yellow/green
+```
+
+Otherwise, if a directory contains anything expect ohter directories, you'll need to use the `rm` command with a recursive option. use either the `-r` or `-R` recursive options.

@@ -14,7 +14,7 @@ man 7 glob
 
 Globbing is especially useful for file management since it can be used to match the path names to files that you want to manage.
 
-### Asterisk \* Character
+### Asterisk <mark style="color:red;">`*`</mark> Character
 
 The asterisk \* wildcard can be **used to match any string**, including the empty string.
 
@@ -22,7 +22,7 @@ The asterisk \* wildcard can be **used to match any string**, including the empt
 An empty string is a string that has nothing in it. It is commonly referred to as ""
 {% endhint %}
 
-In order to limit the \* wildcard, so that it matches fewer file names, it can be combined with other characters.
+In order to limit the <mark style="color:red;">`*`</mark> wildcard, so that it matches fewer file names, it can be combined with other characters.
 
 ```bash
 echo D*
@@ -36,9 +36,9 @@ echo D*o*
 It is case sensitive
 {% endhint %}
 
-### Question Mark ? Character
+### Question Mark <mark style="color:red;">`?`</mark> Character
 
-The _question mark ?_ character in a string will match exactly one character.
+The _question mark <mark style="color:red;">`?`</mark>_ character in a string will match exactly one character.
 
 ```bash
 sysadmin@localhost:~$ cd /usr/bin

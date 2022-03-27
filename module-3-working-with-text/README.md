@@ -2,6 +2,40 @@
 
 ## Chapter 7: Text Utilities
 
+<details>
+
+<summary>Key Terms</summary>
+
+`cat` Displays the contents of one or more files to standard output
+
+`cut` Command used to extract fields of information from a text file
+
+`head` Prints the first 10 lines of a file by default
+
+`less` Pager command used to view file contents one page of data at a time
+
+`nl` Prepend a number to the lines of a file incrementing each line by 1 by default
+
+`od` Performs an octal dump of data by default. Often used to display the contents of files with non-printable characters.
+
+`paste` Merge the lines of one or more files, line by line, separating the output by tabs by default
+
+`sed` A non-interactive editar that can be used to modify text
+
+`sort` COmmand used to display a file sorted on a specific field of data
+
+`split` Command used to take one file and break it into multiple parts. By default it breaks the file up int 1000 line
+
+`tail` Prints the last 10 lines of a file by default
+
+`tr` Command used to translate one set of characters to another
+
+`uniq` Command to remove duplicates lines that are currently consecutive
+
+`wc` Print newline, word, and byte counts for each FILE, and a total line if more than one FILE is specified.
+
+</details>
+
 ## Viewing File Content
 
 With a single file argument, the <mark style="color:red;">`cat`</mark> command will simply output the contents of a file:

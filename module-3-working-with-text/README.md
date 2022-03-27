@@ -48,13 +48,15 @@ This command has the **ability to accept two or more files as input** and then o
 
 To display the file one page at a time, use a pager, either the <mark style="color:red;">`more`</mark> or the <mark style="color:red;">`less`</mark> command.
 
-To view a file with the `less` command, pass the file name as an argument:
+To view a file with the <mark style="color:red;">`less`</mark> command, pass the file name as an argument:
 
 ```
 less FILE
 ```
 
+{% hint style="info" %}
 The <mark style="color:red;">`more`</mark> and <mark style="color:red;">`less`</mark> commands allow users to navigate the document using keystroke commands.
+{% endhint %}
 
 ## Splitting files
 
@@ -136,7 +138,7 @@ sysadmin@localhost:~/Documents$ nl newhome.txt
      7  Good luck!!!
 ```
 
-To have the <mark style="color:red;">`nl`</mark> command **number every line** in the .txt file, execute the following command:
+To have the <mark style="color:red;">`nl`</mark> command **number every line** in the .txt file, execute the <mark style="color:red;">**`-ba`**</mark> option to the `nl` command:
 
 ```bash
 sysadmin@localhost:~/Documents$ nl -ba newhome.txt
@@ -155,7 +157,7 @@ sysadmin@localhost:~/Documents$ nl -ba newhome.txt
     13  Good luck!!!
 ```
 
-**The **<mark style="color:red;">**`-b`**</mark>** option is the **<mark style="color:red;">**`--body-numbering`**</mark>** option**, abbreviated in its short version as <mark style="color:red;">-b</mark>. The `a` is actually an argument that means number all lines. In other words, the command could also be executed:
+**The **<mark style="color:red;">**`-b`**</mark>** option is the **<mark style="color:red;">**`--body-numbering`**</mark>** option**, abbreviated in its short version as <mark style="color:red;">-b</mark>. The <mark style="color:red;">**`-a`**</mark>  is actually an **argument** that means number all lines. In other words, the command could also be executed:
 
 ```bash
   nl -b a newhome.txt
@@ -174,7 +176,7 @@ The purpose of the <mark style="color:red;">`head`</mark> command is to view the
 head [OPTIONS]...[FILE]
 ```
 
-By default, the <mark style="color:red;">`head`</mark> command will display the first ten lines of a file's contents.&#x20;
+By default, the <mark style="color:red;">`head`</mark> command will **display the first ten lines of a file's** contents.&#x20;
 
 For instance, there is the ability to use a number as an option to indicate how many lines of output to display. For example, to display the first three lines of a file, execute:
 
@@ -248,7 +250,7 @@ When the <mark style="color:red;">`tail`</mark> command is executed with the <ma
 
 **The **<mark style="color:red;">**`paste`**</mark>** command will merge the lines of one or more files, line by line,** separating them with a _tab as a delimiter_ by default.
 
-To demonstrate the `paste` command’s functionality, the `numbers.txt` and `letters.txt` will be used:
+To demonstrate the <mark style="color:red;">`paste`</mark> command’s functionality, the `numbers.txt` and `letters.txt` will be used:
 
 {% tabs %}
 {% tab title="Files to paste" %}
@@ -455,7 +457,7 @@ Ken,Thompson
 Linus,Torvalds
 ```
 
-To specify an alternate delimiter, use the <mark style="color:red;">`-t`</mark> option. To specify the fields to sort from first to last, use one or more <mark style="color:red;">`-k`</mark> options. In the following example, the `os.csv` file is sorted based on the second field of data, using the comma `,` character as a delimiter:
+To **specify an alternate delimiter, use the **<mark style="color:red;">**`-t`**</mark>** option**. To specify the fields to sort from first to last, use one or more <mark style="color:red;">`-k`</mark> options. In the following example, the `os.csv` file is sorted based on the second field of data, using the comma `,` character as a delimiter:
 
 ```
 sysadmin@localhost:~/Documents$ sort -t',' -k2 os.csv
@@ -465,7 +467,7 @@ sysadmin@localhost:~/Documents$ sort -t',' -k2 os.csv
 1970,Unix,Thompson
 ```
 
-In order to have the <mark style="color:red;">`sort`</mark> command treat a field numerically, add an <mark style="color:red;">`n`</mark> as an argument to the <mark style="color:red;">`-k`</mark> option for that key field specification. The <mark style="color:red;">`1`</mark> indicates the first field, and the <mark style="color:red;">`n`</mark> specifies sorting that field numerically:
+In order to have the <mark style="color:red;">`sort`</mark> command treat a **field numerically, add an **<mark style="color:red;">**`n`**</mark>** as an argument** to the <mark style="color:red;">`-k`</mark> option for that key field specification. The <mark style="color:red;">`1`</mark> indicates the first field, and the <mark style="color:red;">`n`</mark> specifies sorting that field numerically:
 
 ```bash
 sysadmin@localhost:~/Documents$ sort -t',' -k1n os.csv
@@ -475,7 +477,7 @@ sysadmin@localhost:~/Documents$ sort -t',' -k1n os.csv
 1991,Linux,Torvalds
 ```
 
-To reverse the sort direction from ascending to descending, add an <mark style="color:red;">`r`</mark> argument to the key field specification:
+To **reverse the sort direction** from ascending to descending, **add an **<mark style="color:red;">**`r`**</mark>** argument** to the key field specification:
 
 ```bash
 sysadmin@localhost:~/Documents$ sort -t',' -k1nr os.csv
@@ -485,7 +487,7 @@ sysadmin@localhost:~/Documents$ sort -t',' -k1nr os.csv
 1970,Unix,Thompson
 ```
 
-The `sort` command can be combined with other commands to accomplish more sophisticated tasks. For example, the output of the `cut -f7 -d: /etc/passwd` command contains many duplicate values:
+The <mark style="color:red;">`sort`</mark> command can be combined with other commands to accomplish more sophisticated tasks. For example, the output of the `cut -f7 -d: /etc/passwd` command contains many duplicate values:
 
 ```
 sysadmin@localhost:~/Documents$ cut -f7 -d: /etc/passwd | head -n4
@@ -508,11 +510,11 @@ sysadmin@localhost:~/Documents$ cut -f7 -d: /etc/passwd | sort -u
 
 ### `uniq` Command
 
-The <mark style="color:red;">`uniq`</mark> command does what the _unique_ `-u` option did with the `sort` command.
+The <mark style="color:red;">`uniq`</mark> command does what the _unique_ `-u` option did with the <mark style="color:red;">`sort`</mark> command.
 
-There may be times when the lines should not be sorted first. The <mark style="color:red;">`uniq`</mark> command can simply remove lines that are currently consecutive.
+There may be times when the lines should not be sorted first. **The **<mark style="color:red;">**`uniq`**</mark>** command can simply remove lines that are currently consecutive.**
 
-Second, the count <mark style="color:red;">`-c`</mark> option to the <mark style="color:red;">`uniq`</mark> command outputs the number of duplicate that were counted.
+Second, the count <mark style="color:red;">**`-c`**</mark> option to the <mark style="color:red;">**`uniq`**</mark> command **outputs the number of duplicate that were counted.**
 
 ```bash
 sysadmin@localhost:~/Documents$ cut -f7 -d: /etc/passwd | sort | uniq -c
@@ -523,13 +525,13 @@ sysadmin@localhost:~/Documents$ cut -f7 -d: /etc/passwd | sort | uniq -c
 
 ## Display File Contents in Various Formats
 
-The `od` command can output data in several different formats. One use of this command is to display the contents of a file when it contains non-printable characters.
+The <mark style="color:red;">**`od`**</mark> command can output data in several different formats. One use of this command is to **display the contents of a file when it contains non-printable characters**.
 
 ```
 od [OPTION]...[FILE]
 ```
 
-In order to demonstrate the `od` command, the `hidden.txt` file will be used:
+In order to demonstrate the <mark style="color:red;">**`od`**</mark> command, the `hidden.txt` file will be used:
 
 ```
 sysadmin@localhost:~/Documents$ cat hidden.txt
@@ -537,7 +539,7 @@ NDG LPIC-1 Curriculum
 Is The Best
 ```
 
-It seems straight-forward enough, but there are non-printable control characters  causing `cat` to return to the beginning of the first line. This is where `od` comes in handy. Use the <mark style="color:red;">`-c`</mark> option to examine ASCII characters:
+It seems straight-forward enough, but there are non-printable control characters  causing <mark style="color:red;">`cat`</mark> to return to the beginning of the first line. This is where <mark style="color:red;">**`od`**</mark> comes in handy. Use the <mark style="color:red;">**`-c`**</mark> option to examine ASCII characters:
 
 ```
 sysadmin@localhost:~/Documents$ od -c hidden.txt
@@ -553,7 +555,7 @@ sysadmin@localhost:~/Documents$ od -c hidden.txt
 The <mark style="color:red;">`od`</mark> command can be used file recovery, or to open a file that crashes other programs
 {% endhint %}
 
-As the name implies, `od` can display raw file content in octal form. It also supports hexadecimal and decimal output. This can be very useful when analyzing a precompiled binary, such as a virus:
+As the name implies, <mark style="color:red;">**`od`**</mark>** can display raw file content in octal form**. It also supports hexadecimal and decimal output. This can be very useful when analyzing a precompiled binary, such as a virus:
 
 ```bash
 sysadmin@localhost:~/Documents$ od -x hidden.txt
@@ -569,7 +571,7 @@ sysadmin@localhost:~/Documents$ od -x hidden.txt
 
 ### `tr` Command
 
-The <mark style="color:red;">`tr`</mark> command can be used to translate from one set of characters to another.
+The <mark style="color:red;">`tr`</mark> command can be **used to translate from one set of characters to another**.
 
 The following example will translate all of the lowercase letters in `alpha-first.txt` to uppercase letters:
 
@@ -618,7 +620,7 @@ F s fr Flwr
 
 ### `sed` Command
 
-The stream editor <mark style="color:red;">`sed`</mark> command is a non-interactive editor that can be **used to modify text.**
+The stream editor <mark style="color:red;">`sed`</mark> command is a **non-interactive editor** that can be **used to modify text.**
 
 ```
 sed [OPTION]...{SCRIPT} [FILE]....

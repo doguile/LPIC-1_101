@@ -1,3 +1,7 @@
+---
+description: '103.1: Work on the command line v2  Weight: 4'
+---
+
 # Chapter 3: Configuring the Shell
 
 <details>

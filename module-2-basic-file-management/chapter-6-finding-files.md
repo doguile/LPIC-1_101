@@ -199,7 +199,7 @@ find . -ls -iname 'desk*' -o \(-name Downloads -a -user jdoe \)
 210019332      4 drwxr-xr-x   2 sysadmin sysadmin     4096 Mar  8 19:10 ./Downloads  
 ```
 
-To make the output exactly like the the output of the `ls -l` command, use the <mark style="color:red;">**`exec`**</mark> option to execute **`ls -l`** on each file found
+To make the output exactly like the the output of the `ls -l` command, use the <mark style="color:red;">**`-exec`**</mark> option to execute **`ls -l`** on each file found
 
 ```bash
 #Tells the find command to execute the ls -l command for each file found. The pair

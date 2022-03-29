@@ -1,8 +1,26 @@
 ---
-description: egrep, fgrep, grep,sed
+description: '103.7: Search text files using regular expressions v2  Weight: 3'
 ---
 
 # Chapter 8: Regular Expressions
+
+<details>
+
+<summary>Key terms</summary>
+
+<mark style="color:red;">**`egrep`**</mark> Commands that performs the same function as `grep -E` .This command has been deprecated, but is around for historical applications.
+
+<mark style="color:red;">**`fgrep`**</mark> Command that performs the same function `grep -F`. This command has been deprecated.
+
+<mark style="color:red;">**`grep`**</mark> Command used to print lines matching a specific pattern.
+
+<mark style="color:red;">**`regex`**</mark>`(7)` Regular expression. This is a term used to describe a codified method of searching for text, or other strings in text.
+
+<mark style="color:red;">**`sed`**</mark> A non-interactive editor that can be used to modify text
+
+</details>
+
+Introduction
 
 Regular expressions (or regex) define a search pattern.&#x20;
 
@@ -26,30 +44,28 @@ The simplest of all regular expressions just use literal characters, such as alp
 grep 'root' /etc/passwd
 ```
 
-Although very useful for the <mark style="color:red;">`grep`</mark> command, literal characters alone provide no wildcarding or special matching capabilities. For that let's introduce the _operators_ that are available in basic regular expressions.
+Although very useful for the <mark style="color:red;">**`grep`**</mark> command, literal characters alone provide no wildcarding or special matching capabilities. For that let's introduce the _operators_ that are available in basic regular expressions.
 
-| Basic Regex           | Operator                                        | Meaning                                                                                                                                                                                                                  |
-| --------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Period operator       | `.`                                             | Matches any one single character.                                                                                                                                                                                        |
-| List operator         | <p><code>[ ]</code></p><p><code>[^ ]</code></p> | Defines a list or range of literal characters that can match one character. If the first character is the negation `^` operator, it matches any character that is not in the list.                                       |
-| Asterisk operator     | `*`                                             | Matches zero or more instances of the previous character.                                                                                                                                                                |
-| Front anchor operator | `^`                                             | If `^` is the first character in the pattern, then the entire pattern must be present at the beginning of the line to match. If `^` is not the first character, then it is treated as an ordinary literal `^` character. |
-| Back anchor operator  | `$`                                             | If `$` is the last character in the pattern, then the pattern must be at the end of the line to match, otherwise, it is treated as a literal `$` character.                                                              |
-
-
+| Basic Regex           | Operator                                        | Meaning                                                                                                                                                                                                                                                  |
+| --------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Period operator       | `.`                                             | Matches any one single character.                                                                                                                                                                                                                        |
+| List operator         | <p><code>[ ]</code></p><p><code>[^ ]</code></p> | Defines a list or range of literal characters that can match one character. **If the first character is the negation **<mark style="color:red;">**`^`**</mark>** operator, it matches any character that is not in the list.**                           |
+| Asterisk operator     | `*`                                             | Matches zero or more instances of the previous character.                                                                                                                                                                                                |
+| Front anchor operator | `^`                                             | If `^` is the first character in the pattern, then the entire pattern must be present at the beginning of the line to match. If <mark style="color:red;">`^`</mark> is not the first character, then it is treated as an ordinary literal `^` character. |
+| Back anchor operator  | `$`                                             | If `$` is the last character in the pattern, then the pattern must be at the end of the line to match, otherwise, it is treated as a literal `$` character.                                                                                              |
 
 ### Anchoring
 
 Anchoring is one of the ways regular expressions can be used to narrow search results.
 
-<mark style="background-color:blue;">The front anchor</mark> <mark style="color:red;">`^`</mark> operator can be used to ensure that <mark style="background-color:red;">**a pattern appears at the beggining of the line.**</mark>
+**The front anchor** <mark style="color:red;">**`^`**</mark> operator can be used to ensure that <mark style="background-color:red;">**a pattern appears at the beggining of the line.**</mark>
 
 ```
 grep ^root /etc/passwd
 root:x:0:0:root:/root:bin/bash
 ```
 
-<mark style="background-color:blue;">The back anchor</mark> <mark style="color:red;background-color:blue;">`$`</mark> operator can be used to ensure <mark style="background-color:red;">**a pattern appears at the end of the line**</mark>, thereby effectively reducing the search results.
+**The back anchor **<mark style="color:red;background-color:blue;">**`$`**</mark> operator can be used to ensure <mark style="background-color:red;">**a pattern appears at the end of the line**</mark>, thereby effectively reducing the search results.
 
 ```
 grep 'bash$' /etc/passwd
@@ -57,10 +73,10 @@ root:x:0:0:root:/root:/bin/bash
 ```
 
 {% hint style="info" %}
-The position of the operator are important. The $ operator must be the last character in the pattern in order to be effective as an anchor
+The position of the operator are important. The <mark style="color:red;">**`$`**</mark> operator must be the last character in the pattern in order to be effective as an anchor
 {% endhint %}
 
-If the `^` and `$` operators are used at the beggining and end of the same pattern, the entire line must match the pattern.
+If the <mark style="color:red;">**`^`**</mark> and <mark style="color:red;">**`$`**</mark> operators are used at the beggining and end of the same pattern, the entire line must match the pattern.
 
 | Pattern         | Meaning                                                         |
 | --------------- | --------------------------------------------------------------- |
@@ -68,7 +84,7 @@ If the `^` and `$` operators are used at the beggining and end of the same patte
 | `World$`        | Matches any line that ends with the `World` string              |
 | `^Hello World$` | Matches any line which matches the `Hello World` string exactly |
 
-### Match a Single Character With `.`
+### Match a Single Character With <mark style="color:red;">`.`</mark>
 
 It will match any character except for the new line character.&#x20;
 
@@ -82,7 +98,7 @@ The line doest not have to be an exact match, it simply must contain the pattern
 
 ### Match a Single Character With `[]`&#x20;
 
-The list `[]` operator works in regular expressions similar to how they work in glob expressions; <mark style="background-color:red;">**they match a single character from the list or rang**</mark><mark style="background-color:red;">e</mark> of possible characters contained within the brackets.
+The list <mark style="color:red;">**`[]`**</mark> operator works in regular expressions similar to how they work in glob expressions; <mark style="background-color:red;">**they match a single character from the list or rang**</mark><mark style="background-color:red;">e</mark> of possible characters contained within the brackets.
 
 For example to find all the lines that have numbers you can use the following:
 
@@ -92,11 +108,11 @@ For example to find all the lines that have numbers you can use the following:
 Do not mistake \[^0-9] to match lines which do not contain numbers. It actually matches lines which contain non-number characters.
 {% endhint %}
 
-When other [regular expressions](chapter-8-regular-expressions.md#basic-regular-expressions) operators are placed inside of the list `[ ]` operators, they are treated as literal characters.&#x20;
+When other [regular expressions](chapter-8-regular-expressions.md#basic-regular-expressions) operators are placed inside of the list <mark style="color:red;">**`[]`**</mark> operators, they are treated as literal characters.&#x20;
 
 ### Match a single character with `*`
 
-The asterisk `*` operator is used to <mark style="background-color:red;"></mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">**match zero or more occurrences of the character preceding it**</mark>. For example, the `e*` pattern would match zero or more occurrences of the e character
+The asterisk <mark style="color:red;">**`*`**</mark> operator is used to <mark style="background-color:red;"></mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">**match zero or more occurrences of the character preceding it**</mark>. For example, the <mark style="color:red;">`e*`</mark> pattern would match zero or more occurrences of the `e` character
 
 ```bash
 sysadmin@localhost:~/Documents$ cat red.txt | grep 're*d'                       
@@ -118,7 +134,7 @@ reed
 ```
 
 {% hint style="info" %}
-In order to make the asteriks `*` operator useful, it is necessary to create a pattern which includes more than just the one character preceding the asterisk `*` operator.
+In order to make the asterisk <mark style="color:red;">**`*`**</mark> operator useful, it is necessary to create a pattern which includes more than just the one character preceding the asterisk `*` operator.
 {% endhint %}
 
 ![](<../.gitbook/assets/image (16).png>)
@@ -134,26 +150,30 @@ In order to make the asteriks `*` operator useful, it is necessary to create a p
 
 The use of extended regular expressions often requires a special option be provided to the command to recognize them.
 
-| Extended Regex         | Operators | Meaning                                                                               |
-| ---------------------- | --------- | ------------------------------------------------------------------------------------- |
-| Grouping operator      | `( )`     | Groups characters together to form a subpattern.                                      |
-| Asterisk operator      | `*`       | Previous character (or subpattern) is present zero or more times.                     |
-| Plus operator          | `+`       | Previous character (or subpattern) is present at least one or more times.             |
-| Question mark operator | `?`       | Previous character (or subpattern) is present zero or one time (but not more).        |
-| Curly brace operator   | `{,}`     | Specify minimum, maximum, or exact matches of the previous character (or subpattern). |
-| Alternation operator   | `\|`      | Logical OR of choices. For example, `abc\|def\|xyz` matches `abc` or `def` or `xyz`.  |
+| Extended Regex         | Operators | Meaning                                                                                   |
+| ---------------------- | --------- | ----------------------------------------------------------------------------------------- |
+| Grouping operator      | `( )`     | Groups characters together to **form a subpattern.**                                      |
+| Asterisk operator      | `*`       | Previous character (or subpattern) is present **zero or more times**.                     |
+| Plus operator          | `+`       | Previous character (or subpattern) is present **at least one or more times.**             |
+| Question mark operator | `?`       | Previous character (or subpattern) is present **zero or one time** (but not more).        |
+| Curly brace operator   | `{,}`     | **Specify minimum, maximum, or exact matches** of the previous character (or subpattern). |
+| Alternation operator   | `\|`      | **Logical OR of choices**. For example, `abc\|def\|xyz` matches `abc` or `def` or `xyz`.  |
 
-Historically, there is a command called <mark style="color:red;">`egrep`</mark>, which is similar to the <mark style="color:red;">`grep`</mark> command, but can understand extended regular expressions. <mark style="background-color:red;">**Now the**</mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;"><mark style="color:red;">**`egrep`**<mark style="color:red;"></mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;">**command is deprecated in favor of using**</mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;"><mark style="color:red;">**`grep`**<mark style="color:red;"></mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;">**with the**</mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;"><mark style="color:red;">**`-E`**<mark style="color:red;"></mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;">**option.**</mark>
+Historically, there is a command called <mark style="color:red;">**`egrep`**</mark>, which is similar to the <mark style="color:red;">**`grep`**</mark> command, but can understand extended regular expressions.
+
+{% hint style="info" %}
+&#x20;<mark style="background-color:red;">**Now the**</mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;"><mark style="color:red;">**`egrep`**<mark style="color:red;"></mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;">**command is deprecated**</mark> in favor of <mark style="background-color:red;">**using**</mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;"><mark style="color:red;">**`grep`**<mark style="color:red;"></mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;">**with the**</mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;"><mark style="color:red;">**`-E`**<mark style="color:red;"></mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;">**option.**</mark>
+{% endhint %}
 
 ### Grouping with `()`
 
-The grouping `( )` operator creates groupings that can be used for several purposes. At the most basic level, they are <mark style="background-color:red;">**used to group together characters that can be targeted by matching operators like**</mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;">**`*`**</mark><mark style="background-color:red;">**,**</mark><mark style="background-color:red;">**`+`**</mark><mark style="background-color:red;">**,**</mark><mark style="background-color:red;">**`?`**</mark><mark style="background-color:red;">**, or the curly braces**</mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;">**`{ }`**</mark>**.**
+The grouping <mark style="color:red;">**`()`**</mark> operator creates groupings that can be used for several purposes. At the most basic level, they are <mark style="background-color:red;">**used to group together characters that can be targeted by matching operators like**</mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;">**`*`**</mark><mark style="background-color:red;">**,**</mark><mark style="background-color:red;">**`+`**</mark><mark style="background-color:red;">**,**</mark><mark style="background-color:red;">**`?`**</mark><mark style="background-color:red;">**, or the curly braces**</mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;">**`{ }`**</mark>**.**
 
 {% hint style="info" %}
 This grouping is considered to be a subpattern of the pattern. A subpattern is a smaller pattern within a pattern.
 {% endhint %}
 
-In the example below, parentheses are used to match words beginning with `a` character, followed by the `dd` subpattern
+In the example below, parentheses are used to match words beginning with `a` character, followed by the `dd` subpattern.
 
 ```bash
 sysadmin@localhost:~/Documents$ cat words | grep -E '^a(dd)' | head             
@@ -169,7 +189,7 @@ addendums
 adder  
 ```
 
-### Match a Repeated Character with `+`
+### Match a Repeated Character with <mark style="color:red;">`+`</mark>
 
 This <mark style="background-color:red;">**matches at least one of the previous characters, instead of zero**</mark>, so it is much more selective. For example, the `add+re` pattern would only match if the text contained one or more `d` characters, yielding the same results as the previously used dd\* pattern:
 
@@ -200,7 +220,7 @@ Miss Mississippi missed her mister.
 
 ### Match an optional character with `?`
 
-The extended regex question mark `?` operator <mark style="background-color:red;">**matches the preceding character or grouping zero or one times, making it optional**</mark>.
+The extended regex question mark <mark style="color:red;">**`?`**</mark> operator <mark style="background-color:red;">**matches the preceding character or grouping zero or one times, making it optional**</mark>.
 
 For example, consider the word "color" which can also be spelled with an optional `u` as "colour" . Use the `colou?r` pattern to match either spelling.
 
@@ -213,7 +233,7 @@ For example, consider the word "color" which can also be spelled with an optiona
 
 ### Match a repeated character with `{ }`
 
-The extended regex curly brace `{ }` operator is used to specify the number of occurrences of the preceding character or subpattern.
+The extended regex curly brace <mark style="color:red;">**`{}`**</mark> operator is used to specify the number of occurrences of the preceding character or subpattern.
 
 | Pattern  | Meaning                           |
 | -------- | --------------------------------- |
@@ -224,7 +244,7 @@ The extended regex curly brace `{ }` operator is used to specify the number of o
 | `a{,5}`  | Five or fewer `a` characters      |
 | `a{3,5}` | From three to five `a` characters |
 
-To demonstrate, the `{ }` operator in action, the example below matches two to three instances of the letter `r` in the words.txt
+To demonstrate, the <mark style="color:red;">**`{ }`**</mark> operator in action, the example below matches two to three instances of the letter `r` in the words.txt
 
 ```bash
 sysadmin@localhost:~/Documents$ cat words | grep -E 'r{2,3}' | head -n 3        
@@ -251,7 +271,7 @@ The `*`, `+`, `?`, and `{ }` characters are considered to be quantifying operato
 
 ### Match Subpatterns with `|`
 
-When used in extended regular expressions, the alternation `|` operator **separates alternative expressions that can match. It acts similarly to a Boolean **_**OR**_
+When used in extended regular expressions, the alternation <mark style="color:red;">**`|`**</mark> operator **separates alternative expressions that can match. It acts similarly to a Boolean **_**OR**_
 
 To match both the word gray or grey, use the expressions `gray|grey`
 
@@ -305,7 +325,7 @@ Thwas is useful
 ```
 
 {% hint style="info" %}
-Recall that to do a simple search and replace operation with the `sed` command, use the following script, or expression:
+Recall that to do a simple search and replace operation with the **`sed`** command, use the following script, or expression:
 
 ```
 s/PATTERN/REPLACEMENT/
@@ -314,7 +334,7 @@ s/PATTERN/REPLACEMENT/
 In the syntax above, the `s`character signifies _substitution_ and the forward slash `/` character is used as a delimiter.
 {% endhint %}
 
-It would be better to use the `\bis\b` search criteria(the "is" pattern with word boundaries around it) to match the word is
+It would be better to use the `\bis\b` search criteria(_the "is" pattern with word boundaries around it_) to match the word is
 
 ```bash
 sysadmin@localhost:~/Documents$ echo 'This is useful' | sed 's/\bis\b/was/'
@@ -354,11 +374,15 @@ Andrew,Tanenbaum
 Ken,Thompson
 Linus,Torvalds
 sysadmin@localhost:~/Documents$ sed -r 's/(\w+),(\w+)/\2, \1/' people.csv
+Richie, Dennis
+Tanenbaum, Andrew
+Thompson, Ken
+Torvalds, Linus
 ```
 
 The <mark style="color:red;">`-r`</mark> option to the `sed`command indicates the use of extended regular expressions.
 
-## Escaping especial characters with `\`
+## Escaping especial characters with <mark style="color:red;">`\`</mark>
 
 In some cases, you may want to match a character that functions as an operator as a literal character.
 
@@ -396,7 +420,7 @@ When the `grep -E` or `egrep` commands are used, you are in the realm of extende
 | <p>Basic Operators</p><p><code>. [ ] ^ * ^ $</code></p>    | Operators | Literal |
 | <p>Extended Operators</p><p><code>? + { } | ( )</code></p> | Operators | Literal |
 
-## Using the `fgrep` command
+## Using the <mark style="color:red;">`fgrep`</mark> command
 
 If the entire pattern uses no special characters and you need to use a backslash to escape the special meaning of characters, then you should use the fixed strings grep <mark style="color:red;">`fgrep`</mark> command. **The **<mark style="color:red;">**`fgrep`**</mark>** command always treats its pattern as literal characters,** so you don't have to use the backslash to escape the regex characters.
 
@@ -415,13 +439,13 @@ The man page for the `grep` command provides basic information about regular exp
 | `-w`   | Match whole word only                                                                                           |
 | `-q`   | Quietly operate without producing output                                                                        |
 
-When using the `-w` option, the expression must match a complete word. This is similar to the word boundary regular expression that was previously mentioned.
+When using the <mark style="color:red;">**`-w`**</mark> option, the expression must match a complete word. This is similar to the word boundary regular expression that was previously mentioned.
 
 ![](../.gitbook/assets/image.png)
 
 ## Using `grep` to Search Multiple Files
 
-The `grep` command can search multiples files if a glob character is used for the files names. The following command will search all of the files in the current directory for the "Linux" pattern.
+The <mark style="color:red;">`grep`</mark> command can search multiples files if a glob character is used for the files names. The following command will search all of the files in the current directory for the "Linux" pattern.
 
 ```bash
 sysadmin@localhost:~/Documents$ grep 'Linux' ./*
@@ -436,11 +460,11 @@ grep: ./Work: Is a directory
 ./words:Linux's
 ```
 
-Rather than displaying every line in every file that matches the pattern, it may be preferable to see a list of the file names that have at least one line that matches the pattern. The `-l` option will list file names that contain matches, rather than the matches themselves:
+Rather than displaying every line in every file that matches the pattern, it may be preferable to see a list of the file names that have at least one line that matches the pattern. The <mark style="color:red;">**`-l`**</mark> option will list file names that contain matches, rather than the matches themselves:
 
 ![](<../.gitbook/assets/image (5).png>)
 
-Using the `-r` option will allow for directory searches to be recursive, rather than just the files in the current directory.
+Using the <mark style="color:red;">**`-r`**</mark> option will allow for directory searches to be recursive, rather than just the files in the current directory.
 
 ```bash
 sysadmin@localhost:~/Documents$ grep -lr 'Linux' ./*                            
@@ -449,4 +473,3 @@ sysadmin@localhost:~/Documents$ grep -lr 'Linux' ./*
 ./os.csv                                                                        
 ./words                                                                         
 ```
-

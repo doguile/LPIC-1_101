@@ -1,12 +1,12 @@
 ---
-description: The "vee-eye" editor
+description: '103.8: Basic file editing v2  Weight: 3'
 ---
 
 # Chapter 9: The vi Editor
 
 ## Intro
 
-There are several advantages to the <mark style="color:red;">`vi`</mark>editor:
+There are several advantages to the <mark style="color:red;">**`vi`**</mark>editor:
 
 * The `vi`editor is available on every linux distribution. This is not true of any other editor.
 * The `vi`editor can be executed both in CLI and GUI
@@ -132,7 +132,7 @@ Put places the text saved in the buffer either before or after the cursor positi
 
 The `vi`program uses _search_. Search is more powerful than find because it **supports both literal text patterns and regular expressions.**
 
-<mark style="background-color:red;">To search forward from the current position of the cursor, use the</mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">`/`</mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">character to start the search</mark>, type a search term, and then press the **Enter** key to begin the search. The cursor will move to the first match that is found.
+<mark style="background-color:red;">To search forward from the current position of the cursor, use the</mark> <mark style="color:red;background-color:red;">**`/`**</mark> <mark style="background-color:red;">character to start the search</mark>, type a search term, and then press the **Enter** key to begin the search. The cursor will move to the first match that is found.
 
 To proceed to the next match using the same pattern,  press the **n** key. To go back to a previous match, press the **N** key.&#x20;
 
@@ -175,8 +175,3 @@ When the `ex` mode of the `vi` editor is being used, it is possible to view or c
 | `:q!`           | quit without saving changes to file                 |
 
 Although the <mark style="background-color:red;">ex mode offers several ways to save and quit</mark>, **there's also the `ZZ` command that is available in command mode; this is the equivalent of `:wq`**. There are many more overlapping functions between ex mode and command mode. For example, ex mode can be used to navigate to any line in the document by typing the colon `:` character followed by the line number, while the `G` command can be used in command mode as previously demonstrated.
-
-
-
-
-

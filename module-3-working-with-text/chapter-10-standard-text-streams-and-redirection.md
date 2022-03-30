@@ -66,7 +66,7 @@ The `/dev/null` file is like a trash can, where anything sent to it disappears f
 find /etc -name passwd 2> /dev/null
 ```
 
-There are two techniques to redirect the both standard error and standard output to the same file, and if you want to appended just use the `>>` character:
+There are two techniques to **redirect the both standard error and standard output** to the same file, and if you want to appended just use the `>>` character:
 
 ```bash
 ls -l /etc > /tmp/ls.all 2>&1
@@ -146,10 +146,10 @@ sysadmin@localhost:~$ cut -f1 -d',' os.csv | sort -n | uniq
 
 ## tee Command
 
-The <mark style="color:red;">`tee`</mark> command splits the output of a command into two streams: one directed to standard output, which displays in the terminal, and the other into a file.
+The <mark style="color:red;">**`tee`**</mark> command splits the output of a command into two streams: **one directed to standard output, which displays in the terminal, and the other into a file.**
 
 {% hint style="info" %}
-The `tee` command read from standard input and write to standard output and files
+The <mark style="color:red;">**`tee`**</mark> command read from standard input and write to standard output and files
 {% endhint %}
 
 The <mark style="color:red;">`tee`</mark> command can be very useful to create a log of a command or a script.&#x20;
@@ -166,7 +166,7 @@ sysadmin@localhost:~$ cat timer.txt
 Fri Nov  7 02:21:24 UTC 2022
 ```
 
-To append the time to the end of the `timer.txt` file by using the <mark style="color:red;">`-a`</mark> option:
+To append the time to the end of the `timer.txt` file by using the <mark style="color:red;">**`-a`**</mark> option:
 
 ```bash
 sysadmin@localhost:~$ date | tee -a timer.txt
@@ -185,7 +185,7 @@ Fri Nov  7 02:36:02 UTC 2022
 
 ## `xargs` Command
 
-We can use the <mark style="color:red;">`xargs`</mark> command to gather arguments from another input source (such as file or standard input) and the pass those arguments to a command. The <mark style="color:red;">`xargs`</mark>command can be called directly and will accept any input.
+We can use the <mark style="color:red;">**`xargs`**</mark> command to **gather arguments from another input source** (such as file or standard input) and the pass those arguments to a command. The <mark style="color:red;">**`xargs`**</mark>command can be called directly and will accept any input.
 
 The default action of the `xargs` command is to pass the input to the `echo` command when another command does not explicitly follow it.
 
@@ -198,7 +198,7 @@ sysadmin@localhost:~$ ls
 1b  1d  Documents  Music      Public    Videos
 ```
 
-A delimiter can be set using the <mark style="color:red;">`-d`</mark> option with <mark style="color:red;">`xargs`</mark> command. To view the contents of the /Document directory containing the word alpha with all instances of the dash `-` character replaced with a space, type the following:
+A delimiter can be set using the <mark style="color:red;">**`-d`**</mark> option with <mark style="color:red;">**`xargs`**</mark> command. To view the contents of the /Document directory containing the word alpha with all instances of the dash `-` character replaced with a space, type the following:
 
 ```bash
 sysadmin@localhost:~/Documents$ ls | grep alpha | xargs -d '-'
@@ -208,7 +208,7 @@ alpha third.txt
 alpha.txt
 ```
 
-After running the `xargs` command with the `touch` command, eleven new files appear:
+After running the <mark style="color:red;">**`xargs`**</mark> command with the <mark style="color:red;">**`touch`**</mark> command, eleven new files appear:
 
 ```bash
 sysadmin@localhost:~/Documents$ cat red.txt | xargs touch

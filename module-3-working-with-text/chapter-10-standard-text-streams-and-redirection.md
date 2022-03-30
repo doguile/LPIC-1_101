@@ -1,4 +1,18 @@
+---
+description: '103.4: Use streams, pipes and redirects v2  Weight: 4'
+---
+
 # Chapter 10: Standard text streams and Redirection
+
+<details>
+
+<summary>Key terms</summary>
+
+`tee` Command used to read from standard input and write to standard output and files
+
+`xargs` Command used to build and execute commnads lines from standard input
+
+</details>
 
 In order to be able to apply filter commands and work with text streams, it is helpful to understand a few forms of _redirection_ that can be used with most commands: **pipelines**, **standard output redirection**, **error output redirection**, and **input redirection**.
 
@@ -22,7 +36,7 @@ There is a number associated with the standard output file descriptor (the `>` c
 
 ## Standard Error
 
-When a command encounters an error, it will produce output that is know as _**standard error**,_ also called <mark style="color:red;">`stderr`</mark> or <mark style="color:red;">`STDERR`</mark> .Like standard out, the standard error output is normally sent to the same terminal where the command is currently being executed. The number associated with the **standard error file descriptor is 2** (two).
+When a command encounters an error, it will produce output that is know as _**standard error**,_ also called <mark style="color:red;">`stderr`</mark> or <mark style="color:red;">`STDERR`</mark> .Like standard out, the standard error output is normally sent to the same terminal where the command is currently being executed. **The number associated with the standard error file descriptor is 2** (two).
 
 To redirect these error messages, you must use the correct file descriptor, which for standard error is the number 2. For example:
 
@@ -57,10 +71,23 @@ There are two techniques to redirect the both standard error and standard output
 ```bash
 ls -l /etc > /tmp/ls.all 2>&1
 ls -l /etc &> /tmp/ls.all
+```
 
+Both of the preceding command lines will create a file called `/tmp/ls.all` that contains all standard out and standard error. The first redirects `stdout` to `/tmp/ls.all` and the `2>&1` expressions means "send `stderr` wherever `stdout` is going".
+
+In the second example, the `&>` expressions means "redirect all output"
+
+A similar technique can be used to append all output to a single file:
+
+```bash
 ls /etc/au* >> /tmp/ls.all 2>&1
 ls /etc/au* &>> /tmp/ls.all
 ```
+
+|                                                                                                    |                                                                      |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| <p><code>COMMAND &#x26;> FILE</code><br><code></code><br><code>COMMAND > FILE 2>&#x26;1</code></p> | Create or overwrite FILE with all output (stdout, stderr) of COMMAND |
+| <p><code>COMMAND &#x26;>> FILE</code><br><br><code>COMMAND >> FILE 2>&#x26;1</code></p>            | Create or append to FILE with all output (stdout, stderr) of COMMAND |
 
 ## Standard Input
 

@@ -1,11 +1,53 @@
 ---
 description: >-
-  In this chapter, you will learn how to run processes in the background or
-  foreground, as well as how to make a process switch between the background and
-  foreground. You will also be taught how to cont
+  103.5: Create, monitor and kill processes v2  Weight:
+  4                                                                                        
+  103.6: Modify process execution priorities v2 Weight: 2
 ---
 
 # Module 4: Advance File Management
+
+<details>
+
+<summary>Key terms</summary>
+
+<mark style="color:red;">`&`</mark> When used with a process will immediately background the process or task in a terminal. Allow the terminal to be freed up for additional tasks.
+
+<mark style="color:red;">`bg`</mark> A job control command that resumes the execution of a suspended process without bringing it to the foreground.
+
+<mark style="color:red;">`fg`</mark> A job control command that resumes execution of a suspended process by bringing it to the foreground.
+
+<mark style="color:red;">`free`</mark> Command used to display the amount of free and used memory in the system. This utility will display both the physical and swap memory on the system as well as the buffers used by the kernel.
+
+<mark style="color:red;">`jobs`</mark> Command that lists all active jobs in the current terminal or shell
+
+<mark style="color:red;">`kill`</mark> Command used to terminate a process.
+
+<mark style="color:red;">`killall`</mark> Command similar to `kill` ,but `killall` will allow a user to terminate a process by name as oppesed to ID
+
+<mark style="color:red;">`nice`</mark> Command used to change the priority of a process. The higher the nice value the lower priority of a process. Nice values range from -20 to 19
+
+<mark style="color:red;">`nohup`</mark> Command used to run a command immune to hangups, with output to a non-tty.
+
+<mark style="color:red;">`pgrep`</mark> Command that parses through the running processes and looks for the specified names or other criteria of processes.
+
+<mark style="color:red;">`pkill`</mark> Sends a specified signal (SIGTERM by default) to each process instead of listing them on `stdout`
+
+<mark style="color:red;">`ps`</mark> Command used to report a snapshot of the current processes
+
+<mark style="color:red;">`renice`</mark> Command used to change the priority of a process while that process is running.
+
+<mark style="color:red;">`screen`</mark> A full-screen software program that can be used to multiplex a physical console between several processes.
+
+<mark style="color:red;">`tmux`</mark>
+
+<mark style="color:red;">`top`</mark> Command similar to `ps` ,however top will display the current real-time view of all running tasks and processes.
+
+<mark style="color:red;">`uptime`</mark>Command that will display how long a system has been running, how many users are logged in, and the system load averages for the pas 1,5, and 15 minutes.
+
+<mark style="color:red;">`watch`</mark>
+
+</details>
 
 ## Chapert 11: Managing Processes
 
@@ -19,13 +61,13 @@ Generally the operating system will differentiate users based upon whether they 
 
 The <mark style="color:red;">`ps`</mark> command can be used to list process.
 
-The `ps` command supports three styles of options:
+The <mark style="color:red;">`ps`</mark> command supports three styles of options:
 
 * **Traditional** **UNIX** style short options that **use a single hyphen in front of a character**.
 * **GNU** style long options that **use two hyphens in front of a word**.
 * **BSD** style options that use **no hyphens and single character options**
 
-The `ps` command will display the processes that are running in the current terminal by default:
+The <mark style="color:red;">`ps`</mark> command will display the processes that are running in the current terminal by default:
 
 ```bash
 sysadmin@localhost:~$ ps
@@ -34,7 +76,7 @@ sysadmin@localhost:~$ ps
    94 pts/0        00:00:00 ps
 ```
 
-The output of the `ps` command includes the following columns of information:
+The output of the <mark style="color:red;">`ps`</mark> command includes the following columns of information:
 
 | Column | Description                                                                                                                     |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -98,7 +140,7 @@ sysadmin    80    70  0 17:16 ?        00:00:00 -bash
 sysadmin    96    80  0 17:26 ?        00:00:00 ps -ef
 ```
 
-The `ps` command can be used along with the `grep` command to search for a specific process name. To find all processes that match the `sshd` string, you would type:
+The <mark style="color:red;">`ps`</mark> command can be used along with the <mark style="color:red;">`grep`</mark> command to search for a specific process name. To find all processes that match the <mark style="color:red;">`sshd`</mark> string, you would type:
 
 ```bash
 sysadmin@localhost:~$ ps aux | grep -i sshd
@@ -108,23 +150,23 @@ sysadmin   108  0.0  0.0  11464  1032 ?        S+   17:53   0:00 grep --color=au
 
 ### Searching for processes
 
-The <mark style="color:red;">`pgrep`</mark> command parses through the running processes and looks for the specified names or other criteria of processes, rather than having to run the `ps` command, pipe its output to the `grep` command and then look at the results.
+The <mark style="color:red;">`pgrep`</mark> command parses through the running processes and looks for the specified names or other criteria of processes, rather than having to run the <mark style="color:red;">`ps`</mark> command, pipe its output to the <mark style="color:red;">`grep`</mark> command and then look at the results.
 
-Users can simply use the `pgrep` command and various options to return what they need to find. If you wanted to find all instances of the `bash` command running on the system, you could use the following:
+Users can simply use the <mark style="color:red;">**`pgrep`**</mark> command and various options to return what they need to find. If you wanted to find all instances of the `bash` command running on the system, you could use the following:
 
 ```
 sysadmin@localhost:~$ pgrep -i sshd
 1515
 ```
 
-The output shows the Process IDs (PID) of the processes running that match the `bash` string. Additionaly the `-l` option can be used with the `pgrep` command to list the process name along with the PID:
+The output shows the Process IDs (PID) of the processes running that match the `bash` string. Additionaly the <mark style="color:red;">**`-l`**</mark> option can be used with the <mark style="color:red;">`pgrep`</mark> command to list the process name along with the PID:
 
 ```bash
 sysadmin@localhost:~$ pgrep -li sshd
 15 sshd
 ```
 
-It's also possible to search for all the processes owned by a specific user by using the <mark style="color:red;">`-u`</mark> option:
+It's also possible to search for all the processes owned by a specific user by using the <mark style="color:red;">**`-u`**</mark> option:
 
 ```bash
 sysadmin@localhost:~$ pgrep -u sysadmin -il
@@ -136,13 +178,13 @@ sysadmin@localhost:~$ pgrep -u sysadmin -il
 
 ### Watching Processes
 
-There are many times when it's advantageous to see a process execute over and over again. In those cases, the <mark style="color:red;">`watch`</mark> command can be used to monitor recurring processes by using the following syntax:
+There are many times when it's advantageous to **see a process execute over and over again**. In those cases, the <mark style="color:red;">**`watch`**</mark> command can be used to monitor recurring processes by using the following syntax:
 
 ```
 watch [OPTION]... COMMAND
 ```
 
-A command that would normally execute and exit could be used with the <mark style="color:red;">`watch`</mark> command to execute repeatedly.&#x20;
+A command that would normally execute and exit could be used with the <mark style="color:red;">**`watch`**</mark> **command to execute repeatedly.**&#x20;
 
 ```bash
 sysadmin@localhost:~$ watch date
@@ -151,15 +193,15 @@ Every 2.0s: date                             localhost: Fri Mar 27 18:30:55 2020
 Fri Mar 27 18:30:55 UTC 2020
 ```
 
-By default, the <mark style="color:red;">`watch`</mark> command runs the given command every 2 seconds so the output of the `date` command will change to show a 2-second difference.
+By default, the <mark style="color:red;">**`watch`**</mark> command runs the given command **every 2 seconds** so the output of the `date` command will change to show a 2-second difference.
 
-The `watch` command can also be used with the `ps` command to monitor processes in the shell:
+The <mark style="color:red;">**`watch`**</mark> command can also be used with the `ps` command to monitor processes in the shell:
 
 ```bash
 sysadmin@localhost:~$ watch ps aux
 ```
 
-Recall that the <mark style="color:red;">`watch`</mark> command's default interval is two seconds. Therefore, to change the interval, use the <mark style="color:red;">`-n`</mark> option followed by the specific interval desired (in seconds) after, and then specify the command to monitor.
+Recall that the <mark style="color:red;">`watch`</mark> command's default interval is two seconds. Therefore, **to change the interval, use the **<mark style="color:red;">**`-n`**</mark>** option** followed by the specific interval desired (in seconds) after, and then specify the command to monitor.
 
 ```
 watch -n # [COMMAND...]
@@ -171,7 +213,7 @@ The <mark style="color:red;">`watch`</mark> command can also be used to keep tra
 sysadmin@localhost:~$ watch -n 15 tail -n 20 /var/log/ndg/web.log
 ```
 
-You can also highlight any differences between each successive execution of the program that is being watched by specifying the <mark style="color:red;">`-d`</mark> option.
+You can also highlight any differences between each successive execution of the program that is being watched by specifying the <mark style="color:red;">**`-d`**</mark> option.
 
 ![](<../.gitbook/assets/image (9).png>)
 
@@ -183,7 +225,7 @@ When a process starts another, **the first process is referred to as the **_<mar
 
 ### Executing multiple commands
 
-Normally, users only type one command per command line, <mark style="background-color:red;">but using the semicolon</mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">`;`</mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">character as a delimiter between commands, a user can type multiples commands on one command line</mark>.
+Normally, users only type one command per command line, but using the semicolon <mark style="color:red;background-color:red;">**`;`**</mark> character as a delimiter between commands, **a user can type multiples commands on one command line**.
 
 Another way of describing this is to say that the commands execute in sequence.
 
@@ -247,7 +289,7 @@ sysadmin@localhost:~$ jobs
 
 The job number of a process is sometimes followed by a minus `-` or a plus `+` character. The plus **`+` character denotes the last process that was started**, while the **minus `-` character denotes a process started previous to the latest one.** All other jobs will have a blank in that space.
 
-To terminate the processes, send them to the foreground by using the <mark style="color:red;">`fg`</mark> command with the job number of the process to terminate, and while the process is runnning in the foreground, use **Ctrl+C**
+To **terminate the processes**, send them to the foreground by using the <mark style="color:red;">**`fg`**</mark> command with the job number of the process to terminate, and while the process is runnning in the foreground, **use** **Ctrl+C**
 
 ```bash
 sysadmin@localhost:~$ fg 1
@@ -260,7 +302,7 @@ sysadmin@localhost:~$ jobs
 sysadmin@localhost:~$
 ```
 
-To have multiple commands run in the background on one command line, place an ampersand `&` character after each command on the command line.&#x20;
+To have **multiple commands run in the background** on one command line, **place an ampersand **<mark style="color:red;">**`&`**</mark> character after each command on the command line.&#x20;
 
 ```bash
 sysadmin@localhost:~$ echo Hello & echo World & echo '!' &
@@ -278,21 +320,21 @@ sysadmin@localhost:~$ World
 
 ### Moving Processes
 
-If the following <mark style="color:red;">`sleep`</mark> command is run without an ampersand character to send it to the background, the terminal would not be available for 1000 seconds:
+If the following <mark style="color:red;">**`sleep`**</mark> command is run without an ampersand character to send it to the background, the terminal would not be available for 1000 seconds:
 
 ```
 sysadmin@localhost:~$ sleep 1000
 _
 ```
 
-To make the terminal available again, the user would have to use the **Ctrl+Z**, a <mark style="background-color:red;">signal which pauses the process</mark>:
+To make the terminal available again, the user would have to use the <mark style="color:red;">**`Ctrl+Z`**</mark>, a <mark style="background-color:red;">**signal which pauses the process**</mark>**:**
 
 ```
 ^Z
 [1]+  Stopped                 sleep 1000
 ```
 
-Now the terminal is back, but the <mark style="color:red;">`sleep`</mark> command has been paused. To put the paused command in the background, execute the <mark style="color:red;">`bg`</mark> command:
+Now the terminal is back, but the <mark style="color:red;">`sleep`</mark> command has been paused. To put the paused command in the background, execute the <mark style="color:red;">**`bg`**</mark> command:
 
 ```
 bg [JOB_ID]...
@@ -307,21 +349,26 @@ sysadmin@localhost:~$ bg
 [1]+ sleep 1000 &
 ```
 
-A command that has been paused or sent to the background can then be returned to the foreground using the `fg` command.
+A command that has been paused or sent to the background can then be returned to the foreground using the <mark style="color:red;">**`fg`**</mark> command.
 
 **Both the **<mark style="color:red;">**`fg`**</mark>** and **<mark style="color:red;">**`bg`**</mark>** can take the job number as an argument to specify which process should be resumed.**
 
-It's also possible to use the name of the command as an argument to the `bg` and `fg` commands.
+It's also possible to use the name of the command as an argument to the <mark style="color:red;">`bg`</mark> and <mark style="color:red;">`fg`</mark> commands.
 
-The `fg` and `bg` commands provide an administrator with the ability to manually multi-task.
+The <mark style="color:red;">`fg`</mark> and <mark style="color:red;">`bg`</mark> commands provide an administrator with the ability to manually multi-task.
 
 ### Sending a Signal
 
-A signal is a message that is sent to a process to tell the process to take some sort of action, such as stop, restart, or pause. Signals are very useful in controlling the actions of a process.
+**A signal is a message that is sent to a process to tell the process to take some sort of action**, such as **stop**, **restart**, or **pause**. Signals are very useful in controlling the actions of a process.
 
-Some signals can be sent to processes by simple keyboard combinations. For example, to have a foreground process paused, send a _Terminal Stop_ by pressing **Ctrl+Z**. A <mark style="background-color:red;">terminal stop pauses the program</mark> but does not completely stop the program. To completely stop a foreground process, send the _Interrupt_ signal by pressing **Ctrl+C.**&#x20;
+Some signals can be sent to processes by simple keyboard combinations. For example, to have a foreground process **paused**, send a _Terminal Stop_ by pressing **Ctrl+Z**. A <mark style="background-color:red;">terminal stop</mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">**pauses**</mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">the program</mark> but does not completely stop the program. To completely stop a foreground process, send the _**Interrupt**_ signal by pressing **Ctrl+C.**&#x20;
 
-To see a list of all the signals available for your system, execute the <mark style="color:red;">`kill -l`</mark> command:
+{% hint style="info" %}
+To have a process **paused**, press the **`Ctrl+Z`**\
+To have a process **stopped**, press the **`Ctrl+C`**
+{% endhint %}
+
+To see a list of all the signals available for your system, execute the <mark style="color:red;">**`kill -l`**</mark> command:
 
 ```bash
 sysadmin@localhost:~$ kill -l
@@ -359,9 +406,9 @@ There are several commands that will allow you to specify a signal to send to a 
 kill [OPTIONS]... <pid>
 ```
 
-The `kill` command specifies which signal to be sent using options. It accepts three different ways to specify the signal:
+The <mark style="color:red;">`kill`</mark> command specifies which signal to be sent using options. It accepts three different ways to specify the signal:
 
-```
+```bash
 -<signal>
 -s <signal>
 --signal <signal>
@@ -373,7 +420,7 @@ The `kill` command specifies which signal to be sent using options. It accepts t
 -SIGINT 
 ```
 
-If the user doesnt' specify a signal with an option, then the `kill` command defaults to sending the _Terminate_ `SIGTERM` signal.
+If the user doesnt' specify a signal with an option, then the <mark style="color:red;">`kill`</mark> command defaults to sending the _Terminate_ `SIGTERM` signal.
 
 When sending a signal, specify one or more processes to send the signal to. There are numerous techniques to specify the process or processes. The more common techniques include:
 
@@ -388,10 +435,10 @@ sysadmin@localhost:~$ kill 2901
 sysadmin@localhost:~$ kill %1
 ```
 
-As indicated earlier, the Terminate signal normally will end a process. Sometimes a process will _**trap**_ the Terminate signal so it may not end that process.&#x20;
+As indicated earlier, the **`SIGTERM`** signal normally **will** **end a process**. Sometimes a process will _**trap**_ the Terminate signal so it may not end that process. A user could try to use other signals, like `SIGQUIT` or `SIGINT`, to try to end a process, but these signals can also be trapped.
 
 {% hint style="info" %}
-The only signal that will end a process and can't be trapped is a `SIGKILL` signal. So, if other signals have failed to end a process, use the `SIGKILL` signal to force the process to end.
+**The only signal that will end a process and can't be trapped is a **<mark style="color:red;">**`SIGKILL`**</mark> signal. So, if other signals have failed to end a process, use the `SIGKILL` signal to force the process to end.
 {% endhint %}
 
 {% hint style="danger" %}
@@ -405,7 +452,7 @@ sysadmin@localhost:~$ kill -9 2901
 sysadmin@localhost:~$ kill -KILL %1
 ```
 
-There are other commands that send processes signals, such as the <mark style="color:red;">`killall`</mark> and <mark style="color:red;">`pkill`</mark> commands, which are useful to stop many processes at once.
+There are other commands that send processes signals, such as the <mark style="color:red;">**`killall`**</mark> and <mark style="color:red;">**`pkill`**</mark> commands, which are **useful to stop many processes at once**.
 
 **The **<mark style="color:red;">**`pkill`**</mark>** command can be used to terminate one or more processes by name and other criteria such as the terminal and UID.** Similar to the <mark style="color:red;">`pgrep`</mark>, the <mark style="color:red;">`pkill`</mark> command allows users to specify a pattern that matches a process name and then sends signals to that process.&#x20;
 
@@ -429,9 +476,9 @@ The <mark style="color:red;">`killall`</mark> and <mark style="color:red;">`pkil
 
 ### HUP signal
 
-When a user logs off the system, all processes that are owned by that user are automatically sent the _Hang Up_ `SIGHUP` signal. Typically, this signals causes those processes to end.
+When a user **logs off the system**, all processes that are owned by that user are automatically sent the _Hang Up_ <mark style="color:red;">**`SIGHUP`**</mark> signal. Typically, this signals **causes those processes to end**.
 
-In some cases, a user may want to execute a command that won't automatically exit whent it is sent a `HUP` signal. To have a process ignore Hang Up signal, start the process with the <mark style="color:red;">`nohup`</mark> command.
+In some cases, **a user may want to execute a command that won't automatically exit** when it is sent a `HUP` signal. To have a process ignore Hang Up signal, start the process with the <mark style="color:red;">**`nohup`**</mark> command.
 
 ```
 nohup COMMAND [ARG]...
@@ -477,7 +524,7 @@ root@localhost:~# nice -n -20 cat /dev/zero > /dev/null
 
 To adjust the niceness of an existing process, use the <mark style="color:red;">`renice`</mark> command. To acomplish this, the user would need to discover the process ID for the process by using the `ps` command.
 
-Next, use the <mark style="color:red;">`renice`</mark> command to adjust the priority back to normal. Like the `nice`command, the <mark style="color:red;">`-`</mark>`n` option indicates the niceness value. The <mark style="color:red;">`-p`</mark> option indicates the process ID to operate on.as
+Next, use the <mark style="color:red;">`renice`</mark> command to adjust the priority back to normal. Like the `nice`command, the <mark style="color:red;">**`-n`**</mark> option indicates the niceness value. The <mark style="color:red;">`-p`</mark> option indicates the process ID to operate on.as
 
 ```bash
 root@localhost:~# renice -n 0 -p 121
@@ -486,7 +533,7 @@ root@localhost:~# renice -n 0 -p 121
 
 ### Monitoring Processes
 
-While the `ps` command can display active processes, the <mark style="color:red;">`top`</mark> command provides the ability to monitor processes in real-time, as well as manage the processes. By default, the output of the <mark style="color:red;">`top`</mark> command will update every three seconds.&#x20;
+While the <mark style="color:red;">`ps`</mark> command can display active processes, the <mark style="color:red;">`top`</mark> command provides the ability to **monitor processes in real-time**, as well as manage the processes. By default, the output of the <mark style="color:red;">`top`</mark> command will update every three seconds.&#x20;
 
 ```bash
 sysadmin@localhost:~$ top
@@ -529,7 +576,7 @@ Pressing the **r** key will allow a user to renice a process by prompting for th
 
 There are also a couple of commands that can be **used to monitor the overall state of the system**: the <mark style="color:red;">**`uptime`**</mark> and <mark style="color:red;">**`free`**</mark> commands.
 
-The `uptime` command shows the current time and the amount of time the system has been running, followed by the number of users who are currently logged in and the load averages during the past 1, 5 and 15 minutes intervals.
+The <mark style="color:red;">`uptime`</mark> command shows the current time and the amount of time the system has been running, followed by the number of users who are currently logged in and the load averages during the past 1, 5 and 15 minutes intervals.
 
 To get an idea of how busy a system is, use the <mark style="color:red;">`uptime`</mark> command:
 

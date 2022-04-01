@@ -285,7 +285,7 @@ Creating an archive with the <mark style="color:red;">`tar`</mark> command requi
 
 All the remaining arguments, \[ FILE... ] are considered as input file names either as a list of files, as a wildcard, or both.
 
-To create an archive of the Documents directory, use the `-c` option and file `-f` option to specify a new file, folllowed by the directory to archive.
+To create an archive of the Documents directory, use the <mark style="color:red;">`-c`</mark> option and file <mark style="color:red;">`-f`</mark> option to specify a new file, folllowed by the directory to archive.
 
 {% hint style="danger" %}
 Note that hte <mark style="color:red;">`-f`</mark> options must be specified last since it is indicating a file name.
@@ -299,7 +299,7 @@ Desktop    Downloads  Pictures  Templates  mydocuments.tar
 Documents  Music      Public    Videos
 ```
 
-The verbose <mark style="color:red;">`-v`</mark> option will cause the <mark style="color:red;">`tar`</mark> command to display the files that are being included in the archive. If compression is going to used, then the appropiate option needs to be specified. For the `gzip` command, the <mark style="color:red;">`-z`</mark> option needs to be added.
+The verbose <mark style="color:red;">`-v`</mark> option will cause the <mark style="color:red;">`tar`</mark> command to display the files that are being included in the archive. If compression is going to used, then the appropiate option needs to be specified. **For the **<mark style="color:red;">**`gzip`**</mark>** command, the **<mark style="color:red;">**`-z`**</mark>** option needs to be added.**
 
 | `-v` | Verbosely list the files processed.                            |
 | ---- | -------------------------------------------------------------- |
@@ -333,11 +333,11 @@ Documents  Pictures  Videos                test
 Downloads  Public       testdirectory.tar.xz
 ```
 
-To compress (or decompress) an archive with the `tar` command, choose the appropiate option:
+To compress (or decompress) an archive with the <mark style="color:red;">`tar`</mark> command, choose the appropiate option:
 
-* `-z` Filter the archive through the `gzip` command
-* `-j` Filter the archive through the `bzip2` command.
-* `-J` Filter the archive through the `xz` command.
+* <mark style="color:red;">`-z`</mark> Filter the archive through the `gzip` command
+* <mark style="color:red;">`-j`</mark> Filter the archive through the `bzip2` command.
+* <mark style="color:red;">`-J`</mark> Filter the archive through the `xz` command.
 
 ```
 sysadmin@localhost:~$ tar -cJf testdirectory.tar.xz test
@@ -351,12 +351,12 @@ sysadmin@localhost:~$ tar -cjf testdirectory.tar.bzip2 test
 tar -t [-f ARCHIVE] [OPTIONS]
 ```
 
-Use the <mark style="color:red;">`-t`</mark> option to the <mark style="color:red;">`tar`</mark> command to view a list of a tar file.
+Use the <mark style="color:red;">**`-t`**</mark> option to the <mark style="color:red;">`tar`</mark> command to **view a list of a tar file**.
 
-* `-t` List the files in the archive
+* <mark style="color:red;">**`-t`**</mark> List the files in the archive
 * `-f` `ARCHIVE` Operate on the given archive
 
-Even if the archive file is compressed, the correct compression option does not need to be specified to view a tar achive file. Only the `-f` option and the list `-t` option are required to view the table of contents.
+Even if the archive file is compressed, **the correct compression option does not need to be specified to view a tar achive file**. Only the <mark style="color:red;">`-f`</mark> option and the list <mark style="color:red;">`-t`</mark> option are required to view the table of contents.
 
 ```
 sysadmin@localhost:~$ tar -tf mydocuments.tar.gz
@@ -374,14 +374,14 @@ sysadmin@localhost:~$ tar -vtf mydocuments.tar.gz
 tar -x [-f ARCHIVE] [OPTIONS]
 ```
 
-To extract the files from the tar file, use the `-x` option:
+To extract the files from the tar file, use the <mark style="color:red;">**`-x`**</mark> option:
 
-* `-x` Extract files from the archive
-* `-f` Operate on the given archive
+* <mark style="color:red;">**`-x`**</mark> Extract files from the archive
+* <mark style="color:red;">**`-f`**</mark> Operate on the given archive
 
 ## The `zip` and `unzip` Commands
 
-The functionality of <mark style="color:red;">`zip`</mark> compressed file managment has been available in the personal compunting world prior to Windows.
+The functionality of <mark style="color:red;">**`zip`**</mark> compressed file managment has been available in the personal compunting world prior to Windows.
 
 The <mark style="color:red;">`zip`</mark> command is very useful for creating archives that can easily be shared across multiple operating systems. The basic form of a `zip` command is:
 
@@ -444,7 +444,7 @@ Archive:  ./package.zip
 
 ## The `cpio` Command
 
-Another type of archive command that can merge many files into a single file is the <mark style="color:red;">**`cpio`**</mark> command. This command gets its name from two of its mode: _copy-in_ mode and _copy-out_ mode.&#x20;
+Another type of **archive command** that can merge many files into a single file is the <mark style="color:red;">**`cpio`**</mark> command. This command gets its name from two of its mode: _copy-in_ mode and _copy-out_ mode.&#x20;
 
 * In _**copy-out**_ mode, the <mark style="color:red;">**`cpio`**</mark> command will <mark style="background-color:red;">copy files from a directory into an archive</mark>.&#x20;
 * In ** **_**copy-in**_ mode, the <mark style="color:red;">**`cpio`**</mark> command will <mark style="background-color:purple;">either list the archive file contents or copy files from the archive into a directory</mark>.&#x20;
@@ -457,7 +457,7 @@ To create a new archive file, the <mark style="color:red;">**`cpio`**</mark> com
 
 ### Copy-Out Mode
 
-**The **<mark style="color:red;">**`-o`**</mark>** option puts the **<mark style="color:red;">**`cpio`**</mark>** command into copy-out mode**. Using the verbose <mark style="color:red;">**`-v`**</mark> option will cause the <mark style="color:red;">`cpio`</mark> command to list the files that it processes. So, to archive the current directory, execute the `ls` command, and then send a list of the files into the <mark style="color:red;">`cpio`</mark> command as input by using the pipe `|` character. The `>` character will capture the output of the `cpio` command and put it into a file:
+**The **<mark style="color:red;">**`-o`**</mark>** option puts the **<mark style="color:red;">**`cpio`**</mark>** command into copy-out mode**. Using the verbose <mark style="color:red;">**`-v`**</mark> option will cause the <mark style="color:red;">`cpio`</mark> command to list the files that it processes. So, to archive the current directory, execute the `ls` command, and then send a list of the files into the <mark style="color:red;">`cpio`</mark> command as input by using the pipe `|` character. The `>` character will capture the output of the <mark style="color:red;">`cpio`</mark> command and put it into a file:
 
 ```bash
 sysadmin@localhost:~$ ls | cpio -ov > archive.cpio
@@ -488,16 +488,18 @@ sysadmin@localhost:~$ find . -depth -print | cpio -vo > /tmp/ar.cpio
 
 To extract the files that are in a <mark style="color:red;">`cpio`</mark> archive, **use the **<mark style="color:red;">**`-i`**</mark>** option** with the <mark style="color:red;">`cpio`</mark> command to **specify copy-in mode.**&#x20;
 
-By default, <mark style="color:red;">`cpio`</mark> will not overwrite existing files unless the <mark style="color:red;">**`-u`**</mark> option is used. The <mark style="color:red;">`cpio`</mark> command will not create directories unless the <mark style="color:red;">**`-d`**</mark> option is used.
+{% hint style="info" %}
+By default, <mark style="color:red;">`cpio`</mark> will **** not overwrite **** existing files, to **overwrite use  the **<mark style="color:red;">**`-u`**</mark>** option** is used. The <mark style="color:red;">`cpio`</mark> command will not **create directories** unless the <mark style="color:red;">**`-d`**</mark>** option is used**
+{% endhint %}
 
-The `cpio` command also makes use of `stdin` to determine the name of the file that will be extracted from the archive.&#x20;
+The <mark style="color:red;">`cpio`</mark> command also makes **use of `stdin`** to determine the name of the file that will be extracted from the archive.&#x20;
 
 ```
 sysadmin@localhost:~$ cpio -idv /tmp/test < /tmp/ar.cpio
 2048 blocks
 ```
 
-To specify the **pass-through(transferencia)** mode of the <mark style="color:red;">`cpio`</mark> command, specify the <mark style="color:red;">**`-p`**</mark> option. If any directories are included, the <mark style="color:red;">`-d`</mark> option needs to be specified.
+To specify the **pass-through(transferencia)** mode of the <mark style="color:red;">`cpio`</mark> command, **specify the **<mark style="color:red;">**`-p`**</mark>** option**. If any directories are included, the <mark style="color:red;">`-d`</mark> option needs to be specified.
 
 ```
 sysadmin@localhost:~$ find ~ | cpio -pd /tmp/destination
@@ -515,28 +517,46 @@ sysadmin@localhost:~$ find . -print0 | cpio --null -pvd /tmp/destination
 {% hint style="danger" %}
 **Consider this**
 
-The <mark style="color:red;">`cpio`</mark> command **automatically preserves file attributes (metadata)** like links, permissions, timestamps, and ownerships. These attributes are not preserved with the `cp` command.
+The <mark style="color:red;">`cpio`</mark> command **automatically preserves file attributes (metadata)** like links, permissions, timestamps, and ownerships. These attributes are not preserved with the <mark style="color:red;">`cp`</mark> command.
 
-The `cpio` command also works with special files better than the `cp` command.
+The <mark style="color:red;">`cpio`</mark> command also works with special files better than the `cp` command.
 {% endhint %}
 
 ## The `dd` Command
 
+The `dd` command is a utility for copying files or entire partitions at the bit level. This command has several useful features, including:
 
+* It can be used to clone or deleted entire disks or partitions
+* It can be used to copy raw data to removable devices , such as USB drives and CDROMs
+* It can be backup and restore the MBR
+* It can be used to create a file of a specific size that is filled with binary zeros, which can then be used as a swap file
 
+The `dd` command uses special arguments to specify how it will work.
 
+|                 |                                                                                                                                                  |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `if=FILE`       | The input file to be read                                                                                                                        |
+| `of=FILE`       | The output file to be written                                                                                                                    |
+| `bs=size`       | The block size to be used. By default the value is to be considered to be in bytes. Use the following suffixes to specify `K`, `M` ,`G`, and `T` |
+| `count=NUMBER`  | The number of block to read from the input file.                                                                                                 |
 
+In the following example, a file named `/tmp/swapex` is created with 500 "one-megabyte" size blocks of zeros:
 
+```bash
+dd if=/dev/zero of=/tmp/swapex bs=1M count=500
+500+0 records in
+500+0 records out
+524288000 bytes (524 MB) copied, 0.825745 s, 635 MB/s
+```
 
+No block size or count needs to be specified when copying over entire devices. For example, **to clone from one hard drive `/dev/sda` to another `/dev/sdb`**, execute the following command:
 
+```
+sysadmin@localhost:~$ dd if=/dev/sda of=/dev/sdb
+```
 
+The `dd` command can even be used to make an `.iso` image backup of your CDROM or DVD device. The following will take all of the data from the DVD `/dev/dvd` and stores the data into a local file called `dvd.iso`:
 
-
-
-
-
-
-
-
-
-
+```
+dd if=/dev/dvd of=dvd.iso
+```

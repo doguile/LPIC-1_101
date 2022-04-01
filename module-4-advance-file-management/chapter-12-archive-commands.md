@@ -1,4 +1,30 @@
+---
+description: '103.3: Perform basic file management v2  Weight: 4'
+---
+
 # Chapter 12: Archive Commands
+
+<details>
+
+<summary>Key terms</summary>
+
+<mark style="color:red;">`bunzip2`</mark> Command that uncompresses files compressed using the `bzip2` command and removed the `.bz2` extension
+
+<mark style="color:red;">`bzcat`</mark> Command prints the content of specified files compressed with the **`bzip2`** command to the standard output
+
+<mark style="color:red;">`gunzip`</mark> Command that decompress files created by `gzip`, `zip`, compress, compress -H or pack.
+
+<mark style="color:red;">`gzip`</mark> Command used to compress or expand files. Gzip reduces the size of the named files using Lempel-Ziv coding (L277). Keep the same ownership modes, access and modification times.
+
+<mark style="color:red;">`unxz`</mark> A method of uncompressing files compresed using the `xz` command.
+
+<mark style="color:red;">`xz`</mark> Command that can compress or  decompress `.zx` or `lzma` files.&#x20;
+
+<mark style="color:red;">`xzcat`</mark> Command used to print the contents of files compressed with the **`xz`** command to  standard output on the terminal **without uncompressing the target file**
+
+<mark style="color:red;">`zcat`</mark> Command used to display the contents of a compressed file from a compressed archive created by the **`tar`** command or **`gzip`** command **without uncompressing it.**
+
+</details>
 
 Linux distribution provide several different sets of commands for _compression_ and _archiving_ files and directories.
 

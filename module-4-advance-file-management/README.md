@@ -619,7 +619,7 @@ The <mark style="color:red;">`screen`</mark> command **allows for multiple proce
 sysadmin@localhost:~$ screen
 ```
 
-To verify that there is a `screen` session running, use the `-list` option to the `screen` command
+To verify that there is a <mark style="color:red;">`screen`</mark> session running, use the <mark style="color:red;">`-list`</mark> option to the <mark style="color:red;">`screen`</mark> command
 
 ```bash
 sysadmin@localhost:~$ screen -list
@@ -630,20 +630,20 @@ There is a screen on:
 
 Notice the text ( _Attached_ ) in the output of the previous command, which indicates that the session is the one the user's is currently _attached to_; in other words; the user is in that <mark style="color:red;">`screen`</mark> session.
 
-To attach and detach a `screen` session, as well as perform other actions in the `screen` program, you will need to use the `screen` _command keys._
+To attach and detach a <mark style="color:red;">`screen`</mark> session, as well as perform other actions in the <mark style="color:red;">`screen`</mark> program, you will need to use the <mark style="color:red;">`screen`</mark> _command keys._
 
 {% hint style="info" %}
-To view a list of the `screen` commands, type **Ctrl + A** and then a question mark **`?`** while in screen session
+To view a **list of the **<mark style="color:red;">**`screen`**</mark>** commands**, type <mark style="background-color:red;">**Ctrl + A**</mark> and then a question mark **`?`** while in screen session
 {% endhint %}
 
-Pressing the prefix **Ctrl+A** gets the attention of the `screen` command, and then the command key `d` issues the detach command, which detaches the `screen` command fromt the current terminal and returns the user to the original shell prompt.
+Pressing the prefix **Ctrl+A** gets the attention of the <mark style="color:red;">`screen`</mark> command, and then the command key <mark style="color:red;">`d`</mark> issues the detach command, which detaches the <mark style="color:red;">`screen`</mark> command fromt the current terminal and returns the user to the original shell prompt.
 
 ```
 [detached from 85.console.localhost]
 sysadmin@localhost:~$
 ```
 
-The format of identification for a `screen` process is the following:
+The format of identification for a <mark style="color:red;">`screen`</mark> process is the following:
 
 ```
 PID.TTY.HOST
@@ -651,13 +651,13 @@ PID.TTY.HOST
 
 The first set of the character PID indicates the PID of the process, TTY means the terminal type the process is running in, and HOST is the hostname, or process name if changed using the <mark style="color:red;">`-S`</mark> option.&#x20;
 
-It is also possible to run a command at the shell prompt in a `screen` session and then immediately detach that session in order to continue conducting other operations at the prompt. For example, start the `nano` text editor in a `screen` session and detach it with the following command:
+It is also possible to run a command at the shell prompt in a <mark style="color:red;">`screen`</mark> session and then immediately detach that session in order to continue conducting other operations at the prompt. For example, start the `nano` text editor in a <mark style="color:red;">`screen`</mark> session and detach it with the following command:
 
 ```bash
 sysadmin@localhost:~$ screen -S nano_edit -d -m nano
 ```
 
-The command above will start the `nano` text editor in a detached `screen` session named nano\_edit and drop the user back to a shell prompt. The session is named using the session `-S` option, which is followed by the desired session name as an argument. The `-d -m` option (is a single option) specifies to start the session in detached mode.
+The command above will start the `nano` text editor in a detached <mark style="color:red;">`screen`</mark> session named `nano_edit` and drop the user back to a shell prompt. The session is named using the session <mark style="color:red;">**`-S`**</mark> option, which is followed by the desired session name as an argument. The <mark style="color:red;">`-d -m`</mark> option (is a single option) specifies to start the session in detached mode.
 
 ```
 sysadmin@localhost:~$ screen -list
@@ -667,19 +667,19 @@ There are screens on:
 2 Sockets in /run/screen/S-sysadmin.
 ```
 
-The user can re-attach to either of the sessions by using the resume `-r` option with either the PID of the session or by the name of the session.&#x20;
+The user can re-attach to either of the sessions by using the resume <mark style="color:red;">**`-r`**</mark> option with either the PID of the session or by the name of the session.&#x20;
 
 ```
 sysadmin@localhost:~$ screen -r 85
 ```
 
-To get rid of a `screen` session, attach to each session, and quit the program that is running. For example, the `nano` session can be re-attached using the `screen` command below
+To get rid of a <mark style="color:red;">`screen`</mark> session, attach to each session, and quit the program that is running. For example, the `nano` session can be re-attached using the <mark style="color:red;">`screen`</mark> command below
 
 ```
 sysadmin@localhost:~$ screen -r nano_edit
 ```
 
-Press Ctrl+X to exit the `nano` command and follow the prompts. When the `nano` process has exited, there will be no `nano_edit` `screen` session in the `- list` output.
+Press **`Ctrl+X`** to exit the `nano` command and follow the prompts. When the `nano` process has exited, there will be no `nano_edit` `screen` session in the `- list` output.
 
 ```bash
 sysadmin@localhost:~$ screen -list
@@ -688,7 +688,7 @@ There is a screen on:
 1 Socket in /run/screen/S-sysadmin
 ```
 
-To exit the `screen` command, use the `exit` command
+To exit the <mark style="color:red;">`screen`</mark> command, use the `exit` command
 
 ```
 [screen is terminating]                                                         
@@ -697,9 +697,9 @@ sysadmin@localhost:~$
 
 ### `tmux` Command
 
-The <mark style="color:red;">`tmux`</mark> command allows for multiple terminals to be opened and viewed on the same screen. Is similar to `screen` command, but layers on more visual aspects.
+The <mark style="color:red;">`tmux`</mark> command allows for multiple terminals to be opened and viewed on the same screen. Is similar to `screen` command, but **layers on more visual aspects**.
 
-To start using the `tmux` command, execute the command at the prompt.
+To start using the <mark style="color:red;">`tmux`</mark> command, execute the command at the prompt.
 
 ```
 sysadmin@localhost:~$ tmux
@@ -712,20 +712,20 @@ To detach from the running command , press **Ctrl+B**, then the **d** command ke
 sysadmin@localhost:~$
 ```
 
-The <mark style="color:red;">`tmux`</mark> command uses a prefix key, the combination of the **Control** key plus a letter key, in this case, the **B** key. The **Ctrl+B** key sequence prefixes all `tmux` in-session commands.
+The <mark style="color:red;">**`tmux`**</mark> command uses a prefix key, the combination of the **Control** key plus a letter key, in this case, the **B** key. The **Ctrl+B** key sequence prefixes all <mark style="color:red;">**`tmux`**</mark> in-session commands.
 
-To find out what `tmux` sessions currently exist, use either of the commands below:
+To find out what <mark style="color:red;">`tmux`</mark> sessions currently exist, use either of the commands below:
 
 ```
 tmux list-sessions
 tmux ls
 ```
 
-To create a new `tmux` session and run a new command in it, use the <mark style="color:red;">**`tmux new-session`**</mark> command.
+To create a new <mark style="color:red;">`tmux`</mark> session and run a new command in it, use the <mark style="color:red;">**`tmux new-session`**</mark> command.
 
-Then, to detach from the `tmux` session, press the **Ctrl+B** key sequence and then the **d** key, to be returned to the shell prompt again.
+Then, to detach from the <mark style="color:red;">`tmux`</mark> session, press the **Ctrl+B** key sequence and then the **d** key, to be returned to the shell prompt again.
 
-To re-attach to a running `tmux` session, use the <mark style="color:red;">`tmux attach`</mark> command with the target-session <mark style="color:red;">`-t`</mark> flag which specifies the session to act upon:
+To re-attach to a running <mark style="color:red;">`tmux`</mark> session, use the <mark style="color:red;">**`tmux attach`**</mark> command with the target-session <mark style="color:red;">**`-t`**</mark> flag which specifies the session to act upon:
 
 ```
 sysadmin@localhost:~$ tmux attach -t 0

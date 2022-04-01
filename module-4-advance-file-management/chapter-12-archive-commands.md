@@ -43,7 +43,7 @@ Files can be compressed individually, or multiple files can be combined into a s
 
 _<mark style="background-color:red;">**Compression**</mark>_ <mark style="background-color:red;"></mark><mark style="background-color:red;"></mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">**reduces the amount of data**</mark> needed to store or transmit a file while storing it in such a way that the file can be restored. The compressed version of the file is not typically viewed or utilized; instead, it is uncompressed before use.
 
-The <mark style="color:red;">**`gzip`**</mark> command is <mark style="background-color:red;">**used to create a compressed file**</mark>. Likewise, the `gunzip`command is used to view the contents of a compressed file, as well as extract those contents.
+The <mark style="color:red;">**`gzip`**</mark> command is used to **create a compressed file**. Likewise, the <mark style="color:red;">**`gunzip`**</mark> command is used to view the contents of a compressed file, as well as extract those contents.
 
 ```
 gzip [OPTION]... [FILE]...
@@ -51,16 +51,16 @@ gunzip [OPTION]... [FILE]...
 ```
 
 {% hint style="warning" %}
-Should be used with caution, since the default behaviour is to replace the original file specified with a compressed version.
+Should be used with caution, since the default behaviour is to **replace the original file** specified with a compressed version.
 {% endhint %}
 
 {% hint style="info" %}
-The <mark style="color:red;">**`gzip`**</mark> command uses the <mark style="background-color:blue;">**Lempel-Ziv**</mark> <mark style="background-color:blue;"></mark><mark style="background-color:blue;">data compression algorithm</mark>
+The <mark style="color:red;">**`gzip`**</mark> command uses the <mark style="background-color:blue;">**Lempel-Ziv**</mark> <mark style="background-color:blue;"></mark><mark style="background-color:blue;"></mark> data compression algorithm
 {% endhint %}
 
-**To avoid replacing the original version of a file when using the **<mark style="color:red;">**`gzip`**</mark>** command, use the **<mark style="color:red;">**`-c`**</mark>** option**. This cause the `gzip` command to send the compressed data to standard output, and given that the output of the `gzip` command is binary data, it will need to be redirected into a file.
+**To avoid replacing the original version of a file when using the **<mark style="color:red;">**`gzip`**</mark>** command, use the **<mark style="color:red;">**`-c`**</mark>** option**. This cause the <mark style="color:red;">`gzip`</mark> command to send the compressed data to standard output, and given that the output of the <mark style="color:red;">`gzip`</mark> command is binary data, it will need to be redirected into a file.
 
-Capture the output of the `gzip` command and redirect it into a file, using the greater-than `>` character.
+Capture the output of the <mark style="color:red;">`gzip`</mark> command and **redirect it into a file**, using the greater-than <mark style="color:red;">`>`</mark> character.
 
 ```
 gzip -c file.txt > file.gz
@@ -68,7 +68,7 @@ gzip -c file.txt > file.gz
 
 This can be useful as the gzipped file can be moved to an archive directory location while preserving the original file in its original location.
 
-The <mark style="color:red;">**`gunzip`**</mark> command reverses what `gzip` does, so files will be uncompressed, and the gzipped file will be replaced with the uncompressed file.
+The <mark style="color:red;">**`gunzip`**</mark> command reverses what <mark style="color:red;">`gzip`</mark> does, so files will be uncompressed, and the gzipped file will be replaced with the uncompressed file.
 
 ```
 sysadmin@localhost:~/Documents$ gunzip red.txt.gz
@@ -84,7 +84,7 @@ sysadmin@localhost:~/Documents$ gunzip -l numbers.txt.gz
                  42                  10 -20.0% numbers.txt
 ```
 
-While the <mark style="color:red;">**`gzip`**</mark>** command supports **_**recursion**_** with the **<mark style="color:red;">**`-r`**</mark>** option**, by default, it attempts to replace the original file with the gzipped file, but, in order to be able to compress files with the `gzip` command recursively, **a user needs to have the rights permissions on the directories the files are in**.  Typically, this is limited to directories within the user's own home directory.
+While the <mark style="color:red;">**`gzip`**</mark>** command supports **_**recursion**_** with the **<mark style="color:red;">**`-r`**</mark>** option**, by default, it attempts to replace the original file with the gzipped file, but, in order to be able to compress files with the <mark style="color:red;">`gzip`</mark> command recursively, **a user needs to have the rights permissions on the directories the files are in**.  Typically, this is limited to directories within the user's own home directory.
 
 {% hint style="info" %}
 To <mark style="color:red;">`gzip`</mark> and <mark style="color:red;">`gunzip`</mark> a file within a directory, **a user must have the **<mark style="color:red;">**write**</mark>** and **<mark style="color:red;">**execute**</mark>** permissions on a directory** as well as the <mark style="color:green;">**read**</mark>** permission on the file**.&#x20;
@@ -189,7 +189,7 @@ sysadmin@localhost:~/Documents$ bzip2 -cv alpha.txt > alpha.txt.bz2
 
 ## The `bzcat` Command
 
-The <mark style="color:red;">`bzcat`</mark> command **prints the content of specified files compressed with the `bzip2`** command to the standard output:
+The <mark style="color:red;">`bzcat`</mark> command **prints the content of specified files compressed with the **<mark style="color:red;">**`bzip2`**</mark> command to the standard output:
 
 ```
 bzcat [OPTION]... [FILE]...
@@ -207,7 +207,7 @@ I have 2 dogs.
 
 ## The `xz` and `unxz` Commands
 
-Another archival tool similar to `gzip` and `bzip2` is the `xz` commands.
+Another archival tool similar to `gzip` and `bzip2` is the <mark style="color:red;">`xz`</mark> commands.
 
 ```
 xz [OPTION]... [FILE]...
@@ -221,13 +221,13 @@ sysadmin@localhost:~/Documents$ ls -l words.xz
 -rw-r--r-- 1 sysadmin sysadmin 198756 Apr 24  2019 words.xz                     
 ```
 
-The <mark style="color:red;">`-d`</mark> option can be used with the `xz` command to **uncompress the files**:
+The <mark style="color:red;">**`-d`**</mark> option can be used with the <mark style="color:red;">`xz`</mark> command to **uncompress the files**:
 
 ```
 sysadmin@localhost:~/Documents$ xz -d words
 ```
 
-Another method is to use the `unxz` command. When a file is uncompressed using the `unxz` command, the extension `.xz` is removed.&#x20;
+**Another method is to use the **<mark style="color:red;">**`unxz`**</mark>** command**. When a file is uncompressed using the `unxz` command, the extension **`.xz`** is removed.&#x20;
 
 ```
 sysadmin@localhost:~/Documents$ unxz words.xz
@@ -236,12 +236,12 @@ sysadmin@localhost:~/Documents$ ls -l words
 ```
 
 {% hint style="info" %}
-Keep in mind when using the `xz` that the more aggressive the compression, the harder the processor will have to work.
+Keep in mind when using the <mark style="color:red;">`xz`</mark> that the more aggressive the compression, the harder the processor will have to work.
 {% endhint %}
 
 ## The `xzcat` Command
 
-The <mark style="color:red;">`xzcat`</mark> command is used to **print the contents of files compressed with the `xz`** command to standard output on the terminal **without uncompressing the target file**.
+The <mark style="color:red;">`xzcat`</mark> command is used to **print the contents of files compressed with the **<mark style="color:red;">**`xz`**</mark> command to standard output on the terminal **without uncompressing the target file**.
 
 ```
 xzcat [FILE]...

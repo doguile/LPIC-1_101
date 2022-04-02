@@ -447,21 +447,21 @@ chmod 0755 file
 
 ## Setgid Permission
 
-The <mark style="color:red;">`setgid`</mark> permission is similar to <mark style="color:red;">`setuid`</mark> ,but it makes use of the group owner permissions. There are two forms of setgid permissions:
+The <mark style="color:red;">**`setgid`**</mark> permission is similar to <mark style="color:red;">`setuid`</mark> ,but it makes use of the group owner permissions. There are two forms of setgid permissions:
 
 * <mark style="color:red;">`setgid`</mark> on a file
 * <mark style="color:red;">`setgid`</mark> on a directory
 
 ### `setgid` on a File
 
-`setgid` permission will **execute as the group that owns the file**. The system allows the user running the command to effectively belong to the group that owns the file, but only in the setid program.&#x20;
+<mark style="color:red;">`setgid`</mark> permission will **execute as the group that owns the file**. The system allows the user running the command to effectively belong to the group that owns the file, but only in the setid program.&#x20;
 
-```
+```bash
 sysadmin@localhost:~$ ls -l /usr/bin/wall
 -rwxr-sr-x 1 root tty 30800 Oct 15 20:29 /usr/bin/wall
 ```
 
-You can see that this file is setgid by the presence of the `s` in the _execute_ position of the _group permissions_. Due to this executable being owned by the `tty` group, when a user executes this command, the command is able to access files that are group owned by the `tty` group.
+You can see that this file is setgid by the presence of the <mark style="color:red;">`s`</mark> in the _execute_ position of the _group permissions_. Due to this executable being owned by the `tty` group, when a user executes this command, the command is able to access files that are group owned by the `tty` group.
 
 This access is important because the `/usr/bin/wall` command sends messages to terminals, which is accomplished by writing data to files like the following:
 
@@ -473,13 +473,13 @@ crw--w----. 1 root tty  4, 1 Oct 21 19:57 /dev/tty1
 
 Note that the `tty` group has write permission on the files above while users who are not in the `tty` group (others) have no permissions on these files. Without the setgid permission, the `/usr/bin/wall` command would fail.
 
-Like the setuid permission, a lowercase `s` in the execute position of the group permissions indicates that this file has both the setgid and execute permission set. An uppercase `S` instead of the `s` means the file lacks execute permission for the group. Without execute permission for the group, the setgid permission will be ineffective.
+Like the setuid permission, **a lowercase **<mark style="color:red;">**`s`**</mark> in the execute position of the group permissions indicates that this file **has both the setgid and execute permission** set. An **uppercase** <mark style="color:red;">**`S`**</mark> instead of the <mark style="color:red;">`s`</mark> means the **file lacks execute permission for the group**. Without execute permission for the group, the setgid permission will be ineffective.
 
 ### `setgid` on Directory
 
-When set on a directory, the `setgid` permission **cause files created in the directory to be owner by the group that owns the directory** automatically.&#x20;
+When set on a directory, the <mark style="color:red;">`setgid`</mark> permission **cause files created in the directory to be owner by the group that owns the directory** automatically.&#x20;
 
-In addition, if a directory is `setgid` ,then any directories created within that directory inherit the `setgid` permission.
+In addition, if a directory is <mark style="color:red;">`setgid`</mark> ,then any directories created within that directory inherit the <mark style="color:red;">`setgid`</mark> permission.
 
 The following example shows that the `/tmp/data` directory has the setgid permission set and that it is owned by the `demo` group.
 
@@ -507,7 +507,7 @@ chmod 0775 <file|directory>
 
 ## Sticky Bit Permission
 
-Setting this permission can be important to prevent users from deleting other user's files.&#x20;
+Setting this permission can be important to **prevent users from deleting other user's files.**&#x20;
 
 If an administrator wants to make a directory where any user can add a file, the directory required permissions mean that the user can also delete any other user's file in that directory.
 
@@ -528,7 +528,7 @@ chmod o-t <directory>
 chmod 0755 <directory>
 ```
 
-When a directory has the sticky permission, a `t` will replace the `x` in the set of permissions for others. For example:
+When a directory has the sticky permission, a <mark style="color:red;">**`t`**</mark> will replace the `x` in the set of permissions for others. For example:
 
 ```bash
 sysadmin@localhost:~$ ls -ld /tmp
@@ -537,27 +537,27 @@ drwxrwxrwt 1 root root 0 Oct 17 19:17 /tmp
 
 The `/tmp` directory has an octal permission mode of 1777, or a full permissions for everyone plus the sticky permission on the directory. When the other permissions set includes the execute permission, then the `t` will be in lowercase.&#x20;
 
-There are cases in which users may not want to have the execute permission for others, but still have the sticky bit permission on a directory. For example, when creating shared directories with the `setgid` permission. Consider the following
+There are cases in which users may not want to have the execute permission for others, but still have the sticky bit permission on a directory. For example, when creating shared directories with the <mark style="color:red;">`setgid`</mark> permission. Consider the following
 
 ```
 sysadmin@localhost:~$ chmod 3770 /shared
 ```
 
-Notice that the special permissions of `setgid` and the `sticky bit` can be added together, the 2000 permission plus the 1000 permission gives you 3000 for the special permission. The owner of the group have full access, and other get none. Listing the directory after making the changes with the `ls -ld /shared` command results in the following output:
+Notice that the special permissions of <mark style="color:red;">`setgid`</mark> and the <mark style="color:red;">`sticky bit`</mark> can be added together, the 2000 permission plus the 1000 permission gives you 3000 for the special permission. The owner of the group have full access, and other get none. Listing the directory after making the changes with the `ls -ld /shared` command results in the following output:
 
 ```bash
 drwxrws--T. 2 root team 4096 Jan 10 09:08 /shared
 ```
 
-The uppercase `T` in the execute permission position for others indicates there is no execute permission for others. However, since multiple users of the group still have access, the sticky permission is effective for the `team` group.
+The **uppercase** <mark style="color:red;">**`T`**</mark> in the execute permission position for others indicates **there is no execute permission for others.** However, since multiple users of the group still have access, the sticky permission is effective for the `team` group.
 
 ## Default File Permissions
 
-Linux sets the default permissions on these new objects based upon the value of the creator's _umask_ setting. The `umask` command is used to both set the umask value and display it.
+Linux sets the default permissions on these new objects based upon the value of the creator's _umask_ setting. The <mark style="color:red;">**`umask`**</mark> command is used to both set the umask value and display it.
 
-The `umask` command is automatically executed when a shell is started. To have a persistent setting for umask, a custom `umask` command can be added to the `~/.bashrc` file.
+The <mark style="color:red;">`umask`</mark> command is automatically executed when a shell is started. To have a persistent setting for umask, a custom `umask` command can be added to the `~/.bashrc` file.
 
-The `umask` value only affects the permissions placed on new files and directories at the time they are created. It only affects basic permissions for the user owner, group owner, and others.&#x20;
+The <mark style="color:red;">`umask`</mark> value only affects the permissions placed on new files and directories at the time they are created. It only affects basic permissions for the user owner, group owner, and others.&#x20;
 
 The umask is an octal value based upon the same values that you saw earlier in this section:
 
@@ -568,7 +568,7 @@ The umask is an octal value based upon the same values that you saw earlier in t
 | 1           | execute    |
 | 0           | none       |
 
-The octal value set for the `umask` is subtracted from the maximum possible permission to determine the permissions that are set when a file or directory is created.
+The octal value set for the <mark style="color:red;">`umask`</mark> is subtracted from the maximum possible permission to determine the permissions that are set when a file or directory is created.
 
 The maximum default permissions are different for files and directories.
 
@@ -577,7 +577,7 @@ The maximum default permissions are different for files and directories.
 | Files       | `666` | `rw-rw-rw-` |
 | Directories | `777` | `rwxrwxrwx` |
 
-The `umask` command can be used to display the current umask value:
+The <mark style="color:red;">`umask`</mark> command can be used to display the current umask value:
 
 ```bash
 sysadmin@localhost:~$ umask
@@ -593,9 +593,9 @@ A breakdown of the output:
 
 ### Understanding Umask for Files
 
-By default, the maximum permissions that will be placed on a brand-new file are `rw-rw-rw` ,which can be represented octal as 666. The execute permission is turned off for security reasons. The `umask` value can be used to specify which of these default permissions to remove for new files.
+By default, the maximum permissions that will be placed on a brand-new file are `rw-rw-rw` ,which can be represented octal as 666. The execute permission is turned off for security reasons. **The **<mark style="color:red;">**`umask`**</mark>** value can be used to specify which of these default permissions to remove for new files**.
 
-For example, to set a umask value for new files that would remove write permissions for the owner and remove read and write permissions for the group and others, calculate the umask value as follows:
+For example, to set a <mark style="color:red;">`umask`</mark> value for new files that would remove write permissions for the owner and remove read and write permissions for the group and others, calculate the umask value as follows:
 
 * The first digit for the user owner would be a `2` (`-w-`), which would mask only the write permission.
 * The second digit would be a `6` (`rw-`), which would mask the read and write permissions.
@@ -630,7 +630,7 @@ As a result, the umask value `027` would result in new directories having the pe
 {% hint style="warning" %}
 **Very Important**
 
-While the umask value affects the permissions for new files and directories differently (because of different maximum permissions), there is not a separate umask value for files and directories; the single umask value applies to both, as you can see from the following table of commonly used umask values:
+While the <mark style="color:red;">**`umask`**</mark> value affects the permissions for new files and directories differently (because of different maximum permissions), there is not a separate umask value for files and directories; the single umask value applies to both, as you can see from the following table of commonly used umask values:
 {% endhint %}
 
 | Umask | File Permissions | Directory Permissions | Description                |
@@ -642,7 +642,7 @@ While the umask value affects the permissions for new files and directories diff
 
 The following commands will display the current umask value, sets it to a different value and displays the new value:
 
-```
+```bash
 sysadmin@localhost:~$ umask
 0002
 sysadmin@localhost:~$ umask 027

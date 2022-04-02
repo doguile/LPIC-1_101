@@ -1,6 +1,6 @@
 # Chapter 13: File permissions
 
-When listing a file with the `ls -l` command, the output includes permission and ownership information:&#x20;
+When listing a file with the <mark style="color:red;">`ls -l`</mark> command, the output includes permission and ownership information:&#x20;
 
 ```
 sysadmin@localhost:~$ ls -l /bin/ls
@@ -47,9 +47,9 @@ By default, users own the files that they create. **While this ownership can be 
 
 Every file also has a group owner. <mark style="color:red;">**Users are allowed to change the group owner of files they own to any group that they belong to.  (NOT NECESSARY ROOT PRIVILEGES)**</mark>
 
-The `id` command can be useful for verifying which user account you are using and which groups you have available to use.&#x20;
+The <mark style="color:red;">`id`</mark> command can be useful for verifying which user account you are using and which groups you have available to use.&#x20;
 
-The output of the `id` command displays the **UID** and user account name of the current user followed by the **GID** and group name of the primary group and the **GIDs** and group names of all group memberships:
+The output of the <mark style="color:red;">`id`</mark> command displays the **UID** and user account name of the current user followed by the **GID** and group name of the primary group and the **GIDs** and group names of all group memberships:
 
 ```bash
 sysadmin@localhost:~/Documents$ id
@@ -62,7 +62,7 @@ By viewing the output of this command, you can see the user's identity informati
 
 ### Switching Users
 
-The <mark style="color:red;">**`su`**</mark> command **allows you to run a shell as a different user**. While switching to the root user is what the `su` command is used for most frequently, it can also <mark style="color:red;">**switch to other users as well.**</mark>
+The <mark style="color:red;">**`su`**</mark> command **allows you to run a shell as a different user**. While switching to the root user is what the <mark style="color:red;">`su`</mark> command is used for most frequently, it can also <mark style="color:red;">**switch to other users as well.**</mark>
 
 ```
 su [OPTIONS] [USERNAME]
@@ -76,7 +76,7 @@ su -l
 su --login
 ```
 
-By default, if a username is not specified, the `su` command opens a new shell as the root user. The following two commands are equivalent ways to start a shell as the root user
+By default, if a username is not specified, the <mark style="color:red;">`su`</mark> command opens a new shell as the root user. The following two commands are equivalent ways to start a shell as the root user
 
 ```
 su - root
@@ -113,7 +113,7 @@ sysadmin@localhost:~/Documents$ ls -l nullfile
 -rw-rw-r-- 1 sysadmin sysadmin 0 Mar 21 17:30 nullfile
 ```
 
-Next, the `sudo` command can be used with the `chown` command to change the ownership of the new file to the `root` user, and the `ls -l` command is used to verify the change:
+Next, the <mark style="color:red;">`sudo`</mark> command can be used with the `chown` command to change the ownership of the new file to the `root` user, and the `ls -l` command is used to verify the change:
 
 ```bash
 sysadmin@localhost:~/Documents$ sudo chown root
@@ -125,7 +125,7 @@ sysadmin@localhost:~/Documents$ ls -l nullfile
 
 ### Switching Groups
 
-When a user creates a file or directory, their primary group will normally be the group owner. If you are interested in knowing what groups you belong to , then you can execute the `groups` command:
+When a user creates a file or directory, their primary group will normally be the group owner. **If you are interested in knowing what groups you belong to , then you can execute the **<mark style="color:red;">**`groups`**</mark> **command**:
 
 ```
 sysadmin@localhost:~$ groups
@@ -155,13 +155,13 @@ sysadmin@localhost:~/Documents$
 ```
 
 {% hint style="info" %}
-The `newgrp` command opens a new shell and assigns the primary group for that shell to the specified group. Once placed in the new shell, any file created will belong to the new primary group.
+The <mark style="color:red;">`newgrp`</mark> command opens a new shell and assigns the primary group for that shell to the specified group. Once placed in the new shell, any file created will belong to the new primary group.
 
-To go back to the default primary group, use the `exi`t command to close the new shell that was started by the `newgrp` command.
+To go back to the default primary group, use the `exi`t command to close the new shell that was started by the <mark style="color:red;">`newgrp`</mark> command.
 {% endhint %}
 
 {% hint style="danger" %}
-You must be a member of the group that you want to change to. Additionally, administrators can password protect groups.
+**You must be a member of the group that you want to change to.** Additionally, administrators can password protect groups.
 {% endhint %}
 
 ### Changing File Group Owner
@@ -192,7 +192,7 @@ The <mark style="color:red;">`chgrp`</mark> command does not change your current
 
 ### Understanding Permissions
 
-User and group owner information are important considerations when determining what permissions will be effective for a particular user. To determine which set applies to a particular user, first examine the user's identity. By using the `whoami` command or the `id` command, you can display your user identity.
+User and group owner information are important considerations when determining what permissions will be effective for a particular user. To determine which set applies to a particular user, first examine the user's identity. By using the <mark style="color:red;">`whoami`</mark> command or the <mark style="color:red;">`id`</mark> command, you can display your user identity.
 
 #### Permission Groups
 
@@ -251,11 +251,11 @@ The second character of each group represents the _write_ permissions. There is 
 The third character of each group represents the execute permission. There is a `x` character if the group has the execute permission.
 
 * A file can be executed or run as a process.
-* On a directory, the user can use the `cd` command to "get into" the directory and use the directory in a pathname to access files and potentially subdirectories&#x20;
+* On a directory, the **user can use the **<mark style="color:red;">**`cd`**</mark>** command to "get into" the directory** and use the directory in a pathname to access files and potentially subdirectories&#x20;
 
 ## Changing Basic File Permissions
 
-The <mark style="color:red;">`chmod`</mark> command is used to change the permissions of a file or directory. **Only the `root` user or the user who owns the file is able to change the permissions of a file.**
+The <mark style="color:red;">`chmod`</mark> command is used to change the permissions of a file or directory. **Only the **<mark style="color:red;">**`root`**</mark>** user or the user who owns the file is able to change the permissions of a file.**
 
 ```
 chmod MODE FILE…
@@ -326,7 +326,7 @@ You can also combine either the group or permissions symbols to make multiple ch
 sysadmin@localhost:~$ chmod ug+x,o-r newfile.txt
 ```
 
-Using the `=` character adds the specified permissions and causes unmentioned ones to be removed.
+Using the <mark style="color:red;">**`=`**</mark> character **adds the specified permissions and causes unmentioned ones to be removed.**
 
 ```
 sysadmin@localhost:~$ chmod u=rx newfile.txt
@@ -360,7 +360,7 @@ These numbers are easy to derive by just adding together the octal value for the
 {% hint style="warning" %}
 **Consider this**
 
-Recall that the <mark style="color:red;">**`stat`**</mark> command provides more detailed information than the `ls -l` command. One big advantage of the <mark style="color:red;">**`stat`**</mark> command is that shows permissions using both the symbolic and numeric methods:
+Recall that the <mark style="color:red;">**`stat`**</mark> command provides **more detailed information** than the <mark style="color:red;">`ls -l`</mark>` ``` command. One big advantage of the <mark style="color:red;">**`stat`**</mark> command is that shows permissions using both the symbolic and numeric methods:
 
 ```bash
 sysadmin@localhost:~$ stat /tmp/filetest1
@@ -390,12 +390,12 @@ When multiple users need to work routinely on the same directories and files, ba
 
 Typically, special permissions are only set by the administrator (the root user) and they perform very specialized functions. They can be set using the <mark style="color:red;">`chmod`</mark> command, using either the symbolic or octal method.
 
-| Permission                 | Symbol | Symbolic / Octal | Purpose                                                                                                       |
-| -------------------------- | ------ | ---------------- | ------------------------------------------------------------------------------------------------------------- |
-| `setuid` on a file         | s      | u+s or 4000      | Causes an executable file to **execute under user owner identity**, instead of the user running the command.  |
-| `setgid` on a file         | s      | g+s or 2000      | Causes an executable file to **execute under group owner identity**, instead of the user running the command  |
-| `setgid` on a directory    | s      | g+s or 2000      | Causes new **files and directories that are created inside to be owned by the group** that owns the directory |
-| `sticky bit` on a diectory | t      | o+t or 1000      | Causes files inside a directory to be **able to be removed only by the user owner, or the root user.**        |
+| Permission                                                 | Symbol | Symbolic / Octal | Purpose                                                                                                       |
+| ---------------------------------------------------------- | ------ | ---------------- | ------------------------------------------------------------------------------------------------------------- |
+| <mark style="color:red;">`setuid`</mark> on a file         | s      | u+s or 4000      | Causes an executable file to **execute under user owner identity**, instead of the user running the command.  |
+| <mark style="color:red;">`setgid`</mark> on a file         | s      | g+s or 2000      | Causes an executable file to **execute under group owner identity**, instead of the user running the command  |
+| <mark style="color:red;">`setgid`</mark> on a directory    | s      | g+s or 2000      | Causes new **files and directories that are created inside to be owned by the group** that owns the directory |
+| <mark style="color:red;">`sticky bit`</mark> on a diectory | t      | o+t or 1000      | Causes files inside a directory to be **able to be removed only by the user owner, or the root user.**        |
 
 {% hint style="info" %}
 A leading 0, such as 0744, will remove all special permissions from a file or directory
@@ -405,7 +405,7 @@ A leading 0, such as 0744, will remove all special permissions from a file or di
 
 When the `setuid` permission is set on an _executable binary file_ (a program), **the binary file is run as the owner of the file**, not as the user who executed it.&#x20;
 
-For example, the `passwd` command has the `setuid` permission. The `passwd` command modifies the `/etc/shadow` file in order to update the value for the user's password. That file is not normally modifiable by an ordinary user; in fact, ordinary users normally have no permissions on the file.
+For example, the <mark style="color:red;">`passwd`</mark> command has the <mark style="color:red;">`setuid`</mark> permission. The <mark style="color:red;">`passwd`</mark> command modifies the `/etc/shadow` file in order to update the value for the user's password. That file is not normally modifiable by an ordinary user; in fact, ordinary users normally have no permissions on the file.
 
 ```
 sysadmin@localhost:~$ more /etc/shadow
@@ -414,35 +414,43 @@ sysadmin@localhost:~$ ls -l /etc/shadow
 -rw-r-----. 1 root root 5195 Oct 21 19:57 /etc/shadow
 ```
 
-When the `passwd` command attempts to update the `/etc/shadow` file, it uses the credentials of the `root` user to modify the file (the term credentials is akin to "authority")
+When the <mark style="color:red;">`passwd`</mark> command attempts to update the `/etc/shadow` file, it uses the credentials of the `root` user to modify the file (the term credentials is akin to "authority")
 
 ```bash
 sysadmin@localhost:~$ ls -l /usr/bin/passwd
 -rwsr-xr-x 1 root root 59640 Jan 25  2018 /usr/bin/passwd
 ```
 
-Notice from the listing, the fourth character is an `s` ,where there would normally be an `x` if the file was just executable.  When the character is a lowercase `s` ,it indicates that both the `setuid` and execute permissions are set. An uppercase `S` in the fourth character position means that the file does not have the execute permission, only the setuid permission. (Without the execute permission for the user owner, the setuid is ineffective) .Although not always the case ,in some instances, an uppercase `S` can be interpreted as an error.
+Notice from the listing, the fourth character is an <mark style="color:red;">**`s`**</mark> ,where there would normally be an **`x`** if the file was just executable. &#x20;
+
+{% hint style="warning" %}
+When the **character is a lowercase **<mark style="color:red;">**`s`**</mark> ,it indicates that both the <mark style="color:red;">**`setuid`**</mark>** and execute permissions are set.**
+
+An **uppercase **<mark style="color:red;">**`S`**</mark> in the fourth character position means that the file **does not have the execute permission**, only the setuid permission. (Without the execute permission for the user owner, the setuid is ineffective)&#x20;
+{% endhint %}
+
+Although not always the case ,in some instances, an uppercase <mark style="color:red;">`S`</mark> can be interpreted as an error.
 
 To add the setuid permission run:
 
-```
+```bash
 chmod u+s file
 chomod 4755 file
 ```
 
 To remove the setuid permissions run:
 
-```
+```bash
 chmod u-s file
 chmod 0755 file
 ```
 
 ## Setgid Permission
 
-The `setgid` permission is similar to `setuid` ,but it makes use of the group owner permissions. There are two forms of setgid permissions:
+The <mark style="color:red;">`setgid`</mark> permission is similar to <mark style="color:red;">`setuid`</mark> ,but it makes use of the group owner permissions. There are two forms of setgid permissions:
 
-* `setgid` on a file
-* `setgid` on a directory
+* <mark style="color:red;">`setgid`</mark> on a file
+* <mark style="color:red;">`setgid`</mark> on a directory
 
 ### `setgid` on a File
 

@@ -1,4 +1,22 @@
+---
+description: '104.5: Manage file permissions and ownership v2  Weight: 3'
+---
+
 # Chapter 13: File permissions
+
+<details>
+
+<summary>Key terms</summary>
+
+<mark style="color:red;">**`chgrp`**</mark> Command that is used to change the primary group of a file. It changes what groups is the owner of the FILE
+
+<mark style="color:red;">**`chmod`**</mark> Command that is used to change the mode bits of a FILE. The `chmod` can be used to change the files permissions.
+
+<mark style="color:red;">**`chown`**</mark> Command that is used to change the ownership of a FILE. Can also be used to change the primary group of a FILE as well.
+
+<mark style="color:red;">**`umask`**</mark> Command that sets the calling process file mode creation mask
+
+</details>
 
 When listing a file with the <mark style="color:red;">`ls -l`</mark> command, the output includes permission and ownership information:&#x20;
 

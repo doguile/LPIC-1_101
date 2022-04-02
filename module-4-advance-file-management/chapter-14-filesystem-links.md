@@ -1,10 +1,24 @@
+---
+description: '104.6: Create and change hard and symbolic links v2  Weight: 2'
+---
+
 # Chapter 14: Filesystem Links
+
+<details>
+
+<summary>Key terms</summary>
+
+<mark style="color:red;">**`ln`**</mark> Command used to create a link between two files. Either hard links or soft links
+
+<mark style="color:red;">**`ls`**</mark> Command that will list information about files.
+
+</details>
 
 Linux provide two different kinds of links for files within the filesystem: hard links and soft links. Both provide the ability to have more than one path name that refers to the same file.
 
 ## Soft Links
 
-Soft links, also known as _symbolic links_, are files that are designed to **point to other files via path names**. For example, the `/bin/systemd` file is a symbolic link that links to the `/lib/systemd/systemd`
+Soft links, **also known as **_<mark style="color:red;">**symbolic links**</mark>_, are files that are designed to **point to other files via path names**. For example, the `/bin/systemd` file is a symbolic link that links to the `/lib/systemd/systemd`
 
 Consider soft links like "Shortcuts" located on most desktops and menu bars, that when clicked will run a program or open a file. Those icons are actually files that point to other files.
 

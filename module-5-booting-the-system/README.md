@@ -1,4 +1,30 @@
+---
+description: '101.1: Determine and configure hardware settings v2  Weight: 2'
+---
+
 # Module 5: Booting the system
+
+<details>
+
+<summary>Key term</summary>
+
+**`/dev/`** Hardware devices are made available through special files under the `/dev` directory.
+
+**`/proc/`** The process information pseudo-filesystem
+
+**`/sys/`** The mount point for sysfs providing a set of virtual files by exporting information about various kernel subsystems, hardware devices and associated device drivers from the kernel's device model to user space.
+
+**`lsmod`** Prints the contents of the /proc/modules files.
+
+**`lspci`** Prints detailed information about all PCI buses and devices in the system
+
+**`lsusb`** Prints detailed information about all USB buses and devices in the system.
+
+**`modprobe`** Used to _add_ a loadable kernel module (LKM) to the Linux Kernel or to _remove_ an LKM from the kernel.
+
+**`swapspace`** Used when the amount of physical memory (RAM) is full. If the system needs more memory resources and the RAM is full, inactive pages in memory are moved to the swap space.
+
+</details>
 
 ## Chapter 15: Hardware Configuration
 
@@ -21,7 +47,7 @@ sysadmin@localhost:~$ uname
 Linux
 ```
 
-The `uname` command has access to the files `/proc` and `/sys` directories which can display a lot of organized information about your system. Running `uname` with the `-a` option will show the following information:
+The <mark style="color:red;">**`uname`**</mark> command has access to the files `/proc` and `/sys` directories which can **display a lot of organized information about your system.** Running <mark style="color:red;">**`uname`**</mark> with the <mark style="color:red;">**`-a`**</mark> option will show the following information:
 
 | Information       | Option | Example                                               |
 | ----------------- | ------ | ----------------------------------------------------- |
@@ -40,7 +66,7 @@ Linux localhost 4.4.0-72-generic #93~14.04.1-Ubuntu SMP Fri Mar 31 15:05:15 UTC
 2017 x86_64 x86_64 x86_64 GNU/Linux
 ```
 
-Another way to get more detailed information than the <mark style="color:red;">`uname`</mark> command can give you is to run the <mark style="color:red;">`lscpu`</mark> command which is very useful in determining the hardware's capabilities.
+**Another way to get more detailed information** than the <mark style="color:red;">`uname`</mark> command can give you is to run the <mark style="color:red;">**`lscpu`**</mark> **command** which is very useful in determining the hardware's capabilities.
 
 ```bash
 sysadmin@localhost:~$ lscpu
@@ -63,13 +89,13 @@ Stepping:              2
 
 The Random Access Memory (RAM) of a system is used to **temporarily store data and instructions for the operating system** and the programs that are executing.
 
-The maximum amount of memory that can be used with a 32-bit processor is 4GiB, whereas a 64-bit processor can theoretically use 16EiB of memory.
+The maximum amount of memory that can be used with a **32-bit processor is 4GiB**, whereas a 64-bit processor can theoretically use 16EiB of memory.
 
 From a practical perspective, if a system doesn't currently have at least 1GiB of RAM, then it may not be able to use the Graphical Unit Interface (GUI) with Linux.&#x20;
 
 ### Swap Memory
 
-If a system doesn't have sufficient RAM for the processes you are executing on it, then it will use virtual memory, called swap space in Linux.
+If a system **doesn't have sufficient RAM for the processes** you are executing on it, then it **will use virtual memory, called **<mark style="color:red;">**swap space**</mark> in Linux.
 
 {% hint style="info" %}
 **Swap space** is hard drive space that is temporarily **used to hold data that exceeds the amount of RAM available.**
@@ -79,9 +105,9 @@ When the system begins to run low on memory, it will "_swap out_" data that is l
 
 Swap space comes in two types: a **swapfile** that would reside on an existing filesystem, or a **swap partition**, which is a section of a disk that is dedicated to swap and is formatted with the swap filesystem.
 
-A swap partition is an essential part of a properly configured Linux system and yields the best performance for swap operations. Swapfiles have the overhead of being on an existing filesystem and should be used sparingly, and only if absolutely necessary.
+A <mark style="color:red;">**swap partition**</mark> is an essential part of a properly configured Linux system and **yields the best performance for swap operations**. <mark style="color:red;">**Swapfiles**</mark> have the overhead of being on an existing filesystem and should be **used sparingly, and only if absolutely necessary**.
 
-The amount of RAM in a system can be viewed in the firmware settings. For a very detailed breakdown of how much memory a system has and how it is being used, view the <mark style="color:red;">`/proc/mem`</mark>`info` file:
+The amount of RAM in a system **can be viewed in the firmware settings**. For a very detailed breakdown of how much memory a system has and how it is being used, view the <mark style="color:red;">**`/proc/meminfo`**</mark> file:
 
 ```
 sysadmin@localhost:~$ cat /proc/meminfo
@@ -94,9 +120,9 @@ SwapCached:           40 kB
 Active:         14409408 kB
 ```
 
-For a quick summary of RAM memory and swap space, execute the `free` command:
+For a quick summary of RAM memory and swap space, execute the <mark style="color:red;">**`free`**</mark> command:
 
-```
+```bash
 sysadmin@localhost:~$ free
               total        used        free      shared  buff/cache   available
 Mem:         128920       35120       89205           2        4594       93190
@@ -105,15 +131,15 @@ Swap:        131050         140      130910
 
 ## Firmware
 
-Firmware is software that has been written to non-volatile memory such as read-only memory (ROM) or flash memory. There are several types of firmware that may be present in a computer system. On each device that provides services to a system, there is typically a ROM chip that contains firmware for the device.
+**Firmware is software that has been written to non-volatile memory such as read-only memory (ROM) or flash memory.** There are several types of firmware that may be present in a computer system. On each device that provides services to a system, there is typically a ROM chip that contains firmware for the device.
 
 The motherboard firmware contains the code that allows the integrated components of the system to work together. This firmware test the components upon startup, identifies and initializes these components, and attempts to find a _bootloader_ to load an operating system.
 
-Originally, this firmware was know as the **Basic Input/Output System (BIOS)**, system ROM, or ROM BIOS. BIOS is used to provide basic services, called input and output services before an operating system is loaded.
+Originally, this firmware **was know as the** **Basic Input/Output System (BIOS)**, system ROM, or ROM BIOS. BIOS is used to provide basic services, called input and output services before an operating system is loaded.
 
-Recently, computer manufacturers have begun to replace the traditional BIOS with something called the **Unified Extensible Firmware Interface (UEFI)**; however, the functions of UEFI appear so similar to BIOS that many people still refer to the system firmware as BIOS.
+Recently, computer manufacturers have begun to **replace the traditional BIOS with** something called the **Unified Extensible Firmware Interface (UEFI)**; however, the functions of UEFI appear so similar to BIOS that many people still refer to the system firmware as BIOS.
 
-If a system has UEFI firmware, then it may be more challenging to boot the Linux operating system due to a feature called **Secure Boot**.&#x20;
+If a system has **UEFI** firmware, then it may be **more challenging to boot the Linux operating system** due to a feature called <mark style="color:red;">**Secure Boot**</mark><mark style="color:red;">.</mark>&#x20;
 
 > If Secure Boot is enabled, then the bootloader must be cryptographically signed by a digital key that is recognized by the firmware. If the bootloader is not properly signed, then booting may still be possible by disabling Secure Boot in the firmware settings, in favor of the **Compatibility Support Module (CSM)**.
 
@@ -146,7 +172,7 @@ Data storage devices use either serial or parallel interfaces. The **S** in SC**
 
 In addition to the core hardware, there are many other components, commonly known as peripherals, that may be used with the computer system. It is important to know if a peripheral requires that the power to the computer system be turned off at the time it is connected, or if the peripheral may be connected while the computer system is on.
 
-Devices that are supposed to be connected when the power is off are known as **coldplug devices.** Devices that can be connected when the power is on are known as **hotplug devices**.
+Devices that are supposed to be **connected when the power is off** are known as <mark style="color:red;">**coldplug devices**</mark>**.** Devices that can be connected **when the power is on** are known as <mark style="color:red;">**hotplug devices**</mark>.
 
 {% hint style="info" %}
 **Consider This**
@@ -158,11 +184,11 @@ Typically, USB devices are hot pluggable. This means that the USB device will be
 
 In order for a device to work correctly, certain resources must be allocated to it.
 
-**There are four types of hardware resources that devices use to communicate with the system**. As some of these resources refer to input and output, part of their name may be abbreviated as IO. THe four resources are: **IO ports**, **IO memory**, **interrupt requests(IRQ)**, and **direct memory access (DMA)** channels:
+**There are four types of hardware resources that devices use to communicate with the system**. As some of these resources refer to input and output, part of their name may be abbreviated as IO. The four resources are: <mark style="color:red;">**IO ports**</mark><mark style="color:red;">,</mark> <mark style="color:red;"></mark><mark style="color:red;">**IO memory**</mark><mark style="color:red;">,</mark> <mark style="color:red;"></mark><mark style="color:red;">**interrupt requests(IRQ)**</mark>, and <mark style="color:red;">**Direct Memory Access (DMA)**</mark> channels:
 
-* **IO ports:** Memory addresses that allow for communication with hardware devices. The current system addresses in use can be viewed by executing the following command:
+* <mark style="color:orange;">**IO ports:**</mark> Memory addresses that _**allow for communication with hardware devices**_. The current system addresses in use can be viewed by executing the following command:
 
-```
+```bash
 sysadmin@localhost:~$ cat /proc/ioports
 0000-0cf7 : PCI Bus 0000:00
   0000-001f : dma1
@@ -173,9 +199,9 @@ sysadmin@localhost:~$ cat /proc/ioports
   0064-0064 : keyboard
 ```
 
-* **IO Memory**: A section or location that acts much like a RAM that is presented to the processor via the system bus. These are used to pass and store data as well as for access to devices on the system.
+* <mark style="color:orange;">**IO Memory**</mark><mark style="color:orange;">:</mark> A section or location that **acts much like a RAM** that is presented to the processor via the system bus. These are **used to pass and store data for access to devices on the system.**
 
-```
+```bash
 sysadmin@localhost:~$ cat /proc/iomem
 00010000-0009ffff : System RAM
 000a0000-000bffff : PCI Bus 0000:00
@@ -187,8 +213,8 @@ sysadmin@localhost:~$ cat /proc/iomem
 0680bdb3-06f45abf : Kernel data
 ```
 
-* **Interrupt Requests (IRQ)** - An interrupt is a hardware signal that pauses or stops a running program so that the interrupt handler can switch to running another program, or send and receive data. The `/proc/irq` directory contains configuration information for each IRQ on the system.
-* **Direct Memory Access (DMA)** - A method by which particular hardware items in the system can directly access RAM, without going through the CPU. This speed up access, as the CPU would otherwise be fully tasked during such access.
+* <mark style="color:orange;">**Interrupt Requests (IRQ)**</mark> - An interrupt is a hardware signal that _**pauses or stops a running program so that the interrupt handler can switch to running another program**_, or send and receive data. The <mark style="color:red;">**`/proc/irq`**</mark> directory contains configuration information for each IRQ on the system.
+* <mark style="color:orange;">**Direct Memory Access (DMA):**</mark> - A **method by which particular hardware items in the system can directly access `RAM`, without going through the `CPU`**. This speed up access, as the CPU would otherwise be fully tasked during such access.
 
 ```
 sysadmin@localhost:~$ cat /proc/dma
@@ -196,7 +222,7 @@ sysadmin@localhost:~$ cat /proc/dma
 ```
 
 {% hint style="danger" %}
-Note that, with the exception of interrupt requests, these resources cannot be shared between devices
+Note that, **with the exception of interrupt requests**, <mark style="color:red;">**these resources**</mark> <mark style="color:red;">**cannot be shared between devices**</mark>
 {% endhint %}
 
 ## Viewing Hardware
@@ -206,18 +232,18 @@ Viewing the details of what hardware is attached or contained in a running Linux
 {% hint style="info" %}
 **Consider this**
 
-Modern computers typically use the **Peripheral Component Interconnect Express (PCIe)** bus to <mark style="color:red;">connect components inside the computer</mark>. For example video,sound, network, etc.
+Modern computers typically use the **Peripheral Component Interconnect Express (PCIe) bus to **<mark style="color:red;">**connect components inside the computer**</mark>. For example video,sound, network, etc.
 {% endhint %}
 
-**A bus is not only used to refer to actual physical connections, but also software components designed to connect programs and certain communication protocols.**&#x20;
+**A `BUS` is not only used to refer to actual physical connections, but also software components designed to connect programs and certain communication protocols.**&#x20;
 
-Buses can be alternatively grouped into _internal_ and _external_ bus types. **Internal** **buses** are considered to be inside the actual computer, while **external buses** are used to attach external devices to the computer.
+Buses can be alternatively **grouped into **_**internal**_** and **_**external**_** bus types**. **Internal** **buses** are considered to be inside the actual computer, while **external buses** are used to attach external devices to the computer.
 
 > Good examples of internal buses are the PCIe bus, the older **Industry Standard Architecture (ISA)** bus, and the very popular **Small Computer Systems Interface (SCSI)** bus. An example of an external bus type would be the **Universal Serial Bus (USB)**
 
 ### `lspci`
 
-First among these is the <mark style="color:red;">`lspci`</mark> command, designed to **show the user the PCI buses and devices attached** to them.
+First among these is the <mark style="color:red;">**`lspci`**</mark> command, designed to **show the user the PCI buses and devices attached** to them.
 
 In the output of the command below you will see the various bridges listed; those are connections between the different buses on the system, interconnecting them with each other.
 
@@ -232,12 +258,12 @@ t 1 (rev 13)
 t 3 (rev 13)
 ```
 
-Finally, if a user has an issue with a component and is able to see that component mentioned in the <mark style="color:red;">`lspci -v`</mark> output, they can **get more information** about the malfunctioning component by referring to the multiple digit vendor and device code.&#x20;
+Finally, if a user has an issue with a component and is able to see that component mentioned in the <mark style="color:red;">**`lspci -v`**</mark> output, they can **get more information** about the malfunctioning component by **referring to the multiple digit vendor and device code.**&#x20;
 
-For example, to get more information about the IDE interface from the machine above, the user can run the <mark style="color:red;">`lspci`</mark> command with the <mark style="color:red;">`-v`</mark> and <mark style="color:red;">`-s`</mark> options followed by the vendor and device code as parameter.&#x20;
+For example, to get more information about the IDE interface from the machine above, the user can run the <mark style="color:red;">**`lspci`**</mark> command with the <mark style="color:red;">**`-v`**</mark> and <mark style="color:red;">**`-s`**</mark> options followed by the vendor and device code as parameter.&#x20;
 
 {% hint style="warning" %}
-The <mark style="color:red;">`-s`</mark> option will allow for a domain to be specified which will display information solely about devices in that domain.
+The <mark style="color:red;">**`-s`**</mark> option will **allow for a domain to be specified** which will display information solely about devices in that domain.
 {% endhint %}
 
 ```bash
@@ -253,7 +279,7 @@ lspci: Unable to load libkmod resources: error -12lsusb
 
 ### `lsusb`
 
-For viewing the external devices, the <mark style="color:red;">`lsusb`</mark> command will show those that are specifically connected to the Universal Serial Bus (USB)
+For **viewing the external devices**, the <mark style="color:red;">**`lsusb`**</mark> command will show those that are specifically connected to the Universal Serial Bus (USB)
 
 ```bash
 sysadmin@localhost:~$ lsusb
@@ -263,7 +289,7 @@ Bus 006 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
 Bus 005 Device 003: ID 0624:0248 Avocent Corp. Virtual Hub
 ```
 
-Another tool for viewing details about USB devices connected to the system is the <mark style="color:red;">`usb-devices`</mark> command. This script, which when executed will display information about the USB device that can otherwise be found in the `/sys` or `/proc` directories, including the USB device number, vendor, port and more:
+**Another tool for viewing details about USB devices connected** to the system is the <mark style="color:red;">**`usb-devices`**</mark> command. This script, which when executed will display information about the USB device that can otherwise be found in the `/sys` or `/proc` directories, including the USB device number, vendor, port and more:
 
 ```bash
 sysadmin@localhost:~$ usb-devices | tail -n 15
@@ -279,9 +305,9 @@ I:  If#= 1 Alt= 0 #EPs= 1 Cls=03(HID  ) Sub=01 Prot=02 Driver=usbhid
 If the user requires more information than the <mark style="color:red;">`lspci`</mark> and <mark style="color:red;">`lsusb`</mark> commands show normally, simply append a <mark style="color:red;">`-v`</mark> option to either command and a great deal more information will be show.
 {% endhint %}
 
-To isolate the details of a specific USB device, find the vendor and device code in the output of the <mark style="color:red;">`lsusb`</mark> command, then use the <mark style="color:red;">`lsusb`</mark> command again, this time with the <mark style="color:red;">`-v`</mark> and <mark style="color:red;">`-d`</mark> options to get isolated details of a device.
+To isolate the details of a specific USB device, find the vendor and device code in the output of the <mark style="color:red;">**`lsusb`**</mark> command, then use the <mark style="color:red;">**`lsusb`**</mark> command again, this time with the <mark style="color:red;">**`-v`**</mark> and <mark style="color:red;">**`-d`**</mark> options to get isolated details of a device.
 
-The <mark style="color:red;">`-d`</mark> option will allow for a vendor or product ID to be specified, which will only display devices with that number.
+The <mark style="color:red;">**`-d`**</mark> option **will allow for a vendor or product ID to be specified**, which will only display devices with that number.
 
 ```bash
 sysadmin@localhost:~$ lsusb -v -d 0624:0248 | less
@@ -304,11 +330,11 @@ The concept of hotplugging works extremely well in modern Linux distributions du
 
 ### `udev`
 
-The trio of device managment tools starts with _**udev**_, a device managment subsystem that manages the `/dev/` directory and will automatically create and destroy node points (references to a device) for devices that are attached to the system, or subsequently removed.
+The trio of device managment tools starts with _<mark style="color:red;">**`udev`**</mark>_, a device managment subsystem that manages the <mark style="color:red;">`/dev/`</mark> directory and will automatically **create and destroy node points** (references to a device) **for devices that are attached to the system**, or subsequently removed.
 
-To accomplish this, the **udev** subsystem maintains a pseudo-filesysytem mounted as the `/dev` directory. **The files in the `/dev` directory represents devices currently connected to the system**.&#x20;
+To accomplish this, the <mark style="color:red;">**`udev`**</mark> subsystem maintains a pseudo-filesysytem mounted as the `/dev` directory. **The files in the **<mark style="color:red;">**`/dev`**</mark>** directory represents devices currently connected to the system**.&#x20;
 
-When the Linux kernel  detects a device being connected, <mark style="color:red;"></mark> <mark style="color:red;"></mark><mark style="color:red;">**the**</mark><mark style="color:red;">** **</mark>_<mark style="color:red;">**udev**</mark>_<mark style="color:red;">** **</mark><mark style="color:red;">**daemon is used to create a device file (or node) in the**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`/dev`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**directory**</mark><mark style="color:red;">.</mark> If the device is removed, the udev daemon then removes the device node in the `/dev` directory.
+When the Linux kernel  detects a device being connected, <mark style="color:red;"></mark> **the **_<mark style="color:red;">**udev**</mark>_** daemon is used to create a device file (or node) in the **<mark style="color:red;">**`/dev`**</mark>** directory**<mark style="color:red;">.</mark> If the device is removed, the udev daemon then removes the device node in the `/dev` directory.
 
 {% hint style="info" %}
 Configuration files in the `/etc/udev/rules.d` directory are used to define rules that assign specific ownerships, permissions, and persistent names to these devices.
@@ -318,19 +344,19 @@ These files allow a user to configure how udev handles the device it manages.
 
 ### `sysfs`
 
-Another in-memory filesystem that consists of directories and text files that <mark style="color:red;">**contain values about the kernel's operation and configuration**</mark>
+Another in-memory filesystem that consists of directories and text files that **contain values about the kernel's operation and configuration**
 
-The `sysfs` subsystem is tipically mounted as the `/sys` subdirectory. The `/sys` directory and sysfs exist because there is a need to provide information about the kernel, its attribute, and the contents to users via programs such as `ps` , `top` ,and another programs that provide information to the regular user through command line output.
+The <mark style="color:red;">**`sysfs`**</mark> subsystem is tipically mounted as the **`/sys`** subdirectory. The **`/sys`** directory and sysfs exist because there is a need to provide information about the kernel, its attribute, and the contents to users via programs such as <mark style="color:red;">`ps`</mark> , <mark style="color:red;">`top`</mark> ,and another programs that provide information to the regular user through command line output.
 
-Modern systems use `sysfs` to express kernel information into the `/sys` directory because the _procfs_ subsystem (and the `/proc` directory) had become increasingly busy and cluttered. &#x20;
+Modern systems use <mark style="color:red;">`sysfs`</mark> to express kernel information into the **`/sys`** directory because the _procfs_ subsystem (and the `/proc` directory) had become increasingly busy and cluttered. &#x20;
 
 ### Hardware Abstraction Layer (HAL) aka. `hald`
 
-The last of the trinity of device management tools is the `hald` .As the kernel detects a device, it puts the information about the device into the appropiate files in the `/sys` directory.&#x20;
+The last of the trinity of device management tools is the <mark style="color:red;">**`hald`**</mark> .As the kernel detects a device, it puts the information about the device into the appropiate files in the **`/sys`** directory.&#x20;
 
-The `halds` is responsible for <mark style="color:red;">**discovering and maintaining a list of connected devices and their attributes**</mark> by monitoring the files in the `/sys` directory
+The <mark style="color:red;">`halds`</mark> is responsible for **discovering and maintaining a list of connected devices and their attributes** by monitoring the files in the **`/sys`** directory
 
-To view the list of devices and their attributes that have been stored by hald, execute the `lshal` command.&#x20;
+To view the list of devices and their attributes that have been stored by hald, execute the <mark style="color:red;">**`lshal`**</mark> command.&#x20;
 
 ```bash
 sysadmin@localhost:~$ lshal | grep cdrom | grep true
@@ -349,24 +375,48 @@ Finally, when programs want information about devices, they are able to query ha
 
 ### D-Bus
 
-Programs can also register themselves with D-Bus to receive notifications from hald when specific types of hardware events occur. When the state of a hardware device changes, hald uses D-Bus to send notifications to those programs that have been registered for that type of hardware event.
+Programs can also register themselves with D-Bus to receive notifications from hald when specific types of hardware events occur. When the state of a hardware device changes, **`hald`** uses D-Bus to send notifications to those programs that have been registered for that type of hardware event.
 
-System typically uses `udev` for its device management task. The job of udev is to let your computer know of devices events, among other tasks.&#x20;
+System typically uses <mark style="color:red;">**`udev`**</mark> for its device management task. **The job of **<mark style="color:red;">**`udev`**</mark>** is to let your computer know of devices events, among other tasks.**&#x20;
 
 {% hint style="info" %}
-Udev can manage any device that shows a link in the `/dev` directory when attached to the system, which udev is able to do through scripts know as _udev rules._
+**`Udev`** can manage any device that shows a link in the `/dev` directory when attached to the system, which `udev` is able to do through scripts know as _udev rules._
 
 _A udev rule_ is something that perform an action when a device is inserted, such as a thumb drive.
 {% endhint %}
 
 > Udev can detect when a device has been attached or removed. Udev rules can establish custom actions that are taken when these events occur.
 
-You can use the `udevadm` command to view the pertinent information that would allow you to directly specify a device within a udev rule when it's attached, and then execute specific actions on that device.
+You can use the <mark style="color:red;">**`udevadm`**</mark> command to view the pertinent information that would allow you to directly specify a device within a udev rule when it's attached, and then execute specific actions on that device.
 
 There are two ways to do this:
 
 * When a device is inserted
 * When you want to query a device that is either already attached or is built-in to the system, such as the main storage device (the `/dev/sda` device for example.)
+
+To **watch what happens when a device is inserted or attached**, run the <mark style="color:red;">**`udevadm monitor`**</mark> command:
+
+```bash
+sysadmin@localhost:~$ udevadm monitor
+monitor will print the received events for:
+UDEV: the event udev sends out  after rule processing
+KERNEL - the kernel uevent
+```
+
+To query an already-attached device for the necessary information, execute the command below:
+
+```bash
+sysadmin@localhost:~$ udevadm info /dev/sda
+P: /devices/pci0000:00/0000:00:07.1/ata1/host0/target0:0:0/0:0:0:0/block/sda
+N: sda
+S: disk/by-id/ata-VMware_Virtual_IDE_Hard_Drive_00000000000000000001
+S: disk/by-id/wwn-0x5000c2947bd39bdb
+S: disk/by-path/pci-0000:00:07.1-ata-1
+E: DEVLINKS=/dev/disk/by-id/wwn-0x5000c2947bd39bdb /dev/disk/by-path/pci-0000:00:07.1-ata-1 /dev/disk/by-id/ata-VMware_Virtual_IDE_Hard_Drive_00000000000000000001
+E: DEVNAME=/dev/sda
+E: DEVPATH=/devices/pci0000:00/0000:00:07.1/ata1/host0/target0:0:0/0:0:0:0/block/sda
+E: DEVTYPE=disk
+```
 
 ## Kernel Modules
 
@@ -374,9 +424,9 @@ Kernel modules can be used for more than supporting devices; since modules are s
 
 Some common uses besides device drivers include filesystems modules, networking protocols modules, and cryptographic algorithms modules.&#x20;
 
-To view the list of loaded kernel modules, use the <mark style="color:red;">`lsmod`</mark> command
+To view the **list of loaded kernel modules**, use the <mark style="color:red;">**`lsmod`**</mark> command
 
-```
+```bash
 sysadmin@localhost:~$ lsmod
 Module                  Size  Used by
 af_packet_diag         16384  0
@@ -385,9 +435,13 @@ dccp_diag              16384  0
 dccp                   73728  1 dccp_diag
 ```
 
-Additionally, you can get more details about a module by using the <mark style="color:red;">`modinfo`</mark> command. For example, to learn more about the `snd` module, execute the following command:
+> The "Used by" indicates how many "things" depend on the current module being loaded. These "things" could include other modules, processes, or other features.
+>
+> And "by" shows the name of the module that depends on the current module
 
-```
+Additionally, you can get **more details about a module** by using the <mark style="color:red;">**`modinfo`**</mark> command. For example, to learn more about the `snd` module, execute the following command:
+
+```bash
 sysadmin@localhost:~$ modinfo snd
 filename:   	/lib/modules/3.13.0-35-generic/kernel/sound/core/snd.ko
 alias:      	char-major-116-*
@@ -401,25 +455,23 @@ srcversion: 	0EBCEABF53FC967306ED228
 depends:    	soundcore
 ```
 
-To get a list of all available modules, use the <mark style="color:red;">`modprobe -l`</mark> command:
+To get a list of all available modules, use the <mark style="color:red;">**`modprobe -l`**</mark> command:
 
-{% hint style="danger" %}
-Used to add a loadable kernel module (LKM) to the Linux kernel or to remove an LKM from the kernel
-{% endhint %}
-
-```
+```bash
 sysadmin@localhost:~$ modprobe -l | head
 kernel/arch/x86/kernel/cpu/mcheck/mce-inject.ko
 kernel/arch/x86/kernel/cpu/cpufreq/powernow-k8.ko
 kernel/arch/x86/kernel/cpu/cpufreq/mperf.ko
 kernel/arch/x86/kernel/cpu/cpufreq/acpi-cpufreq.ko
 kernel/arch/x86/kernel/cpu/cpufreq/pcc-cpufreq.ko
-kernel/arch/x86/kernel/cpu/cpufreq/p4-clockmod.ko
-kernel/arch/x86/kernel/test_nx.ko
-kernel/arch/x86/kernel/microcode.ko
-kernel/arch/x86/crypto/aes-i586.ko
 ```
 
-One nice feature of the `modprobe` command is that it will automatically load all dependency modules, so in the case of loading the `ext4` module, it would automatically load the `crc16`, `mbcache`, and `jdb2` modules.
+Normally, kernel modules are loaded automatically by the kernel. **To load a module manually execute the **<mark style="color:red;">**`modprobe`**</mark>** command with the name of the module.**
 
-The `modprobe` command can also be used to remove modules from memory with the `-r` option. Executing the `modprobe -r ext4` command would remove the `ext4` module from memory, and it will automatically remove the `crc16`, `mbcache`, and `jdb2` modules from memory as long there was nothing else that depended upon them:
+{% hint style="danger" %}
+Used to add a loadable kernel module (LKM) to the Linux kernel or to remove an LKM from the kernel
+{% endhint %}
+
+One nice feature of the <mark style="color:red;">**`modprobe`**</mark> command is that it will **automatically load all dependency modules**, so in the case of loading the `ext4` module, it would automatically load the `crc16`, `mbcache`, and `jdb2` modules.
+
+**The **<mark style="color:red;">**`modprobe`**</mark>** command can also be used to remove modules from memory with the **<mark style="color:red;">**`-r`**</mark>** option**. Executing the <mark style="color:red;">`modprobe -r ext4`</mark> command would remove the `ext4` module from memory, and it will automatically remove the `crc16`, `mbcache`, and `jdb2` modules from memory as long there was nothing else that depended upon them:

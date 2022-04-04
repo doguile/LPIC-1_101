@@ -22,9 +22,21 @@ Soft links, **also known as **_<mark style="color:red;">**symbolic links**</mark
 
 Consider soft links like "Shortcuts" located on most desktops and menu bars, that when clicked will run a program or open a file. Those icons are actually files that point to other files.
 
-Symbolic links on the system are **stored in the `/etc/alternatives`** directory where they are managed by the alternatives system. The alternatives system manages, maintains , and updates information about the symbolic links so that system administrators can define which program and version are run when a user types a generic command.
+Symbolic links on the system are **stored in the `/etc/alternatives`** directory where they are managed by the alternatives system. **The alternatives system manages, maintains , and updates information about the symbolic links** so that system administrators can define which program and version are run when a user types a generic command.
 
-Soft links are very visual compared to hard links. This is because soft links are distinguishable by their file type.
+This system allows developers to update information about their programs in the appropiate file in the `/etc/alternatives` directory. Links are organized into groups according to the functionality that the programs have. By default, the system automatically takes care of updating these groups when program files are installed or updated.
+
+{% hint style="info" %}
+**Consider This**
+
+More detail about the alternatives system can be found in the `update-alternatives` man page:
+
+```bash
+sysadmin@localhost:~$ man update-alternatives
+```
+{% endhint %}
+
+Soft links are very visual compared to hard links. This is because **soft links are distinguishable by their file type.**
 
 For example, a detailed listing of the `/bin/systemd` file shows that it is a symbolic link that points to the `/lib/systemd/systemd` file:
 
@@ -33,47 +45,47 @@ sysadmin@localhost:~$ ls -l /bin/systemd
 lrwxrwxrwx 1 root root 20 Feb 28 21:03 /bin/systemd -> /lib/systemd/systemd
 ```
 
-In a detailed listing of a symbolic link, notice that the first character preceding the permissions is the letter `l`
+In a detailed listing of a symbolic link, notice that **the first character** preceding the permissions is **the letter** <mark style="color:red;">**`l`**</mark>
 
 ```
 lrwxrwxrwx 1 root root 20 Feb 28 21:03 /bin/systemd -> /lib/systemd/systemd  
 ```
 
-The other thing to notice about listing a soft link is that the link file name is followed by an arrow, which points to a path name:
+The other thing to notice about listing a soft link is that the link **file name is followed by an arrow**, which points to a path name:
 
 ```
 lrwxrwxrwx 1 root root 20 Feb 28 21:03 /bin/systemd -> /lib/systemd/systemd
 ```
 
-The permissions that appear on the soft link only determine who may attempt to follow the link. Typically, the permissions on the soft link are `rwx` for all users. The permissions on the file that has been linked to will determine the actual or effective permissions that a user will have, if they attempt to follow the link.
+**The permissions that appear on the soft link only determine who may attempt to follow the link**. Typically, the permissions on the **soft link are **<mark style="color:red;">**`rwx`**</mark>** for all users.** The permissions on the file that has been linked to will determine the actual or effective permissions that a user will have, if they attempt to follow the link.
 
 For example, the permissions on the `/bin/systemd` file are `rwxrwxrwx` ,which indicate that everyone would have full access on the link file.&#x20;
 
 However, examining the permissions on the `/lib/systemd/systemd` file shows that only the root user would have _write_ access to the file:
 
-```
+```bash
 sysadmin@localhost:~$ ls -l /lib/systemd/systemd
 -rwxr-xr-x 1 root root 1595792 Feb 28 21:03 /lib/systemd/systemd
 ```
 
-To create a soft link file, ** **<mark style="background-color:blue;">**use the**</mark><mark style="background-color:blue;">** **</mark><mark style="background-color:blue;"><mark style="color:red;">**`ln`**<mark style="color:red;"></mark><mark style="background-color:blue;">** **</mark><mark style="background-color:blue;">**command with the**</mark><mark style="background-color:blue;">** **</mark><mark style="background-color:blue;"><mark style="color:red;">**`-s`**<mark style="color:red;"></mark><mark style="background-color:blue;">** **</mark><mark style="background-color:blue;">**option**</mark>. **The first argument is the original file name**, and the second argument is the name of the link to be created.
+To create a soft link file, **use the **<mark style="color:red;">**`ln`**</mark>** command with the **<mark style="color:red;">**`-s`**</mark>** option**. The first argument is the original file name, and the second argument is the name of the link to be created.
 
-```
+```bash
 ln -s TARGET LINK_NAME
 ```
 
 Be sure to put the arguments in the correct order, as it is not possible to create a link from a file name that already exists.
 
-```
+```bash
 sysadmin@localhost:~$ ln -s file1.txt file2.txt
 sysadmin@localhost:~$ ls -l file*
 -rw-rw-r-- 1 sysadmin sysadmin 0 May  9 02:48 file1.txt
 lrwxrwxrwx 1 sysadmin sysadmin 9 May  9 02:49 file2.txt -> file1.txt
 ```
 
-Unlike hard links, soft link files do not increase the link count number associated with a regular file. The link count number for the ./file1.txt file would stat at one, regardless of how many soft or symbolic link files were created to refer to that file.&#x20;
+Unlike hard links, **soft link files do not increase the link count number associated with a regular file**. The link count number for the `./file1.txt` file would stat at one, regardless of how many soft or symbolic link files were created to refer to that file.&#x20;
 
-```
+```bash
 -rw-r--r-- 1 sysadmin sysadmin May 9 14:39 file1.txt
 lrwxrwxrwx 1 sysadmin sysadmin May 9 14:39 file2.txt -> file1.txt
 ```

@@ -1,13 +1,27 @@
+---
+description: >-
+  101.2: Boot the system v2  Weight:
+  3                                                                                                
+  102.2: Install a boot manager v2 Weight: 2
+---
+
 # Chapter 17: Bootloader
 
-#### Key terms
+<details>
 
-| Name            | Definition                                             |
-| --------------- | ------------------------------------------------------ |
-| `grub-install`  | Utility to install GRUB on the hard drive              |
-| `grub-mkconfig` | Utility used to generate a configuration file for GRUB |
-| `grub.cfg`      | GRUB configuration file                                |
-| `menu.lst`      | Configuration file for GRUB legacy                     |
+<summary>Key terms</summary>
+
+`grub-install` Utility to install GRUB on the hard drive
+
+`grub-mkconfig` Utility used to generate a configuration file for GRUB
+
+`grub.cfg` GRUB configuration file
+
+`grub.conf` GRUB configuration file on **Red Hat Linux**
+
+`menu.lst` Configuration file for GRUB Legacy
+
+</details>
 
 ## Introduction
 

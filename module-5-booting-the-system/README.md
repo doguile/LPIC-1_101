@@ -387,7 +387,7 @@ _A udev rule_ is something that perform an action when a device is inserted, suc
 
 > Udev can detect when a device has been attached or removed. Udev rules can establish custom actions that are taken when these events occur.
 
-You can use the <mark style="color:red;">**`udevadm`**</mark> command to view the pertinent information that would allow you to directly specify a device within a udev rule when it's attached, and then execute specific actions on that device.
+You can use the <mark style="color:red;">**`udevadm`**</mark> command to **view the pertinent information that would allow you to directly specify a device within a udev rule when it's attached**, and then execute specific actions on that device.
 
 There are two ways to do this:
 
@@ -472,6 +472,6 @@ Normally, kernel modules are loaded automatically by the kernel. **To load a mod
 Used to add a loadable kernel module (LKM) to the Linux kernel or to remove an LKM from the kernel
 {% endhint %}
 
-One nice feature of the <mark style="color:red;">**`modprobe`**</mark> command is that it will **automatically load all dependency modules**, so in the case of loading the `ext4` module, it would automatically load the `crc16`, `mbcache`, and `jdb2` modules.
+One nice feature of the <mark style="color:red;">**`modprobe`**</mark> command is that it will **automatically load all dependency modules**, so in the case of loading the **`ext4`** module, it would automatically load the **`crc16`**, **`mbcache`**, and **`jdb2`** modules.
 
 **The **<mark style="color:red;">**`modprobe`**</mark>** command can also be used to remove modules from memory with the **<mark style="color:red;">**`-r`**</mark>** option**. Executing the <mark style="color:red;">`modprobe -r ext4`</mark> command would remove the `ext4` module from memory, and it will automatically remove the `crc16`, `mbcache`, and `jdb2` modules from memory as long there was nothing else that depended upon them:

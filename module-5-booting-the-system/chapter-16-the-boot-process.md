@@ -236,29 +236,3 @@ Jun 04 16:21:58 centos kernel: Initializing cgroup subsys cpu
 ```
 
 The <mark style="color:red;">**`-b`**</mark> option makes the <mark style="color:red;">**`journalctl`**</mark> command behave similarly to the <mark style="color:red;">`dmesg`</mark> command, by **displaying only messages concerning the most recent bootup**, which can be useful for troubleshooting issues regarding the boot process.
-
-## Key Terms
-
-#### /etc/inittab&#x20;
-
-Configuration file read by init when it starts up to determine what process to start for various run levels.
-
-#### SysVinit&#x20;
-
-The traditional service management package for Linux, containing the init program (the first process that is run when the kernel has finished initializing) as well as some infrastructure to start and stop services and configure them.
-
-#### UEFI&#x20;
-
-The Unified Extensible Firmware Interface (UEFI) is system firmware. UEFI uses a special partition on a drive called an EFI System Partition to store the bootloader for an OS.
-
-#### init&#x20;
-
-The parent of all processes on the system, it is executed by the kernel and is responsible for starting all other processes.
-
-#### journalctl&#x20;
-
-The log file viewer for binary log files.
-
-#### systemd
-
-&#x20;A full replacement for init with parallel starting of services and other features, used by many distributions.

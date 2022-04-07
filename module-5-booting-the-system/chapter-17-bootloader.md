@@ -53,43 +53,47 @@ The older version of GRUB is now called GRUB Legacy.
 
 ## GRUB Legacy configuration
 
-In GRUB Legacy, the first disk detected is referred to as `hd0` ,the second disk as `hd1` and so on. Partitions on disks are also numbered starting at zero. Therefore, use `hd0,0` to refer to the first partition on the first disk, `hd1,0` for the first partition on the second disk.
+In GRUB Legacy, **the first disk detected is referred to as `hd0`** ,the second disk as **`hd1`** and so on. Partitions on disks are also numbered starting at zero. Therefore, use `hd0,0` to refer to the first partition on the first disk, `hd1,0` for the first partition on the second disk.
 
 {% hint style="info" %}
+Devices files are used by the operating system to refer to hard drives and partitions. For example, the first **SATA** device would have a device file name of ** `/dev/sda`** .The first **IDE** device would have a device file name of **`/dev/hda`**`.` So, the first partition on this device would be named `/dev/hda1`
+
 Not only does GRUB Legacy not distinguish between SATA and IDE drives, it also doesn't number drives with letters like the operating system does. For example, the first hard drive is `0`, not `a`.
 {% endhint %}
 
-The GRUB Legacy bootloader is typically installed as part of the installation process. In the event that the GRUB Legacy bootloader needs to be reinstalled, then GRUB Legacy can be reinstalled by running the following command:
+The GRUB Legacy bootloader is typically installed as part of the installation process. In the event that the GRUB Legacy bootloader needs to be reinstalled, then **GRUB Legacy can be reinstalled by running the **<mark style="color:red;">**`grub-install`**</mark>**  command:**
 
 ```bash
 grub-install '(hd0)'
 ```
 
-The `grub-install` command will install the GRUB Legacy bootloader to the first disk device in the system.&#x20;
+The <mark style="color:red;">**`grub-install`**</mark> command will install the GRUB Legacy bootloader to the first disk device in the system.&#x20;
 
-> The `grub-install` command exists primarily to gather information about the system, its disk, filesystems, and the location of the `/boot/grub` directory on disk, and then install the GRUB Legacy bootloader's image
+> The **`grub-install`** command exists primarily to gather information about the system, its disk, filesystems, and the location of the `/boot/grub` directory on disk, and then install the GRUB Legacy bootloader's image
 
 {% hint style="success" %}
-GRUB Legacy can have either or both of the following two main configuration files: the `/boot/grub/menu.lst` and `/boot/grub/grub.conf` files. Depending on the distribution, one file is preferred over the other.&#x20;
+GRUB Legacy can have either or both of the following two main configuration files: the **`/boot/grub/menu.lst`** and **`/boot/grub/grub.conf`** files. Depending on the distribution, one file is preferred over the other.&#x20;
 
-For the sake of clarity and reducing confusion, this section will focus on the newer and more common file location, `/boot/grub/grub.conf` file.
+For the sake of clarity and reducing confusion, this section will focus on the newer and more common file location, <mark style="color:red;">**`/boot/grub/grub.conf`**</mark> file.
 {% endhint %}
 
 ### `grub-mkconfig`
 
-The <mark style="color:red;">`grub-mkconfig`</mark> command will query the running system for the contents of the `/boot` directory, the contents of the `/etc/default/grub` location if it exists, and any scripts that are located in the `/etc/grub.d` directory.
+Because the default is to have a working version of the GRUB configuration file, `/etc/grub.conf` ,generated and installed by the installation routines, a user may not have to generate a new configuration by hand. However, it is useful to know what <mark style="color:red;">**`grub-mkconfig`**</mark> command can do for you **in case your configuration file is damaged or somehow gets corrupted on disk**.
+
+The <mark style="color:red;">**`grub-mkconfig`**</mark> command will query the running system for the contents of the **`/boot`** directory, the contents of the **`/etc/default/grub`** location if it exists, and any scripts that are located in the **`/etc/grub.d`** directory.
 
 Next, it will output the properly-formatted configuration file to the specified location. For example, to generate the `/boot/grub/grub.cfg` file, you would use the following command:
 
-```
+```bash
 sysadmin@localhost:~$ grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-The `/boot/grub/grub.cfg` file will **contain the gathered information formatted accordingly** and should be **what the system needs to boot the currently installed system** properly.
+In the example above, the <mark style="color:red;">**`-o`**</mark> option specifes the output location, wis the `/boot/grub/grub.cfg` file that will **contain the gathered information formatted accordingly** and should be **what the system needs to boot the currently installed system** properly.
 
-While the location of grub.conf is the `/boot/grub/grub.conf` file, on some systems a symbolic link named `/etc/grub.conf` makes it easier for the admin to find
+While the location of grub.conf is the **`/boot/grub/grub.conf`** file, on some systems a symbolic link named **`/etc/grub.conf`** makes it easier for the admin to find
 
-```
+```bash
 sysadmin@localhost:~$ ls -l /etc/grub.conf
 lrwxrwxrwx 1 root root 22 Jun 18  2012 /etc/grub.conf -> ../boot/grub/grub.conf
 ```
@@ -124,9 +128,7 @@ title OtherOS (Windows)
 	chainloader +1
 ```
 
-Global options appear first, followed by title blocks, which contains at least three directives: `root`, `kernel`, `initrd` .These title blocks define an operating system to boot, as well as options to the kernel that indicate how to boot the operating system.
-
-
+Global options appear first, followed by title blocks, which contains at least three directives: <mark style="color:red;">**`root`**</mark>, <mark style="color:red;">**`kernel`**</mark>, <mark style="color:red;">**`initrd`**</mark> .These title blocks **define an operating system to boot,** as well as options to the kernel that **indicate how to boot the operating system**.
 
 | Directive      | Meaning                                                                                                                                                                                                                                                                                                                              |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -136,21 +138,21 @@ Global options appear first, followed by title blocks, which contains at least t
 | `splashimage=` | Specify a background graphic that appears behind the text of the menu.                                                                                                                                                                                                                                                               |
 | `hiddenmenu`   | Prevents GRUB Legacy from displaying all but the default bootable title until the user presses a key. If the user presses a key, then all titles are displayed.                                                                                                                                                                      |
 | `title`        | The title directive starts a new block of directives that form the directives necessary to boot the system. A title block ends when the next title directive appears or when the end of the file is reached.                                                                                                                         |
-| `root`         | Uses the special hard disk syntax to refer to the location of the `/boot` directory.                                                                                                                                                                                                                                                 |
-| `kernel`       | This line specifies the kernel image file, followed by all the parameters that are passed to the kernel, such as `ro` for read-only and `root=/path/to/rootfs`.                                                                                                                                                                      |
-| `initrd`       | This line should specify an initial ramdisk that matches the version and release of the Linux kernel. This file provides a minimal filesystem during kernel initialization prior to mounting the root filesystem.                                                                                                                    |
+| `root`         | Uses the special hard disk syntax to **refer to the location of the `/boot` directory**.                                                                                                                                                                                                                                             |
+| `kernel`       | This line **specifies the kernel image file**, followed by all the parameters that are passed to the kernel, such as `ro` for read-only and `root=/path/to/rootfs`.                                                                                                                                                                  |
+| `initrd`       | This line should **specify an initial ramdisk that matches the version and release** of the Linux kernel. This file provides a minimal filesystem during kernel initialization prior to mounting the root filesystem.                                                                                                                |
 | `password`     | This option can be used as either a global option or a title option. When specified globally, this requires the user to submit the specified password before appending, editing, or using the GRUB Legacy command line. As a title option, this requires the user to submit the password before GRUB will attempt to boot the title. |
-| `rootnoverify` | This directive is used to specify a bootable partition for a non-Linux operating system.                                                                                                                                                                                                                                             |
-| `chainloader`  | Used to specify a path to another bootloader or +1 if the bootloader is located in the first sector of the partition specified by the `rootnoverify` directive.                                                                                                                                                                      |
+| `rootnoverify` | This directive is **used to specify a bootable partition for a non-Linux operating system**.                                                                                                                                                                                                                                         |
+| `chainloader`  | Used to **specify a path to another bootloader** or +1 if the bootloader is located in the first sector of the partition specified by the `rootnoverify` directive.                                                                                                                                                                  |
 
 For an encrypted password, use the `--md5` option for the `password` directive:
 
-```
+```bash
 password --md5 $1$D20Ia1$iN6djlheGF0NQoyerYgpp/. 
 ```
 
 {% hint style="info" %}
-To generate the encrypted password, use the <mark style="color:red;">`grub-md5-crypt`</mark> command or execute the `grub` command and then at the `grub` prompt, type the <mark style="color:red;">`md5crypt`</mark> command
+To generate the encrypted password, use the <mark style="color:red;">**`grub-md5-crypt`**</mark> command or execute the **`grub`** command and then at the `grub` prompt, type the <mark style="color:red;">`md5crypt`</mark> command
 {% endhint %}
 
 ### Interacting with GRUB Legacy
@@ -161,7 +163,9 @@ One of the most common task performed interactively with GRUB Legacy is to boot 
 
 The single user runlevel is when a system has limited services running and is used only to perform administrative tasks.
 
-In the event that there is a serious system problem, the single user runlevel can be very useful. In this runlevel, only the root user has access to the system, and most system daemons are not running.
+In the event that there is a **serious system problem, the single user runlevel can be very useful**. In this runlevel, only the root user has access to the system, and most system daemons are not running.
+
+Additionally, when the system boots to the single user runlevel, the root password is not required to log in because the system automatically logs in as the root user. **This makes the single user runlevel useful for things like recovering or replacing a forgotten root password**.
 
 ## GRUB 2
 
@@ -169,47 +173,51 @@ The new GRUB 2 offer several advantages:
 
 * Dynamically loaded modules
 * Non-ASCII characters support
-* Ability to boot from partitions inside of Logical Volume Managment (LVM) or RAID services.
-* Ability to work with architectures that don't have a PC BIOS
+* Ability to **boot from partitions inside of Logical Volume Managment (LVM) or RAID** services.
+* Ability to **work with architectures that don't have a PC BIOS**
 
 ### GRUB 2 Boot steps
 
-1. The _first stage loader_ `boot.img` is either read from the first 440 bytes of the MBR, or alternatively read from the Partition Boor Record (PBR)&#x20;
-2. The _second stage loader_ `diskboot.img` is used as the first sector of the third stage loader.
-3. The _third stage loader_ `core.img` umcompress itself, accesses its own GRUB 2 kernel and filesystem drivers attempts to access the actual root filesystem's `/boot/grub` directory.
-4. If it can access the `/boot/grub` directory on disk, then loads the _fourth stage module_ `normal.mod` which then reads the `/boot/grub/grub.cfg` file and presents either a GUI for GRUB 2 or the CLI menu so the user can choose an image to boot.
+1. The _first stage loader_ <mark style="color:red;">**`boot.img`**</mark> is either read from the first 440 bytes of the MBR, or alternatively read from the Partition Boor Record (PBR)&#x20;
+2. The _second stage loader_ <mark style="color:red;">**`diskboot.img`**</mark> is used as the first sector of the third stage loader.
+3. The _third stage loader_ <mark style="color:red;">**`core.img`**</mark> umcompress itself, accesses its own GRUB 2 kernel and filesystem drivers attempts to access the actual root filesystem's `/boot/grub` directory.
+4. If it can access the `/boot/grub` directory on disk, then loads the _fourth stage module_ <mark style="color:red;">**`normal.mod`**</mark> which then reads the **`/boot/grub/grub.cfg`** file and presents either a GUI for GRUB 2 or the CLI menu so the user can choose an image to boot.
 
 ### GRUB 2 Configuration
 
-Although both Fedora and Ubuntu distributions are now using GRUB 2,they each use a different location for the main configuration file. Fedora uses the `/boot/grub2/grub.cfg` file instead of the `/boot/grub/grub.cfg` file that is used by Ubuntu-based distributions.
+Although both Fedora and Ubuntu distributions are now using GRUB 2,they each use a different location for the main configuration file. **Fedora** uses the **`/boot/grub2/grub.cfg`** file instead of the **`/boot/grub/grub.cfg`** file that is used by **Ubuntu-based** distributions.
 
 {% hint style="warning" %}
-Any changes made it to it will be lost upon updating the kernel or if and administrator executes the `update-grub` command (for Ubuntu-based distributions) or the `grub2-mkconfig` command (for Fedora-based systems).
+While it is possible to edit the main configuration file, any changes made to it will be lost upon updating the kernel or if an administrator executes the <mark style="color:red;">**`update-grub`**</mark> command (**for Ubuntu-based distributions**) or the <mark style="color:red;">**`grub2-mkconfig`**</mark> command (**for Fedora-based systems**).
 {% endhint %}
 
 While GRUB Legacy expects the main configuration file will be edited, GRUB 2 expects any customizations to occur in the `/etc/grub.d` directory or the `/etc/default/grub` file.
 
+With GRUB Legacy, the files for GRUB were kept in the `/boot/grub` directory. Now, GRUB 2 uses several locations for its files:
+
 |      File Location     | Details                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | :--------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|      `/boot/grub2`     | <ul><li>Contains many module files.</li><li>Contains the <code>grub.cfg</code> file, a configuration file which should not be edited manually.</li><li>Contains the <code>grubenv</code> file, a configuration file which should not be edited manually</li></ul>                                                                                                                                                                                                                                     |
+|      `/boot/grub2`     | <ul><li>Contains many module files.</li><li>Contains the <strong><code>grub.cfg</code></strong> file, a configuration file which should not be edited manually.</li><li>Contains the <code>grubenv</code> file, a configuration file which should not be edited manually</li></ul>                                                                                                                                                                                                                    |
 |   `/etc/default/grub`  | <ul><li>Contains the entries for creating a default boot entry; typically where customization by administrators will be performed.</li></ul>                                                                                                                                                                                                                                                                                                                                                          |
 |      `/etc/grub.d`     | <ul><li>Contains scripts that are run by GRUB 2.</li><li>Scripts can be customized or added to this directory.</li><li><p>Contains the following executable scripts by default:</p><p><code>/etc/grub.d/00_header</code></p><p><code>/etc/grub.d/10_linux</code></p><p><code>/etc/grub.d/20_linux_xen</code></p><p><code>/etc/grub.d/30_os-prober</code></p><p><code>/etc/grub.d/40_custom</code></p><p><code>/etc/grub.d/41_custom</code></p><p><code>/etc/grub.d/90_persistent</code></p></li></ul> |
 |     `/usr/lib/grub`    | <ul><li>Stores a couple of library files.</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `/sbin/grub2-mkconfig` | <ul><li>Command used to regenerate the <code>/boot/grub2/grub.cfg</code> file.</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `/sbin/grub2-mkconfig` | <ul><li><strong>Command used to regenerate the <code>/boot/grub2/grub.cfg</code> file</strong>.</li></ul>                                                                                                                                                                                                                                                                                                                                                                                             |
 
-The `/etc/default/grub` file can also be modified for the administrator automatically by executing the <mark style="color:red;">`grub-set-default`</mark> command with the menu entry to set as default. For example, to make the second menu entry the default menu entry, an administrator would execute:
+After modifying the **`/etc/default/grub`** file. execute either the <mark style="color:red;">**`update-grub`**</mark> command (for **Ubuntu based**-system) or the <mark style="color:red;">**`grub2-mkconfig`**</mark> command (**for Fedora**-based systems) to update the actual configuration file used by GRUB 2 at boot time.
 
-```
+The `/etc/default/grub` file **can also be modified for the administrator** automatically by **executing the** <mark style="color:red;">**`grub-set-default`**</mark> command with the menu entry to set as default. For example, to make the second menu entry the default menu entry, an administrator would execute:
+
+```bash
 root@localhost:~# grub-set-default 1
 ```
 
-If GRUB 2 needs to be installed or reinstalled, then an administrator would execute:
+If GRUB 2 needs to be **installed or reinstalled,** then an administrator would execute:
 
-```
+```bash
 root@localhost:# /sbin/grub2-install /dev/sda
 ```
 
-After installing GRUB 2, the configuration file needs to be generated for the first time. In a Fedore-based distribution, an administrator would execute:
+After installing GRUB 2, the configuration file needs to be generated for the first time. In a **Fedora**-based distribution, an administrator would execute:
 
 ```bash
 [root@localhost]# grub2-mkconfig -o /boot/grub2/grub.cfg

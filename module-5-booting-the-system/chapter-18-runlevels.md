@@ -1,17 +1,36 @@
+---
+description: >-
+  101.3: Change runlevels / boot targets and shutdown or reboot system v2 
+  Weight: 3
+---
+
 # Chapter 18: Runlevels
 
-#### Key terms
+<details>
 
-| Key terms          | Meaning                                                                                                                                                                      |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/etc/init.d`      | Contains **scritps used by System V init tools** (SysVinit)                                                                                                                  |
-| `/etc/inittab`     | Configuration file read by init when it starts up to **determine what process to start for various run levels**                                                              |
-| `/etc/systemd`     | The location of various **unit files that control services** controlled by systemd                                                                                           |
-| `/usr/lib/systemd` | **Location of services** provided by installed packages.                                                                                                                     |
-| `init`             | The **parent of all processes on the system**, it is **executed by the kerne**l and is responsible for starting all other processes.                                         |
-| `systemctl`        | The interface to systemd, the init system used by many Linux distributions. **Can use for instance to enable/disable services permanently** or only for the current session. |
-| `telinit`          | Signal init to **change the system's runlevel**. telinit is actually just a link to init.                                                                                    |
-| `wall`             | **Displays a messages**, or the contents of a file, or otherwise its standard input, **on the terminals of all currently logged in users**.                                  |
+<summary>Key Terms</summary>
+
+**`/etc/init.d`** Contains scripts used by the System V init tools (SysVinit)
+
+**`/etc/inittab`** Configuration file read by `init` when it starts up to determine what process to start for various run levels
+
+**`/etc/systemd`** The location of various unit files that control services controlled by systemd
+
+**`/usr/lib/systemd`** The location of services provided by installed packages
+
+**`init`** The parent of all processes on the system, it is executed by the kernel and is responsible for starting all other processes.
+
+**`shutdown`** Arranges for the system to be brought down in a safe way
+
+**`systemctl`** The interface to systemd, the init system used by many Linux distributions. It combines the functionallity of both services and chkconfig into a single file tool that you can use for instance to enable/disable permanently or only for the current session.
+
+**`systemd`** A full replacement for `init` with parallel starting of services and other features, used by many distros.
+
+**`telinit`** Signal `init` to change the system's runlevel. `telinit` is actually just a link to `init`&#x20;
+
+**`wall`** Displays a message, or the contents of a fille, or otherwise its stadin, on the terminals of all currently logged in users.
+
+</details>
 
 ## Introduction
 

@@ -38,9 +38,9 @@ Linux uses the concept of different _runlevels_ to define what services or proce
 
 > Typically only runlevels 0 through 6 are used.
 
-Traditionally, `init` and **Upstart** used these runleves to define which services were started according to the needs of a particular runlevel.
+Traditionally, <mark style="color:red;">**`init`**</mark> and <mark style="color:red;">**`Upstart`**</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> used these _<mark style="color:green;">**runleves**</mark>_ to define which services were started according to the needs of a particular runlevel.
 
-These programs have been replaced on many distributions by **systemd**. It does something similar to runlevels called _targets_, which are shown in the following table with their runlevel equivalent.
+**These programs have been replaced on many distributions by** <mark style="color:red;">**`systemd`**</mark>. It does something similar to runlevels called _<mark style="color:green;">**targets**</mark>_, which are shown in the following table with their runlevel equivalent.
 
 | Runlevel | Purpose                                                                   | systemd Target      |
 | -------- | ------------------------------------------------------------------------- | ------------------- |
@@ -54,11 +54,13 @@ These programs have been replaced on many distributions by **systemd**. It does 
 
 ## Default Runlevel
 
-Systems using traditional `init` can specify the default runlevel by modifying the `/etc/inittab` file entry that looks like the following:
+Systems using traditional <mark style="color:red;">**`init`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> can specify the default runlevel by modifying the **`/etc/inittab`** file entry that looks like the following:
 
-```
+```bash
 id:5:initdefault:
 ```
+
+In this example, the default `runlevel` indicated is for the system to go to runlevel 5, which is typical for a desktop or laptop system that will be runnning a GUI, and will, most likely, be used by an end user.
 
 > For most Linux systems, runlevel 5 provides the highest level of functionality, including providing a GUI interface.
 
@@ -68,72 +70,102 @@ Servers typically don't offer a GUI interface, so the `initdefault` entry might 
 id:3:initdefault:
 ```
 
-If the system is using **Upstart** instead of the traditional`init` process, then the default reunlevel may also be set in the `/etc/inittab` file, as is the case with distributions derived from RHE Linux 6. On the other hand, distributions like Ubuntu (the distribution that developed **Upstart**) can be changed by setting the DEFAULT\_RUNLEVEL environmental variable in the `/etc/init/rc-sysinit.conf` file.
+**If the system is using** <mark style="color:red;">**`Upstart`**</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> instead of the traditional`init` process, then the default `runlevel` may also be set in the <mark style="color:red;">**`/etc/inittab`**</mark> file, as is the case with distributions derived **from Red Hat Enterprise Linux 6**.&#x20;
 
-{% hint style="warning" %}
-systemd doesn't natively use runlevels, but it has something similar called _targets._
+On the other hand, distributions like **Ubuntu** can be changed by setting the `DEFAULT_RUNLEVEL` environmental variable in the <mark style="color:red;">**`/etc/init/rc-sysinit.conf`**</mark> file.
+
+{% hint style="danger" %}
+**systemd** doesn't natively use runlevels, but it has something similar called _**targets**._
 {% endhint %}
 
-To set a default target, create a symbolic link from the target definition found in the `/lib/systemd` directory to the `/etc/systemd/system/default.target` file. This file is a symbolic link that controls where the system first boots into.
+To set a default target in **`systemd`**, create a symbolic link from the target definition found in the <mark style="color:red;">`/lib/systemd/system/`</mark> directory to the <mark style="color:red;">`/etc/systemd/system/default.target`</mark> file. This file is a symbolic link that controls where the system first boots into.
+
+```bash
+root@ubuntu:/lib/systemd/system: ln -sf graphical.target /etc/systemd/system/default.target
+root@localhost:~# ls -l /etc/systemd/system/default.target                      
+lrwxrwxrwx 1 root root 36 Apr  8 08:24 /etc/systemd/system/default.target -> /li
+b/systemd/system/graphical.target
+```
 
 ## Viewing current runlevel
 
-One of the commands that displays the current runlevel is the `runlevel` command, which shows the previous runlevel first, followed by the current runlevel. If no previous runlevel was achieved, then it will show N for the previous runlevel.
+One of the commands that displays the current runlevel is the <mark style="color:red;">**`runlevel`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command, which **shows the previous runlevel first, followed by the current runlevel**. If no previous runlevel was achieved, then it will show **N** for the previous runlevel.
 
-```
+```bash
 root@ubuntu:~# runlevel
 N 2
 ```
 
-The `who -r` command also displays the current system runlevel. One benefit of this technique is that it will display the date and time that the current runlevel was reached:
+The <mark style="color:red;">**`who -r`**</mark> command also **displays the current system runlevel**. One benefit of this technique is that it will display the date and time that the current runlevel was reached:
 
-## Changing runLevels and Targets
-
-Both the traditional _SysVinit_ and _Upstart_ support passing runlevels to the kernel as parameters from the bootloader to override the default runlevel.
-
-To specify a different runlevel at boot time on a system that uses **systemd**, append to the kernel parameters an option with the following syntax where DESIRED.TARGET is one of the systemd targets.
-
-```
-systemd.unit=multiuser.target
+```bash
+root@ubuntu:~# who -r
+        run-level 2  2019-05-29 14:25
 ```
 
-The root user can also change runlevels while the operating system is running by using several commands, including the `init` and `telinit` commands, which allow the desired runlevel to be specified.
+## Changing Runlevels and Targets
 
-## The `init` and `telinit` Commands
+Both the traditional _**SysVinit**_** ** and _**Upstart**_** ** support **passing runlevels to the kernel as parameters** from the bootloader to override the default runlevel.
 
-To directly specify the runlevel to go to, either use <mark style="color:red;">`init`</mark> or <mark style="color:red;">`telinit`</mark>`.` The `telinit` command in some distro has a `-t` option, which allows for a time delay in seconds to be specified; otherwise the `init` and `telinit` command are functionally identical.&#x20;
+To specify a different runlevel at boot time on a system that uses **systemd**, append to the kernel parameters an option with the following syntax where `DESIRED.TARGET` is one of the **systemd** targets.
 
-To use these commands, simply specify the desired runlevel as an argument.&#x20;
-
-```
-init 5
-telinit 6
+```bash
+systemd.unit=DESIRED.TARGET
 ```
 
-With the **systemd** replacement for init, the <mark style="color:red;">`init`</mark> command can still be used to modify the runlevel; **systemd will translate the desired runlevel to a target.**&#x20;
+**The root user can also change runlevels while the operating system is running by using several commands**, including the <mark style="color:red;">`init`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> and <mark style="color:red;">`telinit`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> commands, which allow the desired runlevel to be specified.
 
-To have systemd natively switch to a target state, with root privileges execute:
+## The <mark style="color:red;">`init`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> and <mark style="color:red;">`telinit`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> Commands
 
+To directly specify the runlevel to go to, either use <mark style="color:red;">**`init`**</mark>** ** or <mark style="color:red;">**`telinit`**</mark>. The <mark style="color:red;">**`telinit`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command in some distro has a <mark style="color:red;">`-t`</mark> option, which **allows for a time delay in seconds to be specified**; otherwise the <mark style="color:red;">`init`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> and <mark style="color:red;">`telinit`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command are functionally identical.
+
+{% hint style="info" %}
+In fact, on some systems, the <mark style="color:red;">`telinit`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command may be a simple link to the <mark style="color:red;">`init`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command`.`
+{% endhint %}
+
+To use these commands, simply specify the desired runlevel as an argument. For example, to reboot the system, use either the `init 6` command or the `telinit 6` command.&#x20;
+
+```bash
+root@localhost:~ init 6
+root@localhost:~ telinit 6
 ```
+
+{% hint style="danger" %}
+Changing runlevels will affect the applications or services you are running and can cause data loos or connection interruption for users accessing the system for those services.
+{% endhint %}
+
+With the **systemd** replacement for <mark style="color:red;">`init`</mark>, the <mark style="color:red;">`init`</mark> command can still be used to modify the `runlevel`; **systemd will translate the desired runlevel to a **<mark style="color:red;">**target**</mark>**.**  For example, if `init 5` is executed, then systemd would attempt to change to the `graphical.target` state.
+
+To have **`systemd` ** natively switch to a target state, with root privileges execute:
+
+```bash
 systemctl isolate DESIRED.TARGET
 systemctl isolate rescue.target
 ```
 
 ### The halt, poweroff, reboot, and shutdown Commands
 
-To bring the system down to runlevel zero, execute the `halt` ,`poweroff` or `shutdown` command.&#x20;
+To bring the system down to runlevel zero, execute the <mark style="color:red;">`halt`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> ,<mark style="color:red;">`poweroff`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> or <mark style="color:red;">`shutdown`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command.&#x20;
 
-While the <mark style="color:red;">`halt`</mark> and <mark style="color:red;">`poweroff`</mark> commands will begin shutting down the system immediately, the <mark style="color:red;">`shutdown`</mark> command requires a time argument to indicate when the shutdown should begin. A message will appear in the terminals of all users can also be specified with the `shutdown` command.
+While the <mark style="color:red;">`halt`</mark> and <mark style="color:red;">`poweroff`</mark> commands will begin shutting down the system immediately, **the **<mark style="color:red;">**`shutdown`**</mark>** command requires a time argument to indicate when the shutdown should begin**.&#x20;
+
+> Formats of this time argument can be the word **`now`**, a countdown time in the `HH:MM` format, or the number of minutes to delay in the `+M` format
+
+A message will appear in the terminals of all users can also be specified with the <mark style="color:red;">`shutdown`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command.
 
 ```
 root@localhost:~# shutdown now "System going down for repairs"
 ```
 
-Oddly enough, if an option is not specified, then the `shutdown` command will actually take the system down to _runlevel_ 1. **The `shutdown` command used with the `-r` option is similar to using the `reboot`** command and will cause the system to go to runlevel 6. The `shutdown` command used with the `-h` option is similar to using the `halt` command and will cause the system to go to runlevel 0.
+Oddly enough, **if an option is not specified**, then the <mark style="color:red;">**`shutdown`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command will actually take the system down **to **_**runlevel**_** 1**.&#x20;
+
+The <mark style="color:red;">**`shutdown`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command used with the <mark style="color:red;">**`-r`**</mark> option is similar to using the <mark style="color:red;">**`reboot`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command and will cause the system **to go to **_**runlevel**_** 6.**&#x20;
+
+The <mark style="color:red;">**`shutdown`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command used with the <mark style="color:red;">**`-h`**</mark> option is similar to using the <mark style="color:red;">**`halt`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command and will cause the system **to go to **_**runlevel**_** 0.**
 
 ## The `wall` Command
 
-The <mark style="color:red;">`wall`</mark> command can be used to display messages or the contents of a file to all users on the system.&#x20;
+The <mark style="color:red;">**`wall`**</mark>** ** command can be **used to display messages or the contents of a file to all users on the system**.&#x20;
 
 ```bash
 sysadmin@localhost:~$ echo -e "The server will be offline on Saturday
@@ -144,9 +176,22 @@ Broadcast message from sysadmin@localhost (console) (Wed May 29 22:13:59
 The server will be offline on Saturday from
 ```
 
-The `wall` command accepts standard input or the name of a file. To display a file, the `wall` command either requires the user to have root privileges or the contents to be piped from another command, such as `cat` command.&#x20;
+The <mark style="color:red;">**`wall`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command accepts standard input or the name of a file. To display a file, the <mark style="color:red;">**`wall`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command either **requires the user to have root privileges or the contents to be piped from another command**, such as <mark style="color:red;">`cat`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command.&#x20;
 
-```
+```bash
+sysadmin@localhost:~/Documents$ wall letters.txt
+wall: will not read letters.txt - use stdin.
+sysadmin@localhost:~/Documents$ sudo wall letters.txt
+[sudo] password for sysadmin:
+
+Broadcast message from sysadmin@localhost (console) (Wed May 29 22:15:23
+2019):
+
+a
+b
+c
+d
+e
 sysadmin@localhost:~/Documents$ cat letters.txt | wall
 
 Broadcast message from sysadmin@localhost (console) (Wed May 29 22:17:44
@@ -155,24 +200,43 @@ Broadcast message from sysadmin@localhost (console) (Wed May 29 22:17:44
 HOLA 
 ```
 
-The `-n` option can be used by the `wall` command to suppress the leading banner. (only available for root)
+The <mark style="color:red;">`-n`</mark> option can be used by the <mark style="color:red;">`wall`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command to **suppress the leading banner. (only available for root)**
 
 ## Managing system services
 
 Typically, administrators will want to automate the management of services, so when the system is taken to a specific runlevel or taget state, they will know what services should automatically be available.
 
-If a system is using traditional `init` process to manage system services, then the scripts in the `/etc/rc.d/init` directory are used to manage the state of those services. For convenience, this directory, will usually have a symbolic link from the `/etc/init.d` file. The scripts in this directory are often referred to as `init` scripts.
+If a system is using traditional <mark style="color:red;">`init`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> process to manage system services, then the scripts in the **`/etc/rc.d/init`** directory are used to manage the state of those services. For convenience, this directory, will usually have a symbolic link from the `/etc/init.d` file. The scripts in this directory are often referred to as <mark style="color:red;">`init`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> scripts.
 
-Instead of having to type the full path name to the script, many systems provide a `service` script that allows the `init` script to be executed without having to type the full path name to the script.&#x20;
+To manually manage the state of a service, such as a web server, use the appropiate script in the **`/etc/rc.d/init.d/`** directory to start, stop, or otherwise chenge the state of the web server.
 
+> For example, on a Red Hat Enterprise Linux distribution, the script to manage the web server has a path name of /etc/rc.d/init.d/httpd. So, to manually start the web server, you will execute the following command as the root user:
+>
+> ```bash
+> [root@localhost ~]: /etc/rc.d/init.d/httpd start
+> Starting httpd:
+> ```
+
+I**nstead of having to type the full path name to the script**, many systems provide a <mark style="color:red;">**`service`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> script that **allows the **<mark style="color:red;">**`init`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** script to be executed** without having to type the full path name to the script.&#x20;
+
+```bash
+[root@localhost ~]: service httpd start
+[root@localhost ~]: service httpd stop
 ```
-[root@localhost ~]# service httpd start
-[root@localhost ~]# service httpd stop
+
+Different scritps have different capabilities or functions that they can perform. To discover what a script can do, execute the script without any argument.
+
+```python
+[root@localhost ~]# /etc/init.d/httpd
+Usage: httpd {start|stop|restart|conderestart|try-restart|force-reload|reload|status|fullst
+atus|graceful|help|configtest}
 ```
+
+
 
 ## Runlevel Directories
 
-With traditional `init` process, specific directories are used to manage which services will be automatically started or stopped at different runlevels. ** **<mark style="color:red;">**In many Linux distro, these directories all exis within the**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`/etc`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**directory**</mark>** ** and have the following path names:
+With traditional <mark style="color:red;">`init`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> process, **specific directories are used to manage which services will be automatically started or stopped at different `runlevels`. **<mark style="color:red;">****</mark> In many Linux distro, these directories all exist within the `/etc` directory **** and have the following path names:
 
 * rc0.d
 * rc1.d
@@ -192,7 +256,7 @@ rc0.d  rc1.d  rc2.d  rc3.d  rc4.d  rc5.d  rc6.d  rcS.d
 To have a service started in a runlevel, a symbolic link to the `init` script in the `/etc/rc.d/init.d` directory can be created in the appropiate runlevel directory.
 
 {% hint style="info" %}
-This link name must start with the letter `S` ,followed by a number from 1 to 99, and the same of the `init` script that it is linked to.
+This link name must **start** with the letter <mark style="color:red;">`S`</mark> ,followed by a number from 1 to 99, and the same of the `init` script that it is linked to.
 {% endhint %}
 
 ```bash
@@ -201,20 +265,39 @@ S01bind9             S01cron  S01irqbalance  S01rsync    S01ssh
 S01console-setup.sh  S01dbus  S01plymouth    S01rsyslog  S01uuidd
 ```
 
+For example, when the web server is set to start on a Linux system in runlevel 5, there is a symbolic link in the `/etc/rc.d/rc5.d` directory name <mark style="color:red;">`S85httpd`</mark> that is linked to the `/etc/rc.d/init.d/httpd` script:
+
+```bash
+[root@localhost ~]# ls -l /etc/rc.d/rc5.d/S85httpd
+lrwxrwxrwx 1 root root 19 Jun 27 16:53 /etc/rc.d/rc5.d/S85httpd ->
+../init.d/httpd
+```
+
 To manually create this link, you would execute the following command:
 
-```
+```bash
 [root@localhost ~]# ln -s /etc/rc.d/init.d/httpd /etc/rc.d/rc5.d/S85httpd
 ```
 
-Just as the `S` file links in a runlevel directory will indicate that a service is supposed to be _started_, the `K` file links in a runlevel directory will indicate that a service is supposed to be stopped (_killed_)
+Just as the <mark style="color:red;">`S`</mark> file links in a runlevel directory will indicate that a service is supposed to be _**started**_, the <mark style="color:red;">`K`</mark> file links in a runlevel directory will indicate that a service is supposed to be _**stopped**_ (_killed_).
 
-So, what number is supposed to be provided to a specific script for `S` and `K` ?Look at the script itself for the line that contains <mark style="color:red;">`chkconfig`</mark>.
+Using the web server as an example again; to have the web server stopped at runlevel 5, create a symbolic link in the `/etc/rc.d/rc5.d` directory that would start with the letter <mark style="color:red;">**`K`**</mark>, **followed by a number from 1 to 99,** and the name of the <mark style="color:red;">`init`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> script that it is linked to:
 
 ```
-[root@localhost ~]# grep chkconfig /etc/init.d/httpd
-# chkconfig: - 85 15
+[root@localhost ~]# ls -l /etc/rc.d/rc5.d/K15httpd
+lrwxrwxrwx 1 root root 19 Jun 27 16:53 /etc/rc.d/rc5.d/K15httpd -> ../init.d/httpd
 ```
+
+The reason that both **start** and **stop** links have a number after the letter <mark style="color:red;">**`S`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> or <mark style="color:red;">**`K`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> is to ensure that **services are started or stopped in the correct sequence**. The scripts are started (or stopped) in order, so `K15httpd` would be executed before `K35vncserver`.
+
+So, what number is supposed to be provided to a specific script for <mark style="color:red;">`S`</mark> and <mark style="color:red;">`K`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> ? Look at the script itself for the line that contains <mark style="color:red;">`chkconfig`</mark>.
+
+```bash
+[root@localhost ~]: grep chkconfig /etc/init.d/httpd
+# chkconfig: - 85 (S) 15(K)
+```
+
+The second to last number **`85` ** of the `chkconfig` line is the <mark style="color:red;">`S`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> number to place on this script, the last number **`15` ** is the <mark style="color:red;">`K`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> number.
 
 ## The `chkconfig` command
 

@@ -1,3 +1,10 @@
+---
+description: >-
+  102.1: Design hard disk layout v2 (2)                 104.2: Maintain the
+  integrity of file (2)                   104.1: Create partitions and
+  filesystems v2 (2)
+---
+
 # Module 6: Partitioning
 
 ## Chapter 19: Designing a Scheme
@@ -6,15 +13,15 @@
 
 <summary>Key Terms</summary>
 
-`/root` The filesystem that is contained on the same partition.
+**`/ (root) filesystem`** The filesystem that is contained on the same partition.
 
-`boot` The directory containing everything required for the boot process except for configuration files not needed at boot time.
+**`/boot filesystem`** The directory containing everything required for the boot process except for configuration files not needed at boot time.
 
-`/var` The directory containing variable data like system logging files, mail and printer spool directories, and transient and temporary files.
+**`/var`** The directory containing variable data like system logging files, mail and printer spool directories, and transient and temporary files.
 
-**EFI System Partition (ESP)** The Extensible Firmware Interface which is a partition that stores the bootloader for an operating system running on UEFI systems.
+**EFI System Partition (ESP)** The Extensible Firmware Interface which is a partition that _**stores the bootloader** for an operating system running **on UEFI systems**._
 
-**MBR** The Master Boot Record is the first 512 bytes of a storage device. It contains system bootloader and the storage device's partition table.
+**MBR** The Master Boot Record is the **first 512 bytes of a storage device**. It contains system bootloader and the storage device's partition table.
 
 **gdisk** An interactive GPT partition table manipulator. It will automatically covert the old-style MBR partition toable to the GPT format.
 

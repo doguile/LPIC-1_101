@@ -477,7 +477,7 @@ systemctl list-unit-files #show dependencies enabled and disabled
 
 ## Boot Target
 
-Many modern systems use the `systemd` rather than `init` for setting boot targets.&#x20;
+Many modern systems use the **`systemd`** rather than **`init`** for setting boot targets.&#x20;
 
 | Runlevel | Purpose                                                                   | systemd Target      |
 | -------- | ------------------------------------------------------------------------- | ------------------- |

@@ -37,7 +37,7 @@ description: >-
 
 ## Intro
 
-It is very important to understand this process, in order to be able to fix boot problems when they occur and for modifying system states called _**runlevels** _ or on **systemd** devices, targets.
+It is very important to understand this process, in order to be able to fix boot problems when they occur and for modifying system states called _**runlevels** _ or on systemd **** devices, **targets**.
 
 The boot process takes places in 4 main stages:
 

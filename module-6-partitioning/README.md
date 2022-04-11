@@ -37,27 +37,31 @@ Partitioning is necessary in order to optimally use the space that hard drives p
 
 There are three steps in the process of making and using partitions:
 
-1. Divide the hard drive into partitions.
-2. Create and format filesystems inside the partitions.
-3. Mount the filesystem into the directory tree
+1. Divide the hard drive into **partitions**.
+2. Create and format **filesystems** inside the partitions.
+3. **Mount** the filesystem into the directory tree
 
 ## Partitioning Naming
 
-In order to distinguish one partition from another, each partition is given a unique name. Recall that everything in Linux is treated as a file, so the **names of devices**, such as **drives and partitions**, are **stored in th `/dev` directory.**
+In order to distinguish one partition from another, each partition is given a unique name. Recall that everything in Linux is treated as a file, so the **names of devices**, such as **drives and partitions**, are **stored in th **<mark style="color:red;">**`/dev`**</mark>** directory.**
 
-| Device Type                                                                                                     | Name       | Example                                                  |
-| --------------------------------------------------------------------------------------------------------------- | ---------- | -------------------------------------------------------- |
-| Drives that start with `sd` are either SATA (Serial ATA), SCSI (Small Computer System Interface) or USB drives. | `/dev/sd*` | <p><code>/dev/sda</code></p><p><code>/dev/sdb</code></p> |
-| Drives that start with `hd` are PATA (Parallel ATA), also known as IDE (Integrated Drive Electronics) drives.   | `/dev/hd*` | <p><code>/dev/hda</code></p><p><code>/dev/hdb</code></p> |
+| Device Type                                                                                                                     | Name       | Example                                                  |
+| ------------------------------------------------------------------------------------------------------------------------------- | ---------- | -------------------------------------------------------- |
+| Drives that start with **`sd`** are either **SATA** (Serial ATA), **SCSI** (Small Computer System Interface) or **USB** drives. | `/dev/sd*` | <p><code>/dev/sda</code></p><p><code>/dev/sdb</code></p> |
+| Drives that start with **`hd`** are **PATA** (Parallel ATA), also known as **IDE** (Integrated Drive Electronics) drives.       | `/dev/hd*` | <p><code>/dev/hda</code></p><p><code>/dev/hdb</code></p> |
 
 **Partitions are then given names based on the drive they reside on.** A number is added to the end of the drive name to distinguish one partition from another.
 
-```
+```bash
 sysadmin@localhost:/dev$ ls sd*
 sda  sda1  sda2  sda3  sda4  sda6  sda7  sda9
 ```
 
-Similarly, partitions on drive `hda` would be `hda1`, `hda2`, etc., while partitions on `hdb` would be `hdb1`, `hdb2`, etc.
+Similarly, partitions on drive **`hda`** would be `hda1`, `hda2`, etc., while partitions on **`hdb`** would be `hdb1`, `hdb2`, etc.
+
+{% hint style="success" %}
+It's critical that you understand that the **files used to refer to hard drives are stored in **<mark style="color:red;">**`/dev`**</mark>** directory** and begin with either `sd` or `hd`
+{% endhint %}
 
 ## Partition Limitations
 
@@ -65,9 +69,9 @@ Similarly, partitions on drive `hda` would be `hda1`, `hda2`, etc., while partit
 
 Historically, <mark style="color:red;">the number of partitions a system can have is limited</mark> by the **Master Boot Record (MBR).** Recall that the MBR is usually contained within the first sector or 512 bytes of the disk and contains a bootloader program, as well as the partition table.
 
-Traditional disk using **MBR** partitioning <mark style="background-color:red;">**can have a maximum of 4 primary partitions**</mark>. For example, on a traditional SATA drive, 4 partitions  can be created with device names of `/dev/sdb1` ,`/dev/sdb2`, `/dev/sdb3` and `/dev/sdb4`
+Traditional disk using **MBR** **partitioning** <mark style="background-color:red;">**can have a maximum of 4 primary partitions**</mark>. For example, on a traditional SATA drive, 4 partitions  can be created with device names of `/dev/sdb1` ,`/dev/sdb2`, `/dev/sdb3` and `/dev/sdb4`
 
-For non-Linux OS, multiple partitions are rarely needed. However, on Linux servers, more than 4 partitions are often necessary. As a result, modern hardware allows the administrator to make 1 of the 4 partitions an _extended partition._&#x20;
+For non-Linux OS, multiple partitions are rarely needed. **However, on Linux servers, more than 4 partitions are often necessary**. As a result, modern hardware allows the administrator to make 1 of the 4 partitions an _extended partition._&#x20;
 
 > An extended partition acts as a container for additional partitions called _Logical_ partitions.
 

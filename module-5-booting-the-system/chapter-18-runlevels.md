@@ -34,7 +34,7 @@ description: >-
 
 ## Introduction
 
-Linux uses the concept of different _runlevels_ to define what services or processes will be running. Although the Linux Kernel can recognize runlevel values from 0 to 9.
+**Linux uses the concept of different **_**runlevels**_ to define what services or processes will be running. Although the Linux Kernel can recognize runlevel values from 0 to 9.
 
 > Typically only runlevels 0 through 6 are used.
 
@@ -60,7 +60,7 @@ Systems using traditional <mark style="color:red;">**`init`**</mark><mark style=
 id:5:initdefault:
 ```
 
-In this example, the default `runlevel` indicated is for the system to go to runlevel 5, which is typical for a desktop or laptop system that will be runnning a GUI, and will, most likely, be used by an end user.
+In this example, the default **`runlevel`** indicated is for the system to go to `runlevel 5`, which is typical for a desktop or laptop system that will be runnning a GUI, and will, most likely, be used by an end user.
 
 > For most Linux systems, runlevel 5 provides the highest level of functionality, including providing a GUI interface.
 
@@ -70,7 +70,7 @@ Servers typically don't offer a GUI interface, so the `initdefault` entry might 
 id:3:initdefault:
 ```
 
-**If the system is using** <mark style="color:red;">**`Upstart`**</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> instead of the traditional`init` process, then the default `runlevel` may also be set in the <mark style="color:red;">**`/etc/inittab`**</mark> file, as is the case with distributions derived **from Red Hat Enterprise Linux 6**.&#x20;
+**If the system is using** <mark style="color:red;">**`Upstart`**</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> instead of the traditional **`init`** process, then the default `runlevel` may also be set in the <mark style="color:red;">**`/etc/inittab`**</mark> file, as is the case with distributions derived **from Red Hat Enterprise Linux 6**.&#x20;
 
 On the other hand, distributions like **Ubuntu** can be changed by setting the `DEFAULT_RUNLEVEL` environmental variable in the <mark style="color:red;">**`/etc/init/rc-sysinit.conf`**</mark> file.
 
@@ -232,7 +232,19 @@ Usage: httpd {start|stop|restart|conderestart|try-restart|force-reload|reload|st
 atus|graceful|help|configtest}
 ```
 
-
+|    Argument   | Function                                                                                                                                                                                                                            |
+| :-----------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|    `start`    | If the service is not running, then attempt to start it.                                                                                                                                                                            |
+|     `stop`    | If the service is running, then attempt to stop it.                                                                                                                                                                                 |
+|   `restart`   | Stop and then start the service over. If a major configuration change is made to a service, it may have to be restarted to make the change effective.                                                                               |
+| `condrestart` | Restart the service on the condition that it is currently running.                                                                                                                                                                  |
+| `try-restart` | Same as `condrestart`.                                                                                                                                                                                                              |
+|    `reload`   | Read and load the configuration for the service. Reloading the configuration file of a service is normally a less disruptive way to make configuration changes to a service effective, but may not be successful for major changes. |
+|    `status`   | Show whether the service is stopped or the process id (PID) if the service is running. Note: It is also possible to use the `service --status-all` command to see the status of all daemons.                                        |
+|  `fullstatus` | For the Apache web server, displays the URL `/server-status`.                                                                                                                                                                       |
+|   `graceful`  | For the Apache web server, it gracefully restarts the server. If the server is not running, then it is started. Unlike a normal restart, open connections are not aborted.                                                          |
+|     `help`    | Displays the usage of the script.                                                                                                                                                                                                   |
+|  `configtest` | Checks the configuration files for correctness. For some services, if the configuration file is modified, then this can be used to verify that the changes have no syntax errors                                                    |
 
 ## Runlevel Directories
 

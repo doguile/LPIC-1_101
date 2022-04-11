@@ -477,7 +477,7 @@ systemctl list-unit-files #show dependencies enabled and disabled
 
 ## Boot Target
 
-Many modern systems use the systemd rather than init for setting boot targets.&#x20;
+Many modern systems use the `systemd` rather than `init` for setting boot targets.&#x20;
 
 | Runlevel | Purpose                                                                   | systemd Target      |
 | -------- | ------------------------------------------------------------------------- | ------------------- |
@@ -489,27 +489,27 @@ Many modern systems use the systemd rather than init for setting boot targets.&#
 | 5        | Start the system normally with a graphical display manager                | `graphical.target`  |
 | 6        | Restart the system                                                        | `reboot.target`     |
 
-To check the current runlevel on a Linux system, list the `/etc/systemd/systemd/default.target` file using the `ls -l` command
+To check the current runlevel on a Linux system, list the **`/etc/systemd/systemd/default.target`** file using the <mark style="color:red;">**`ls -l`**</mark> command
 
 ```
 [root@localhost ~]# ls -l /etc/systemd/system/default.target
 lrwxrwxrwx 1 root root 37 Dec  4 14:39 /etc/systemd/system/default.target ->/lib/systemd/system/multi-user.target
 ```
 
-If you need to set the system to boot into a single-user mode for troubleshooting or recovery operations, use the `systemctl enable rescue.target` command, followed by `systemctl set-default rescue.target` command.
+If you need to set the system to boot into a single-user mode for troubleshooting or recovery operations, use the <mark style="color:red;">**`systemctl enable rescue.target`**</mark> command, followed by <mark style="color:red;">**`systemctl set-default rescue.target`**</mark> command.
 
-To change the system to graphical mode after booting, use the `systemctl isolate graphical.target` command.
+To change the system to graphical mode after booting, use the <mark style="color:red;">**`systemctl isolate graphical.target`**</mark> command.
 
 ## `acpid`
 
-Linux systems use the Advanced Configuration and Power Interface (acpi) event daemon <mark style="color:red;">`acpid`</mark> to norify user-space programs of ACPI events. The ACPI allows the kernel to configure hardware components and manage the system's power settings, such as battery status monitoring, temperature, and more.
+Linux systems use the Advanced Configuration and Power Interface (acpi) event daemon <mark style="color:red;">`acpid`</mark> to norify user-space programs of ACPI events. **The ACPI allows the kernel to configure hardware components and manage the system's power settings,** such as battery status monitoring, temperature, and more.
 
-One example of using `acpid` for power management would be having the system shut down after the user presses the power button. On modern systems, `acpid` is normally started as a background process during bootup and opens an event file in the `/proc/acpi` directory.&#x20;
+One example of using **`acpid`** for power management would be having the system shut down after the user presses the power button. On modern systems, **`acpid` is normally started as a background process during bootup** and opens an event file in the `/proc/acpi` directory.&#x20;
 
-When the kernel sends out an ACPI event, `acpi` will determine the next steps based on rules defined in configuration files in the `/etc/acpi` directory.&#x20;
+When the kernel sends out an ACPI event, <mark style="color:red;">**`acpi`**</mark> will determine the next steps based on rules defined in configuration files in the **`/etc/acpi`** directory.&#x20;
 
 {% hint style="info" %}
-The `acpi` command is used to display information about **system hardware ACPI settings**.&#x20;
+The <mark style="color:red;">**`acpi`**</mark> command is used to display information about **system hardware ACPI settings**.&#x20;
 {% endhint %}
 
 There are many options available to the <mark style="color:red;">`acpi`</mark> command to display various information for power management.&#x20;
@@ -523,20 +523,3 @@ There are many options available to the <mark style="color:red;">`acpi`</mark> c
 | <p><code>-s</code></p><p><code>--show-empty</code></p> | Displays non-operational devices                                                                |
 | <p><code>-f</code></p><p><code>--fahrenheit</code></p> | Uses Fahrenheit as the temperature unit instead of the default, Celsius                         |
 | <p><code>-i</code></p><p><code>--details</code></p>    | Displays additional details if they are available; battery capacity and temperature trip points |
-
-\
-
-
-
-
-
-
-
-
-
-
-
-
-\
-
-

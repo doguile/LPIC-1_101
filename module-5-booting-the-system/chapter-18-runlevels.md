@@ -248,7 +248,7 @@ atus|graceful|help|configtest}
 
 ## Runlevel Directories
 
-With traditional <mark style="color:red;">`init`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> process, **specific directories are used to manage which services will be automatically started or stopped at different `runlevels`. **<mark style="color:red;">****</mark> In many Linux distro, these directories all exist within the `/etc` directory **** and have the following path names:
+With traditional <mark style="color:red;">`init`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> process, **specific directories are used to manage which services will be automatically started or stopped at different `runlevels`. **<mark style="color:red;">****</mark> In many Linux distro, these directories all exist within the **`/etc`** directory **** and have the following path names:
 
 * rc0.d
 * rc1.d
@@ -258,17 +258,17 @@ With traditional <mark style="color:red;">`init`</mark> <mark style="color:red;"
 * rc5.d
 * rc6.d
 
-The number in the directory name represents the runlevel that it manages, for example, `rc0.d` is for runlevel 0 and `rc1.d` is for runlevel 1.&#x20;
+**The number in the directory name represents the runlevel that it manages**, for example, `rc0.d` is for runlevel 0 and `rc1.d` is for runlevel 1.&#x20;
 
 ```bash
 sysadmin@localhost:/etc$ ls -d rc*
 rc0.d  rc1.d  rc2.d  rc3.d  rc4.d  rc5.d  rc6.d  rcS.d
 ```
 
-To have a service started in a runlevel, a symbolic link to the `init` script in the `/etc/rc.d/init.d` directory can be created in the appropiate runlevel directory.
+To have a service started in a runlevel, a symbolic link to the <mark style="color:red;">`init`</mark> script in the `/etc/rc.d/init.d` directory can be created in the appropiate runlevel directory.
 
 {% hint style="info" %}
-This link name must **start** with the letter <mark style="color:red;">`S`</mark> ,followed by a number from 1 to 99, and the same of the `init` script that it is linked to.
+This link name must **start** with the letter <mark style="color:red;">`S`</mark> ,followed by a number from **1 to 99**, and the same of the <mark style="color:red;">`init`</mark> script that it is linked to.
 {% endhint %}
 
 ```bash
@@ -313,13 +313,13 @@ The second to last number **`85` ** of the `chkconfig` line is the <mark style="
 
 ## The `chkconfig` command
 
-The <mark style="color:red;">`chkconfig`</mark> command can be used to **view what services will be started for different runlevels**. This command can also be used to **turn on or turn off a service for specific runlevels**.&#x20;
+The <mark style="color:red;">**`chkconfig`**</mark> command can be used to **view what services will be started for different runlevels**. This command can also be used to **turn on or turn off a service for specific runlevels**.&#x20;
 
 {% hint style="danger" %}
-On Linux distro that are not Red Hat-derived, this tool may not be available.
+On **Linux** distro that are not Red Hat-derived, this tool **may not be available.**
 {% endhint %}
 
-To view all the services that are set to start or stop automatically, the administrator can execute the `chkconfig --list` command and the output would look like the following:
+To view all the services that are set to start or stop automatically, the administrator can execute the <mark style="color:red;">**`chkconfig --list`**</mark> command and the output would look like the following:
 
 ```bash
 [root@localhost ~]# chkconfig --list
@@ -332,16 +332,16 @@ netconsole      0:off   1:off   2:off   3:off   4:off   5:off   6:off
 
 The output of each line shows the name of the script file found in the `/etc/rc.d/init.d` directory, followed by each runlevel number, a colon, and wether the service is set be on or off.
 
-To view a single service's settings, use the `chkconfig --list SCRIPT` command where SCRIPT is the name of a script file found in the `/etc/rc.d/init.d` directory.&#x20;
+To view a single service's settings, use the <mark style="color:red;">**`chkconfig --list SCRIPT`**</mark> command where SCRIPT is the name of a script file found in the **`/etc/rc.d/init.d`** directory.&#x20;
 
-```
+```bash
 [root@localhost ~]# chkconfig --list httpd
 httpd            0:off   1:off   2:off    3:off    4:off    5:off    6:off
 ```
 
-To enable the service to start for most runlevels, use the `chkconfig SERVICE on` command.
+To enable the service to start for most runlevels, use the <mark style="color:red;">**`chkconfig SERVICE on`**</mark> command.
 
-```
+```bash
 [root@localhost ~]# chkconfig httpd on
 ```
 
@@ -353,49 +353,58 @@ In the `/etc/rc.d/init.d` script, there is a line that contains the following:
 
 The `-` indicates that the **service is not enabled in any runlevels automatically** when it is first added to `chkconfig` management. In other words, this service is not set to start automatically unless an administrator uses the `chkconfig httpd on` command.
 
-Some scripts have a different `chkconfig` value; for example, the `etc/rc.d/init.d/atd` script has the following line:
+Some scripts have a different <mark style="color:red;">**`chkconfig`**</mark> value; for example, the `etc/rc.d/init.d/atd` script has the following line:
 
 ```
 [root@localhost ~]# chkconfig:   345 95 5
 ```
 
-The `345` means that `atd` defaults to being enabled in runlevels 3, 4, and 5. The second value (95) is the start number for the script, and the third value (5) is the stop value for the script.
+> The **`345`** means that `atd` defaults to **being enabled in runlevels 3, 4, and 5**. The second value (**95**) is the **start** number for the script, and the third value (**5**) is the **stop** value for the script.
 
-To turn on or off services for a non-default level, the `--level` option can be used with the `chkconfig` command. For example, the following two commands would ensure that the `atd` service was available in runlevels 2 and 4, but not available in runlevels 3 and 5:&#x20;
+To turn on or off services for a non-default level, the <mark style="color:red;">**`--level`**</mark> option can be used with the <mark style="color:red;">**`chkconfig`**</mark> command. For example, the following two commands would ensure that the **`atd`** service was available in runlevels 2 and 4, but not available in runlevels 3 and 5:&#x20;
 
 ```bash
 [root@localhost ~]# chkconfig --level 24 atd on
 [root@localhost ~]# chkconfig --level 35 atd off
 ```
 
-Two other `chkconfig` options should also be mentioned, although they are rarely used directly. The `chkconfig` options <mark style="color:red;">`--add`</mark> and <mark style="color:red;">`--del`</mark> can be used manually, but normally they are automatically used when an administrator either installs a new service software package or removes it.
+Two other <mark style="color:red;">**`chkconfig`**</mark> options should also be mentioned, although they are rarely used directly. The `chkconfig` options <mark style="color:red;">**`--add`**</mark> and <mark style="color:red;">**`--del`**</mark> can be used manually, but normally they are automatically used when an administrator either installs a new service software package or removes it.
 
-If an administrator were to create an `init` script named `serviced` and store it in the `/etc/rc.d/init.d` directory, the `chkconfig --add SERVICE` command would need to be executed first before using either the `chkconfig SERVICE on` or `chkconfig SERVICE off` command.&#x20;
+If an administrator were to create an **`init`** script named `serviced` and store it in the `/etc/rc.d/init.d` directory, the <mark style="color:red;">**`chkconfig --add SERVICE`**</mark> command would need to be executed first before using either the `chkconfig SERVICE on` or `chkconfig SERVICE off` command.
+
+The <mark style="color:red;">**`chkconfig --del SERVICE`**</mark> command would remove any links in the runlevel directories and services would not be started or stopped automatically at any runlevel.
 
 ## The `/etc/init` Directory
 
-For users of Debian-derived Linux distributions, the /etc/init directory is used to store **Upstart** scripts. These scripts will start or stop different services based upon different events, including going to a specific runlevel.
+For users of Debian-derived Linux distributions, the **`/etc/init`** directory is used to **store Upstart scripts**. These scripts will start or stop different services based upon different events, including going to a specific runlevel.
 
 If an administrator wants to change the runlevels of a service, the configuration file for that service can be modified in the `/etc/init` directory. Within the `/etc/init/SERVICE` file should be two lines which define the runlevels to start and stop.
 
 ```
+/etc/init.d/apache2.conf
 start on runlevel [2345]
 stop on runlevel [!2345]
 ```
 
-To disable a service without uninstalling it, an override file can be created in the `/etc/init/` directory. This file should have the same name as the service configuration file, but ending in `.override` instead of `.conf` .This is the preferred technique over commenting out the "start on" lines.
+**To disable a service without uninstalling it, an override file can be created** in the <mark style="color:red;">**`/etc/init/`**</mark> directory. This file should have the same name as the service configuration file, but ending in **`.override`** instead of **`.conf`** .This is the preferred technique over commenting out the "start on" lines.
+
+The contents of the `.override` file should simply be the word `manual` ,which means that the servie will ignore any "start on" lines from the configuration file.
+
+```
+[sysadmin@localhost ~]$ sudo 'echo manual > /etc/init/apache2.override'
+```
 
 ## The `systemctl` command
 
-The <mark style="color:red;">`systemctl`</mark> command is used in systems that have systemd as a replacement for the traditional `init` process.
+The <mark style="color:red;">**`systemctl`**</mark> command is used in **systems that have `systemd`** as a replacement for the traditional `init` process.
 
-The `systemctl` command looks in the `/usr/lib/systemd` directory for information about which symbolic links enables a specific service.
+The <mark style="color:red;">**`systemctl`**</mark> command **looks in the** **`/usr/lib/systemd`** directory for information about which symbolic links enables a specific service.
 
 It is also possible to edit service files in order to modify the service; however, these changes should be made to service files found in the `/etc/systemd` directory instead.
 
 To manually control the state of a service, use the `systemctl` command to start, stop or check the status of that service.&#x20;
 
-```
+```bash
 systemctl start httpd.service
 systemctl stop httpd.service
 systemctl status httpd.service
@@ -403,30 +412,30 @@ systemctl status httpd.service
 
 To view the status of all services:
 
-```
+```bash
 systemctl -a
 systemctl --all
 ```
 
-To configure a service to start automatically, use:
+To configure a service to **start automatically**, use:
 
-```
+```bash
 systemctl enable httpd.service
 ```
 
-To configure a service not start automatically use:
+To configure a service **not start automatically** use:
 
-```
+```bash
 systemctl disable httpd.service
 ```
 
-It is possible to change to a different runlevel with the `systemctl` command.
+It is possible to change to a different runlevel with the <mark style="color:red;">**`systemctl`**</mark> command.
 
-```
+```bash
 systemctl isolate DESIRED.TARGET
 ```
 
-The `systemctl` command can also manage the low or no power states of the system with command lines such as:
+The <mark style="color:red;">**`systemctl`**</mark> command can also manage the low or no power states of the system with command lines such as:
 
 ```
 systemctl hibernate
@@ -435,19 +444,36 @@ systemctl poweroff
 systemctl reboot
 ```
 
-Similar to the `chkconfig --list` command, all the services that are supposed to be enabled for a specific target within systemd can be viewed by using a `systemctl list-dependencies` command for that target, such as:
+Similar to the **`chkconfig --list`** command, **all the services that are supposed to be enabled for a specific target** within systemd can be viewed by using a <mark style="color:red;">**`systemctl list-dependencies`**</mark> command for that target, such as:
 
-```
+```bash
 [root@localhost ~]# systemctl list-dependencies graphical.target
+graphical.target
+├─atieventsd.service
+├─gdm.service
+├─jexec.service
+├─systemd-readahead-collect.service
+├─systemd-readahead-replay.service
+├─systemd-update-utmp-runlevel.service
+ ├─abrt-ccps.service
 ```
 
 {% hint style="info" %}
 **Consider This**
 
-Because there are three different types of boot systems, traditional `init`, Upstart and systemd, the logical question is, "Which one does my system use?" The easy answer to this question is to check for the existence of two directories: the `/etc/init` and the `/etc/systemd` directory.
+Because there are three different types of boot systems, traditional **`init`**, **`Upstart`** and **`systemd`**, the logical question is, "Which one does my system use?" The easy answer to this question is to check for the existence of two directories: the `/etc/init` and the `/etc/systemd` directory.
 
-If your system has a `/etc/init` directory, then your system is using Upstart. If your system has a `/etc/systemd` directory, then your system is using systemd. Otherwise, your system is using traditional `init`.
+* If your system has a **`/etc/init` directory,** then your system is using **Upstart**.
+* &#x20;If your system has a **`/etc/systemd` director**y, then your system is using **systemd**.
+* Otherwise, your system is using traditional **`init`**.
 {% endhint %}
+
+```bash
+systemctl get-default #shows the default target
+systemctl list-units --type=service #list the unit 
+systemctl cat nfs-client.target
+systemctl list-unit-files #show dependencies enabled and disabled
+```
 
 ## Boot Target
 

@@ -33,7 +33,7 @@ Originally, hard disk were called fixed disks because they were not removable. T
 
 One of the benefits of the <mark style="color:red;">**`fdisk`**</mark> tool is that it is very forgiving; if a mistake is made while using the tool, simply quit the program.
 
-The <mark style="color:red;">**`fdisk`**</mark> program can be used in two ways: ** **_**interactive**_** and **_**non-interactive**._ The **interactive** mode is used to <mark style="background-color:red;">modify the partitions</mark>, and the **non-interactive** mode is used to <mark style="background-color:red;">list partitions</mark>.
+The <mark style="color:red;">**`fdisk`**</mark> program can be used in two ways: ** **_**interactive**_** and **_**non-interactive**._ The **interactive** mode is used to <mark style="background-color:red;">**modify the partitions**</mark>, and the **non-interactive** mode is used to <mark style="background-color:red;">**list partitions**</mark>.
 
 > In either mode, the <mark style="color:red;">`fdisk`</mark> program requires root privileges to run.
 
@@ -148,20 +148,20 @@ As mentioned in the output of this error, the <mark style="color:red;">`partprob
 
 The <mark style="color:red;">**`sfdisk`**</mark> command can be **used to automate partitioning**, it is also **capable of backing up** and **restoring the current partition table**.
 
-To back up the partition table, first determine the names of the disk devices. The <mark style="color:red;">**`sfdisk`**</mark> command will list the disk(s) and their sizes when provided the <mark style="color:red;">**`-s`**</mark> option.
+To back up the partition table, first determine the names of the disk devices. The <mark style="color:red;">**`sfdisk`**</mark> command will **list the disk(s) and their sizes** when provided the <mark style="color:red;">**`-s`**</mark> **option**.
 
 ```bash
 root@localhost:~: sfdisk -s
 /dev/sda:   500088608
 ```
 
-Before partitioning the disk, it would be a good idea to back up the current partition table data by using the <mark style="color:red;">**`-d`**</mark> option to the <mark style="color:red;">**`sfdisk`**</mark> command:
+Before partitioning the disk, it would be a good idea to **back up the current partition table data** by using the <mark style="color:red;">**`-d`**</mark> **option** to the <mark style="color:red;">**`sfdisk`**</mark> command:
 
 ```
 root@localhost:~# sfdisk -d /dev/sda > sda.disk
 ```
 
-In the event that a mistake is made while using partition editing tools, the partition table can be restored to the original partition table by executing the <mark style="color:red;">**`sfdisk`**</mark> command with the <mark style="color:red;">**`-f`**</mark> option
+In the event that a mistake is made while using partition editing tools, the partition table can be **restored to the original partition table** by executing the <mark style="color:red;">**`sfdisk`**</mark> command with the <mark style="color:red;">**`-f`**</mark> **option**
 
 ```
 root@localhost:~# sfdisk -f /dev/sda < sda.disk
@@ -241,20 +241,23 @@ Disk Flags:
 Number  Start  End  Size  Type  File system  Flags
 ```
 
-There is no partition information listed. To make the disk partitionable, a disklabel must be created. This is done with the following command:
+There is no partition information listed. **To make the disk partitionable, a `disklabel` must be created.** This is done with the following command:
 
-```
-parted /dev/sdb mklabel msdos
-```
-
-Now that a partition table is written to the disk, partitions can be created on the disk. To create a primary partition that takes up the first 50% of the disk, use the following
-
-```
-parted /dev/sdb mkpart primary 0% 50%
+```bash
+root@localhost:~ parted /dev/sdb mklabel msdos
 ```
 
+Now that a partition table is written to the disk, partitions can be created on the disk. **To create a primary partition that takes up the first 50% of the disk**, use the following:
+
+```bash
+root@localhost:~ parted /dev/sdb mkpart primary 0% 50%
+You may need to update the /etc/fstab
 ```
-root@localhost:~# parted /dev/sdb print
+
+Once the command executes, the user can verify the partition was created with the command:
+
+```bash
+root@localhost:~ parted /dev/sdb print
 Model: ATA VMware Virtual I (scsi)
 Disk /dev/sdb: 21.5GB
 Sector size (logical/physical): 512B/512B
@@ -264,6 +267,54 @@ Disk Flags:
 Number  Start    End      Size    Type     File system  Flags
 1       1049kB   10.7GB   10.7GB  primary
 ```
+
+At this point, 3 more primary partitions can be written to the disk or an extended partition that encompasses the rest of the space and then logical partitions inside that.
+
+The `parted` utility's interactive mode can also be used to create or resize partitions. To begin using interactive mode, simply use the `parted` command with a device argument to specify the drive:
+
+```bash
+root@localhost:~# parted  /dev/sdb
+GNU Parted 3.2
+Using /dev/sda
+Welcome to GNU Parted! Type 'help' to view a list of commands.
+(parted)
+```
+
+The `h` command option will display a menu or help screen.&#x20;
+
+```bash
+(parted) h
+  align-check TYPE N                        check partition N for TYPE(min|opt) alignment
+  help [COMMAND]                           print general help, or help on COMMAND
+  mklabel,mktable LABEL-TYPE               create a new disklabel (partition table)
+  mkpart PART-TYPE [FS-TYPE] START END     make a partition
+  name NUMBER NAME                         name partition NUMBER as NAME
+  print [devices|free|list,all|NUMBER]     display the partition table, available devices,
+ free space, all found partitions, or a particular partition
+  quit                                     exit program rescue START END rescue a lost
+ partition near START and END
+  resizepart NUMBER END                    resize partition NUMBER
+  rm NUMBER                                delete partition NUMBER
+  select DEVICE                            choose the device to edit
+```
+
+Notice that many of the commands used in command line mode such as the <mark style="color:red;">**`mkpart`**</mark>, <mark style="color:red;">**`mklabel`**</mark>, and <mark style="color:red;">**`print`**</mark> commands are available in the interactive mode.&#x20;
+
+{% hint style="info" %}
+The process of creating and modifying partitions using <mark style="color:red;">**`parted`**</mark> in interactive mode is similar to using <mark style="color:red;">**`fdisk`**</mark> or <mark style="color:red;">**`gdisk`**</mark> in interactive mode.
+{% endhint %}
+
+### `gparted`
+
+Modern systems which use the **Unified Extensible Firmware Interface (UEFI**) specification and GPT partitions to boot have their own graphical and command line tools for managing storage.
+
+One powerful **graphical tool** is the <mark style="color:red;">**`gparted`**</mark> tool, the GUI front end of the GNU Parted program. GParted (Gnome Partition Editor) is a free, multi-platform graphical tool for **managing hard disks**.
+
+> It works with Linux, Windows, and MacOS and allows the creation, reorganization and deletion of systems partitions.
+
+Using the <mark style="color:red;">**`gparted`**</mark> utility, we **can create a new GPT partition table**. In addition to performing disk management tasks, the <mark style="color:red;">**`gparted`**</mark> tool can also **attempt recovery on a corrupted partition**, and copy an existing partition for backup or image creation.
+
+![](<../.gitbook/assets/image (21).png>)
 
 ## Logical Volume Management
 

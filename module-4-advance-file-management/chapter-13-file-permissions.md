@@ -571,11 +571,11 @@ The **uppercase** <mark style="color:red;">**`T`**</mark> in the execute permiss
 
 ## Default File Permissions
 
-Linux sets the default permissions on these new objects based upon the value of the creator's _umask_ setting. The <mark style="color:red;">**`umask`**</mark> command is used to both set the umask value and display it.
+Linux sets the default permissions on these new objects based upon the value of the creator's _umask_ setting. **The **<mark style="color:red;">**`umask`**</mark>** command is used to both set the umask value and display it**.
 
-The <mark style="color:red;">`umask`</mark> command is automatically executed when a shell is started. To have a persistent setting for umask, a custom `umask` command can be added to the `~/.bashrc` file.
+The <mark style="color:red;">**`umask`**</mark> command is automatically executed when a shell is started. To have a persistent setting for umask, a custom <mark style="color:red;">**`umask`**</mark> command can be added to the `~/.bashrc` file.
 
-The <mark style="color:red;">`umask`</mark> value only affects the permissions placed on new files and directories at the time they are created. It only affects basic permissions for the user owner, group owner, and others.&#x20;
+**The **<mark style="color:red;">**`umask`**</mark>** value only affects the permissions placed on new files and directories at the time they are created**. It only affects basic permissions for the user owner, group owner, and others.&#x20;
 
 The umask is an octal value based upon the same values that you saw earlier in this section:
 

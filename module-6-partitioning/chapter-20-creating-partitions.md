@@ -241,20 +241,20 @@ Disk Flags:
 Number  Start  End  Size  Type  File system  Flags
 ```
 
-There is no partition information listed. **To make the disk partitionable, a `disklabel` must be created.** This is done with the following command:
+There is no partition information listed. **To make the disk partitionable, a `disklabel` must be created.** This is done with <mark style="color:red;">**`mklabel`**</mark> option:
 
 ```bash
 root@localhost:~ parted /dev/sdb mklabel msdos
 ```
 
-Now that a partition table is written to the disk, partitions can be created on the disk. **To create a primary partition that takes up the first 50% of the disk**, use the following:
+Now that a partition table is written to the disk, partitions can be created on the disk. **To create a primary partition that takes up the first 50% of the disk**, use the <mark style="color:red;">**`mkpart`**</mark> option:
 
 ```bash
 root@localhost:~ parted /dev/sdb mkpart primary 0% 50%
 You may need to update the /etc/fstab
 ```
 
-Once the command executes, the user can verify the partition was created with the command:
+Once the command executes, the user **can verify the partition was created** with the <mark style="color:red;">`print`</mark> command:
 
 ```bash
 root@localhost:~ parted /dev/sdb print
@@ -270,7 +270,7 @@ Number  Start    End      Size    Type     File system  Flags
 
 At this point, 3 more primary partitions can be written to the disk or an extended partition that encompasses the rest of the space and then logical partitions inside that.
 
-The `parted` utility's interactive mode can also be used to create or resize partitions. To begin using interactive mode, simply use the `parted` command with a device argument to specify the drive:
+The <mark style="color:red;">`parted`</mark> utility's interactive mode can also be **used to create or resize partitions**. To begin using interactive mode, simply use the <mark style="color:red;">**`parted`**</mark> command with a device argument to specify the drive:
 
 ```bash
 root@localhost:~# parted  /dev/sdb

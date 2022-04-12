@@ -1,3 +1,10 @@
+---
+description: >-
+  102.1: Design hard disk layout v2  Weight:
+  2                                                                                     
+  104.1: Create partitions and filesystems v2 Weight: 2
+---
+
 # Chapter 20: Creating Partitions
 
 <details>
@@ -6,9 +13,9 @@
 
 **`fdisk`** Command used to manipulate the MBR partition table for Linux. This utility can be used to create, modify, and delete partitions for a fixed disk.
 
-**`gdisk`** An interactive GPT partition table manipulator. It will automatically covert the old-style MBR partition toable to the GPT table.
+**`gdisk`** An interactive GPT partition table manipulator. It will automatically covert the old-style MBR partition toable to the GPT format.
 
-**`mke2fs`** Command used to create an ext2/ext3/ext4 filesystem
+**`mke2fs`** Command used to create an ext2/ext3/ext4 filesystem.
 
 **`mkfs`** Command used to build a Linux file system on device.
 
@@ -16,31 +23,31 @@
 
 **`parted`** A diks partitioning and partition resizing utility. It allows the administrator to destroy, create, resize, move and copy ext2, linux-swap, FAT and FAT32
 
-**`swap-space`** Used when the amount of physical memory (RAM) is full.
+**`swap space`** Used when the amount of physical memory (RAM) is full.
 
 </details>
 
 ## Creating Partitions After Installation
 
-The most command line tool for editing the partition tables on disks is called <mark style="color:red;">`fdisk`</mark>. **This command can be used to create, modify and list the partitions on a hard drive.**
+Originally, hard disk were called fixed disks because they were not removable. The most command line tool for editing the partition tables on disks is called <mark style="color:red;">**`fdisk`**</mark>. **This command can be used to create, modify and list the partitions on a hard drive.**
 
-One of the benefits of the `fdisk` tool is that it is very forgiving; if a mistake is made while using the tool, simply quit the program.
+One of the benefits of the <mark style="color:red;">**`fdisk`**</mark> tool is that it is very forgiving; if a mistake is made while using the tool, simply quit the program.
 
-The <mark style="color:red;">`fdisk`</mark> program can be used in two ways: _interactive_ and _non-interactive._ The **interactive** mode is used to <mark style="background-color:red;">modify the partitions</mark>, and the **non-interactive** mode is used to <mark style="background-color:red;">list partitions</mark>.
+The <mark style="color:red;">**`fdisk`**</mark> program can be used in two ways: ** **_**interactive**_** and **_**non-interactive**._ The **interactive** mode is used to <mark style="background-color:red;">modify the partitions</mark>, and the **non-interactive** mode is used to <mark style="background-color:red;">list partitions</mark>.
 
-> In either mode, the `fdisk` program requires root privileges to run.
+> In either mode, the <mark style="color:red;">`fdisk`</mark> program requires root privileges to run.
 
-The units option `-u` will list the starting and ending locations for each partition in sectors instead of cylinders.
+The units option <mark style="color:red;">`-u`</mark> will list the starting and ending locations for each partition in sectors instead of cylinders.
 
 {% hint style="info" %}
-On almost every Linux distributions, the default `fdisk` output is displayed in cylinders. One exception is Ubuntu, which displays output in sectors by default. To display the output in cylinders, use the `-u=cylinders` option.
+On almost every Linux distributions, the default <mark style="color:red;">`fdisk`</mark> output is displayed in cylinders. One exception is **Ubuntu, which displays output in sectors** by default. To display the output in cylinders, use the <mark style="color:red;">`-u=cylinders`</mark> option.
 {% endhint %}
 
 The <mark style="color:red;">`-c`</mark> option disables the warning regarding compatibility issues with the MS-DOS operating system.
 
 ### Displaying Partitions
 
-To use <mark style="color:red;">`fdisk`</mark> in its non-interactive mode, add the <mark style="color:red;">`-l`</mark> option. To demonstrate.
+To use <mark style="color:red;">**`fdisk`**</mark> in its **non-interactive mode**, add the <mark style="color:red;">**`-l`**</mark> option. To demonstrate.
 
 ```bash
 root:[~]# fdisk -lc /dev/sda
@@ -59,12 +66,12 @@ Dispositivo Comienzo     Final  Sectores Tamaño Tipo
 
 ### `fdisk` Interactive Mode
 
-To enter the interactive mode, do not use the `-l` option, but still use `-c` and `-u` option. The pathname for the disk to edit is required. For example, to edit the partitions for the first SATA /dev/sda hard drive, execute the following command to display a prompt
+In the interactive mode, a system administrator can use the <mark style="color:red;">**`fdisk`**</mark> command to **create and modify partitions**. To enter the interactive mode, **do not use the **<mark style="color:red;">**`-l`**</mark> option, **but still use **<mark style="color:red;">**`-c`**</mark>** and **<mark style="color:red;">**`-u`**</mark>** option**. **The pathname for the disk to edit is required**. For example, to edit the partitions for the first SATA `/dev/sda` hard drive, execute the following command to display a prompt
 
 ```
 root@localhost:~# fdisk -cu /dev/sda
 Command (m for help):
-  a   toggle a bootable flag
+   a   toggle a bootable flag
    b   edit bsd disklabel
    c   toggle the dos compatibility flag
    d   delete a partition
@@ -82,13 +89,13 @@ Command (m for help):
    x   extra functionality (experts only)
 ```
 
-Before creating any partitions, it is a good idea to **print the partition table** by choosing the <mark style="color:red;">`p`</mark> command action.
+Before creating any partitions, it is a good idea to **print the partition table** by choosing the <mark style="color:red;">**`p`**</mark> **command** action.
 
 ### Creating Partitions
 
-In order to create a new partition, the <mark style="color:red;">`n`</mark> command action should be chosen:
+In order to create a **new partition, the **<mark style="color:red;">**`n`**</mark>** command** action should be chosen:
 
-```
+```bash
 Command (m for help): n
 ```
 
@@ -104,22 +111,24 @@ Command Action
 
 The choices that are available to answer this question will vary, depending on what partitions already exist:
 
-* If no extended partition has been created, the choices will be `e` for an extended partition or `p` for a primary partition.
-* If the extended partition has ben created, the `fdisk` utility will automatically create a logical partition within the free space of the extended partition.
+* If no extended partition has been created, the choices will be <mark style="color:red;">**`e`**</mark> for an extended partition or <mark style="color:red;">**`p`**</mark> for a primary partition.
+* If the extended partition has ben created, the <mark style="color:red;">**`fdisk`**</mark> utility will automatically create a logical partition within the free space of the extended partition.
 
 {% hint style="info" %}
-Recall that there can be only 4 primary partitions or three primary partitions with one extended.
+Recall that there **can be only 4 primary partitions** or three primary partitions with one extended.
 {% endhint %}
+
+**Delete partitions by using the **<mark style="color:red;">**`d`**</mark>** command**. Be careful to avoid deleting necessary existing partitions, as this may result in an unsuable system
 
 ### Changing the Filesystem Type
 
-By default, the `fdisk` utility sets the filesystem type to Id 83 (Linux) for primary and logical partitions. **For extended partitions, the Id should be 5** and should never be changed.
+By default, the <mark style="color:red;">**`fdisk`**</mark> utility **sets the filesystem type to **<mark style="color:red;">**`Id 83 (Linux)`**</mark> for primary and logical partitions. **For extended partitions, the `Id` should be `5` ** and should never be changed.
 
-To change the filesystem type, use the `t` command.
+To change the filesystem type, use the <mark style="color:red;">**`t`**</mark> command.
 
 ### Saving Changes
 
-If the changes that have been made to the in-memory partition table are correct, commit changes to disk with `w` followed by ENTER. However, it is also possible to quit the `fdisk` utility making any changes to the disk by using the `q` command.
+If the changes that have been made to the in-memory partition table are correct, **commit changes to disk with **<mark style="color:red;">**`w`**</mark> followed by ENTER. The <mark style="color:red;">`fdisk`</mark> utility will write the in-memory changes to the actual MBR and exit. However, it is also possible to quit the <mark style="color:red;">`fdisk`</mark> utility without making any changes to the disk by using the <mark style="color:red;">**`q`**</mark> command.
 
 Note the following possible error after saving changes:
 
@@ -133,26 +142,26 @@ The kernel still uses the old table. The table will be used at the next reboot o
 Syncing disks.
 ```
 
-As mentioned in the output of this error, the `partprobe` or `kpartx` command cna be executed to fix this issue if these commands are installed on the system. If not, then the system will need to be rebooted before the new partitions can be used.
+As mentioned in the output of this error, the <mark style="color:red;">`partprobe`</mark> or <mark style="color:red;">`kpartx`</mark> command can be executed to fix this issue if these commands are installed on the system. If not, then the system will need to be rebooted before the new partitions can be used.
 
 ### The `sfdisk` Command
 
-The <mark style="color:red;">`sfdisk`</mark> command can be **used to automate partitioning**, it is also **capable of backing up** and **restoring the current partition table**.
+The <mark style="color:red;">**`sfdisk`**</mark> command can be **used to automate partitioning**, it is also **capable of backing up** and **restoring the current partition table**.
 
-To back up the partition table, first determine the names of the disk devices. The `sfdisk` command will list the disk(s) and their sizes when provided the `-s` option.
+To back up the partition table, first determine the names of the disk devices. The <mark style="color:red;">**`sfdisk`**</mark> command will list the disk(s) and their sizes when provided the <mark style="color:red;">**`-s`**</mark> option.
 
-```
-root@localhost:~# sfdisk -s
+```bash
+root@localhost:~: sfdisk -s
 /dev/sda:   500088608
 ```
 
-Before partitioning the disk, it would be a good idea to back up the current partition table data by using the <mark style="color:red;">`-d`</mark> option to the `sfdisk` command:
+Before partitioning the disk, it would be a good idea to back up the current partition table data by using the <mark style="color:red;">**`-d`**</mark> option to the <mark style="color:red;">**`sfdisk`**</mark> command:
 
 ```
 root@localhost:~# sfdisk -d /dev/sda > sda.disk
 ```
 
-In the event that a mistake is made while using partition editing tools, the partition table can be restored to the original partition table by executing the `sfdisk` command with the `-f` option
+In the event that a mistake is made while using partition editing tools, the partition table can be restored to the original partition table by executing the <mark style="color:red;">**`sfdisk`**</mark> command with the <mark style="color:red;">**`-f`**</mark> option
 
 ```
 root@localhost:~# sfdisk -f /dev/sda < sda.disk
@@ -160,35 +169,66 @@ root@localhost:~# sfdisk -f /dev/sda < sda.disk
 
 ## Managing GPT
 
-The GPT disks use a newer type of partitioning, which allows the user to divide the disk into more partitions than what MBR supports. GPT also allows having partitions, which can be largar than 2TB (MBR does not).
+Some hard drives make use of a partitioning technology called **Master Boot Record (MBR)** while others make use of a **partitioning** **type** called **GUID Partitioning Table (GPT)**
 
-The tools for managing GPT disks are named similarly to the `fdisk` counterparts: the `gdisk` ,`cgdisk` and `sgdisk` programs.
+**The GPT disks use a newer type of partitioning**, which allows the user to divide the disk into more partitions than what MBR supports. GPT also allows having partitions, which can be larger than 2TB (MBR does not).
 
-To create and manage GPT partitions from the CLI, you can use the `gdisk` utility, also called GPT `fdisk`. It operates in a similar fashion to `fdisk` except it operates on GPT partitions and requires the device to be specified in order to work.
+The tools for managing GPT disks are named similarly to the <mark style="color:red;">`fdisk`</mark> counterparts: the <mark style="color:red;">**`gdisk`**</mark> ,<mark style="color:red;">**`cgdisk`**</mark> and <mark style="color:red;">**`sgdisk`**</mark> programs.
+
+To **create and manage GPT partitions** from the CLI, you can **use the **<mark style="color:red;">**`gdisk`**</mark> utility, **also called **<mark style="color:red;">**GPT**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`fdisk`**</mark>. It operates in a similar fashion to **`fdisk`** except it operates on GPT partitions and requires the device to be specified in order to work.
 
 ![](<../.gitbook/assets/image (19).png>)
 
+When you speciy a blank disk, it will scan the device and report back no partition information. Typing a question mark `?` character returns a list of command option available, **type `n` to add a new partition.**
+
+The <mark style="color:red;">**`v`**</mark> **command** will verify the partition to ensure it is **free from errors**.
+
+```bash
+Command (? for help): v
+
+No problems found. 2014 free sectors (1007.0 KiB) available in 1
+segments, the largest of which is 2014 (1007.0 KiB) in size.
+```
+
+The <mark style="color:red;">**`o`**</mark>** command allows you to create a new empty partitition**; it verifies that you want to delete existing partitions before proceeding
+
+```bash
+Command (? for help): o
+This option deletes all partitions and creates a new protective MBR.
+Proceed? (Y/N): y
+```
+
 ## GNU Parted
 
-Another available tool for creating and resizing partitions on a hard drive is the GNU Parted program. The GNU Parted program includes the <mark style="color:red;">`parted`</mark> command line tool and the <mark style="color:red;">`gparted`</mark> graphical interface tool.&#x20;
+Another available tool for **creating and resizing partitions** on a hard drive is the GNU Parted program. The GNU Parted program includes the <mark style="color:red;">**`parted`**</mark> command line tool and the <mark style="color:red;">**`gparted`**</mark> graphical interface tool.&#x20;
 
 {% hint style="info" %}
-GNU Parted will non-destructively resize a partition as well as the filesystem on top of it.
+One benefit of using GNU Parted is that unlike the **`gdisk`** and **`fdisk`** tools, which are destructive partitioners, **GNU Parted will non-destructively resize a partition as well as the filesystem on top of it.**
 {% endhint %}
 
-The `parted`program can be used in two ways: command line mode and interactive mode.&#x20;
+The <mark style="color:red;">**`parted`**</mark>program can be used in two ways: command line mode and interactive mode.&#x20;
 
 ```
 parted DEVICE
 ```
 
-To use `parted` in command line mode, the DEVICE argument must be followed by options to create or modify a partition. To see a list of option available for `parted`, use the `--help` option.
+To use <mark style="color:red;">**`parted`**</mark> in command line mode, **the `DEVICE` argument must be followed by options to create or modify a partition**. To see a list of option available for <mark style="color:red;">**`parted`**</mark>, use the `--help` option.
 
 {% hint style="warning" %}
-To view the disk on the system, use the <mark style="color:red;">`lsblk`</mark> command.
+To view the disk on the system, use the <mark style="color:red;">**`lsblk`**</mark> command.
 {% endhint %}
 
-To view any existing partition information with the `parted` command, use the following command:
+```bash
+root@localhost:~# lsblk
+NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+sda    8:0    0 3.7T  0 disk
+|-sda1 8:1    0 512M  0 part
+|-sda2 8:2    0 3.5T  0 part /etc/hosts
+`-sda3 8:3    0 128G  0 part [SWAP]
+sdb   8:16    0 20G  0  disk
+```
+
+To view any existing partition information with the <mark style="color:red;">**`parted`**</mark> command, use the following command:
 
 ```bash
 root@localhost:~# parted /dev/sdb print

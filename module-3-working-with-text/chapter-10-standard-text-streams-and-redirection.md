@@ -8,9 +8,9 @@ description: '103.4: Use streams, pipes and redirects v2  Weight: 4'
 
 <summary>Key terms</summary>
 
-`tee` Command used to read from standard input and write to standard output and files
+**`tee`** Command used to read from standard input and write to standard output and files
 
-`xargs` Command used to build and execute commnads lines from standard input
+**`xargs`** Command used to build and execute commnads lines from standard input
 
 </details>
 
@@ -26,7 +26,7 @@ Standard output redirection is achieved by following a command with the greather
 ls -l > home.txt
 ```
 
-Redirecting the output using a single greather-than `>` character will create a new file, or overwrite the contents of an existing file with the same name. Redirecting standard output with two greather-than `>>` characters will also create a new file if it does not exist. **The difference is that when using the `>>` characters , the output of the command will be appended to the end of the file if it does already exist.**
+Redirecting the output using a single **greather-than **<mark style="color:red;">**`>`**</mark>** character will create a new file, or overwrite the contents of an existing file** with the same name. Redirecting standard output with two greather-than <mark style="color:red;">`>>`</mark> characters will also create a new file if it does not exist. **The difference is that when using the **<mark style="color:red;">**`>>`**</mark>** characters , the output of the command will be appended to the end of the file if it does already exist.**
 
 There is a number associated with the standard output file descriptor (the `>` character): **the number 1 (one)**. However, since standard output is the most commonly redirected command output , _the number can be omitted._
 
@@ -36,7 +36,7 @@ There is a number associated with the standard output file descriptor (the `>` c
 
 ## Standard Error
 
-When a command encounters an error, it will produce output that is know as _**standard error**,_ also called <mark style="color:red;">`stderr`</mark> or <mark style="color:red;">`STDERR`</mark> .Like standard out, the standard error output is normally sent to the same terminal where the command is currently being executed. **The number associated with the standard error file descriptor is 2** (two).
+When a command encounters an error, it will produce output that is know as _**standard error**,_ also called <mark style="color:red;">`stderr`</mark> or <mark style="color:red;">`STDERR`</mark> .Like standard out, the standard error output is normally sent to the same terminal where the command is currently being executed. **The number associated with the standard error file descriptor is **<mark style="color:red;">**2 (two)**</mark>.
 
 To redirect these error messages, you must use the correct file descriptor, which for standard error is the number 2. For example:
 
@@ -50,7 +50,7 @@ To prevent clobbering an existing file when redirecting standard error, use the 
 ls /junk 2>> prueba.txt
 ```
 
-Some commands will produce both `stdout` and `stderr` output. These two differents outputs can be redirected into two separate files by using the following syntax:
+Some commands will produce both <mark style="color:red;">`stdout`</mark> and <mark style="color:red;">`stderr`</mark> output. These two differents outputs can be redirected into two separate files by using the following syntax:
 
 ```bash
 find /etc -name passwd > output.txt 2> error.txt
@@ -60,22 +60,22 @@ find /etc -name passwd > output.txt 2> error.txt
 Sometimes it isn't useful to have the error messages displayed in the terminal or stored in file. To discard these error messages, **use the `/dev/null` file.**
 {% endhint %}
 
-The `/dev/null` file is like a trash can, where anything sent to it disappears from the system; it'sometimes called the bit bucket or black hole. Any type of output can be redirected to the `/dev/null`
+The **`/dev/null` file is like a trash can**, where anything sent to it disappears from the system; it'sometimes called the bit bucket or black hole. Any type of output can be redirected to the **`/dev/null`**
 
 ```bash
 find /etc -name passwd 2> /dev/null
 ```
 
-There are two techniques to **redirect the both standard error and standard output** to the same file, and if you want to appended just use the `>>` character:
+There are two techniques to **redirect the both **<mark style="color:red;">**`stderr`**</mark>** and **<mark style="color:red;">**`stdout`**</mark> <mark style="background-color:red;">**to the same file**</mark>, and if you want to appended just use the **`>>`** character:
 
 ```bash
 ls -l /etc > /tmp/ls.all 2>&1
 ls -l /etc &> /tmp/ls.all
 ```
 
-Both of the preceding command lines will create a file called `/tmp/ls.all` that contains all standard out and standard error. The first redirects `stdout` to `/tmp/ls.all` and the `2>&1` expressions means "send `stderr` wherever `stdout` is going".
+Both of the preceding command lines will create a file called `/tmp/ls.all` that contains all `standard out` and `standard error`. The first redirects <mark style="color:red;">`stdout`</mark> to `/tmp/ls.all` and the `2>&1` expressions means **"send **<mark style="color:red;">**`stderr`**</mark>** wherever **<mark style="color:red;">**`stdout`**</mark>** is going"**.
 
-In the second example, the `&>` expressions means "redirect all output"
+In the second example, the <mark style="color:red;">**`&>`**</mark> expressions means "**redirect all output"**
 
 A similar technique can be used to append all output to a single file:
 
@@ -91,7 +91,7 @@ ls /etc/au* &>> /tmp/ls.all
 
 ## Standard Input
 
-_Standard in_, also called `stdin` or `STDIN` ,normally comes from the keyboard with input provided by the user who runs the command.&#x20;
+_Standard in_, also called <mark style="color:red;">`stdin`</mark> or <mark style="color:red;">`STDIN`</mark>, normally **comes from the keyboard with input provided** by the user who runs the command.&#x20;
 
 {% hint style="info" %}
 One common way that text files are used as standard input for commands is by creating script files. Scripts are text files which are interpreted by the shell, prefaced with <mark style="color:red;">`#!/bin/sh`</mark> on the first line, which tells the shell to interpret the script as standard input
@@ -99,9 +99,9 @@ One common way that text files are used as standard input for commands is by cre
 When the script is invoked at the prompt using the <mark style="color:orange;">`./`</mark> syntax, the shell will run all commands in the script file and return to the terminal window.
 {% endhint %}
 
-In some cases, it is useful to redirect standard input, so it comes from a file instead of the keyboard . A good example of when input redirection is desirable involves the <mark style="color:red;">`tr`</mark> command.&#x20;
+In some cases, it is useful to redirect standard input, so it comes from a file instead of the keyboard. A good example of when input redirection is desirable involves the <mark style="color:red;">**`tr`**</mark> command.&#x20;
 
-The <mark style="color:red;">`tr`</mark> command won't accept a file name as an argument on the command line. To perform a translation using a file as input, utilize input redirection. To use input redirection, type the command with its options and arguments followed by the less-than <mark style="color:red;">`<`</mark> character and a path to a file to use for input. For example:
+**The **<mark style="color:red;">**`tr`**</mark>** command won't accept a file name as an argument on the command line**. To perform a translation using a file as input, utilize input redirection. To use input redirection, type the command with its options and arguments followed by the less-than <mark style="color:red;">`<`</mark> character and a path to a file to use for input. For example:
 
 ```bash
 sysadmin@localhost:~$ cat Documents/animals.txt
@@ -123,7 +123,7 @@ sysadmin@localhost:~$ cat Documents/animals.txt | tr 'a-z' 'A-Z' > animales.txt
 
 Command pipelines are often **used to make effective use of filter commands**. In a command pipeline, **the output of one commands is sent to another command as input.** In linux and most operating system, the vertical bar or pipe `|` character is used between two commands to represent a command pipeline.
 
-Imagine that the output of the  `history` command is very large. To send this output to the `less` command, which displays one "page" of data at the time, the following pipeline will be used:
+Imagine that the output of the  <mark style="color:red;">`history`</mark> command is very large. To send this output to the `less` command, which displays one "page" of data at the time, the following pipeline will be used:
 
 ```bash
 history | less
@@ -166,7 +166,7 @@ sysadmin@localhost:~$ cat timer.txt
 Fri Nov  7 02:21:24 UTC 2022
 ```
 
-To append the time to the end of the `timer.txt` file by using the <mark style="color:red;">**`-a`**</mark> option:
+**To append** the time to the end of the `timer.txt` file by using the <mark style="color:red;">**`-a`**</mark>** option**:
 
 ```bash
 sysadmin@localhost:~$ date | tee -a timer.txt

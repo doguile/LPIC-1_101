@@ -531,3 +531,13 @@ Filesystem    Type    Size  Used Avail Use% Mounted on
 tmpfs        tmpfs    351M   84K  351M   1% /dev/shm
 /dev/sda1     ext4    485M   52M  408M  12% /boot
 ```
+
+## Activating Swap Space
+
+The following describes how to configure a new swap partition that has been created on the `/dev/sdb2` device to activate during the boot process automatically. One single line will be added at the end of the `/etc/fstab` file.
+
+> &#x20;The assumption here is that the partition has been created by the **`fdisk`** command and the partition has been configured as a swap partition with the **`mkswap`** command.
+
+To **verify that the swap partition or file has been added correctly**, use the <mark style="color:red;">**`swapon -a`**</mark> command; this will activat all swap entries in the /etc/fstab file.&#x20;
+
+After using the <mark style="color:red;">**`swapon -a`**</mark> command, **verify that the swap partition or file is now activated by using the **<mark style="color:red;">**`swapon -s`**</mark>** command.**

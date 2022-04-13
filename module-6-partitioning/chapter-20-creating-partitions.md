@@ -64,7 +64,7 @@ Dispositivo Comienzo     Final  Sectores Tamaño Tipo
 /dev/sda2    1050624   2549759   1499136   732M Sistema de ficheros de Linux
 ```
 
-### `fdisk` Interactive Mode
+### <mark style="color:red;">`fdisk`</mark> Interactive Mode
 
 In the interactive mode, a system administrator can use the <mark style="color:red;">**`fdisk`**</mark> command to **create and modify partitions**. To enter the interactive mode, **do not use the **<mark style="color:red;">**`-l`**</mark> option, **but still use **<mark style="color:red;">**`-c`**</mark>** and **<mark style="color:red;">**`-u`**</mark>** option**. **The pathname for the disk to edit is required**. For example, to edit the partitions for the first SATA `/dev/sda` hard drive, execute the following command to display a prompt
 
@@ -144,7 +144,7 @@ Syncing disks.
 
 As mentioned in the output of this error, the <mark style="color:red;">`partprobe`</mark> or <mark style="color:red;">`kpartx`</mark> command can be executed to fix this issue if these commands are installed on the system. If not, then the system will need to be rebooted before the new partitions can be used.
 
-### The `sfdisk` Command
+### The <mark style="color:red;">`sfdisk`</mark> Command
 
 The <mark style="color:red;">**`sfdisk`**</mark> command can be **used to automate partitioning**, it is also **capable of backing up** and **restoring the current partition table**.
 
@@ -395,9 +395,15 @@ Successor to FAT32, developed by Microsoft. Delete the maximum size of 4 GB in f
 
 
 
-EXT4
+**EXT4**
 
-The last version of ext system used on Linux distributions. The size of the files can reach the 16TB and 1024PB on partitions.
+The last version of `ext` system used on Linux distributions. The **size of the files can reach the 16TB** and 1024PB on partitions.
+
+
+
+**XFS**
+
+Supports all functionalities in a file system and **allows files up to 8EB** and 16EB partitions
 {% endhint %}
 
 **The **<mark style="color:red;">**`mkfs`**</mark>** command is a wrapper** that executes another command, which will actually make the correct filesystem. When provided the <mark style="color:red;">**`-t vfat`**</mark> option, the <mark style="color:red;">`mkfs`</mark> command will call the <mark style="color:red;">**`mkdosfs`**</mark> command to make the actual filesystem.
@@ -424,29 +430,27 @@ Each filesystem has many options to modify features about the filesystem. To use
 
 ## exFAT
 
-The exFAT (Extended File Allocation Table) filesystem is a propietary, lightweight filesystem **created by Microsoft** for <mark style="background-color:red;">use with flash memory storage systems like SD cards and USB thumbs</mark> drives.
-
-It was designed to replace FAT32, and it greatly expands the amounts allowed for files and directories.&#x20;
+The exFAT (Extended File Allocation Table) filesystem is a propietary, lightweight filesystem created by Microsoft for <mark style="background-color:red;">**use with flash memory storage systems**</mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">like SD cards and USB thumbs</mark> drives. It was designed to replace FAT32, and it greatly expands the amounts allowed for files and directories.&#x20;
 
 {% hint style="danger" %}
 **Linux does not natively support exFAT.**
 {% endhint %}
 
-To demonstrate how to install the necessary packages in order to access the exFat drive, consider the image below, which shows a 63gb USB drive with the Ubuntu Disks application.
+To demonstrate how to install the necessary packages in order to access the exFat drive, consider the image below, which shows a 63GB USB drive with the Ubuntu Disks application.
 
-From the command line, you will need to make sure the proper repository, in this case, the `universe` repository, is installed. To ensure that the repository is installed, the `add-apt` command can be used.
+From the command line, you will need to make sure the proper repository, in this case, the **`universe`** repository, is installed. To ensure that the repository is installed, the <mark style="color:red;">**`add-apt`**</mark> command can be used.
 
-```
+```bash
 sysadmin@localhost:~$ sudo add-apt-repository universe
 ```
 
-Next, the `apt update` command can be used to confirm that everything in the repository is up-to-date:
+Next, the <mark style="color:red;">**`apt update`**</mark> command can be used to confirm that everything in the repository is up-to-date:
 
-Next, the needed `exfat-fuse` and `exfat-utils` packages will need to be installed using the `apt install` command.
+Next, the needed <mark style="color:red;">**`exfat-fuse`**</mark> and <mark style="color:red;">**`exfat-utils`**</mark> packages will need to be installed using the <mark style="color:red;">**`apt install`**</mark> command.
 
 ## BTRFS
 
-Is a Linux native filesystem created by Oracle and developed by multiple companies asa well as many individual contributors.
+Is a **Linux native filesystem** created by Oracle and developed by multiple companies as well as many individual contributors.
 
 #### Copy-On-Write
 
@@ -456,7 +460,7 @@ Copy-on-write is one reason why BTRFS has a significant advantage of recovery ti
 
 #### Snapshots
 
-BTRFS's use copy-on-write also makes snapshots possible and very useful to the system operator.
+BTRFS's use copy-on-write also **makes snapshots possible** and very useful to the system operator.
 
 BTRFS does this differently, it declares a reference to the original as a snapshot and if nothing is changed, effectively takes no additional space.
 
@@ -472,7 +476,7 @@ BTRFS also features compressions options that can be turned on via mounting opti
 
 ## Creating a Swap Space
 
-Swap space (also called virtual memory) is hard drive space that can be used by the kernel and memory management routines to store data that is normally stored in RAM. When RAM starts to become full, the kernel will take some of this data and swap it to the hard drive. At a later time, as it's needed, the data will be swapped back to RAM.
+Swap space (also called virtual memory) is **hard drive space** that can be used by the kernel and memory management routines to **store data that is normally stored in RAM**. <mark style="background-color:red;">**When RAM starts to become full, the kernel will take some of this data and swap it to the hard drive**</mark>. At a later time, as it's needed, the data will be swapped back to RAM.
 
 Even if the system has plenty of RAM, **creating a swap space is still useful because if the system ever crashes, swap space is used to store a **_**crash dump file**_ which is used by advanced system admins to determine why the system crashed.
 
@@ -485,26 +489,26 @@ There are two types of swap spaces that can be created:
 
 The steps to creating a swap partition are:
 
-1.  Create a partition with an ID of 82 using `fdisk`&#x20;
+1. Create a partition with an ID of 82 using <mark style="color:red;">**`fdisk`**</mark>&#x20;
 
-    ```
-    Command (m for help): n
-    Command Action
-       e   extended
-       p   primary partition (1-4)
-    p
-    Partition number (1-4): 3
-    First sector (20971520-21995519, default 20971520):
-    Using default value 20971520
-    Last sector, +sectors, or +size{K,M,G} (20971520-21995519, default 21995519): +100
+```bash
+Command (m for help): n
+Command Action
+   e   extended
+   p   primary partition (1-4)
+p
+Partition number (1-4): 3
+First sector (20971520-21995519, default 20971520):
+Using default value 20971520
+Last sector, +sectors, or +size{K,M,G} (20971520-21995519, default 21995519): +100
 
-    Command (m for help): t
-    Partition number (1-6): 3
-    Hex code (type L to list codes): 82
-    Changed system type of partition 3 to 82 (Linux swap / Solaris)
-    ```
+Command (m for help): t
+Partition number (1-6): 3
+Hex code (type L to list codes): 82
+Changed system type of partition 3 to 82 (Linux swap / Solaris)
+```
 
-2\. Convert the partition to swap space with the <mark style="color:red;">`mkswap`</mark> command
+2\. **Convert the partition to swap space** with the <mark style="color:red;">**`mkswap`**</mark> command
 
 ```
 root@localhost:~# mkswap /dev/sda3
@@ -512,13 +516,13 @@ Setting up swapspace version1, size = 102396 KiB
 no label, UUID=59aaf06e-7109-471f-88a5-e81dd7c82d76
 ```
 
-3\. Enable the partition as current swap space with the <mark style="color:red;">`swapon`</mark> command
+3\. **Enable the partition** as current swap space with the <mark style="color:red;">**`swapon`**</mark> command
 
 1. ```
    root@localhost:~# swapon /dev/sda3
    ```
 
-The <mark style="color:red;">`-s`</mark> option to the <mark style="color:red;">`swapon`</mark> command will display currently used swap space
+The <mark style="color:red;">**`-s`**</mark> option to the <mark style="color:red;">**`swapon`**</mark> command will display currently used swap space
 
 ```
 root@localhost:~# swapon -s
@@ -527,29 +531,38 @@ Filename                                Type            Size    Used    Priority
 /dev/sda3                               partition       102392  0       -2
 ```
 
+{% hint style="warning" %}
+The <mark style="color:red;">**`swapon`**</mark> command only temporarily enables a swap partition. If the system is rebooted, the swap partition will still exist, but it will not be enabled as swap space
+{% endhint %}
+
 ### Creating a Swap File
 
-1.  Create a large file using the `dd` command. In order to determine which filesystem has room for the swap file, the `df` command was executed.
+1. Create a large file using the <mark style="color:red;">**`dd`**</mark> command. In order to determine which filesystem has room for the swap file, the `df` command was executed.
 
-    ```
-    root@localhost:~# dd if=/dev/zero of=/var/extraswap bs=1M count=100
-    100+0 records in
-    100+0 records out
-    104857600 bytes (105 MB) copied, 0.320096 s, 328 MB/s
-    ```
-
-Note that the resulting file is approximately 100MB in size, 100 blocks of 1MB in size. The options `bs=100M` and `count=1` would have resulted in the same size. The file is full of binary zero values that came from the `/dev/zero` file. What is actually in the file doesn't really matter; the size of the file is what is important.
-
-2\. Convert the file to swap space with the `mkswap` command.
-
+```bash
+root@localhost:~ dd if=/dev/zero of=/var/extraswap bs=1M count=100
+100+0 records in
+100+0 records out
+104857600 bytes (105 MB) copied, 0.320096 s, 328 MB/s
 ```
-root@localhost:~# mkswap /var/extraswap
+
+Note that the resulting file is approximately 100MB in size, `100 blocks` of `1MB` in size. The options **`bs=100M`** and **`count=1`** would have resulted in the same size. The file is full of binary zero values that came from the `/dev/zero` file. What is actually in the file doesn't really matter; the size of the file is what is important.
+
+2\. Convert the file to swap space with the <mark style="color:red;">**`mkswap`**</mark> command.
+
+```bash
+root@localhost:~ mkswap /var/extraswap
 Setting up swapspace version 1, size = 102396 KiB
 no label, UUID=908e51f8-a022-4508-8819-73e1d8837e2b
 ```
 
-Enable the file as current swap space with the `swapon` command
+Enable the file as current swap space with the <mark style="color:red;">**`swapon`**</mark> command
 
-```
-swapon /var/extrswap
+```bash
+root@localhost:~ swapon /var/extraswap
+root@localhost:~ swapon -s
+Filename                                Type            Size    Used    Priority
+/devdm-1                                partition       1015800 0       -1
+/dev/sda3                               partition       102392  0       -2
+/var/extraswap                          file            102392  0
 ```

@@ -428,7 +428,7 @@ UUID=34819281-65e3-4c78-ba2d-16952684c9cb swap   swap    defaults        0 0
 
 The sixth field is for **determining the order in which the filesystem will be checked by the **<mark style="color:red;">**`fsck`**</mark> (**F**ile **S**ystem **C**hec**K**) utility during system boot. This utility is designed to **find and fix filesystem problems.**
 
-**The root filesystem should always have a **<mark style="color:red;">**`1`**</mark>** in this field** to indicate that it will be checked by the `fsck` program first. All other local filesystems (ext2/ext3/ext4) should have a value of 2 specified for this field, so they will be checked after the root filesystem.
+**The root filesystem should always have a **<mark style="color:red;">**`1`**</mark>** in this field** to indicate that it will be checked by the <mark style="color:red;">**`fsck`**</mark> command program first. **All other local filesystems (ext2/ext3/ext4) should have a value of **<mark style="color:red;">**`2`**</mark> specified for this field, so they will be checked after the root filesystem.
 
 {% hint style="info" %}
 **Any pseudo-filesystems, remote filesystems, or swap space entries should have a `0` value** in this field. These filesystems should never be checked by the <mark style="color:red;">**`fsck`**</mark> utility.

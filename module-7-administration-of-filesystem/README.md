@@ -465,28 +465,64 @@ mount: / not mounted already, or bad option
 
 If there are no errors in the corresponding entry contained within the **`/etc/fstab`** file, then the <mark style="color:red;">**`mount -o`**</mark> command will produce no output.
 
-## Systemd Mount Units
+## systemd Mount Units
 
-Another approach to mounting filesystems us by using systemd _mount units_. Systemd mount units are configuration files that end in `.mount` and contain information about resources to be mounted at startup.
+Another approach to mounting filesystems us by using systemd _mount units_. **Systemd mount units are configuration files that end in **<mark style="color:red;">**`.mount`**</mark> and contain information about resources to be mounted at startup.
 
-The `systemd-mount` utility is the mechanism that systemd uses to create and start a transient `.mount` file, destroy or to start an `.automount` unit of the filesystem.
+These files contain a Mount section that has information about filesystem mount point, and they must be named for the specific path to be mounted.
 
-## loop Option
+**The **<mark style="color:red;">**`systemd-mount`**</mark>** utility is the mechanism that systemd uses** to create and start a transient <mark style="color:red;">**`.mount`**</mark> file, destroy  a transient `.mount` file, or to start an `.automount` unit of the filesystem.
 
-The `loop` option to the `mount` command is used to mount special filesystems that are stored within a file.
+Below is an example of a `.mount` file used for a snap install of software. **Snaps are software installation files** that can be used across various Linux distributions instead of the specific binary installers used by Ubuntu, Red Hat and other distributions.
 
-These files have the extension of `.img` or `.iso`, which contain complete filesystems that can be mounted with the `mount` command by using the `loop` option.
+```bash
+[Unit]
+
+Description=Mount unit for core, revision 6673
+
+Before=snapd.service
+
+[Mount]
+
+What=/var/lib/snapd/snaps/core_6673.snap
+
+Where=/snap/core/6673
+
+Type=squashfs
+
+Options=nodev,ro,x-gdu.hide
+
+[Install]
+
+WantedBy=multi-user.target
+```
+
+## Loop Option
+
+The <mark style="color:red;">**`loop`**</mark> option to the <mark style="color:red;">**`mount`**</mark> command is used to mount special filesystems that are stored within a file.
+
+These files have the extension of **`.img`** or **`.iso`**, which contain complete filesystems that can be mounted with the <mark style="color:red;">**`mount`**</mark> command by using the <mark style="color:red;">**`loop`**</mark> option.
 
 ```
 mount -o loop fs.img /mnt
 mount -o loop crdom.iso /mnt
 ```
 
+To gain access to these software packages, which all end with the `.rpm` extension, the system administrator mounts the ISO file and then copies the software packages by executing the following commands:
+
+```bash
+root@localhost:~ mount -o loop software.iso /mnt
+root@localhost:~ mkdir /root/latestrpms
+root@localhost:~ cp /mnt/*.rpm /root/latestrpms
+```
+
+After copying the software packages to the `/root/latestrpms` directory, the `software.iso` file can be unmounted and deleted from the system.
+
 ## Monitoring Filesystems
 
-The `df` command can also be used to view mounted filesystems. The output of this command displays the usage of the filesystem, where it's mounted, and the space usage of the device.
+The <mark style="color:red;">**`df`**</mark> command **can also be used to view mounted filesystems**. The output of this command **displays the usage of the filesystem**, where it's mounted, and the **space usage of the device**.
 
-Use the `-T` option ot have the `df` command displays the filesystem type:
+Use the <mark style="color:red;">**`-T`**</mark> option ot have the <mark style="color:red;">**`df`**</mark> command **displays the filesystem type**:
 
 ```
 root@localhost:~# df -hT

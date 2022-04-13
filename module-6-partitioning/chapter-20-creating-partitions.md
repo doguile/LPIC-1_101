@@ -15,7 +15,7 @@ description: >-
 
 **`gdisk`** An interactive GPT partition table manipulator. It will automatically covert the old-style MBR partition toable to the GPT format.
 
-**`mke2fs`** Command used to create an ext2/ext3/ext4 filesystem.
+**`mke2fs`** Command used to **create an ext2/ext3/ext4** filesystem.
 
 **`mkfs`** Command used to build a Linux file system on device.
 
@@ -320,35 +320,35 @@ Using the <mark style="color:red;">**`gparted`**</mark> utility, we **can create
 
 Logical Volume Management is a method of managing hard disk space that **provides more flexibility** than traditional partitioning disks.
 
-One of the great benefits of LVM is the ability to increase the size of the partition , referred to as a volume in LVM, as needed without the necessity for system downtime.
+One of the great benefits of LVM is the ability to **increase the size of the partition** , referred to as a volume in LVM, as needed **without the necessity for system downtime.**
 
 ### LVM Concepts
 
 The steps to implement LVM include the following:
 
 1. Connect the physical devices to the system
-2. Use <mark style="color:red;">`pvcreate`</mark> to convert the desired devices into physical volumes, which will allocate them for inclusion in the LVM scheme.
-3. Use <mark style="color:red;">`vgcreate`</mark> to incorporate all of the desired physical volumes into a virtual collection called a volume group.
-4. Use <mark style="color:red;">`lvcreate`</mark> to create the LVM version of disk partitions in the volume group created previously.
+2. Use <mark style="color:red;">**`pvcreate`**</mark> to **convert** the desired devices into **physical volumes**, which will allocate them for inclusion in the LVM scheme.
+3. Use <mark style="color:red;">**`vgcreate`**</mark> to **incorporate** all of the desired physical volumes into a virtual collection called a **volume group**.
+4. Use <mark style="color:red;">**`lvcreate`**</mark> to **create the LVM version** of disk partitions in the volume group created previously.
 
-The main advantages of using LVM in general and logical volumes, in particular, is the ability to group together space from multiple physical devices, resizes them, and much more.
+The main advantages of using LVM in general and logical volumes, in particular, is the ability to **group together space from multiple physical devices**, resizes them, and much more.
 
-To develop a better understanding of how these steps work, consider a situation in which three new hard drives are added to the system: `/dev/sdb`, `/dev/sdc`, and `/dev/sdd`.
+To develop a better understanding of how these steps work, consider a situation in which three new hard drives are added to the system: **`/dev/sdb`**, **`/dev/sdc`**, and **`/dev/sdd`**.
 
-At this point, they are just three hard drives that don't have anything on them, including a partition table. To use these as part of LVM, first execute the <mark style="color:red;">`pvcreate`</mark> command on each one:
+At this point, they are just three hard drives that don't have anything on them, including a partition table. To use these as part of LVM, first execute the <mark style="color:red;">**`pvcreate`**</mark> command on each one:
 
 ```bash
-root@localhost:~# pvcreate /dev/sdb
-root@localhost:~# pvcreate /dev/sdc
-root@localhost:~# pvcreate /dev/sdd
+root@localhost:~ pvcreate /dev/sdb
+root@localhost:~ pvcreate /dev/sdc
+root@localhost:~ pvcreate /dev/sdd
 ```
 
-Initially, these hard drives won't appear to be any different. However, there is now a small block of data, called a header, in the very beginning of each that defines each device as a physical volume
+Initially, these hard drives won't appear to be any different. However, there is now a small block of data, called a **header**, in the very beginning of each that defines each device as a physical volume
 
-The next step is to create a volume group that consists of these three physical volumes. This can be accomplished with the following command:
+The next step is to create a volume group that consists of these three physical volumes. This can be accomplished with the <mark style="color:red;">**`vgcreate`**</mark> command:
 
-```
-root@localhost:~# vgcreate vol1 /dev/sdb /dev/sdc /dev/sdd
+```bash
+root@localhost:~ vgcreate vol1 /dev/sdb /dev/sdc /dev/sdd
 ```
 
 \
@@ -358,47 +358,69 @@ root@localhost:~# vgcreate vol1 /dev/sdb /dev/sdc /dev/sdd
 
 > Additionally, if another physical volume was added to the system (add a new hard drive, use the <mark style="color:red;">`pvcreate`</mark> command, and then a command called <mark style="color:red;">`vgextend`</mark>)
 
-Any of the space in the `vol1` volume group can be used to create a logical volume with a command like the following:
+Any of the space in the **`vol1`** volume group can be used to create a logical volume with a command like the following:
 
+```bash
+root@localhost:~ lvcreate -L 200M -n logical_vol1 vol1
 ```
-root@localhost:~# lvcreate -L 200M -n logical_vol1 vol1
-```
 
-The `-L` option is used to specify the size of the logical volume. The `-n` option is used to provide a name to the logical volume. The resulting name of the logical volume created by the previous command will be `logical_vol1`
-
-The previous `lvcreate` command would result in a new device name of `/dev/vol1/logical_vol1` that could be used just like a traditional partition.
+The <mark style="color:red;">**`-L`**</mark> option is used to **specify the size** of the logical volume. The <mark style="color:red;">**`-n`**</mark> option is used to **provide a name** to the logical volume. The last argument, **`vol1`** ,is the name of the volume group from where the logical volume will obtain its physical space. The previous <mark style="color:red;">**`lvcreate`**</mark> command would result in a new device name of **`/dev/vol1/logical_vol1`** that could be used just like a traditional partition.
 
 ![](<../.gitbook/assets/image (17).png>)
 
 {% hint style="info" %}
-For Red Hat-based systems, the graphical tool <mark style="color:red;">`system-config-lvm`</mark> not only simplifies the process of working with LVM, it also helps to visualize what is happening:
+For Red Hat-based systems, the graphical tool <mark style="color:red;">**`system-config-lvm`**</mark> not only simplifies the process of working with LVM, it also helps to visualize what is happening:
 {% endhint %}
 
 ## Creating a FileSystem
 
-If the <mark style="color:red;">`fdisk`</mark> command is used to create a partition, then the filesystem will have to be created separately.
+If the <mark style="color:red;">**`fdisk`**</mark> command is used to create a partition, then the filesystem will have to be created separately.
 
-**The **<mark style="color:red;">**`mkfs`**</mark>** command can be used to create a filesystem**. To make a **vfat** type filesystem, which is compatible with multiple operating systems, including Microsoft Windows, execute a command like the following:
+**The **<mark style="color:red;">**`mkfs`**</mark>** command can be used to create a filesystem**. To make a <mark style="color:red;">**`vfat`**</mark> type filesystem, which is compatible with multiple operating systems, including Microsoft Windows, execute a command like the following:
 
-```
-mkfs -t vfat /dev/sdb1
-```
-
-The <mark style="color:red;">`mkfs`</mark> command is a wrapper that executes another command, which will actually make the correct filesystem. When provided the <mark style="color:red;">`-t vfat`</mark> option, the <mark style="color:red;">`mkfs`</mark> command will call the <mark style="color:red;">`mkdosfs`</mark> command to make the actual filesystem.
-
-A very common filesystem is the **Fourth Extended Filesystem, ext4,** the default filesystem on many Linux distributions. To create this type of filesystem, execute a command like:
-
-```
-mkfs -t ext4 /dev/sdb1
+```bash
+root@localhost:~ mkfs -t vfat /dev/sdb1
 ```
 
-In this case, the <mark style="color:red;">`mkfs`</mark> command would end up calling the <mark style="color:red;">`mke2fs`</mark> command which is capable of creating ext2, ext3, and ext4 type filesystems.
+{% hint style="danger" %}
+**FAT32 - VFAT**
 
-| Option | Description                                                                                                                                                                      |
-| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `-b`   | Specifies the block size of the filesystem. While the default is typically fine for normal filesystems, for filesystems with large databases, a larger block size is more ideal. |
-| `-N`   | Specifies the number of inodes.                                                                                                                                                  |
-| `-m`   | Specifies what percentage of the filesystem is reserved for system use. C                                                                                                        |
+It is the most compatible with any operating system or hardware device. It's main drawback is that **cannot store files larger than 4GB** and the **partitions cannot be larger than 2TB.**
+
+****
+
+**NTFS**
+
+Successor to FAT32, developed by Microsoft. Delete the maximum size of 4 GB in files and 2 TB in partitions. Least compatible with FAT32
+
+
+
+EXT4
+
+The last version of ext system used on Linux distributions. The size of the files can reach the 16TB and 1024PB on partitions.
+{% endhint %}
+
+**The **<mark style="color:red;">**`mkfs`**</mark>** command is a wrapper** that executes another command, which will actually make the correct filesystem. When provided the <mark style="color:red;">**`-t vfat`**</mark> option, the <mark style="color:red;">`mkfs`</mark> command will call the <mark style="color:red;">**`mkdosfs`**</mark> command to make the actual filesystem.
+
+A very common filesystem is the **Fourth Extended Filesystem or **<mark style="color:red;">**`ext4`**</mark>**,** **the default filesystem on many Linux distributions**. To create this type of filesystem, execute a command like:
+
+```bash
+root@localhost:~ mkfs -t ext4 /dev/sdb1
+```
+
+In this case, the <mark style="color:red;">**`mkfs`**</mark> command would end up calling the <mark style="color:red;">**`mke2fs`**</mark> command which is **capable of creating `ext2`, `ext3`, and `ext4`** type filesystems.
+
+| Option | Description                                                                                                                                                                                                                                                                                                                                                 |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `-b`   | **Specifies the block size of the filesystem**. While the default is typically fine for normal filesystems, for filesystems with large databases, a larger block size is more ideal.                                                                                                                                                                        |
+| `-N`   | Specifies the **number of inodes.**                                                                                                                                                                                                                                                                                                                         |
+| `-m`   | Specifies what **percentage of the filesystem is reserved for system use**. Normally <mark style="background-color:red;">**5% of the filesystem is reserverd for system use**</mark>. Regular user can't use this space, so it is considered to be unavailable; as a result, the `df` command takes that into consideration when reporting available space. |
+
+{% hint style="info" %}
+The <mark style="color:red;">**`mkfs`**</mark> command will not work if the partition is currently in use, meaning it's mounted.
+{% endhint %}
+
+Each filesystem has many options to modify features about the filesystem. To use these options, execute the filesystem creation command directly, rather than <mark style="color:red;">**`mkfs`**</mark> command
 
 ## exFAT
 

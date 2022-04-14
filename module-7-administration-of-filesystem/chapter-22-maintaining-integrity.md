@@ -33,7 +33,7 @@ Linux distributions that have replaced the traditional SysVinit daemon with syst
 
 ## Monitoring Disk Info
 
-Two storages-related statistics that should be monitored closely to ensure a system will continue to run correctly are free **data block space** and **free inodes**. The <mark style="color:red;">`df`</mark> command can help monitor both of these important numbers.
+Two storages-related statistics that should be monitored closely to ensure a system will continue to run correctly are free **data block space** and **free inodes**. The <mark style="color:red;">**`df`**</mark>** command** can help monitor both of these important numbers.
 
 Data block space is used to store the contents of a file (the file's data). If data block space is exhausted within a filesystem, it will not be possible to add any new content to either new or existing files.
 
@@ -117,7 +117,9 @@ sysadmin@localhost:~$ du --exclude=School Documents
 1100    Documents
 ```
 
-In addition to displaying file space by filesystem or directory structure, you also want to know how to **display other information about filesystems**. Execute the <mark style="color:red;">**`dumpe2fs`**</mark> command to display filesystem information
+## The <mark style="color:red;">`dumpe2fs`</mark> Command
+
+In addition to displaying file space by filesystem or directory structure, you also want to know how to **display techinical information about filesystems**. Execute the <mark style="color:red;">**`dumpe2fs`**</mark> command to display filesystem information
 
 ```
 [root@centos~]# dumpe2fs /dev/sda1 | head

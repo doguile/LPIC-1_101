@@ -1,3 +1,7 @@
+---
+description: '102.3 : Manage shared libraries v2  Weight: 1'
+---
+
 # Chapter 25: Managing Shared Libraries
 
 <details>
@@ -14,19 +18,19 @@
 
 </details>
 
-Shared libraries, also known as shared objects or system libraries, are files that include the `.so` extension as part of their name.
+Shared libraries, also known as **shared objects or system libraries**, are files that include the **`.so`** **extension as part of their name**.
 
-When a program is executed, the `/lib/ld-linux.so` dynamic linker will find and load the shared libraries needed by a program, prepare the program to execute, and then run it. Older binaries in the `a.out` format are linked and loaded by the `/lib/ld.so` program.
+When a program is executed, the <mark style="color:red;">**`/lib/ld-linux.so`**</mark>** dynamic linker will find and load the shared libraries needed by a program**, prepare the program to execute, and then run it. Older binaries in the `a.out` format are linked and loaded by the `/lib/ld.so` program.
 
 {% hint style="info" %}
-Both programs will search for the libraries in the `/lib` directory, the `/usr/lib` directory, the directories listed in the `LD_LIBRARY_PATH` environment variable, and from the `/etc/ld.so.cache` cache file.
+Both programs will search for the libraries in the **`/lib`** directory, the **`/usr/lib`** directory, the directories listed in the **`LD_LIBRARY_PATH`** environment variable, and from the **`/etc/ld.so.cache`** cache file.
 {% endhint %}
 
 Library files that are located in the **`/lib`** and **`/usr/lib`** directories are normally configured to be automatically found by the programs that needed them, but placing library files in other locations, such as the **`/usr/local/lib`** directory, may require configuring the system to be able to locate the shared library when needed.
 
 ## `/etc/ld.so.conf` File
 
-The `/etc/ld.so.conf` file is **used to configure which directories are searched for library files** by the <mark style="color:red;">**`ldconfig`**</mark> command during the boot process or when executed by the administrator.
+The **`/etc/ld.so.conf`** file is **used to configure which directories are searched for library files** by the <mark style="color:red;">**`ldconfig`**</mark> command during the boot process or when executed by the administrator.
 
 The <mark style="color:red;">**`ldconfig`**</mark> command **creates links and caches the most recent shared libraries** that are required by programs installed on the systems.&#x20;
 
@@ -38,17 +42,19 @@ include ld.so.conf.d/*conf
 
 This modular approach allows for packages that might be installed to add their own `.conf` file to the `/etc/ld.so.conf.d` directory.
 
-## Manually adding LIbrary Files
+## Manually adding Library Files
 
-For example, the administrator may have downloaded and installed software that was not packaged in an `.rpm` or `.deb` file and then installed it in directories under the `/usr/local` directory structure, with its library files located under the `/usr/local/lib` directory structure.&#x20;
+If an administrator is compiling software from the source or using software that is not packaged, a `.conf` file needs to be manually created.
 
-In order for these library files to be able to be loaded, create a `/etc/ld.so.conf/local.conf` file with the following content:
+For example, the administrator may have downloaded and installed software that was not packaged in an **`.rpm`** or **`.deb`** file and then installed it in directories under the `/usr/local` directory structure, **with its library files located under the `/usr/local/lib`** directory structure. In order for these library files to be able to be loaded, **create a **<mark style="color:red;">**`/etc/ld.so.conf/local.conf`**</mark> file with the following content:
 
 ```
 /usr/local/lib
 ```
 
-After adding or removing files in the `/etc/ld.so.conf.d` directory, the administrator needs to execute the <mark style="color:red;">**`ldconfig`**</mark> command to update the `/etc/ld.so.cache` cache file.
+After adding or removing files in the `/etc/ld.so.conf.d` directory, the administrator needs to **execute the **<mark style="color:red;">**`ldconfig`**</mark>** command to update the **<mark style="color:red;">**`/etc/ld.so.cache`**</mark>** cache file**.
+
+After updating the `/etc/ld.so.cache` file, the <mark style="color:red;">`ldconfig`</mark> command can be used to display useful information about the system's libraries.
 
 To **display the name and path information for all the libraries** that have been added to the cache use the <mark style="color:red;">**`ldconfig`**</mark> command with the <mark style="color:red;">**`-p`**</mark> option:
 
@@ -68,7 +74,7 @@ sysadmin@localhost:~$ ldconfig -p | head -n 20
 	libx86emu.so.1 (libc6,x86-64) => /usr/lib64/libx86emu.so.1
 ```
 
-To display the **list of libraries directories that are configured as well as their contents**, the <mark style="color:red;">**`-v`**</mark> option can be used:
+To display the **list of libraries directories that are configured as well as their contents**, the <mark style="color:red;">**`-v`**</mark> **option** can be used:
 
 ```bash
 sysadmin@localhost:~$ ldconfig -v | head -n 20
@@ -103,4 +109,11 @@ sysadmin@localhost:~$ 1dd /bin/bash
         libdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x00007f280211a000)
         libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f2801d53000)
         /lib64/ld-linux-x86-64.so.2 (0x00007f280254d000)
+```
+
+If there is a problem with a library file not being loaded, then the line of the output may report `not found`.&#x20;
+
+```bash
+sysadmin@localhost:~ 1dd /usr/bin/mysq1
+ldd: /usr/bin/mysql: No such file or directory
 ```

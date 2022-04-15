@@ -325,7 +325,7 @@ The <mark style="color:red;">**`yum`**</mark> command can locate and download pa
 
 > Although it is possible to resolve dependency issues manually with the `rpm` command, they can be solved automatically with the `yum` command.
 
-The big advantage of the <mark style="color:red;">**`yum`**</mark>** ** command is that it can be configured to automatically download packages and resolved package dependencies. In addition, the <mark style="color:red;">**`yum`**</mark> command **can display package information for packages that aren't even on the system** by accessing this data from a server called repository.
+The big advantage of the <mark style="color:red;">**`yum`**</mark>** ** command is that it can be configured to **automatically download packages and resolved package dependencies**. In addition, the <mark style="color:red;">**`yum`**</mark> command **can display package information for packages that aren't even on the system** by accessing this data from a server called repository.
 
 Typically, the <mark style="color:red;">**`yum`**</mark> command is configured by editing the **`/etc/yum.conf`** file and the files found in the **`/etc/yum.repos.d`** directory.
 
@@ -350,7 +350,7 @@ This query is used to **determine which package owns** the `/bin/bash` **file**.
 This query only succeeds if the `bash` package is already installed on the system.
 {% endhint %}
 
-On the other hand, the `yum` command can be used to determine which package owns the file because the `yum` command searches the database of the repository servers
+On the other hand, the <mark style="color:red;">`yum`</mark> command can be used to determine which package owns the file because the <mark style="color:red;">`yum`</mark> command searches the database of the repository servers
 
 ```
 yum provides /usr/lib/libicuuc.so.42
@@ -362,7 +362,7 @@ Or a glob pattern can be used:
 yum provides "*/libicuuc.so.42"
 ```
 
-The other distinct advantage of using the **`yum`** command  is the **ability to search for a package in the repositories (installed or available for install)**, based upon the name or description of the package.
+The other distinct advantage of using the <mark style="color:red;">**`yum`**</mark> command  is the **ability to search for a package in the repositories (installed or available for install)**, based upon the name or description of the package.
 
 ```bash
 [sysadmin@localhost ~]$ yum search terminal
@@ -380,11 +380,63 @@ ncurses-base.i686 : Descriptions of common terminals
 ncurses-term.i686 : terminal descriptions
 ```
 
+### Installing Packages with `yum`
+
+The <mark style="color:red;">**`yum`**</mark> utility is the preferred command to install packages since it will **resolve dependency issues for you**. For example, to install x32-x11 package, an administrator could execute the following:
+
+```
+[root@localhost ~]# yum install x3270-x11
+```
+
+The <mark style="color:red;">**`yum`**</mark> command has the ability to **install many packages at once.** List multiple package names with the <mark style="color:red;">**`yum install`**</mark> command:
+
+```
+[root@localhost ~]# yum install telnet telnet-server ftp vsftpd
+```
+
+&#x20;Multiple packages can also be installed using `yum groups`. A yum group is a **collection of packages that work together** to create a large piece of software.
+
+Using the <mark style="color:red;">**`yum grouplist`**</mark> command to **list all of the groups that are installed on a system**, as well as groups that are available.
+
+```
+[root@localhost ~]# yum grouplist | head
+Loaded plugins: fastestmirror, refresh-packagekit, security
+Setting up Group Process
+Loading mirror speeds from cached hostfile
+ * base: centosb6.centos.org
+ * extras: centosd6.centos.org
+ * updates: centosk3.centos.org
+```
+
+To see the details about a specific group, use the <mark style="color:red;">**`yum groupinfo`**</mark> command:
+
+```
+[root@localhost ~]# yum groupinfo "Perl Support"
+Loaded plugins: fastestmirror, refresh-packagekit, security
+Setting up Group Process
+Loading mirror speeds from cached hostfile
+ * base: centosb6.centos.org
+```
+
+Use the `yum groupinstall` command to install a group of packages. The group names that have spaces will have to be contained in quotes
+
+```
+[root@localhost ~]# yum groupinstall "Office Suite and Productivity"
+```
+
+### Removing Packages with `yum`
+
+If you have a choice as an administrator, you should also use the `yum` command to remove packages as it will resolve dependency issues for you.
+
+The <mark style="color:red;">**`yum`**</mark> command supports using either the <mark style="color:red;">**`remove`**</mark> or <mark style="color:red;">**`erase`**</mark> command:
+
+
+
 ## Installing Packages with DNF
 
-Dandified Yum, or DNF, is the next upcoming version of the `yum` command. <mark style="color:orange;">**DNF is designed to solve package management dependency issues**</mark>, also referred to as _depsolve_ problems, that were present in `yum`.
+Dandified Yum, or DNF, is the **next upcoming version of the **<mark style="color:red;">**`yum`**</mark> command. <mark style="color:orange;">**DNF is designed to solve package management dependency issues**</mark>, also referred to as _depsolve_ problems, that were present in <mark style="color:red;">`yum`</mark>.
 
-Another benefit of DNF over `yum` is a <mark style="color:orange;">**clearley documented Application Programming Interface (API)**</mark>. The API is the interface that allows applications to work with other application. DNF is <mark style="color:orange;">**designed with a strict API for plugins and extensions**</mark> and it mostly maintains command line compatibility with `yum`.
+Another benefit of DNF over <mark style="color:red;">`yum`</mark> is a <mark style="color:orange;">**clearley documented Application Programming Interface (API)**</mark>. The API is the interface that allows applications to work with other application. DNF is <mark style="color:orange;">**designed with a strict API for plugins and extensions**</mark> and it mostly maintains command line compatibility with <mark style="color:red;">`yum`</mark>.
 
 {% hint style="info" %}
 In the case of DNF, a plugin refers to software that provides extra functionality to DNF and modifies the DNF installation itself.
@@ -392,7 +444,7 @@ In the case of DNF, a plugin refers to software that provides extra functionalit
 Extensions are programs that import DNF functionality through DNF's python libraries. They do not modify the DNF installation.
 {% endhint %}
 
-To start using DNF, the `dnf` command can be executed using the following syntax:
+To start using DNF, the <mark style="color:red;">`dnf`</mark> command can be executed using the following syntax:
 
 ```
 dnf [OPTIONS] <COMMAND> [<ARGUMENTS>...]
@@ -401,7 +453,7 @@ dnf [OPTIONS] <COMMAND> [<ARGUMENTS>...]
 The <mark style="color:red;">**`dnf`**</mark> command uses the <mark style="color:red;">**`list`**</mark> command with the <mark style="color:red;">**`--available`**</mark> argument to list all available packages on the system:
 
 ```bash
-dnf list --available
+[root@localhost ~]: dnf list --available
 Last metadata expiration check: 0:25:49 ago on Sat Jun 22 23:41:27 2019.
 Available Packages
 cowsay.noarch                    3.04-4.el7                     
@@ -424,7 +476,7 @@ Transaction Summary
 Install  1 Package
 ```
 
-To verify that the `cowsay.noarch` package was successfully installed, list the recently installed packages using the `list` command with the `--installed` option:
+To **verify that the `cowsay.noarch` package was successfully installe**d, list the recently installed packages using the <mark style="color:red;">**`list`**</mark> command with the <mark style="color:red;">**`--installed`**</mark> option:
 
 ```bash
 dnf list --installed

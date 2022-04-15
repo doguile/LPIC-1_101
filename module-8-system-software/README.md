@@ -440,7 +440,7 @@ Debian's package management system is based upon the format used to package the 
 
 The primary configuration files that is used to **locate these repositories is the **<mark style="color:red;">**`/etc/apt/source.list`**</mark>** file.**
 
-Before working with the packages, run the `apt-get update` command. This will ensure that the system has a current list of packages that are available in the repositories listed in the `/etc/apt/source.list` file.
+Before working with the packages, run the <mark style="color:red;">`apt-get update`</mark> command. This will ensure that the system has a current list of packages that are available in the repositories listed in the `/etc/apt/source.list` file.
 
 Debian packages files follow a naming convention that makes it easy to determine the package name, version, release, and architecture. For example, the `bat_0.20.0_amd64.deb` file uses this generic pattern:
 
@@ -464,13 +464,13 @@ The third part of the file name is the release. The release is set by the organi
 
 `amd64`The final part of the file name after the release, but before `.deb` is the architecture for which the package was compiled. Not only does Debian support multiple PC architectures, including `amd64`, `i386`, and `ia64` ,but numeroues other architectures like armel, armhf, mips, mipsel, powerpc, s390, s390x, and sparc.
 
-The <mark style="color:red;">**`dpkg`**</mark> command is the most direct tool availabel for managing `.deb` packages. It can be used for installing, removing, and querying packages information, although other higher-level tools like <mark style="color:red;">**`synaptic`**</mark> ,or the **Advanced Package Tool (APT)** provide more powerful capabilities for managing dependencies between packages.
+The <mark style="color:red;">**`dpkg`**</mark> command is the most direct tool availabel for managing **`.deb`** packages. It can be used for installing, removing, and querying packages information, although other higher-level tools like <mark style="color:red;">**`synaptic`**</mark> ,or the **Advanced Package Tool (APT)** provide more powerful capabilities for managing dependencies between packages.
 
-The <mark style="color:red;">**`synaptic`**</mark> command is a graphical user interface that allows an administrator to install, remove, and update packages by navigation menus.
+The <mark style="color:red;">**`synaptic`**</mark> command is a **graphical user interface that allows an administrator to install**, remove, and update packages by navigation menus.
 
-### Installing Software with `dpkg`
+### Installing Software with <mark style="color:red;">`dpkg`</mark>
 
-To install a software package in a Debian-based distribution, use the `-i` option with the `dpkg` command.&#x20;
+To **install a software package in a Debian**-based distribution, use the <mark style="color:red;">**`-i`**</mark> **option** with the <mark style="color:red;">**`dpkg`**</mark> command.&#x20;
 
 ```
 dpkg -i joe_3.7-2.3_i386.deb
@@ -480,13 +480,13 @@ Debian packages also may have dependencies. There are four categories of depende
 
 ### Removing software with the `dpkg`
 
-There are a couple of ways that an administrator may remove a package, using the `-r` and `-P` options to the <mark style="color:red;">**`dpkg`**</mark> command.&#x20;
+There are a couple of ways that an administrator may remove a package, using the <mark style="color:red;">**`-r`**</mark> and <mark style="color:red;">**`-P`**</mark> options to the <mark style="color:red;">**`dpkg`**</mark> command.&#x20;
 
-The <mark style="color:red;">**`-r`**</mark> options **removes** the package and the <mark style="color:red;">**`-P`**</mark> option **purges** the package. When a package is removed, almost all of its file are removed except for its configuration files. When a package is purged, all of the packages file are removed, including the configuration files.
+The <mark style="color:red;">**`-r`**</mark> **options** **removes** the package and the <mark style="color:red;">**`-P`**</mark> **option** **purges** the package. When a package is removed, almost all of its file are removed except for its configuration files. When a package is purged, all of the packages file are removed, including the configuration files.
 
 ### Listing packages with the `dpkg`
 
-The `dpkg` command can retrieve a list of packages that are installed on the system, or list the files that are in a package. For example, to see all the packages that are currently installed on a system, execute the `dpkg -l` command:
+The <mark style="color:red;">`dpkg`</mark> command can retrieve a list of packages that are installed on the system, or list the files that are in a package. For example, to **see all the packages that are currently installed on a system**, execute the <mark style="color:red;">**`dpkg -l`**</mark> command:
 
 ```bash
 sysadmin@localhost:~$ dpkg -l
@@ -503,14 +503,14 @@ ii  apt-file       2.5.2ubuntu1 all          search for files within Debian pa
 The output of the <mark style="color:red;">**`dpkg -l`**</mark> command contains five pieces of information:
 
 * The first two pieces of this information are represented by a two-letter code:
-  * The **first letter reflect the desired status of the package**, which can be `i` for installed, `u` for unknown, `r` for remove of `h` for hold.
-  * The **second letter represents the actual status of the package**, where `i` means installed, and `n` means not installed.
+  * The **first letter reflect the desired status of the package**, which can be <mark style="color:red;">**`i`**</mark>** for installed**, <mark style="color:red;">**`u`**</mark> for unknown, <mark style="color:red;">**`r`**</mark> for remove of <mark style="color:red;">**`h`**</mark> for hold.
+  * The **second letter represents the actual status of the package**, where <mark style="color:red;">**`i`**</mark> means installed, and <mark style="color:red;background-color:purple;">**`n`**</mark> means not installed.
   * The most common two-letter codes are **`ii`** for fully installed and **`un` ** for not installed.&#x20;
 * The remaining columns show the package name, version, the architecture, and the description of the package if it is available.
 
-The `dpkg -l PACKAGE-NAME-PATTERN` command can also be used to list packages based on a glob pattern. For example, to view all packages that might contain `perl` in the package name, use the `dpkg -l "*perl*"` command.
+The <mark style="color:red;">**`dpkg -l PACKAGE-NAME-PATTERN`**</mark> command can also be used to **list packages based on a glob pattern**. For example, to view all packages that might contain `perl` in the package name, use the <mark style="color:red;">`dpkg -l "*perl*"`</mark> command.
 
-```
+```bash
 sysadmin@localhost:~$ dpkg -l "*perl*"
 Desired=Unknown/Install/Remove/Purge/Hold
 | Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
@@ -523,7 +523,7 @@ un  libalien-wxwid <none>       <none>       (no description available)
 
 Using the <mark style="color:red;">**`-L`**</mark> option with the `dpkg` will <mark style="color:orange;">**list the files that a package contains**</mark>. For example to view, the files that are a part of the package named `perl` ,execute the <mark style="color:red;">**`dpkg -L perl`**</mark> command:
 
-```
+```bash
 sysadmin@localhost:~$ dpkg -L perl
 /.
 /etc
@@ -534,7 +534,7 @@ sysadmin@localhost:~$ dpkg -L perl
 /usr
 ```
 
-If you know the pathname for a file, then it is possible to determine which package was responsible for providing that file by using the <mark style="color:red;">**`-S`**</mark>option with the **`dpkg`** command.
+If you know the pathname for a file, then it is possible to **determine which package was responsible for providing that file** by using the <mark style="color:red;">**`-S`**</mark>**option** with the **`dpkg`** command.
 
 For example, to discover the package that provide the `/usr/bin/perldoc` file, execute the following command:
 
@@ -551,25 +551,25 @@ By using the **`dpkg`** command with the <mark style="color:red;">**`-s`**</mark
 * Dependencies
 * Description
 
-### Configuration Packages with `dpkg-reconfigure`
+### Configuration Packages with <mark style="color:red;">`dpkg-reconfigure`</mark>
 
-If the package needs to be reconfigured at some later point, execute the <mark style="color:red;">**`dpkg-reconfigure`**</mark> command.
+If the **package needs to be reconfigured** at some later point, execute the <mark style="color:red;">**`dpkg-reconfigure`**</mark> command.
 
 ```
 dpkg-reconfigure [OPTIONS...] PACKAGES...
 ```
 
-A good example of using the `dpkg-reconfigure` command is with the **`tzdata`** package. When this package is configured, the administrator sets the time zone information for the computer's current location. If a system is moved to another location, particularly in a different time zone, then this package should be reconfigured by executing the `dpkg-reconfigure tzdata` command.
+A good example of using the <mark style="color:red;">`dpkg-reconfigure`</mark> command is with the **`tzdata`** package. When this package is configured, the administrator sets the time zone information for the computer's current location. If a system is moved to another location, particularly in a different time zone, then this package should be reconfigured by executing the `dpkg-reconfigure tzdata` command.
 
 ### Searching for packages with `apt-cache`
 
-If the system has the appropriate repositories configured in the `/etc/apt/sources.list` file and the administrator has already refreshed the cached information about which packages are available by executing the `apt-get update` command, then any user can search for packages by using the <mark style="color:red;">**`apt-cache search`**</mark> command:
+If the system has the appropriate repositories configured in the `/etc/apt/sources.list` file and the administrator has already refreshed the cached information about which packages are available by executing the <mark style="color:red;">`apt-get update`</mark> command, then any user can **search for packages by** using the <mark style="color:red;">**`apt-cache search`**</mark> **command**:
 
 ```
 apt-cache search KEYWORD
 ```
 
-The `apt-cache` command can also search for packages in a different way. To find out which dependencies a package has, the <mark style="color:red;">**`apt-cache depends PACKAGE`**</mark> command will list the packages required by the package-name.
+The <mark style="color:red;">`apt-cache`</mark> command can also search for packages in a different way. To **find out which dependencies a package has**, the <mark style="color:red;">**`apt-cache depends PACKAGE`**</mark> **command** will list the packages required by the package-name. For example, to determine the dependencies of the `wfuzz` package, execute the following:
 
 ```bash
  $ apt-cache depends wfuzz
@@ -585,13 +585,13 @@ wfuzz
 
 ```
 
-The <mark style="color:red;">**`apt-cache show PACKAGE`**</mark> command can also display the status of a package with information similar to the output of the `dpkg -s PACKAGE` command, but the `apt-cache` command displays more detailed information.
+The <mark style="color:red;">**`apt-cache show PACKAGE`**</mark> command can also **display the status of a package** with information similar to the output of the <mark style="color:red;">`dpkg -s PACKAGE`</mark> command, but the `apt-cache` command displays more detailed information.
 
 ### Installing/Updating Packages with `apt-get`
 
 After searching for a package, you may want to install that package and its required dependencies. Using the <mark style="color:red;">**`apt-get install PACKAGE`**</mark> command will download and prompt the administrator to install that package as well as its dependencies.&#x20;
 
-For example, to install the `apache2` package and its dependencies, execute the `apt-get install apache2` command with administrative privileges:
+For example, to install the **`apache2`** package and its dependencies, execute the <mark style="color:red;">`apt-get`</mark>` ```` `<mark style="color:red;">`install apache2`</mark> command with administrative privileges:
 
 {% hint style="info" %}
 If the package is installed and a newer version is available, execute the <mark style="color:red;">**`apt-get -only-upgrade install PACKAGE`**</mark> command
@@ -605,7 +605,7 @@ To update all packages of the system, two commands are executed. First, the <mar
 
 ### Removing/Purging Packages with `apt-get`
 
-Just as the `dpkg` command is able to either remove or purge a package, so can the `apt-get` command.
+Just as the <mark style="color:red;">`dpkg`</mark> command is able to either remove or purge a package, so can the <mark style="color:red;">`apt-get`</mark> command.
 
 {% hint style="warning" %}
 **Recall that the difference between the two is that purging deletes all packages files, whiel removing deletes all but the configuration files for the packages.**
@@ -649,21 +649,23 @@ sha516sum [OPTIONS]... [FILE]...
 
 ## SUSE Package Management
 
-Several distributions use the **ZYpp/libzypp** package management engine, which primarly runs on openSUSE, SUSE Linux Enterprise, and Ark.  Lipzipp was designed to perform as the software package management scheme for SUSE products as well as the failed and now mostly dormant Zenworks Linux management suite from Novell.
+Several distributions use the **`ZYpp/libzypp`** package management engine, which **primarly runs on openSUSE, SUSE Linux Enterprise, and Ark**.  `Lipzipp` was designed to perform as the software package management scheme for SUSE products as well as the failed and now mostly dormant Zenworks Linux management suite from Novell.
 
-While **ZYpp/libzypp** is the background package management engine, which is in charge of satisfying the dependencies between packages, most system operators will interact mainly with the <mark style="color:red;">**`zypper`**</mark> command line tool.
+While **`ZYpp/libzypp`** is the background package management engine, which is in charge of satisfying the dependencies between packages, most system operators will interact mainly with the <mark style="color:red;">**`zypper`**</mark> **command** line tool.
 
-Repositories come in several varieties:
+An important part of software management is the concept of _repositories_, which are essentially a shared network resource or local directory that provides a location for searching for software to install and update. Repositories come in several varieties:
 
-* The first being those that are official and supported, such as the subscription channels/repositories that the SCC (SUSE Customer Center) provides for those with support subscriptions.
-* The next variety is a 3rd-party repository. An excellent example of this is the Packman repository for the openSUSE community.
-* The last variety is the local mirror or synchronized repository that an organization will use to maintain a local copy of the software that can be used by their internal or public-facing systems.
+* The first being those that are **official and supported**, such as the subscription channels/repositories that the SCC (SUSE Customer Center) provides for those with support subscriptions.
+* The next variety is a **3rd-party repository**. An excellent example of this is the Packman repository for the openSUSE community.
+* The last variety is the **local mirror or synchronized repository** that an organization will use to maintain a local copy of the software that can be used by their internal or public-facing systems.
 
 The <mark style="color:red;">**`zypper`**</mark> command is used to query, install, remove, update, manage repositories, and more; **it depends on the **<mark style="color:red;">**`rpm`**</mark>** command's abilities** to accomplish most of these tasks.
 
-Using `zypper` to install the same packages is much easier, as it will do the hard work of reading the desired package's dependencies, query the database of installed packages for those, and if they are not found, determine which software repository from the list of configured repositories that they may be obtained from.
+For example, **a system operator could install a package with the **<mark style="color:red;">**`rpm`**</mark>** command, but if it had several dependencies, the system operator must then determine what packages are additionally needed and then install the dependencies** and the initial package in the exact right order to be successful.
 
-The syntax used for the `zypper` command examples is the following:
+Using <mark style="color:red;">**`zypper`**</mark> to install the same packages is much easier, as it will **do the hard work of reading the desired package's dependencies, query the database of installed packages for those**, and if they are not found, determine which software repository from the list of configured repositories that they may be obtained from. Then, the <mark style="color:red;">**`zypper`**</mark> command will inform the system operator of what is needed to install the desired package successfully.
+
+The syntax used for the <mark style="color:red;">**`zypper`**</mark> command examples is the following:
 
 ```
 zypper [--GLOBAL-OPTS] COMMAND [--COMMAND-OPTS] [COMMAND-ARGUMENTS]
@@ -671,32 +673,42 @@ zypper [--GLOBAL-OPTS] COMMAND [--COMMAND-OPTS] [COMMAND-ARGUMENTS]
 
 ### Searching for Packages with `zypper`
 
-It is critical to refresh the information that <mark style="color:red;">**`zypper`**</mark> has about the repositories that the commands in this section will be querying and installing software from. The refresh <mark style="color:red;">**`ref`**</mark> command can be used to refresh the repository.
+It is critical to refresh the information that <mark style="color:red;">**`zypper`**</mark> has about the repositories that the commands in this section will be querying and installing software from. The refresh <mark style="color:red;">**`ref`**</mark> **command can be used to refresh the repository.**
 
 ```bash
-localhost:~ # zypper ref
+localhost:~  zypper ref
 Repository 'sle-module-basesystem' is up to date.                               Repository 'sle-module-desktop-applications' is up to date.                     Repository 'sle-module-development-tools' is up to date.                        Repository 'Non-OSS' is up to date.
 Repository 'SLES15-15-0' is up to date.
 Repository 'SLES' is up to date.
 Repository 'sle-module-server-applications' is up to da the date. 
 ```
 
-To **find a package** to install, use the search <mark style="color:red;">**`se`**</mark> command to query the configured repositories on the system
+To **find a package** to install, use the search <mark style="color:red;">**`se`**</mark>** command to query** the configured repositories on the system.
 
+```bash
+localhost:~  zypper se gvim
+Loading repository data...
+Reading installed packages...
+
+S | Name | Summary      | Type
+--+------+--------------+--------
+  | gvim | A GUI for Vi | package
 ```
-zypper se gvim
-```
 
-### Installing Packages with `zypper`
+The examples searches for the graphical version of the `vim` command, `gvim`, and shows several useful pieces of information about the package.
 
-The **`zypper`** command can be used with the install <mark style="color:red;">**`in`**</mark> command to install packages.
+### Installing Packages with <mark style="color:red;">`zypper`</mark>
+
+The **`zypper`** command can be used with the install <mark style="color:red;">**`in`**</mark> **command** **to install packages.**
 
 ```
 zypper in PACKAGE
 ```
 
-```
-localhost:~ # zypper in gvim
+To install the `gvim` package, including any neccessary dependencies, use the following command:
+
+```bash
+localhost:~  zypper in gvim
 Loading repository data...
 Reading installed packages...
 Resolving package dependencies...
@@ -707,7 +719,9 @@ The following NEW package is going to be installed:
 1 new package to install.
 ```
 
-To reinstall (and force the overwriting of) the `gvim` package, as the root user, use the <mark style="color:red;">`-f`</mark> option to the `zypper` command:
+If for some odd reason a package is installed and doesn't work or is damaged, it's important to know how to reinstall it in order to fix the issue, hopefully.
+
+To **reinstall** (and force the overwriting of) the `gvim` package, as the root user, use the <mark style="color:red;">**`-f`**</mark> **option** to the <mark style="color:red;">`zypper`</mark> command:
 
 ```bash
 localhost:~$ zypper in -f gvim
@@ -726,10 +740,10 @@ Continue? [y/n/...? shows all options] (y): y
 
 ### Managing repositories with `zypper`
 
-To query the software repositories on a system, use the **`zypper`** command with the _**list repositories**_** **<mark style="color:red;">**`lr`**</mark> option:
+To query the software repositories on a system, use the <mark style="color:red;">**`zypper`**</mark> command with the _**list repositories**_** **<mark style="color:red;">**`lr`**</mark> option:
 
-```
-localhost:~ # zypper lr
+```bash
+localhost:~  zypper lr
 Repository priorities in effect:                                               (See 'zypper lr -P' for details)
       99 (default priority) :  6 repositories
      100 (lowered priority) :  1 repository

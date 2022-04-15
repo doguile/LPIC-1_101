@@ -740,7 +740,11 @@ Continue? [y/n/...? shows all options] (y): y
 
 ### Managing repositories with `zypper`
 
-To query the software repositories on a system, use the <mark style="color:red;">**`zypper`**</mark> command with the _**list repositories**_** **<mark style="color:red;">**`lr`**</mark> option:
+Any linux system will regularly requires updating, patching, and fixes. With all the new packages, updates to existing packages, security fixes, and patches, it can be a lot of work to keep a Linux system up-to-date.&#x20;
+
+The <mark style="color:red;">**`zypper`**</mark> command interacts a lot with software repositories, which are the gathered collections of software for different purposes.
+
+To **query the software repositories** on a system, use the <mark style="color:red;">**`zypper`**</mark> command with the _list repositories ****_** **<mark style="color:red;">**`lr`**</mark> option:
 
 ```bash
 localhost:~  zypper lr
@@ -757,22 +761,30 @@ Repository priorities in effect:                                               (
 5 | SLES15-15-0                      | SLES15-15-0                     | Yes     | (r ) Yes  | No
 ```
 
-**To **_**add a repository**_** to install additional software** from, first find the repository URL, the use t repository <mark style="color:red;">**`-ar`**</mark> option:
+**To **_**add a repository**_** to install additional software** from, first find the repository URL, then use the _add repository_ <mark style="color:red;">**`-ar`**</mark> **option**:
 
-```
-localhost:~ # zypper ar -f http://packman.inode.at/suse/openSUSE_Leap_15.1/ packman
+```bash
+localhost:~ zypper ar -f http://packman.inode.at/suse/openSUSE_Leap_15.1/ packman
 Adding repository 'packman'.............................................[done]
 Repository 'packman' successfully added
 
 URI         : http://packman.inode.at/suse/openSUSE_Leap_15.1/
 ```
 
-At this time, the `zypper ref` command would be run again to update the system with the latest metadata from all repositories, which will prompt for trusting the repository key.
+Notice the there is a URI/URL and a nickname (packman) that must both be present for the command to work.
+
+At this time, the <mark style="color:red;">**`zypper ref`**</mark> command would be run again to **update the system with the latest metadata from all repositories**, which will prompt for trusting the repository key.
+
+```bash
+localhost:~  zypper ref
+Repository 'packman' is up to date.
+All repositories have been refreshed
+```
 
 When the query of the new repository is successful, the system can be updated or software operations are undertaken.
 
 ```bash
-localhost:~ # zypper list-updates -t package
+localhost:~  zypper list-updates -t package
 retrieving repository 'packman' metadata -------------------------------------------------------------------[|]
 
 New repository or package signing key received:
@@ -787,7 +799,7 @@ New repository or package signing key received:
 
 ### Updating Packages with `zypper`
 
-The `zypper` command can also be used to **update the packages in a repository**
+The <mark style="color:red;">`zypper`</mark> command can also be used to **update the packages in a repository**
 
 ```
 zypper -list-updates PACKAGE
@@ -796,7 +808,7 @@ zypper -list-updates PACKAGE
 To see a listing of all the packages that are available for update from your repositories, you would use the <mark style="color:red;">**`list-updates`**</mark> command:
 
 ```
-localhost:~ # zypper list-updates -t gvim
+localhost:~  zypper list-updates -t gvim
 Loading repository data...
 Reading installed packages...
 No updates found.
@@ -804,16 +816,9 @@ No updates found.
 
 To perform an update of the system, (which will locate all updates in the configured repositories and perform a dependency-solve on them) use the `update` command:
 
-```
-localhost:~ # zypper update
+```bash
+localhost:~  zypper update
 Loading repository data...
 Reading installed packages...
 No updates found.
 ```
-
-
-
-
-
-
-

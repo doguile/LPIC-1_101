@@ -107,7 +107,7 @@ Any user can perform RPM queries to display information about packages that are 
 * To query a **package that is not installed**, use the <mark style="color:red;">**`-p FILE`**</mark> option.
 * To query an installed package ,use only the package name
 
-To perform any RPM query, always use the <mark style="color:red;">**`-q`**</mark> option with the <mark style="color:red;">**`rpm`**</mark> command. To query for basic package information, use the <mark style="color:red;">**`-i`**</mark> option:
+**To perform any RPM query, always use the **<mark style="color:red;">**`-q`**</mark>** option** with the <mark style="color:red;">**`rpm`**</mark> command. To query for basic package information, use the <mark style="color:red;">**`-i`**</mark> option:
 
 ```bash
 [sysadmin@localhost ~]$ rpm -qi bash
@@ -132,12 +132,12 @@ Always remember that RPM queries require the use of the <mark style="color:red;"
 
 | Option       | Purpose                                                                     |
 | ------------ | --------------------------------------------------------------------------- |
-| `-a`         | List all of the installed packages currently on the system                  |
-| `-c`         | Display a list of configuration files that belong to the package            |
-| `-d`         | List the documentation files that belong to the package                     |
-| `-i`         | Display the package information                                             |
+| `-a`         | List **all of the installed packages** currently on the system              |
+| `-c`         | Display a list of **configuration files that belong to the package**        |
+| `-d`         | List the **documentation files that belong to the package**                 |
+| `-i`         | Display the **package information**                                         |
 | `-K`         | Check the package integrity                                                 |
-| `-l`         | List all files in the package                                               |
+| `-l`         | List **all files in the package**                                           |
 | `--provides` | List the capabilities this package provides                                 |
 | `-R`         | List the capabilities that this package requires                            |
 | `--scripts`  | List the scripts that are used before and after installation of the package |
@@ -154,7 +154,7 @@ Always remember that RPM queries require the use of the <mark style="color:red;"
 
 It is a good idea to query a package to see the scripts it will execute before installing an RPM file from a third-party source.
 
-Before installing the `x3270-x11` package, the administrator could view the scripts to ensure that they are not dangerous by executing the following command:
+Before installing the `x3270-x11` package, the administrator **could view the scripts to ensure that they are not dangerous** by executing the <mark style="color:red;">**`--scripts`**</mark> option to the `rpm` command:
 
 ```
 rpm -qp --scripts x3270-x11-3.3.6-10.5.el6.i686.rpm
@@ -162,7 +162,7 @@ rpm -qp --scripts x3270-x11-3.3.6-10.5.el6.i686.rpm
 
 #### Querying the Integrity of a Package
 
-If an administrator is concerned with the security of the system, then not only should the administrator query a package to view its script, but also query the integrity of a package by using the <mark style="color:red;">**`-K`**</mark> option.
+If an administrator is concerned with the security of the system, then not only should the administrator query a package to view its script, but also **query the integrity of a package** by using the <mark style="color:red;">**`-K`**</mark> **option**.
 
 > To use this option on an `.rpm` file, import the public key file that is distributed by the same organization that packaged and distributed the `.rpm` file.
 
@@ -214,14 +214,14 @@ A depency is a software package that is required for another package to be insta
 
 For example, to install the `x3270-x11-3.3.6-10.5.el6.i686.rpm` package, execute:
 
-```
-rpm -i x3270-x11-3.3.6-10.5.el6.i686.rpm
+```bash
+[sysadmin@localhost ~]$ rpm -i x3270-x11-3.3.6-10.5.el6.i686.rpm
 ```
 
 Most administrators determine package dependencies by examining the output of a failed RPM package install. However, it is also possible to check the requirements and dependencies of a package in advance with the following <mark style="color:red;">**`rpm`**</mark> query:
 
-```
-rpm -qpR x3270-x11-3.3.6-10.5.el6.i686.rpm
+```bash
+[sysadmin@localhost ~]$ rpm -qpR x3270-x11-3.3.6-10.5.el6.i686.rpm
 /bin/sh
 /usr/bin/mkfontdir
 gtk2 >= 2.6
@@ -235,7 +235,7 @@ libutil.so.1
 {% hint style="warning" %}
 **Note**
 
-To see what each packages provides, perform a query with the `--provides` option.
+To **see what each packages provides**, perform a query with the <mark style="color:red;">**`--provides`**</mark> option.
 
 ```
 [sysadmin@localhost ~]$ rpm -qp --provides x3270-3.3.6-10.5.el6.i686.rpm
@@ -244,7 +244,7 @@ x3270 = 3.3.6-10.5.el6
 ```
 {% endhint %}
 
-Normally, the `rpm` command will refuse to install a package that is already installed, but it can be forced by adding the `--force` option.
+Normally, the <mark style="color:red;">`rpm`</mark> command will refuse to install a package that is already installed, but it can be forced by adding the <mark style="color:red;">**`--force`**</mark> option.
 
 ```
 rpm --force -i x3270-3.3.6-10.5.el6.i686.rpm
@@ -254,40 +254,40 @@ rpm --force -i x3270-3.3.6-10.5.el6.i686.rpm
 
 The <mark style="color:red;">**`rpm`**</mark> command can be used to erase (remove) packages from the system with the <mark style="color:red;">**`-e`**</mark> option.
 
-The **`rpm`** command will not allows a package to be erased if it is a requirement of another package.
-
-```
-rpm -e x3270-3.3.6-10.5.el6.i686.rpm
-```
-
-### Updating pakacges with `rpm`
-
-To update a package with a new version or newer release, use the `rpm` command with either the <mark style="color:red;">**`-U`**</mark> or the <mark style="color:red;">**`-F`**</mark> option.
-
-The <mark style="color:red;">**`-U`**</mark> option  can be used with the `rpm` command to either install or update a package.
-
-```
-rpm -U x3270-3.3.6-10.5.el6.i686.rpm
-```
-
-On the other hand, when using the **`rpm`** command with the <mark style="color:red;">**`-F`**</mark> option, the package will only be updated if the package is already installed; this is called _freshening_ the package:
-
-```
-rpm -F x3270-3.3.6-10.5.el6.i686.rpm
-```
-
-### Using `rpm2cpio`
-
-The <mark style="color:red;">**`rpm2cpio`**</mark> command accepts an `.rpm` file as an argument ( or reads data that is in a package format from standard input) and outputs a <mark style="color:red;">**`cpio`**</mark> archive.
-
-{% hint style="info" %}
-This capability can be used to list the contents of an `.rpm` file or to extract one or more files from within the original `.rpm` file.
-{% endhint %}
-
-For example, to list the contents of the `telnet-server-0.17-47.el6_3.1.i686.rpm` file, execute the following command.
+The <mark style="color:red;">**`rpm`**</mark> command will not allows a package to be erased if it is a requirement of another package.
 
 ```bash
-rmp2cpio telnet-server-0.17-47.el6_3.1.i686.rpm | cpio -t
+[sysadmin@localhost ~]$ rpm -e x3270-3.3.6-10.5.el6.i686.rpm
+```
+
+### Updating packages with `rpm`
+
+To update a package with a new version or newer release, use the <mark style="color:red;">**`rpm`**</mark> command with either the <mark style="color:red;">**`-U`**</mark> or the <mark style="color:red;">**`-F`**</mark> option.
+
+The <mark style="color:red;">**`-U`**</mark> **option**  can be used with the <mark style="color:red;">**`rpm`**</mark> command to either **install or update a package**.
+
+```bash
+[sysadmin@localhost ~]$ rpm -U x3270-3.3.6-10.5.el6.i686.rpm
+```
+
+On the other hand, when using the **`rpm`** command with the <mark style="color:red;">**`-F`**</mark> **option**, the package will only be **updated if the package is already installed**; this is called _freshening_ the package:
+
+```bash
+[sysadmin@localhost ~]$ rpm -F x3270-3.3.6-10.5.el6.i686.rpm
+```
+
+## Using `rpm2cpio`
+
+The <mark style="color:red;">**`rpm2cpio`**</mark> command accepts an <mark style="color:red;">`.rpm`</mark> file as an argument ( or reads data that is in a package format from standard input) and outputs a <mark style="color:red;">**`cpio`**</mark> archive.
+
+{% hint style="warning" %}
+**This capability can be used to list the contents of an **<mark style="color:red;">**`.rpm`**</mark>** file** **or to** **extract** one or more files from within the original `.rpm` file.
+{% endhint %}
+
+For example, to list the contents of the <mark style="color:red;">`telnet-server-0.17-47.el6_3.1.i686.rpm`</mark> file, execute the following command.
+
+```bash
+[sysadmin@localhost ~]$: rmp2cpio telnet-server-0.17-47.el6_3.1.i686.rpm | cpio -t
 ./etc/xinetd.d/telnet
 ./usr/sbin/in.telnetd
 ./usr/share/man/man5/issue.net.5.gz
@@ -304,7 +304,7 @@ To copy these files from the `.rpm` file, use the following command to extract t
 rpm2cpio telnet-server-0.17-47.el6_3.1.i686.rpm | cpio -imud
 ```
 
-Several options for the `cpio` command are listed in the table below:
+Several options for the <mark style="color:red;">**`cpio`**</mark> command are listed in the table below:
 
 | Option | Purpose                                                                 |
 | ------ | ----------------------------------------------------------------------- |
@@ -316,7 +316,7 @@ Several options for the `cpio` command are listed in the table below:
 {% hint style="info" %}
 **Consider This**
 
-Why use the <mark style="color:red;">**`rpm2cpio`**</mark> command? Consider a situation where a key package file is accidentally removed from the system. Reinstalling the entire package may be overkill if only a single file is needed. Using the <mark style="color:red;">**`rpm2cpio`**</mark> command, the **file that is missing can be extracted and copied back** into the appropriate directory.
+**Why use the **<mark style="color:red;">**`rpm2cpio`**</mark>** command?** Consider a situation where a key package file is accidentally removed from the system. **Reinstalling the entire package may be overkill if only a single file is needed**. Using the <mark style="color:red;">**`rpm2cpio`**</mark> command, **the** **file that is missing can be extracted and copied back** into the appropriate directory.
 {% endhint %}
 
 ## Manage Packages with `yum`
@@ -429,6 +429,16 @@ Use the `yum groupinstall` command to install a group of packages. The group nam
 If you have a choice as an administrator, you should also use the `yum` command to remove packages as it will resolve dependency issues for you.
 
 The <mark style="color:red;">**`yum`**</mark> command supports using either the <mark style="color:red;">**`remove`**</mark> or <mark style="color:red;">**`erase`**</mark> command:
+
+```
+[root@localhost ~]# yum remove libicu
+```
+
+```
+[root@localhost ~]# yum erase libicu
+```
+
+To remove an entire group of commands, use the <mark style="color:red;">**`yum groupremove`**</mark> command followed by the group name.
 
 
 

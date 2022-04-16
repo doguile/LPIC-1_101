@@ -16,7 +16,3 @@ To obtain the LPIC-1 certification, you must pass Exam 101 and 102. This materia
 * GNU and Unix Commands
 * Devices, Linux Filesystems, Filesystem Hierarchy Standard
 {% endhint %}
-
-{% hint style="danger" %}
-**Document still in process....**
-{% endhint %}

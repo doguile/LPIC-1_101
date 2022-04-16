@@ -1,8 +1,8 @@
 # 🐧 101-500
 
-Hello:smile:
+Hi folks:smile:
 
-As the same way while i was studying for my LPIC-1 certification also was taking notes of the material, so I have created this gitbook to have a handy help material.
+As the same way while I was studying for my LPIC-1 certification also was taking notes of the material, so I have created this gitbook to have a handy help material.
 
 Hope this will help you in your process of studying for the certification and achive the goal!
 

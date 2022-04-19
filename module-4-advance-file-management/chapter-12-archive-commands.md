@@ -50,8 +50,19 @@ gzip [OPTION]... [FILE]...
 gunzip [OPTION]... [FILE]...
 ```
 
+In the following example, the `longfile.txt` file is replaced with the compressed `longfile.txt.gz` file after using the <mark style="color:red;">`gzip`</mark> command:
+
+```bash
+sysadmin@localhost:~$ cd Documents/
+sysadmin@localhost:~/Documents$ ls longfile.txt
+longfile.txt
+sysadmin@localhost:~/Documents$ gzip longfile.txt
+sysadmin@localhost:~/Documents$ ls longfile*
+longfile.txt.gz
+```
+
 {% hint style="warning" %}
-Should be used with caution, since the default behaviour is to **replace the original file** specified with a compressed version.
+The <mark style="color:red;">`gzip`</mark> command should be used with caution, since the default behaviour is to **replace the original file** specified with a compressed version.
 {% endhint %}
 
 {% hint style="info" %}
@@ -76,7 +87,7 @@ sysadmin@localhost:~/Documents$ ls red*
 red.txt
 ```
 
-**To list the amount of compression** of an existing file, use the <mark style="color:red;">`-l`</mark> option, with the `gunzip` command:
+**To list the amount of compression** of an existing file, use the <mark style="color:red;">`-l`</mark> option, with the <mark style="color:red;">`gunzip`</mark> command:
 
 ```bash
 sysadmin@localhost:~/Documents$ gunzip -l numbers.txt.gz

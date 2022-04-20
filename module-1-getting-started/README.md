@@ -109,7 +109,7 @@ Multiple CLI also are available on Linux. Normally, these shells are derived fro
 
 Users interact with a system by executing _commands_ which are interpreted by the shell and transformed into actions by the kernel. These actions may or may not return information to the command line depending on the command issued and its result.
 
-A command can be followed by _`options`_ **that modify how the command is executed**, and _`arguments`_**, that are typically the files to be operated on**:
+A command can be followed by _<mark style="color:red;">`options`</mark>_ **that modify how the command is executed**, and _<mark style="color:red;">`arguments`</mark>_**, that are typically the files to be operated on**:
 
 ```
 commands [options] [arguments]
@@ -136,4 +136,4 @@ If you are in a remote location, then pseudo-terminal connections can also be ma
 
 ## Filesystems
 
-To the user, a filesystem is a hierarchy of directories and files with the root `/` directory at the top of the directory tree. To the operating system, a filesystem is a structure created on a disk partition consisting of tables defining the locations of directories and files.
+To the user, a filesystem is a hierarchy of directories and files with the root **`/`** directory at the top of the directory tree. To the operating system, a filesystem is a structure created on a disk partition consisting of tables defining the locations of directories and files.

@@ -18,7 +18,7 @@ description: '103.1: Work on the command line v2  Weight: 4'
 
 ## Introduction
 
-The definition of the word Linux depends on the context in which it is used. Technically speaking, <mark style="background-color:red;">**Linux is the Kernel of the system**</mark>, which is the central controller of everything that happens on the computer.
+The definition of the word Linux depends on the context in which it is used. Technically speaking, **Linux is the Kernel of the system**:thumbsup:, which is the central controller of everything that happens on the computer.
 
 UNIX was originally an operating system developed at AT\&T Bell Labs in the 70s. It has been modified and _forked (_people modified it_)_ such that now there are many different variants of UNIX. However, **UNIX is now both a trademark and a specification, owned by Open Group**.
 

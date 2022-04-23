@@ -60,7 +60,7 @@ The <mark style="color:red;">`more`</mark> and <mark style="color:red;">`less`</
 
 ## Splitting files
 
-The <mark style="color:red;">`split`</mark> command can take one file and split it into multiples files.&#x20;
+The <mark style="color:red;">`split`</mark> command can take one file and split it into multiples files. One application of the <mark style="color:red;">`split`</mark> command would be to take a file that is too large to fit on some kind of removable media and break that file apart so that each piece could be stored on separate media.
 
 {% hint style="info" %}
 This can also be a useful way to send larger files across a slow network that has connection issues
@@ -72,7 +72,7 @@ Once the pieces are copied to the other system, **the **<mark style="color:red;"
 split [OPTION]...[INPUT [PREFIX]]
 ```
 
-By default, **the new files will be named with a prefix of x and an alphabetical suffix of aa, ab, etc**.
+By default, **the new files will be named with a prefix of `x` and an alphabetical suffix of `aa`, `ab`,** etc.
 
 ```bash
 sysadmin@localhost:~/Documents$ split longfile.txt
@@ -87,8 +87,8 @@ alpha-third.txt   letters.txt  people.csv    xab           xah
 
 As indicated by the command syntax, **it is possible to specify a prefix other than x**. For example the following examples denotes `file.` as the prefix
 
-```
-split longfile.txt file.
+```bash
+sysadmin@localhost:~/Documents$ split longfile.txt file.
 file.aa
 file.ab
 file.ac
@@ -96,8 +96,8 @@ file.ac
 
 **The **<mark style="color:red;">**`-d`**</mark>** option will allow for the split files to have numeric suffix** instead of a default alphabetic suffix.
 
-```
-split longfile.txt -d file.
+```bash
+sysadmin@localhost:~/Documents$ split longfile.txt -d file.
 file.00
 file.01
 file.02
@@ -105,10 +105,10 @@ file.02
 
 By default, the <mark style="color:red;">`split`</mark> command will break apart a file into 1,000 line chunks.
 
-**The **<mark style="color:red;">**`-l`**</mark>** option can be used to specify the number of lines to split upon**. Alternatively, the <mark style="color:red;">`-b`</mark> option may be used to specify the maximum number of bytes to use per file.
+**The **<mark style="color:red;">**`-l`**</mark>** option can be used to specify the number of lines to split upon**. Alternatively, the <mark style="color:red;">`-b`</mark> option may be used to **specify the maximum number of bytes to use per file**.
 
-```
-split -d longfile.txt file. -l 5000
+```bash
+sysadmin@localhost:~/Documents$ split -d longfile.txt file. -l 5000
 ```
 
 ## Numbering the Output of Files
@@ -138,7 +138,7 @@ sysadmin@localhost:~/Documents$ nl newhome.txt
      7  Good luck!!!
 ```
 
-To have the <mark style="color:red;">`nl`</mark> command **number every line** in the .txt file, execute the <mark style="color:red;">**`-ba`**</mark> option to the `nl` command:
+To have the <mark style="color:red;">`nl`</mark> command **number every line** in the .txt file, execute the <mark style="color:red;">**`-ba`**</mark> option to the <mark style="color:red;">`nl`</mark> command:
 
 ```bash
 sysadmin@localhost:~/Documents$ nl -ba newhome.txt
@@ -178,22 +178,46 @@ head [OPTIONS]...[FILE]
 
 By default, the <mark style="color:red;">`head`</mark> command will **display the first ten lines of a file's** contents.&#x20;
 
+```bash
+sysadmin@localhost:~/Documents$ head alpha.txt
+A is for Apple
+B is for Bear
+C is for Cat
+D is for Dog
+E is for Elephant
+F is for Flower
+G is for Grapes
+H is for Happy
+I is for Ink
+J is for Juice
+```
+
 For instance, there is the ability to use a number as an option to indicate how many lines of output to display. For example, to display the first three lines of a file, execute:
 
-```
-head -3 file.txt
+```bash
+sysadmin@localhost:~/Documents$ head -3 alpha.txt
+A is for Apple
+B is for Bear
+C is for Cat
 ```
 
 There is also the <mark style="color:red;">`-n`</mark> option which takes an argument for the number of lines to display. So, the following would also display the first three lines of the file
 
-```
-head -n3 file.txt
+```bash
+sysadmin@localhost:~/Documents$ head -n3 alpha.txt
+A is for Apple
+B is for Bear
+C is for Cat
 ```
 
-A negative number can also be used as an argument to the <mark style="color:red;">`-n`</mark> option, which tells the <mark style="color:red;">`head`</mark> command how many lines to _omit from the bottom of the file_. For example, when executing the <mark style="color:red;">`head -n -90`</mark> command on a file that is 100 lines long, the output would only include the first 10 lines by omitting the last 90.
+A **negative number** can also be used as an argument to the <mark style="color:red;">`-n`</mark> option, which tells the <mark style="color:red;">`head`</mark> command **how many lines to **_**omit from the bottom of the file**_. For example, when executing the <mark style="color:red;">`head -n -90`</mark> command on a file that is 100 lines long, the output would only include the first 10 lines by omitting the last 90.
 
-```
-head -n -24 file.txt
+The `alpha.txt` file is 26 lines long. The following command omits the last 24 lines, resulting in only the first two lines of the file being displayed:
+
+```bash
+sysadmin@localhost:~/Documents$ head -n -24 alpha.txt
+A is for Apple
+B is for Bear
 ```
 
 ## Displaying the End of a File
@@ -222,12 +246,18 @@ Z is for Zebra
 
 **You may use either a number of the **<mark style="color:red;">**`-n`**</mark>** option as an argument** to the tail command to specify how many lines you want to output from the end of the file.
 
-```
-tail -n3 alpha.txt
-tail -3 alpha.txt
+```bash
+sysadmin@localhost:~/Documents$ tail -3 alpha.txt
+X is for Xenon
+Y is for Yellow
+Z is for Zebra
+sysadmin@localhost:~/Documents$ tail -n3 alpha.txt
+X is for Xenon
+Y is for Yellow
+Z is for Zebra
 ```
 
-When using the <mark style="color:red;">`-n`</mark> option with a number prefixed by a plus sign + character, the number is interpreted as the line number in the file to start displaying content from; **it will display from that line to the end of the file.**&#x20;
+When using the <mark style="color:red;">`-n`</mark> option with a number prefixed by a plus sign `+` character, the number is **interpreted as the line number in the file to start** displaying content from; **it will display from that line to the end of the file.**&#x20;
 
 ```bash
 sysadmin@localhost:~/Documents$ tail -n +20 alpha.txt
@@ -282,7 +312,7 @@ sysadmin@localhost:~/Documents$ paste numbers.txt letters.txt
 {% endtab %}
 {% endtabs %}
 
-It is also possible to use other characters as delimiters. The <mark style="color:red;"></mark> <mark style="color:red;"></mark><mark style="color:red;">`-d`</mark> option is used to specify the delimiter.
+It is also possible to use other characters as delimiters. **The **<mark style="color:red;">****</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`-d`**</mark>** option is used to specify the delimiter.**
 
 ```bash
 sysadmin@localhost:~/Documents$ paste -d , numbers.txt letters.txt
@@ -337,7 +367,40 @@ sysadmin@localhost:~/Documents$ join adjectives.txt animals.txt
 {% endtab %}
 {% endtabs %}
 
-Use the <mark style="color:red;">`-t`</mark> option to specify an alternative **delimiter**. For example if two spreadsheets were exported into comma separated value `.csv` files, join could use those commas to distinguish one field from another.
+In the following example, the first field is used to merge the two files together. When the files are joined, the number field is used as a key to determine which words to join:
+
+```bash
+sysadmin@localhost:~/Documents$ join adjectives.txt animals.txt
+1 golden retriever
+2 honey badger
+3 fruit bat
+4 grey wolf
+5 bald eagle
+```
+
+The first field in each file containing numbers is only shown once in the output, followed by a space and the second field from the first file, finally by another space and the second field from the second file. For illustration purposes, the same two files are shown being combined with the `paste` and `cat` commands:
+
+```bash
+sysadmin@localhost:~/Documents$ paste adjectives.txt animals.txt
+1    golden    1    retriever
+2    honey     2    badger
+3    fruit     3    bat
+4    grey      4    wolf
+5    bald      5    eagle
+sysadmin@localhost:~/Documents$ cat adjectives.txt animals.txt
+1    golden
+2    honey
+3    fruit
+4    grey
+5    bald
+1    retriever
+2    badger
+3    bat
+4    wolf
+5    eagle
+```
+
+Use the <mark style="color:red;">`-t`</mark> option to **specify an alternative delimiter**. For example if two spreadsheets were exported into comma separated value `.csv` files, <mark style="color:red;">`join`</mark> could use those commas to distinguish one field from another.
 
 ```bash
 sysadmin@localhost:~/Documents$ cat people.csv
@@ -375,7 +438,7 @@ Torvalds,Linus,1991,Linux
 
 ## Command Line Pipes
 
-The pipe `|` character can be used to send the output of one command to another:
+The pipe <mark style="color:red;">`|`</mark> character can be used to **send the output of one command to another**:
 
 ```
 COMMAND 1 | COMMAND 2 | COMMAND 3
@@ -388,7 +451,7 @@ sysadmin@localhost:~/Documents$ tail -3 alpha.txt | nl
      1  hello                                                         
      2  inkling                                                       
      3  jogger
-     
+
 sysadmin@localhost:~/Documents$ ls | head -5
 School                                                                          
 Work                                                                            
@@ -401,7 +464,7 @@ alpha-second.txt
 
 ### `cut` Command
 
-The <mark style="color:red;">`cut`</mark> command **extracts fields of information from a text fil**e.
+The <mark style="color:red;">`cut`</mark> command **extracts fields of information from a text file**.
 
 ```
 cut [OPTION]...[FILE]
@@ -424,7 +487,7 @@ sysadmin@localhost:~/Documents$ head -1 /etc/passwd | cut -d: -f1,5-7
 root:root:/root:/bin/bash
 ```
 
-Given a file that has fields at fixed character positions, the `cut` command can be used to extract the characters one at a time by using the character <mark style="color:red;">`-c`</mark> option followed by a range.
+Given a file that has fields at fixed character positions, the <mark style="color:red;">`cut`</mark> command **can be used to extract the characters one at a time** by using the character <mark style="color:red;">`-c`</mark> option followed by a range.
 
 For example, in the `/var/syslog` file; the first fifteen characters specify a timestamp. To extract only those characters from the text, specify `1` through `15`:
 
@@ -441,7 +504,7 @@ Jul 20 16:59:02
 
 ### `sort` Command
 
-The <mark style="color:red;">`sort`</mark> command is used to display a file sorted on a specific field of data
+The <mark style="color:red;">`sort`</mark> command is **used to display a file sorted on a specific field of data**
 
 ```
 sort [OPTION]...[FILE]...
@@ -497,7 +560,7 @@ sysadmin@localhost:~/Documents$ cut -f7 -d: /etc/passwd | head -n4
 /usr/sbin/nologin
 ```
 
-By piping this output to the `sort` command and using the _unique_ <mark style="color:red;">`-u`</mark> option, **duplicate lines will be removed from the output**:
+By piping this output to the <mark style="color:red;">`sort`</mark> command and using the _unique_ <mark style="color:red;">`-u`</mark> option, **duplicate lines will be removed from the output**:
 
 ```
 sysadmin@localhost:~/Documents$ cut -f7 -d: /etc/passwd | sort -u

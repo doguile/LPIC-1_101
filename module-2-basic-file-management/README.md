@@ -99,13 +99,13 @@ sysadmin@localhost:~/Documents$ echo [?]*
 
 Even using square brackets inside of the square brackets will match a square bracket, so `[[]]*` would match a file name that starts with the square brackets:
 
-Just as with the other wildcard characters, the square brackets can appear multiple times in a pattern. For example, to match a file in the `/usr/bin` directory that contains at least two digits in the filename , use the following sentence:
+Just as with the other wildcard characters, **the square brackets can appear multiple times in a pattern**. For example, to match a file in the `/usr/bin` directory that contains at least two digits in the filename , use the following sentence:
 
 ```
 $ echo *[0-9][0-9]*
 ```
 
-The **square brackets also support negating the set of characters** (also called _complementation_). If the first character inside of the square brackets is either an exclamation `!` character or a caret `^` character, then that first character has the meaning of _**not the following characters.**_
+The **square brackets also support negating the set of characters** (also called _complementation_). If the first character inside of the square brackets is either an exclamation <mark style="color:red;">**`!`**</mark> character or a caret <mark style="color:red;">`^`</mark> character, then that first character has the meaning of _**not the following characters.**_
 
 ```bash
 #Would match a file name that does not begin with a letter a through v

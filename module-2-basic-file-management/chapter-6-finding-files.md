@@ -29,7 +29,7 @@ description: >-
 
 ## Filesystem Hierarchy Standard (FHS)
 
-The FHS is an agreement to **standardize the names and locations of directories and their content** for use within most Linux filesystems.
+The FHS is an agreement to **standardize the names and locations of directories and their content** for use within most Linux filesystems. t helps to know what directories to expect to find, and what files one should expect to find in them. More importantly, it allows programmers to write programs that will be able to work across a wide variety of systems that conform to this standard.
 
 | Directory           | Purpose                                                        |
 | ------------------- | -------------------------------------------------------------- |
@@ -59,6 +59,16 @@ The FHS is an agreement to **standardize the names and locations of directories 
 | `/usr/share/locale` | Locale information.                                            |
 | `/usr/share/man`    | Location for man pages.                                        |
 | `/usr/share/nls`    | Native language support files.                                 |
+
+Vendors of Linux distributions have continued to make some changes, even though a new version of the standard has not been published in over ten years. Two notable new additions include the `/run` directory and the `/sys` directory.&#x20;
+
+The **`/run`** directory is being considered for use in the forthcoming FHS versions to **contain volatile data that changes at runtime**. Previously, this data was supposed to be stored under the `/var/run` directory, but due to the unavailability of this directory at boot time, this data can become scattered in other places, such as hidden files in the `/dev` directory.
+
+The **`/sys`** directory in some traditional UNIX systems was used to hold files related to the kernel. In modern Linux systems, the **`/sys`** directory is **used to mount the `sysfs` pseudo-filesystem**. This filesystem is used to export information about kernel objects and their relationships to each other.
+
+Another notable change that some Linux distributions are making is the conversion of the `/bin`, `/sbin` and `/lib` directories into symbolic links which point to `/usr/bin`, `/usr/sbin` and `/usr/lib`, respectively. All user executables are now in the `/usr/bin` directory, administrator executables are now in the `/usr/sbin` directory, and the libraries to support all these executables are now in the `/usr/lib` directory.
+
+Because of the way that UNIX booted, the `/bin`, `/sbin` and `/lib` directories had to be part of the root filesystem as they contain critical boot executables. Some developers now argue that the reason for having them split is no longer valid. In early versions of UNIX, the developers had two filesystems of about 1.5 MiB each on two separate disks for the root filesystem and the `/usr` filesystem. As the root filesystem started to become full, the developers decided to move some of the executable files that were in the `/bin` and `/sbin` directories that were not essential to booting the system into the corresponding directories `/usr/bin` and `/usr/sbin` (in the separate `/usr` filesystem).
 
 The **FHS** standard categorizes each system directory in a couple of ways for security purposes:
 
@@ -102,14 +112,16 @@ sysadmin@localhost:~$ locate passwd
 A few thing to consider:
 
 * Only **return results** of files that the current **user would normally have access to**.
-* The <mark style="color:red;">**`locate`**</mark> command will **display all files** that have the **search term anywhere in the filename**.
+* The <mark style="color:red;">**`locate`**</mark> command **will** **display all files** that have the **search term anywhere in the filename**.
 * The <mark style="color:red;">**`locate`**</mark> command is **case sensitive**. To have the locate command not be case sensitive, use the <mark style="color:red;">**`-i`**</mark> option.
 
 {% hint style="info" %}
 The <mark style="color:red;">`locate`</mark> command is **dependent on a database**. This database can be updated manually by an admin using the <mark style="color:red;">`updatedb`</mark> command.
 
-The <mark style="color:red;">**`locate`**</mark> command accepts the <mark style="color:red;">**`-r`**</mark> optino to use regular expressions in the search pattern which provides a more powerful way to search for files.
+The <mark style="color:red;">**`locate`**</mark> command accepts the <mark style="color:red;">**`-r`**</mark> option to use regular expressions in the search pattern which provides a more powerful way to search for files.
 {% endhint %}
+
+When executed, the <mark style="color:red;">`updatedb`</mark> command creates a database of all files that it finds on the computer for quick searching. This command can only be executed by a user with administrative access, which can be achieved using the <mark style="color:red;">`sudo`</mark> command:
 
 The <mark style="color:red;">`updatedb`</mark> command can be told not to search a particular name, path, or filesystem by changing the corresponding line in its configuration file, `/etc/updatedb.conf`. Below is an example of the default file in its entirety:
 
@@ -126,33 +138,38 @@ f fuse.glusterfs fuse.sshfs curlftpfs ceph fuse.ceph fuse.rozofs ecryptfs fusesm
 b"
 ```
 
-However, if you want to use the **`locate`** command to search for a file that was created very recently, it will fail to find the file if the database hasn't been updated since the file creation
+However, if you want to use the <mark style="color:red;">**`locate`**</mark> command to search for a file that was created very recently, it will fail to find the file if the database hasn't been updated since the file creation
 
 ### `find` Command
 
-The <mark style="color:red;">**`find`**</mark> command is **slower** than the `locate` command because it **searches directories in real time**; however ,it doesn't suffer from problems associated with an outdated database.
+The <mark style="color:red;">**`find`**</mark> command is **slower** t**han the **<mark style="color:red;">**`locate`**</mark>** command** because it **searches directories in real time**; however ,it doesn't suffer from problems associated with an outdated database.
 
 {% hint style="warning" %}
-The <mark style="color:red;">`find`</mark> command **expects a directory as the first argument** and will search this directory and all of its sub-directories. If no sub-directories is specified, then the find command will start the search at the current directory.
+The <mark style="color:red;">`find`</mark> command **expects a directory as the first argument** and will search this directory and all of its sub-directories. If no directory is specified, then the <mark style="color:red;">`find`</mark> command will start the search at the current directory.
 {% endhint %}
 
 ```
 find [OPTIONS]...[starting point] [expression]
 ```
 
-```bash
-find . -name Downloads
-find . -name 'Do*'
-find . -name Dow*
-```
+Note that the period `.` character refers to the current directory in the following example, but the current directory could also be referred to using the `./` notation. The <mark style="color:red;">`find`</mark> command uses the <mark style="color:red;">**`-name`**</mark> option to search for files by name, in this case, the `Downloads` directory.
 
-The period <mark style="color:red;">**`.`**</mark> character refers to the current directory, but the current directory could also be referred to using the `./` notation. The <mark style="color:red;">**`find`**</mark> command uses the <mark style="color:red;">**`-name`**</mark> option to search for files by name.
+```bash
+sysadmin@localhost:~$ find . -name Download
+sysadmin@localhost:~$ find . -name Downloads
+./Downloads
+sysadmin@localhost:~$ find . -name Dow*
+./Downloads
+sysadmin@localhost:~$ find . -name 'Do*'
+./Documents
+./Downloads
+```
 
 {% hint style="danger" %}
 **The string must match the exact name of the file**, not just the part of the name. Globbing can be used.
 {% endhint %}
 
-The find command also offers many options for searching files, unlike the locate command which searches only for files based on file name.
+The <mark style="color:red;">`find`</mark> command also offers many options for searching files, unlike the locate command which searches only for files based on file name.
 
 | Example           | Meaning                                                                          |
 | ----------------- | -------------------------------------------------------------------------------- |
@@ -166,17 +183,25 @@ The find command also offers many options for searching files, unlike the locate
 | `-type d`         | Files that are directory files.                                                  |
 | `-maxdepth 1`     | Do not use recursion to enter subdirectories; only search the primary directory. |
 
-If multiple criteria are specified, the all criteria must match as the <mark style="color:red;">**`find`**</mark> command automatically assumes a logical _AND_ condition between criteria, meaning all of the conditions must be met. This could be explicitly stated by using the <mark style="color:red;">**`-a`**</mark> option between criteria.
-
-```
-find . -user jdoe -a -name Downloads
-```
-
-Logical _OR_ conditions can be specified between criteria with the <mark style="color:red;">**`-o`**</mark> option, meaning at least one of the conditions must be true.
+If multiple criteria are specified, the all criteria must match as the <mark style="color:red;">**`find`**</mark>** command automatically assumes a logical **_**AND**_** condition between criteria**, meaning all of the conditions must be met. This could be explicitly stated by using the <mark style="color:red;">**`-a`**</mark> option between criteria. For example, the `Downloads` directory must also be owned by the `sysadmin` user in order for the <mark style="color:red;">`find`</mark> command to produce a result in the following example:
 
 ```bash
-#List files that are either named Downloads or owned by the jdoe user
-find . -user jdoe -o -name Downloads
+sysadmin@localhost:~$ find . -user sysadmin -a -name Downloads
+./Downloads
+```
+
+**Logical **_**OR**_** conditions can be specified between criteria** with the <mark style="color:red;">**`-o`**</mark> option, meaning at least one of the conditions must be true.
+
+```bash
+sysadmin@localhost:~$ find . -user sysadmin -o -name Downloads
+.                                                                
+./Public                                                          
+./Downloads                                                        
+./Pictures                                                    
+./Videos                                                          
+./.selected_editor                                                 
+./.profile                                                   
+ ./.bash_logout
 ```
 
 Logical groupings can also be specified using parenthesis
@@ -188,7 +213,7 @@ Logical groupings can also be specified using parenthesis
 find . -iname 'desk*' -o \( -name Downloads -a -user jdoe \)
 ```
 
-By default, the <mark style="color:red;">`find`</mark> command simply prints the names of the files that it finds. To generate outputs showing additional file details, similar to the `ls -l` command, you can specify the <mark style="color:red;">`-ls`</mark> options
+By default, the <mark style="color:red;">`find`</mark> command simply prints the names of the files that it finds. To generate outputs showing additional file details, similar to the <mark style="color:red;">`ls -l`</mark> command, you can specify the <mark style="color:red;">`-ls`</mark> options
 
 ```bash
 find . -ls -iname 'desk*' -o \(-name Downloads -a -user jdoe \)
@@ -199,7 +224,18 @@ find . -ls -iname 'desk*' -o \(-name Downloads -a -user jdoe \)
 210019332      4 drwxr-xr-x   2 sysadmin sysadmin     4096 Mar  8 19:10 ./Downloads  
 ```
 
-To make the output exactly like the the output of the `ls -l` command, use the <mark style="color:red;">**`-exec`**</mark> option to execute **`ls -l`** on each file found
+To make the output exactly like the the output of the <mark style="color:red;">`ls -l`</mark> command, use the <mark style="color:red;">**`-exec`**</mark> option to execute <mark style="color:red;">**`ls -l`**</mark> on each file found
+
+```bash
+sysadmin@localhost:~$ find -name 'Documents' -exec ls -l {} \;                       
+total 1100                                                                      
+drwxr-xr-x 5 sysadmin sysadmin   4096 Mar  8 19:10 School                       
+drwxr-xr-x 2 sysadmin sysadmin   4096 Mar  8 19:10 Work                         
+-rw-r--r-- 1 sysadmin sysadmin     39 Mar  8 19:10 adjectives.txt               
+-rw-r--r-- 1 sysadmin sysadmin     90 Mar  8 19:10 alpha-first.txt              
+-rw-r--r-- 1 sysadmin sysadmin    106 Mar  8 19:10 alpha-second.txt             
+-rw-r--r-- 1 sysadmin sysadmin    195 Mar  8 19:10 alpha-third.txt
+```
 
 ```bash
 #Tells the find command to execute the ls -l command for each file found. The pair
@@ -220,7 +256,7 @@ find . -mmin -2 -ok rm {} \;
 < rm ... ./three > ? y
 ```
 
-The modification time <mark style="color:red;">`-mtime`</mark> option to the `find` command provides the ability to give time as criteria for a search.
+The modification time <mark style="color:red;">`-mtime`</mark> option to the <mark style="color:red;">`find`</mark> command provides the ability to give time as criteria for a search.
 
 | Option      | Function                                    |
 | ----------- | ------------------------------------------- |
@@ -238,7 +274,7 @@ To find all files that are newer, you can use it with the <mark style="color:red
 
 The find command also allows the use of friendly notation to find files that are larger or smaller than a particular size.
 
-```
+```bash
 #Find all files that are smaller than 1 Kilobyte in the /etc directory
 find /etc -size -1k
 
@@ -246,7 +282,7 @@ find /etc -size -1k
 find /etc -size +1M
 ```
 
-The `find` command can also help you **find files by specifying a file type**, such as regular file, directory, and more, using the <mark style="color:red;">**`-type`**</mark> option.&#x20;
+The <mark style="color:red;">`find`</mark> command can also help you **find files by specifying a file type**, such as regular file, directory, and more, using the <mark style="color:red;">**`-type`**</mark> option.&#x20;
 
 | Symbol  | File Type                                                |
 | ------- | -------------------------------------------------------- |
@@ -257,21 +293,35 @@ The `find` command can also help you **find files by specifying a file type**, s
 | **`f`** | Regular file (i.e., scripts, text files, graphics)       |
 | `s`     | Sockets (Allows for communication between processes)     |
 
+To demonstrate, in order to search only for directories under the `/home` directory, you could use the following command:
+
 ```bash
-#In order to search only for directories under the /home directory.
-find /home/sysadmin -type d 
+sysadmin@localhost:~$ find /home/sysadmin -type d               
+/home/sysadmin                                            
+/home/sysadmin/Desktop                                   
+/home/sysadmin/Templates                          
+/home/sysadmin/Documents                 
+/home/sysadmin/Documents/Work        
+/home/sysadmin/Documents/School    
+/home/sysadmin/Documents/School/Engineering
+/home/sysadmin/Documents/School/Art       
+/home/sysadmin/Documents/School/Math                
+/home/sysadmin/Music                                        
+/home/sysadmin/Public
 ```
 
 {% hint style="info" %}
-To limit the search to just a single level below the /home directory, the <mark style="color:red;">**`-maxdepth`**</mark> option to the <mark style="color:red;">`find`</mark> command can be used.
+To **limit the search to just a single level** below the `/home` directory, the <mark style="color:red;">**`-maxdepth`**</mark> option to the <mark style="color:red;">`find`</mark> command can be used.
 
-`find /home/sysadmin -maxdepth 1 -type d`&#x20;
+```bash
+sysadmin@localhost:~$ find /home/sysadmin -type d -maxdepth 1
+```
 {% endhint %}
 
 {% hint style="warning" %}
-The `find` command generates a lot of output related to files that it cannot access due to inadequate permissions. **To suppress this type of output, redirect it to `/dev/null`**, as shown in the example below. To find the `hostname` file in the `/etc` directory and also redirect the error stream, execute the following command:
+The <mark style="color:red;">`find`</mark> command generates a lot of output related to files that it cannot access due to inadequate permissions. **To suppress this type of output, redirect it to `/dev/null`**, as shown in the example below. To find the `hostname` file in the `/etc` directory and also redirect the error stream, execute the following command:
 
-```
+```bash
 find /etc -name hostname 2>/dev/null
 ```
 {% endhint %}
@@ -283,7 +333,7 @@ find /etc -name "*.conf" 2>/dev/null | wc -l
 92
 ```
 
-### <mark style="color:red;">`whereis`</mark> Command
+### `whereis` Command
 
 The <mark style="color:red;">`whereis`</mark> command can be **used to search your PATH for the binary**. It is also capable of searching for tha man page, and source files for any given command.
 
@@ -304,7 +354,7 @@ The output of the <mark style="color:red;">`whereis`</mark> command returns thre
 
 To view the location of the **binary separate from the man page and info page**, use the <mark style="color:red;">`-b`</mark> and <mark style="color:red;">`-m`</mark> option respectively.
 
-```
+```bash
 sysadmin@localhost:~$ whereis -b grep
 grep: /bin/grep
 sysadmin@localhost:~$ whereis -m grep
@@ -332,9 +382,17 @@ Sometimes the <mark style="color:red;">`whereis`</mark> command returns more tha
 which [-a] FILENAME..
 ```
 
-To find out which <mark style="color:red;">`bash`</mark> result is the real command, use the <mark style="color:red;">**`which`**</mark> command:
+The `bash` command is an example that normally yields two results:
 
+```bash
+sysadmin@localhost:~$ whereis -b bash
+bash: /bin/bash /etc/bash.bashrc
 ```
+
+\
+**To find out which **<mark style="color:red;">**`bash`**</mark>** result is the real command**, use the <mark style="color:red;">**`which`**</mark> command:
+
+```bash
 sysadmin@localhost:~$ which bash
 /bin/bash
 ```
@@ -343,12 +401,12 @@ The <mark style="color:red;">**`-a`**</mark> option can be used with the <mark s
 
 > This would be useful to know if an executable script was inserted maliciously to override an existing command
 
-```
+```bash
 sysadmin@localhost:~$ which -a ping
 /bin/ping
 ```
 
-By using the `which` command, an administrator can be fairly certain that the only executable running by the name of the `ping` command is located in the `/bin` directory.
+By using the <mark style="color:red;">`which`</mark> command, an administrator can be fairly certain that the only executable running by the name of the `ping` command is located in the `/bin` directory.
 
 ### `type` Command
 
@@ -374,7 +432,7 @@ echo is a shell builtin
 
 Using the <mark style="color:red;">`-a`</mark> option, the <mark style="color:red;">`type`</mark> command can also **reveal the path of another command**:
 
-```
+```bash
 sysadmin@localhost:~$ type -a echo
 echo is a shell builtin
 echo is /bin/echo
@@ -382,7 +440,7 @@ echo is /bin/echo
 
 The <mark style="color:red;">`type`</mark> command supports other options, and **can lookup multiple commands simultaneously**. To **display only a single word describing** the `echo`, `ll`, and `which` commands, use the <mark style="color:red;">`-t`</mark> option:
 
-```
+```bash
 sysadmin@localhost:~$ type -t echo ll which
 builtin
 alias

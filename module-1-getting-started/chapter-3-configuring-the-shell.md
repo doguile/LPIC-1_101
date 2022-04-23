@@ -26,13 +26,20 @@ description: '103.1: Work on the command line v2  Weight: 4'
 
 A _<mark style="color:red;">variable</mark> _ is a identifier that can be assigned a value. You assign a value to a variable by typing the name of the variable immediately followed by the equal sign = character and then the value.
 
-```
+```bash
 name="Bob Smith"
 ```
 
 **Variable names should start with a letter(alpha character) or underscore and contain only letters, numbers and the underscore character**. The variable names are case sensitive; `a` and `A` are different variables.
 
-For the shell, <mark style="background-color:red;"></mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">**variables can affect what the prompt displays**</mark>, the directories the shell will search for commands to execute and much more.
+| Valid Variable Assignments | Invalid Variable Assignments |
+| -------------------------- | ---------------------------- |
+| `a=1`                      | `1=a`                        |
+| `_1=a`                     | `a-1=3`                      |
+| `LONG_VARIABLE='OK'`       | `LONG-VARIABLE='WRONG'`      |
+| `Name='Jose Romero'`       | `'user name'=anything`       |
+
+For the shell, **variables can affect what the prompt displays**, the directories the shell will search for commands to execute and much more.
 
 ## Local and Environment Variables
 
@@ -40,13 +47,25 @@ A <mark style="color:red;"></mark> <mark style="color:red;"></mark>_<mark style=
 
 If the variable already exists, the value of the variable is modified. If the variable does not exist, the shell creates a new local variable and sets the value.
 
+```
+variable=value
+```
+
+In the example below, a local variable is created, and the <mark style="color:red;">`echo`</mark> command is used to display its value:
+
+```bash
+sysadmin@localhost:~$ name="judy"
+sysadmin@localhost:~$ echo $name  
+judy
+```
+
 {% hint style="warning" %}
 Lowercase characters are used to create local variables names, and Uppercase characters are used when naming an environment variable.&#x20;
 
 PD: This is not a rule
 {% endhint %}
 
-An _<mark style="color:red;">environment variable</mark> _ can be created directly by using the <mark style="color:red;">**`export`**</mark> command.
+An _<mark style="color:red;">**environment variable**</mark> _ can be created directly by using the <mark style="color:red;">**`export`**</mark> command.
 
 ```bash
 export BOB=engineer
@@ -58,54 +77,94 @@ To display the value of the variable, use the <mark style="color:red;">**`$`**</
 echo $BOB
 ```
 
-The _<mark style="color:red;">local variables</mark>_ are not available in new shells because by default, **when a variable is assigned in the Bash shell, it is initially set as a local variable**. When you exit the original shell, only the environment variable will be available.
+The _<mark style="color:red;">local variable</mark>_ are not available in new shells because by default, **when a variable is assigned in the Bash shell, it is initially set as a local variable**. When you exit the original shell, only the environment variable will be available. There are several ways that a local variable can be made into an environment variable.
 
-_Local variable_ can be exported with the <mark style="color:red;">**`export`**</mark> command.
+Firts, an existing _Local variable_ can be exported with the <mark style="color:red;">**`export`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command**.
 
-```
+```bash
 export variable
 ```
 
+```bash
+sysadmin@localhost:~$ NAME=judy                                       	 
+sysadmin@localhost:~$ export NAME                                          	 
+sysadmin@localhost:~$ echo $NAME                                           	 
+judy
 ```
-NAME=pedro
-export NAME
+
+A new variable can be exported and assigned a value with a single command as demonstrated below with the variable `DEPARTMENT:`
+
+```bash
+sysadmin@localhost:~$ export DEPARTMENT=science  
+sysadmin@localhost:~$ echo $DEPARTMENT
+science
 ```
 
 The <mark style="color:red;">**`declare`**</mark> and <mark style="color:red;">**`typeset`**</mark> command can be used with the export <mark style="color:red;">**`-x`**</mark> option to **declare a variable to be an environment variable**. These commands are synonymous and work the same way.
 
-```
-declare -x PERSON=Juan
-typeset -x LASTNAME=Gomez
+```bash
+sysadmin@localhost:~$ declare -x EDUCATION=masters                                                                                               	 
+sysadmin@localhost:~$ echo $EDUCATION
+masters                                                                    	 
+sysadmin@localhost:~$ typeset -x EDUCATION=masters                    	 
+sysadmin@localhost:~$ echo $EDUCATION
+masters
 ```
 
 The <mark style="color:red;">**`env`**</mark> command is used to **run commands in a modified environment**. It can also be used to temporarily create or change environment variables that are only passed to a single command execution.
 
+For example, servers are often set to Coordinated Universal Time (UTC), which is good for maintaining consistent time on servers across the planet, but can be frustrating for practical use to simple tell the time
+
+```bash
+sysadmin@localhost:~$ date
+Sun Mar 10 22:47:44 UTC 2020
 ```
-env NAME=value command
-env TZ=EST date
+
+To temporarily set the time zone variable, use the <mark style="color:red;">**`env`**</mark> command. The following will run the `date` command with the temporary variable assignment
+
+```bash
+sysadmin@localhost:~$ env TZ=EST date                                 	 
+Sun Mar 10 17:48:16 EST 2020
 ```
 
 > The TZ is set only in the environment of the current shell, and only for the duration of the command. The rest of the system will no be affected by this variable.
 
 ### Displaying Variables
 
-The <mark style="color:red;">`set`</mark> command by itself **will display all variable** <mark style="background-color:red;">**(local and environment)**</mark>.
+There are several ways to display the values of variables. The <mark style="color:red;">**`set`**</mark> command by itself **will display all variable** **(local and environment)**.
 
 ```bash
-set | less
+set | tail
+DEPARTMENT=science                                                                 	 
+SHELL=/bin/bash                                                            	 
+SHELLOPTS=braceexpand:emacs:hashall:hist
+TERM=xterm                                                                 	 
+UID=1001                                                                   	 
+USER=sysadmin                                                              	 
+VISUAL=vi                                                                  	 
+_=set                                                                      	 
+name=judy
 ```
 
-To display **only** _**environment variables**_, you can use several commands that provide nearly the same output:
+To **display only** _**environment variables**_, you can use several commands that provide nearly the same output:
 
 ```bash
 env
 declare -x
 typeset -x
 export -x
-env | tail
 ```
 
-To display the value of a specific variable, use the <mark style="color:red;">`echo`</mark> command with a name of the variable prefixed by the <mark style="color:red;">**`E`**</mark>
+To display the value of a specific variable, use the `echo` command with the name of the variable prefixed by the <mark style="color:red;">`$`</mark> (dollar sign). For example, to display the value of the <mark style="color:red;">`PATH`</mark> variable, you would execute <mark style="color:red;">`echo $PATH`</mark>:
+
+```bash
+sysadmin@localhost:~$ echo $PATH
+/home/sysadmin/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+```
+
+{% hint style="info" %}
+Variables can also be enclosed in the curly brace <mark style="color:red;">`{}`</mark> characters in order to delimit them from surrounding text. While the <mark style="color:red;">`echo ${PATH}`</mark> command would produce the same result as the `echo $PATH` command, the **curly braces set the variable apart visually, making it easier to see in scripts in some contexts**.
+{% endhint %}
 
 ### Unsetting Variables
 
@@ -117,11 +176,13 @@ unset variable
 
 ### PATH Variable
 
-The PATH variable contains a list of directories that are used to search for commands entered by the user. Processing works through the list of directories from the left to right.
+The PATH variable contains a list of directories that are used to search for commands entered by the user. Processing works through the list of directories from the left to right; the first executable file that matches what is typed is the command the shell will try to execute.
 
 {% hint style="info" %}
-&#x20;If the command happens to be built-in to the shell, the `PATH` variable will not be utilized.
+&#x20;If the command happens to be built-in to the shell, an alias or function the `PATH` variable will not be utilized.
 {% endhint %}
+
+Using the `echo` command to display the current <mark style="color:red;">`$PATH`</mark> will return all the directories that files can be executed from.
 
 ```bash
 echo $PATH
@@ -139,6 +200,26 @@ The following table illustrates the purpose of some of the directories displayed
 | `/usr/bin`        | Contains the majority of the **commands that are available for regular users to execute**.                            |
 | **`/sbin`**       | Contains the **essential administrative commands**                                                                    |
 | **`/bin`**        | Contains the most **fundamental commands** that are essential **for the operating system to function.**               |
+
+To execute commands that are not contained in the directories that are listed in the `PATH` variable, several options exist:
+
+* The command may be executed by typing the absolute path to the command.
+* The command may be executed with a relative path to the command.
+* The `PATH` variable can be set to include the directory where the command is located.
+* The command can be copied to a directory that is listed in the `PATH` variable.
+
+An _**absolute path**_** specifies the location of a file or directory from the top-level directory** through all of the subdirectories to the file or directory. Absolute paths always start with the `/` character representing the root directory. A file can be executed using an absolute path like so:
+
+```bash
+sysadmin@localhost:~$ /home/sysadmin/my.sh
+Hello World!
+```
+
+A ** **_**relative path**_** specifies the location of a file or directory relative to the current directory.** For example, in the `/home/sysadmin` directory, a relative path of `test/newfile` would actually refer to the `/home/sysadmin/test/newfile` file. **Relative paths never start with the `/` character.**
+
+Using a _relative path_ to execute a file in the current directory requires the use of the `.` character, which symbolizes the current directory:
+
+
 
 Sometimes a user wants their home directory added to the PATH variable in order to run scripts and programs without using `./` in front of the file name. They might be tempted to modify the PATH variable like so:
 

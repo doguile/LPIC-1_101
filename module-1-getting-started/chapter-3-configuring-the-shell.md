@@ -217,41 +217,60 @@ Hello World!
 
 A ** **_**relative path**_** specifies the location of a file or directory relative to the current directory.** For example, in the `/home/sysadmin` directory, a relative path of `test/newfile` would actually refer to the `/home/sysadmin/test/newfile` file. **Relative paths never start with the `/` character.**
 
-Using a _relative path_ to execute a file in the current directory requires the use of the `.` character, which symbolizes the current directory:
+Using a _ **relative path**_ to execute a file in the current directory **requires the use of the `.` character**, which symbolizes the current directory:
 
-
-
-Sometimes a user wants their home directory added to the PATH variable in order to run scripts and programs without using `./` in front of the file name. They might be tempted to modify the PATH variable like so:
-
+```bash
+sysadmin@localhost:~$ ./my.sh
+Hello World!
 ```
-PATH=/home/user1
+
+Sometimes a user wants their home directory added to the `PATH` variable in order to run scripts and programs without using `./` in front of the file name. They might be tempted to modify the `PATH` variable like so:
+
+```bash
+sysadmin@localhost:~$ echo $PATH
+/home/sysadmin/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+sysadmin@localhost:~$ pwd
+/home/sysadmin
+sysadmin@localhost:~$ PATH=/home/sysadmin
 ```
 
 Unfortunately, modifying a variable this way overwrites the contents. Therefore, everything that was previously contained in the `PATH` variable will be lost.
 
-It is possible to add a new directory to the <mark style="color:red;">`PATH`</mark> variable without overwriting its previous contents. Import the current value of the <mark style="color:red;">`$PATH`</mark> variable into a newly defined PATH variable by using it on both side if the assignment statement. Finish it with the value of the additional home directory path:
+It is possible to **add a new directory to the **<mark style="color:red;">**`PATH`**</mark>** variable without overwriting** its previous contents. **Import the current value of the **<mark style="color:red;">**`$PATH`**</mark> variable into a newly defined <mark style="color:red;">`PATH`</mark> variable by using it on both side if the assignment statement.
 
-```
-PATH=$PATH:/home/user1
+```bash
+sysadmin@localhost:~$ PATH=$PATH
 ```
 
-Now scripts located in /home/user1 directory can execute without using a path or `./`
+&#x20;Finish it with the value of the additional home directory path:
+
+```bash
+sysadmin@localhost:~$ PATH=$PATH:/home/sysadmin
+sysadmin@localhost:~$ echo $PATH
+/home/sysadmin/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/sysadmin
+```
+
+Now scripts located in `/home/sysadmin` directory can execute without using a path or `./`
 
 ## Initialization Files
 
-When a user opens a new shell, either during login or when they run a terminal that starts a shell, the shell is customized by files called _initialization_ (or configuration files). These initialization files set the values of variables, create aliases and functions, and execute other commands useful for the shell.
+When a user opens a new shell, either during login or when they run a terminal that starts a shell, the shell is customized by files called _**initialization**_** (or configuration) files**. These **initialization files set the values of variables**, create aliases and functions, and execute other commands useful for the shell.
 
 There are two types of _initialization files_: **global initialization files** that affect all users on the system and **local initialization files** that are specific to an individual user.
 
-The **global configuration files** are located in the **`/etc`** directory. **Local configuration files** are stored in the user's home directory.
+The **global configuration files** are located in the **`/etc`** directory. **Local configuration files** are **stored in the user's home directory.**
 
 ### BASH Initialization Files
 
-Most shells execute different initialization files when the shell is started <mark style="background-color:orange;">**via the login process**</mark> (called a ** **_<mark style="background-color:orange;">**login shell**</mark>_) V.S when a shell is started <mark style="background-color:purple;">**by a terminal**</mark> (called a non-login shell or <mark style="background-color:purple;">****</mark><mark style="background-color:purple;">** **</mark>_<mark style="background-color:purple;">**interactive shell**</mark>_).
+**Each shell uses different initialization files**. Additionally, most shells execute different initialization files when the shell is started via the login process (called a **** login shell) versus when a shell is started by a terminal (called a non-login shell or _interactive shell_).
+
+The following diagram illustrates the different files that are started with a typical login shell versus an interactive shell:
+
+![](<../.gitbook/assets/image (19).png>)
 
 #### Bash started as a login shell
 
-1. When Bash is started as a **login shell**, the `/etc/profile` file is executed first. This file execute all files ending in `.sh` that are found in the `/etc/profile.d` directory.
+1. When Bash is started as a login shell, the `/etc/profile` file is executed first. This file execute all files ending in `.sh` that are found in the `/etc/profile.d` directory.
 2. The next file that is executed is usually the `~/.bash_profile` (or `~/.bash_login` or `~/.profile` file). \
    The `./bash_profile` file also executes the `~/.bashrc` file which in turn executes the `/etc/bashrc` file
 
@@ -261,24 +280,28 @@ Most shells execute different initialization files when the shell is started <ma
 
 |                                                 File                                                 | Purpose                                                                                                                                                                                                                                                                                                                                                |
 | :--------------------------------------------------------------------------------------------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-|                          <mark style="color:red;">**`/etc/profile`**</mark>                          | **Is for all bash shell users and executed only at login**. This file can only be modified by the administrator and will be **executed by every user who logs in**. Administrators use this file to create key environment variables, display messages to users as they log in, and set key system values.                                             |
+|                                          **`/etc/profile`**                                          | **Is for all bash shell users and executed only at login**. This file can only be modified by the administrator and will be **executed by every user who logs in**. Administrators use this file to create key environment variables, display messages to users as they log in, and set key system values.                                             |
 | <p><code>~/.bash_profile</code> </p><p><code>~/.bash_login</code></p><p> <code>~/.profile</code></p> | Each user has their own `.bash_profile` file in their home directory. The purpose of this file is the same as the `/etc/profile` file, but having this file allows a user to customize the shell to their own tastes. This file is typically used to create customized environment variables. **specific to each user and executed only during login** |
 |                                              `~/.bashrc`                                             | **Each user has their own `.bashrc` file** in their home directory **and executed every time a bash shell is opened.** The purpose of this file is to generate items that need to be created for each shell, such as local variables and aliases.                                                                                                      |
-|                           <mark style="color:red;">**`/etc/bashrc`**</mark>                          | **Is for all bash shell users and executed every time a bash shell is opened**. This file may affect every user on the system. Only the administrator can modify this file. Like the `.bashrc` file, the purpose of this file is to generate items that need to be created for each shell, such as local variables and aliases.                        |
+|                                           **`/etc/bashrc`**                                          | **Is for all bash shell users and executed every time a bash shell is opened**. This file may affect every user on the system. Only the administrator can modify this file. Like the `.bashrc` file, the purpose of this file is to generate items that need to be created for each shell, such as local variables and aliases.                        |
+
+### Modifying Initialization Files
+
+The way a user's shell operates can be changed by modifying that user's initialization files. Modifying global configuration requires administrative access to the system as the files under the `/etc` directory can only be modified by an administrator. **A user can only modify the initialization files in their home directory.**
 
 ### BASH Exit Scripts
 
-Just as Bash executes one or more file upon starting up, it may **also executes one or more file upon exiting.** As Bash exits, it will execute the <mark style="color:red;">**`~/.bash_logout`**</mark> and <mark style="color:red;">**`/etc/bash_logout`**</mark> file, if they exist.&#x20;
+Just as Bash executes one or more file upon starting up, it may also executes one or more file upon exiting**.** **As Bash exits, it will execute the** <mark style="color:red;">`~/.bash_logout`</mark> **and** <mark style="color:red;">`/etc/bash_logout`</mark> **file, if they exist.**&#x20;
 
 ## Command History
 
-In a sense, the <mark style="color:red;">**`~/.bash_history`**</mark> file could also be considered to be an initialization file, since Bash also reads this file as it starts up. By default, this file contains a history of the commands that a user has executed within the Bash shell. When a user exits the Bash shell, it writes out the recent history to this file.
+In a sense, the <mark style="color:red;">`~/.bash_history`</mark> file could also be considered to be an initialization file, since Bash also reads this file as it starts up. By default, **this file contains a history of the commands that a user has executed within the Bash shell**. When a user exits the Bash shell, it writes out the recent history to this file.
 
 ### Changing Editing Keys
 
-The keys that are available for editing a command are determined by the settings of a library called **Readline.** The keys are typically set to match the key assignments found within the <mark style="color:red;">`emacs`</mark> text editor.
+The keys that are available for editing a command are determined by the settings of a _library_ called **Readline.** The keys are typically set to match the key assignments found within the <mark style="color:red;">`emacs`</mark> text editor (a popular Linux editor) by default.
 
-To bind the keys to match the key assignments found with another popular text editor, the `vi` editor, the shell can be configured with the `set -o vi` command. To set the key bindings back to the `emacs` text editor, use the `set -o emacs` command.
+To bind the keys to match the key assignments found with another popular text editor, the <mark style="color:red;">`vi`</mark> editor, the shell can be configured with the <mark style="color:red;">`set -o vi`</mark> command. To set the key bindings back to the <mark style="color:red;">`emacs`</mark> text editor, use the <mark style="color:red;">`set -o emacs`</mark> command.
 
 To automatically configure the edit history options at login, edit the `~/.inputrc` file. If this file doesn't exist, the `/etc/inputrc` file is used instead. Key bindings are set differently in configuration files than on the command line; for example, to enable the `vi` key binding mode for an individual, add the following lines to the `~/.inputrc` file:
 
@@ -290,7 +313,7 @@ set editing-mode emacs
 set keymap emacs
 ```
 
-### Using the history command
+### Using the `history` command
 
 The <mark style="color:red;">**`history`**</mark> command can be **used to re-execute previously executed commands**.
 
@@ -302,9 +325,18 @@ The <mark style="color:red;">**`history`**</mark> command has numerous options; 
 | <mark style="color:red;">`-r`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark>  | Read the history file and replace the current history |
 | <mark style="color:red;">`-w`</mark>                                                                   | Write the current history list to the history file    |
 
+As the <mark style="color:red;">**`history`**</mark> list commonly contains five hundred or more commands, it is often helpful to filter the list. The <mark style="color:red;">**`history`**</mark> command accepts a number as an argument to indicate how many commands to list. For example, executing the following command will only show the last three commands from your history.
+
+```bash
+sysadmin@localhost:~$ history 3
+	5  cd ..
+	6  ls
+	7  history
+```
+
 ### Configuring the history command
 
-When you close the shell program, it takes commands in the history list and stores them in the `~/.bash_history` file, also called the _history file_. By default, **500 hundred commands will be stored** in the history file. **The `HISTFILESIZE` variable will determine how many commands to write to this file.**
+When you close the shell program, it takes commands in the history list and stores them in the <mark style="color:red;">`~/.bash_history`</mark> file, also called the _history file_. By default, **500 hundred commands will be stored** in the history file. **The **<mark style="color:red;">**`HISTFILESIZE`**</mark>** variable will determine how many commands to write to this file.**
 
 If a user wants to store the history commands in a file different from the `~/.bash_history`, then the **user can specify an absolute path to the different file** as the value for the <mark style="color:red;">**`HISTFILE`**</mark> local variable.
 
@@ -333,7 +365,7 @@ HISTCONTROL=erasedups
 HISTCONTROL=ignorespace:erasedups
 ```
 
-Another variable that will affect what gets stored in the history of commands is the **`HISTIGNORE`** variable. The **`HISTIGNORE`** variable can be used to tell Bash not to store certain commands in the history list.
+Another variable that will affect what gets stored in the history of commands is the `HISTIGNORE` variable. The **`HISTIGNORE`** variable can be used to **tell Bash not to store certain commands** in the history list.
 
 To have commands not included in the history list, include an assignment in the `./bashrc`
 
@@ -343,7 +375,7 @@ HISTIGNORE='ls*:cd*:history*:exit'
 
 ### Executing previous commands
 
-The <mark style="color:red;">**`!`**</mark> exclamation mark is a special character to the Bash shell to indicate the execution of a command within the history list. There are many ways to use the <mark style="color:red;">**`!`**</mark> exclamation character to re-execute commands; for example, executing two exclamation characters will repeat the previous command.
+The <mark style="color:red;">**`!`**</mark> exclamation mark is a special character to the Bash shell to **indicate the execution of a command within the history list**. There are many ways to use the <mark style="color:red;">**`!`**</mark> exclamation character to re-execute commands; for example, executing two exclamation characters will repeat the previous command.
 
 | History Command                         | Meaning                                            |
 | --------------------------------------- | -------------------------------------------------- |

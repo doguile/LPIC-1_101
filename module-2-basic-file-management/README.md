@@ -105,7 +105,7 @@ Just as with the other wildcard characters, **the square brackets can appear mul
 $ echo *[0-9][0-9]*
 ```
 
-The **square brackets also support negating the set of characters** (also called _complementation_). If the first character inside of the square brackets is either an exclamation <mark style="color:red;">**`!`**</mark> character or a caret <mark style="color:red;">`^`</mark> character, then that first character has the meaning of _**not the following characters.**_
+The **square brackets also support negating the set of characters** (also called _complementation_). If the first character inside of the square brackets is either an **exclamation** <mark style="color:red;">**`!`**</mark> character or a **caret** <mark style="color:red;">**`^`**</mark> **character**, then that first character has the meaning of _**not the following characters.**_
 
 ```bash
 #Would match a file name that does not begin with a letter a through v

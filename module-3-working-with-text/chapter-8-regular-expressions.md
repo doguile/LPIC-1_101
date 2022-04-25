@@ -58,14 +58,14 @@ Although very useful for the <mark style="color:red;">**`grep`**</mark> command,
 
 Anchoring is one of the ways regular expressions can be used to narrow search results.
 
-**The front anchor** <mark style="color:red;">**`^`**</mark> operator can be used to ensure that <mark style="background-color:red;">**a pattern appears at the beggining of the line.**</mark>
+**The front anchor** <mark style="color:red;">**`^`**</mark> operator can be used to ensure that **a pattern appears at the beggining of the line.**
 
 ```
 grep ^root /etc/passwd
 root:x:0:0:root:/root:bin/bash
 ```
 
-**The back anchor **<mark style="color:red;background-color:blue;">**`$`**</mark> operator can be used to ensure <mark style="background-color:red;">**a pattern appears at the end of the line**</mark>, thereby effectively reducing the search results.
+**The back anchor **<mark style="color:red;background-color:blue;">**`$`**</mark> operator can be used to ensure **a pattern appears at the end of the line**, thereby effectively reducing the search results.
 
 ```
 grep 'bash$' /etc/passwd

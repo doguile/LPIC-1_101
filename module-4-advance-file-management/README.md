@@ -254,7 +254,7 @@ A real-life scenario involving multiple commands occurs when an administrator ne
 
 ### Background Processes
 
-When a command may take some time to execute, it may be better to have that command execute in the background. <mark style="color:red;">**To have a command execute as a background process, add the ampersand**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`&`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**character after the command**</mark>:
+When a command may take some time to execute, it may be better to have that command execute in the background. <mark style="background-color:red;">**To have a command execute as a background process, add the ampersand**</mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;">**`&`**</mark><mark style="background-color:red;">** **</mark><mark style="background-color:red;">**character after the command**</mark>:
 
 ```
 COMMAND &
@@ -267,9 +267,9 @@ sysadmin@localhost:~$
 [1]+  Done                    sleep 3
 ```
 
-As show in the output, when executing commands in the background, after each command start executing, <mark style="background-color:red;">it outputs a</mark> <mark style="background-color:red;"></mark>_<mark style="background-color:red;">**job**</mark>_ <mark style="background-color:red;"></mark><mark style="background-color:red;">number followed by a space and then the</mark> <mark style="background-color:red;"></mark>_<mark style="background-color:red;">process identification (</mark><mark style="background-color:red;">**PID**</mark><mark style="background-color:red;">).</mark> _ These numbers are used for controlling the process.
+As show in the output, when executing commands in the _background_, after each command start executing, it outputs a _**`job`**_ number followed by a space and then the _process identification (**PID**)._ These numbers are used for controlling the process.
 
-> The `sleep` command in the preceding example has a job number of 1 and PID 87
+> The <mark style="color:red;">`sleep`</mark> command in the preceding example has a job number of 1 and PID 87
 
 While the are still **background processes** being run in the terminal, they **can be displayed by using the **<mark style="color:red;">**`jobs`**</mark>** command.**&#x20;
 
@@ -322,19 +322,19 @@ sysadmin@localhost:~$ World
 
 If the following <mark style="color:red;">**`sleep`**</mark> command is run without an ampersand character to send it to the background, the terminal would not be available for 1000 seconds:
 
-```
+```bash
 sysadmin@localhost:~$ sleep 1000
 _
 ```
 
-To make the terminal available again, the user would have to use the <mark style="color:red;">**`Ctrl+Z`**</mark>, a <mark style="background-color:red;">**signal which pauses the process**</mark>**:**
+To make the terminal available again, the user would have to use the <mark style="color:red;">**`Ctrl+Z`**</mark>, a **signal which pauses the process:**
 
 ```
 ^Z
 [1]+  Stopped                 sleep 1000
 ```
 
-Now the terminal is back, but the <mark style="color:red;">`sleep`</mark> command has been paused. To put the paused command in the background, execute the <mark style="color:red;">**`bg`**</mark> command:
+Now the terminal is back, **but the **<mark style="color:red;">**`sleep`**</mark>** command has been paused**. To put the paused command in the background, execute the <mark style="color:red;">`bg`</mark> command:
 
 ```
 bg [JOB_ID]...
@@ -344,24 +344,70 @@ bg [JOB_ID]...
 The <mark style="color:red;">`bg`</mark> command resumes jobs without bringing them to the foreground. If no arguments is provided, it will use the most recently suspended job.
 {% endhint %}
 
-```
+```bash
 sysadmin@localhost:~$ bg
 [1]+ sleep 1000 &
 ```
 
-A command that has been paused or sent to the background can then be returned to the foreground using the <mark style="color:red;">**`fg`**</mark> command.
+A command that has been paused or sent to the background can then be returned to the foreground using the <mark style="color:red;">`fg`</mark> command.
 
-**Both the **<mark style="color:red;">**`fg`**</mark>** and **<mark style="color:red;">**`bg`**</mark>** can take the job number as an argument to specify which process should be resumed.**
+```
+fg [JOB_ID]...
+```
+
+Similar to the `bg` command, if no argument is provided, the job that was most recently suspended or placed in the background will be used. To bring the `sleep` command back to the foreground, locking up the terminal again, use the `fg` command.
+
+```bash
+sysadmin@localhost:~$ fg
+sleep 1000
+_
+^C
+sysadmin@localhost:~$
+```
+
+Suppose we have two paused processes:
+
+```bash
+sysadmin@localhost:~$ sleep 1000
+^Z
+[1]+  Stopped                 sleep 1000
+sysadmin@localhost:~$ sleep 2000
+^Z
+[2]+  Stopped                 sleep 2000
+sysadmin@localhost:~$ jobs
+[1]   Running                 sleep 1000 &
+[2]-  Running                 sleep 2000 &
+```
+
+**Both the **<mark style="color:red;">**`fg`**</mark>** and **<mark style="color:red;">**`bg`**</mark>** can take the job number as an argument to specify which process should be resumed.** The following command will resume `sleep 1000` in the background and resume `sleep 2000` in the foreground respectively:
+
+```bash
+sysadmin@localhost:~$ bg 1
+[1]- sleep 1000 &
+sysadmin@localhost:~$ fg 2
+sleep 2000
+^Z
+[2]+  Stopped                 sleep 2000  
+```
 
 It's also possible to use the name of the command as an argument to the <mark style="color:red;">`bg`</mark> and <mark style="color:red;">`fg`</mark> commands.
+
+```bash
+sysadmin@localhost:~$ sleep 1000
+_
+^Z
+[1]+  Stopped                 sleep 1000
+sysadmin@localhost:~$ bg sleep
+[1]+ sleep 1000 &
+```
 
 The <mark style="color:red;">`fg`</mark> and <mark style="color:red;">`bg`</mark> commands provide an administrator with the ability to manually multi-task.
 
 ### Sending a Signal
 
-**A signal is a message that is sent to a process to tell the process to take some sort of action**, such as **stop**, **restart**, or **pause**. Signals are very useful in controlling the actions of a process.
+A **signal is a message that is sent to a process** to tell the process to take some sort of action, such as **stop**, **restart**, or **pause**. Signals are very useful in controlling the actions of a process.
 
-Some signals can be sent to processes by simple keyboard combinations. For example, to have a foreground process **paused**, send a _Terminal Stop_ by pressing **Ctrl+Z**. A <mark style="background-color:red;">terminal stop</mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">**pauses**</mark> <mark style="background-color:red;"></mark><mark style="background-color:red;">the program</mark> but does not completely stop the program. To completely stop a foreground process, send the _**Interrupt**_ signal by pressing **Ctrl+C.**&#x20;
+Some signals can be sent to processes by simple keyboard combinations. For example, to have a foreground process **paused**, send a _Terminal Stop_ by pressing **`Ctrl+Z`**. A _terminal stop_ **pauses** the program but **does not completely stop the program**. To completely stop a foreground process, send the _**Interrupt**_ signal by pressing **`Ctrl+C`.**&#x20;
 
 {% hint style="info" %}
 To have a process **paused**, press the **`Ctrl+Z`**\
@@ -738,4 +784,3 @@ sysadmin@localhost:~$ tmux kill-session -t 1
 ```
 
 The session or window indicator numeral should correspond to the session or window that is desired to be ended; in this case it is the indicator numeral `1`
-

@@ -198,7 +198,7 @@ sysadmin@localhost:~$ ls
 1b  1d  Documents  Music      Public    Videos
 ```
 
-A delimiter can be set using the <mark style="color:red;">**`-d`**</mark> option with <mark style="color:red;">**`xargs`**</mark> command. To view the contents of the /Document directory containing the word alpha with all instances of the dash `-` character replaced with a space, type the following:
+A delimiter can be set using the <mark style="color:red;">**`-d`**</mark> option with <mark style="color:red;">**`xargs`**</mark> command. To view the contents of the `/Document` directory containing the word alpha with all instances of the dash `-` character replaced with a space, type the following:
 
 ```bash
 sysadmin@localhost:~/Documents$ ls | grep alpha | xargs -d '-'
@@ -234,24 +234,3 @@ sysadmin@localhost:~$ find -maxdepth 1 -name 'D*' | xargs du -sh
 ```
 
 In the example above, the `find` command output is used as an argument to the `du` disk usage command using the `xargs` command. The first command preceding the pipe finds all file names that match the `D*` pattern. The output of the `find` command is then passed to the `du` command as an argument to display the disk usage of the files.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\
-\

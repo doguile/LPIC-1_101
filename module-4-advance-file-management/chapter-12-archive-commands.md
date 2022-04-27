@@ -457,8 +457,8 @@ Archive:  ./package.zip
 
 Another type of **archive command** that can merge many files into a single file is the <mark style="color:red;">**`cpio`**</mark> command. This command gets its name from two of its mode: _copy-in_ mode and _copy-out_ mode.&#x20;
 
-* In _**copy-out**_ mode, the <mark style="color:red;">**`cpio`**</mark> command will <mark style="background-color:red;">copy files from a directory into an archive</mark>.&#x20;
-* In ** **_**copy-in**_ mode, the <mark style="color:red;">**`cpio`**</mark> command will <mark style="background-color:purple;">either list the archive file contents or copy files from the archive into a directory</mark>.&#x20;
+* In _**copy-out**_ mode, the <mark style="color:red;">**`cpio`**</mark> command will **copy files from a directory into an archive**.&#x20;
+* In ** **_**copy-in**_ mode, the <mark style="color:red;">**`cpio`**</mark> command will **either list the archive file contents or copy files from the archive** into a directory.&#x20;
 
 > Just remember that the archive is "outside" of the OS
 

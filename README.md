@@ -14,13 +14,24 @@ Hope this will help you in your process of studying for the certification and ac
 
 See ya!
 
-To obtain the LPIC-1 certification, you must pass Exam **101** and **102**. This material covers the 101-500:
+To obtain the LPIC-1 certification, you must pass Exam **101** and **102**. This material covers both:
 
 {% hint style="warning" %}
+101
+
 * System Architecture
 * Linux Installation and Package Management
 * GNU and Unix Commands
 * Devices, Linux Filesystems, Filesystem Hierarchy Standard
+
+102
+
+* Shell and Shell scripting
+* Interfaces and Desktops
+* Administrative Tasks
+* Essential System Services
+* Networking Fundamentals
+* Security
 
 ****
 
@@ -28,4 +39,3 @@ To obtain the LPIC-1 certification, you must pass Exam **101** and **102**. This
 
 ****[https://www.lpi.org/our-certifications/lpic-1-overview](https://www.lpi.org/our-certifications/lpic-1-overview)
 {% endhint %}
-

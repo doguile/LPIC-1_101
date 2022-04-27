@@ -8,7 +8,7 @@ coverY: 0
 
 Hi folks:smile:
 
-As the same way while I was studying for my LPIC-101-500 certification also I was taking notes of the material, so I have created this gitbook to have a handy help resource to prepare for the exam.
+As the same way while I was studying for my LPIC-1 certification also I was taking notes of the material, so I have created this gitbook to have a handy help resource to prepare for the exam.
 
 Hope this will help you in your process of studying for the certification and achive the goal !
 
@@ -28,3 +28,4 @@ To obtain the LPIC-1 certification, you must pass Exam **101** and **102**. This
 
 ****[https://www.lpi.org/our-certifications/lpic-1-overview](https://www.lpi.org/our-certifications/lpic-1-overview)
 {% endhint %}
+

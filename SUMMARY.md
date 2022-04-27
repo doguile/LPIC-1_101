@@ -27,3 +27,7 @@
 * [Module 8: System Software](module-8-system-software/README.md)
   * [Chapter 25: Managing Shared Libraries](module-8-system-software/chapter-25-managing-shared-libraries.md)
   * [Chapter 26: Virtualization](module-8-system-software/chapter-26-virtualization.md)
+
+## 🐧 102-500
+
+* [Module 1: Advanced Shell Features](102-500/module-1-advanced-shell-features.md)

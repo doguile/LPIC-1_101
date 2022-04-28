@@ -314,7 +314,7 @@ One powerful **graphical tool** is the <mark style="color:red;">**`gparted`**</m
 
 Using the <mark style="color:red;">**`gparted`**</mark> utility, we **can create a new GPT partition table**. In addition to performing disk management tasks, the <mark style="color:red;">**`gparted`**</mark> tool can also **attempt recovery on a corrupted partition**, and copy an existing partition for backup or image creation.
 
-![](<../.gitbook/assets/image (21).png>)
+![](<../.gitbook/assets/image (21) (1).png>)
 
 ## Logical Volume Management
 

@@ -427,3 +427,81 @@ Documents  Music      Public    Videos
 Aliases can also be avoided by using either an absolute or relative path to the command.
 {% endhint %}
 
+## Functions
+
+Functions are a bit more advanced than aliases and typically are used in Bash shell scripts.&#x20;
+
+A function is much like an alias in that it provides a nickname for something else that requires execution. However, functions are typically designed to execute multiple commands, not a single command like an alias.
+
+For those familiar with Java, C++, or several other programming language, this will look very familiar. To create a function, use the following syntax:
+
+```
+function_name ()
+{
+    command_here
+}
+```
+
+When argumens are passed to a function, they are stored in special variables: `$1` for the first argument, `$2` for the second argument, etc.
+
+{% hint style="info" %}
+Like aliases, functions only exist in the shell that they are created in. To make tm permanent, place them in an initialization file.
+{% endhint %}
+
+### Lists
+
+In the context of the Bash shell, a list is a sequence of commands which are separated by one of the following operators:
+
+| Operators | Meaning                                                                                                                                                                                                                                                                |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `;`       | The commands within the list are executed sequentially, where the shell will execute the first command and wait for it to terminate before executing the next command. The exit status of the list is based upon the exit status of the last command that is executed. |
+| `&`       | Each command within the list is executed asynchronously within a subshell, or in the background. The shell does not wait for the commands to terminate and returns an exit status of zero                                                                              |
+| `&&`      | This is and AND list, so if the command on the left side of `&&` does execute successfully, then the command on the right side of `&&` will execute.                                                                                                                   |
+| `\|\|`    | This is an OR list, so if the command on the left side of `\|\|` does NOT execute successfully, then the command on the right side of `\|\|` is executed.                                                                                                              |
+
+To make sure every command executes in order, use a simple sequential list with the commands separated by the semicolon `;` character. For example:
+
+```bash
+sysadmin@localhost:~$ date;who;uptime                                           
+Fri Sep 18 23:09:31 UTC 2020                                                    
+sysadmin console      Sep 18 21:58                                              
+ 23:09:31 up 9 days, 21:50,  1 user,  load average: 0.30, 0.48, 0.45
+```
+
+Using an OR list, when one command is executed, another command will be executed only if it fails. In this example, the `test` command is used to see if a directory `$HOME/bin` exists. If this test fails, then the directory is created.
+
+```bash
+sysadmin@localhost:~$ test -e $HOME/bin || mkdir $HOME/bin
+sysadmin@localhost:~$ ls $HOME
+Backup   Documents  Music     Public     Videos  my.sh                          
+Desktop  Downloads  Pictures  Templates  bin
+```
+
+## Initialization Files
+
+When a user opens a new shell, either during login or when they run a terminal that starts a shell, the shell is customized by files called **initialization (or configuration) files**. These initialization files **set the value of variables, create aliases and functions**, and execute other commands that are useful in starting the shell.
+
+There are two types of initialization files: _global_ initialization files that affect all users on the system and _local_ initialization files that are specific to an individual user.
+
+The global configuration files are located in the `/etc` directory. Local configuration files are stored in the user's home directory.
+
+#### BASH Initialization Files
+
+Each shell uses different initialization files. Additionally, most shells execute different initialization files when the shell is started via the login process **(called a login shell)** versus when a shell is started by a terminal (called non-login shell **or an interactive shell).**
+
+The following diagram ilustrates the different files that are started with a typical login shell versus an interactive shell.
+
+![](<../.gitbook/assets/image (21).png>)
+
+When Bash is started as an interactive shell, it executes the `~/.bashrc` file, which may also execute the `/etc/bashrc` file, if exists. Again, since the `~/.bashrc` file is owned by the user who is logging in, the user can prevent execution of the `/etc/bashrc` file.
+
+The following chart illustrates the purpose of each of these files, providing examples of what commands you might place in each file:
+
+| File              | Purpose                                                                                                                                                                                                                                                                                           |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/etc/profile`    | This file can only be modified by the administrator and will be **executed by every user who logs in**. Administrators use this file to create key environment variables, display messages to users as they log in, and set key system values.                                                    |
+| `~/.bash_profile` | Each user has their own `.bash_profile` file in their home directory. The purpose of this file is the same as the `/etc/profile` file, but having this file **allows a user to customize the shell to their own tastes**. This file is typically used to create customized environment variables. |
+| `~/.bashrc`       | Each user has their own `.bashrc` file in their home directory. The purpose of this file is to **generate items that need to be created for each shell**, such as local variables and aliases.                                                                                                    |
+| `/etc/bashrc`     | This file may **affect every user on the system**. Only the administrator can modify this file. Like the `.bashrc` file, the purpose of this file is to generate items that need to be created for each shell, such as local variables and aliases.                                               |
+
+## Modifying Initialization Files

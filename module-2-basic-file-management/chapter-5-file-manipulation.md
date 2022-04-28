@@ -317,9 +317,9 @@ Moving a file within the same directory is an effective way to rename it
 
 ## Creating Directories
 
-The <mark style="color:red;">**`mkdir`**</mark> command allows you to create (make) a directory.
+The <mark style="color:red;">**`mkdir`**</mark> command allows you to create (make) a directory. Creating directories is an essential file management skill, since you will want to maintain some functional organization with your files and not have them all placed in a single directory.
 
-By adding the <mark style="color:red;">**`-p`**</mark> option, the <mark style="color:red;">**`mkdir`**</mark> command automatically creates the _parent directories_ for any child directories about to be created. This is especially useful for making deep path names.
+By adding the <mark style="color:red;">**`-p`**</mark> **option**, the <mark style="color:red;">**`mkdir`**</mark> command automatically **creates the **_**parent directories**_** for any child directories about to be created**. This is especially useful for making deep path names.
 
 ```bash
 sysadmin@localhost:~$ mkdir -p /home/sysadmin/red/blue/yellow/green
@@ -336,20 +336,37 @@ green
 red/blue/yellow/green:
 ```
 
+To create a directory with the **`mkdir`** command, you must have the write and execute permissions on the parent of the proposed directory.&#x20;
+
 ## Removing Directories
 
-The `rmdir` command is used to remove empty directories
+The <mark style="color:red;">**`rmdir`**</mark> command is used to remove empty directories
 
 ```
 rmdir [OPTION]... DIRECTORY...
 ```
 
-Using the `-p` option with the `rmdir` command will remove directory path, but only if all of the directories contain other empty directories.
-
 ```
+sysadmin@localhost:~$ rmdir bin
+```
+
+Using the <mark style="color:red;">**`-p`**</mark> **option** with the <mark style="color:red;">**`rmdir`**</mark> command **will remove directory paths, but only if all of the directories contain other empty directories**.
+
+```bash
 sysadmin@localhost:~$ rmdir red
 rmdir: failed to remove 'red': Directory not empty
 sysadmin@localhost:~$ rmdir -p red/blue/yellow/green
 ```
 
-Otherwise, if a directory contains anything expect ohter directories, you'll need to use the `rm` command with a recursive option. use either the `-r` or `-R` recursive options.
+Otherwise, if a directory contains anything expect ohter directories, you'll need to use the <mark style="color:red;">**`rm`**</mark> command with a recursive option. The <mark style="color:red;">**`rm`**</mark> command alone will ignore directories that it's asked to remove; to delete a directory, use either the <mark style="color:red;">`-r`</mark> or <mark style="color:red;">`-R`</mark> recursive options. Just be careful as this will delete all files and all subdirectories
+
+```bash
+sysadmin@localhost:~$ mkdir test
+sysadmin@localhost:~$ touch test/file1.txt 
+sysadmin@localhost:~$ rmdir test
+rmdir: failed to remove 'test': Directory not empty
+sysadmin@localhost:~$ rm test                                 
+rm: cannot remove 'test': Is a directory     
+sysadmin@localhost:~$ rm -r test
+sysadmin@localhost:~$
+```

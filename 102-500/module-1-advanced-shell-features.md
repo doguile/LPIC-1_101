@@ -502,6 +502,38 @@ The following chart illustrates the purpose of each of these files, providing ex
 | `/etc/profile`    | This file can only be modified by the administrator and will be **executed by every user who logs in**. Administrators use this file to create key environment variables, display messages to users as they log in, and set key system values.                                                    |
 | `~/.bash_profile` | Each user has their own `.bash_profile` file in their home directory. The purpose of this file is the same as the `/etc/profile` file, but having this file **allows a user to customize the shell to their own tastes**. This file is typically used to create customized environment variables. |
 | `~/.bashrc`       | Each user has their own `.bashrc` file in their home directory. The purpose of this file is to **generate items that need to be created for each shell**, such as local variables and aliases.                                                                                                    |
-| `/etc/bashrc`     | This file may **affect every user on the system**. Only the administrator can modify this file. Like the `.bashrc` file, the purpose of this file is to generate items that need to be created for each shell, such as local variables and aliases.                                               |
+| `/etc/bashrc`     | This file may **affect every user on the system**. Only the administrator can modify this file. Like the `.bashrc` file, the purpose of this file is to **generate items that need to be created for each shell**, such as local variables and aliases.                                           |
 
 ## Modifying Initialization Files
+
+The way a user's shell operates can be changed by modifying that user's initialization files. **Modifying global configuration requires administrative access** to the system as the files under the `/etc` directory can only be modified by an administrator.
+
+{% hint style="danger" %}
+A user can only modify the initialization files in their home directory.
+{% endhint %}
+
+The best practice is to create a backup before modifying configuration files as insurance against errors; a backup can always be restored if something should go wrong.
+
+In some Linux distributions, the default `~/.bash_profile` contains the following two lines which customize the `PATH` environment variable:
+
+```
+PATH=$PATH:$HOME/bin
+export PATH
+```
+
+The first line sets the `PATH` variable to the existing value of the `PATH` variable with the addition of the `bin` directory of the user's home directory.
+
+The second line converts the local `PATH` variable into an environment variable.
+
+The default `~/.bashrc` file executes `/etc/bashrc` using a statement like:
+
+```
+. /etc/bashrc
+```
+
+The period character `.` is used to source a file in order to execute it.
+
+## BASH Exit Scripts
+
+Just as Bash executes one or more file upon starting up, it also may execute one or more files upon exiting. As Bash exits, it will execute the `~/.bash_logout` and `/etc/bash_logout` file , if they exist. Typically these files are used for cleaning up tactics as the user exits the shell.
+

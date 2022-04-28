@@ -31,3 +31,4 @@
 ## 🐧 102-500
 
 * [Module 1: Advanced Shell Features](102-500/module-1-advanced-shell-features.md)
+* [Chapter 2: Shell scripts](102-500/chapter-2-shell-scripts.md)

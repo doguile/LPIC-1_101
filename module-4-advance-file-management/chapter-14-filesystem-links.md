@@ -40,20 +40,20 @@ Soft links are very visual compared to hard links. This is because **soft links 
 
 For example, a detailed listing of the `/bin/systemd` file shows that it is a symbolic link that points to the `/lib/systemd/systemd` file:
 
-```
+```bash
 sysadmin@localhost:~$ ls -l /bin/systemd
 lrwxrwxrwx 1 root root 20 Feb 28 21:03 /bin/systemd -> /lib/systemd/systemd
 ```
 
 In a detailed listing of a symbolic link, notice that **the first character** preceding the permissions is **the letter** <mark style="color:red;">**`l`**</mark>
 
-```
+```bash
 lrwxrwxrwx 1 root root 20 Feb 28 21:03 /bin/systemd -> /lib/systemd/systemd  
 ```
 
 The other thing to notice about listing a soft link is that the link **file name is followed by an arrow**, which points to a path name:
 
-```
+```bash
 lrwxrwxrwx 1 root root 20 Feb 28 21:03 /bin/systemd -> /lib/systemd/systemd
 ```
 
@@ -113,7 +113,7 @@ The inode table does not include the file name. For each file, there is also an 
 
 When you execute the `ls -li` command, the number that appears for each file between the permissions and the user owner is the link count number.&#x20;
 
-```
+```bash
 sysadmin@localhost:~$ ls -li file.original
 278772 -rw-rw-r--. 1 sysadmin sysadmin 5 Oct 25 15:42 file.original
 ```
@@ -128,7 +128,7 @@ ln TARGET LINK_NAME
 
 When a hard link is created, the link count value is increased by a value of one. For example, the following example demonstrates using the `ln` command to create a hard link file. Notice the link count (the number after the permissions) before and after the hard link was created:
 
-```
+```bash
 sysadmin@localhost:~/Documents$ ls -l profile.txt
 -rw-r--r-- 1 sysadmin sysadmin 110 Apr 24 16:24 profile.txt
 sysadmin@localhost:~/Documents$ ln profile.txt myprofile.txt
@@ -138,7 +138,7 @@ sysadmin@localhost:~/Documents$ ls -l profile.txt
 
 When viewing hard link files, the `ls -i` option can be helpful to validate that the files are in fact sharing an inode, as the option causes the inode number to be displayed in front of the permissions.
 
-```
+```bash
 sysadmin@localhost:~/Documents$ ls -li profile.txt myprofile.txt
 95813671 -rw-r--r-- 2 sysadmin sysadmin 110 Apr 24 16:24 myprofile.txt
 95813671 -rw-r--r-- 2 sysadmin sysadmin 110 Apr 24 16:24 profile.txt
@@ -158,7 +158,7 @@ Once files are hard linked together, there is no concept of the original. Each f
 
 A regular file with a hard link count value greater than one is a file that has a hard link. Using the file's inode number, it is possible to find all the linked files by using the `find` command with the   `-inum` option.
 
-```
+```bash
 sysadmin@localhost:/bin$ cd ~/Documents
 sysadmin@localhost:~/Documents$ ls -i words
 48365918 words

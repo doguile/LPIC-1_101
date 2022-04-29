@@ -513,3 +513,78 @@ The statements between the `do` and `done` keywords will be executed until the v
 
 ## `for` Statement
 
+The `for` statement is extremely valuable when you want to perform an operation on multiple items.  For example, suppose an administrator wants to create five user accounts named `ted`, `fred`, `ned`, `jed`, and `bob`. He could execute five separate commands:
+
+```
+useradd ted
+useradd fred
+useradd ned
+useradd jed
+useradd bob
+```
+
+But what if it was twenty user accounts? Or what if the administrator wanted to not only create the account, but set a password and use the `chage` command to specify some password aging rules. That would involve a lot of typing.
+
+Using a `for` loop, this process becomes a lot easier. The basic syntax of a `for` loop is:
+
+```bash
+for name in list_of_values
+do
+    FOR_COMMANDS
+done
+```
+
+The `name` is a variable that will be used to enumerate the items in the `list_of_values`. The `list_of_values` is a list, like a list of user names, file names, or directory names. With the `for` loop, the name variable will be assigned from the `list_of_values`, one at a time.
+
+## `seq` Statement
+
+Suppose an administrator needs to create twenty accounts for some temporary employees. The accounts don’t need special names, they could be named `user1`, `user2`, `user3`, etc. For situations like this, the <mark style="color:red;">`seq`</mark> statement is very useful.
+
+**The **<mark style="color:red;">**`seq`**</mark>** statement can generate integer values very quickly**. For example, the following command would generate the integer values from 1 to 20:
+
+```bash
+sysadmin@localhost:~$ seq 1 20                                                  
+1                                                                               
+2                                                                               
+3                                                                               
+4                                                                               
+5                                                                               
+6                                                                               
+7                                                                               
+8                                                                               
+9                                                                               
+10                       
+```
+
+The `seq` command can also accept three arguments: an initial value, a step value, and a final value. For example, to start at 0, and increment the value by 10 until reaching 100, you could execute:
+
+```bash
+sysadmin@localhost:~$ seq 0 10 100                                              
+0                                                                               
+10                                                                              
+20                                                                              
+30                                                                              
+40                                                                              
+50                                                                              
+60                                                                              
+70                                                                              
+80                                                                              
+90                                                                              
+100
+```
+
+Since step values can be negative as well, <mark style="color:red;">`seq`</mark> can create a sequence of decreasing numbers. For example, to create a sequence that starts at 12, and decreases by 3 until it reaches -12, execute:
+
+```bash
+sysadmin@localhost:~$ seq 12 -3 -12                                             
+12                                                                              
+9                                                                               
+6                                                                               
+3                                                                               
+0                                                                               
+-3                                                                              
+-6                                                                              
+-9                                                                              
+-12
+```
+

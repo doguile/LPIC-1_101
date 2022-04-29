@@ -370,7 +370,146 @@ sysadmin@localhost:~$ echo $?
 2
 ```
 
-In the previous example, the first `grep` command executed successfully, resulting in a value of `0` in the `$?` variable. The second `grep` command failed, resulting in a value of `2` in the `$?` variable.
+In the previous example, the first <mark style="color:red;">`grep`</mark> command executed successfully, resulting in a value of `0` in the `$?` variable. The second <mark style="color:red;">`grep`</mark> command failed, resulting in a value of `2` in the `$?` variable.
 
 Sometimes these different values are documented in the `EXIT STATUS` section of the command's man page.
+
+#### Check the $? Variable
+
+In the following example, the `du` command is executed, and the value of the `$?` variable is checked. If the `$?` variable is set to `0` ,output is placed in the `/tmp/report` file. If the `$?` variable is set to non-zero value, an error is displayed on the screen and in the `/tmp/report` file.
+
+```bash
+#!/bin/bash
+read -p "Escriba un directorio: " dir
+start=$(date)
+echo "Document directory usage report: " > /tmp/report
+du -sh $dir >> /tmp/report 2>/dev/null
+if [ $? -eq 0 ]
+then
+    echo "Start of report: $(start)" >> /tmp/report
+    echo" End of report: $(date)" >> /tmp/report
+else
+    echo "Error, $dir could not be accessed"
+    echo "Error: no report generated. $dir not accessible" >> /tmp/report
+fi
+```
+
+#### Check the Return Value of the Command
+
+```bash
+#!/bin/bash
+read -p "Escriba un directorio: " dir
+start=$(date)
+echo "Document directory usage report: " > /tmp/report
+if du -sh $dir >> /tmp/report 2>/dev/null
+then
+    echo "Start of report: $start" >> /tmp/report
+    echo "End of report: $(date)" >> /tmp/report
+else
+    echo "Error, $dir could not be accessed"
+    echo "Error, not report generated. $dir not accessible" >> /tmp/report
+fi
+```
+
+### Verify User Input
+
+One of the biggest challenges that you will have when dealing with user input in scripts is making sure the user provides the correct type of input. For example, if the script asks the user to provide a ZIP code and the user provides `abcxyz` ,this will cause problems when it tries to use the variable that the user data was assigned to:
+
+```bash
+sysadmin@localhost:~$ read -p "Enter your ZIP code: " zip                       
+Enter your ZIP code: abcxyz                                                     
+sysadmin@localhost:~$ if [ $zip -eq 99999 ]                                     
+>                     then                                                      
+>                         echo "You are in the Mars zip code"                   
+>                     fi                                                        
+-bash: [: abcxyz: integer expression expected
+```
+
+The problem in this situation is that in order to use the `-eq` test operation, both values must be numbers. If one is not a number, then a error will occur.
+
+To verify that the user input is an integer, use the `grep` command as demonstrated below:
+
+```
+if echo $zip | grep -E "^[0-9]$"
+```
+
+```bash
+sysadmin@localhost:~$ read -p "Enter your ZIP code: " zip                       
+Enter your ZIP code: abcxyz                                                     
+sysadmin@localhost:~$ if echo $zip | grep -E '^[0-9]+$' > /dev/null 2>/dev/null
+>                       then                                                    
+>                           echo "thank you for the proper zip code"            
+>                       else                                                    
+>                           echo "incorrect zip code"                           
+>                     fi                                                        
+incorrect zip code                                                              
+sysadmin@localhost:~$ read -p "Enter your ZIP code: " zip                       
+Enter your ZIP code: 99999 
+```
+
+## Sending Mail to Superuser
+
+Quite often, users will be creating scripts that are designed to be executed as the root user. Many of these scripts will also be executed automatically via a cron job, a technique that allows automatic executing of commands and scripts at specific future times.
+
+When creating these scripts, administrators will likely wish to have information regarding the outcome of how the scripts executed send to the email account of the root user. Typically, this will be performed based on the outcome of a conditional statement:
+
+```bash
+if [ -d /data/January ]
+then
+    echo "January directory exists at `date`" | mail root
+fi
+```
+
+## `while` Statement
+
+The `while` statement is used to determine if a condition is true or false; if it is true, then a series of actions take place, and the condition is checked again. If the condition is false, then no action takes place, and the program continues.&#x20;
+
+{% hint style="info" %}
+The `while` statement, along with the block of statements to be executed when the condition is true, is also known as a `while loop`
+{% endhint %}
+
+The series of statements that are to be executed when the <mark style="color:red;">`while`</mark> conditional test is true will be contained in a block that **starts after the keyword **<mark style="color:red;">**`do`**</mark>** and ends at the keyword **<mark style="color:red;">**`done`**</mark> .The keywords `do` and `done` are not only used to create blocks of code that may be executed repeatedly in `while` loops but are also used in `for` and `until` loops.
+
+For example, consider the code earlier in which user input was checked to determine if it was in the correct format:
+
+```bash
+sysadmin@localhost:~$ read -p "Enter your ZIP code: " zip                       
+Enter your ZIP code: abcxyz                                                     
+sysadmin@localhost:~$ if echo $zip | grep -E '^[0-9]+$' > /dev/null 2>/dev/null
+>                       then                                                    
+>                           echo "thank you for the proper zip code"            
+>                       else                                                    
+>                           echo "incorrect zip code"                           
+>                     fi                                                        
+incorrect zip code    
+                                                          
+sysadmin@localhost:~$ read -p "Enter your ZIP code: " zip                       
+Enter your ZIP code: 99999 
+sysadmin@localhost:~$ if echo $zip | grep -E '^[0-9]+$' > /dev/null 2>/dev/null
+>                       then                                                    
+>                           echo "thank you for the proper zip code"            
+>                       else                                                    
+>                           echo "incorrect zip code"                           
+>                     fi  
+thank you for the proper zip code
+```
+
+If the user provides invalid input, then the program doesn't provide another chance to provide valid input. The following example (placed in an actual script), allows the user the opportunity to type the correct value after an error occurs:
+
+```bash
+read -p "Enter a valid ZIP code: " zip
+ 
+while echo $zip | grep -E -v '^[0-9]{5}$' > /dev/null 2>/dev/null
+do
+   echo "$zip is not a valid zip code"
+   echo "The zip code must consist of all numbers"
+   read -p "Enter a valid ZIP code: " zip
+done
+ 
+echo "Thank you, $zip is a correct zip code"
+```
+
+The statements between the `do` and `done` keywords will be executed until the value of the `zip` variable contains exactly five digits. Once that value is entered, execution would resume at the `echo` statement following the `done` keyword.
+
+## `for` Statement
 

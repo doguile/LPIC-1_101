@@ -177,7 +177,7 @@ The tools for managing GPT disks are named similarly to the <mark style="color:r
 
 To **create and manage GPT partitions** from the CLI, you can **use the **<mark style="color:red;">**`gdisk`**</mark> utility, **also called **<mark style="color:red;">**GPT**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`fdisk`**</mark>. It operates in a similar fashion to **`fdisk`** except it operates on GPT partitions and requires the device to be specified in order to work.
 
-![](<../.gitbook/assets/image (19) (1).png>)
+![](<../.gitbook/assets/image (19) (1) (1).png>)
 
 When you speciy a blank disk, it will scan the device and report back no partition information. Typing a question mark `?` character returns a list of command option available, **type `n` to add a new partition.**
 

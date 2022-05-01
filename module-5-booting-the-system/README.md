@@ -371,7 +371,7 @@ Finally, when programs want information about devices, they are able to query ha
 
 **D-Bus** is a software bus that allows individual and groups of processes to communicate on a single virtual bus or channel, a feature called **Interprocess Communication (IPC).**
 
-![](<../.gitbook/assets/image (4) (1).png>)
+![](<../.gitbook/assets/image (4) (1) (1).png>)
 
 ### D-Bus
 

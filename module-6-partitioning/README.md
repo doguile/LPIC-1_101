@@ -150,7 +150,7 @@ In Linux there are no drive letters. Instrad, each partition is assigned a devic
 
 Users do not access the files that are stored on these partitions by directly using these device file names. Instead, **these device files are merged into the directory structure by **_<mark style="color:red;">**mounting**</mark>** **_** the partition's filesystem under a directory tree.**
 
-![](<../.gitbook/assets/image (8).png>)
+![](<../.gitbook/assets/image (8) (1).png>)
 
 From a regular point of view, all of the directories in the previous graphic appear to be from a single hard drive. However, these directories could represent a collection of separate filesystems merged together into a single directory structure, which is called the _**virtual filesystem.**_
 

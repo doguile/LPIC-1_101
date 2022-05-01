@@ -37,7 +37,7 @@ There are 2 methods of installning virtualization on a computer system:
 * Type 1 hypervisor - also called **bare-metal hypervisor,** directly on top of the hardware and below the virtual machine.
 * Type 2 hypervisotr - **Hosted virtualization ,**needs to be installed on top of the operating system that already exists.
 
-![](<../.gitbook/assets/image (4).png>)
+![](<../.gitbook/assets/image (4) (1).png>)
 
 {% hint style="info" %}
 One of the main benefits of **virtualization** is that it makes **compunting resources more efficient.**

@@ -462,13 +462,13 @@ fi
 
 ## `while` Statement
 
-The `while` statement is used to determine if a condition is true or false; if it is true, then a series of actions take place, and the condition is checked again. If the condition is false, then no action takes place, and the program continues.&#x20;
+The <mark style="color:red;">`while`</mark> statement is u**sed to determine if a condition is true or false**; if it is true, then a series of actions take place, and the condition is checked again. If the condition is false, then no action takes place, and the program continues.&#x20;
 
 {% hint style="info" %}
-The `while` statement, along with the block of statements to be executed when the condition is true, is also known as a `while loop`
+The <mark style="color:red;">`while`</mark> statement, along with the block of statements to be executed when the condition is true, is also known as a `while loop`
 {% endhint %}
 
-The series of statements that are to be executed when the <mark style="color:red;">`while`</mark> conditional test is true will be contained in a block that **starts after the keyword **<mark style="color:red;">**`do`**</mark>** and ends at the keyword **<mark style="color:red;">**`done`**</mark> .The keywords `do` and `done` are not only used to create blocks of code that may be executed repeatedly in `while` loops but are also used in `for` and `until` loops.
+The series of statements that are to be executed when the <mark style="color:red;">`while`</mark> conditional test is true will be contained in a block that **starts after the keyword **<mark style="color:red;">**`do`**</mark>** and ends at the keyword **<mark style="color:red;">**`done`**</mark> .The keywords <mark style="color:red;">`do`</mark> and <mark style="color:red;">`done`</mark> are not only used to create blocks of code that may be executed repeatedly in <mark style="color:red;">`while`</mark> loops but are **also used in **<mark style="color:red;">**`for`**</mark>** and **<mark style="color:red;">**`until`**</mark>** loops.**
 
 For example, consider the code earlier in which user input was checked to determine if it was in the correct format:
 
@@ -509,11 +509,11 @@ done
 echo "Thank you, $zip is a correct zip code"
 ```
 
-The statements between the `do` and `done` keywords will be executed until the value of the `zip` variable contains exactly five digits. Once that value is entered, execution would resume at the `echo` statement following the `done` keyword.
+The statements between the <mark style="color:red;">`do`</mark> and <mark style="color:red;">`done`</mark> keywords will be executed until the value of the `zip` variable contains exactly five digits. Once that value is entered, execution would resume at the `echo` statement following the `done` keyword.
 
 ## `for` Statement
 
-The `for` statement is extremely valuable when you want to perform an operation on multiple items.  For example, suppose an administrator wants to create five user accounts named `ted`, `fred`, `ned`, `jed`, and `bob`. He could execute five separate commands:
+The <mark style="color:red;">`for`</mark> statement is extremely valuable **when you want to perform an operation on multiple items.**  For example, suppose an administrator wants to create five user accounts named `ted`, `fred`, `ned`, `jed`, and `bob`. He could execute five separate commands:
 
 ```
 useradd ted
@@ -523,9 +523,9 @@ useradd jed
 useradd bob
 ```
 
-But what if it was twenty user accounts? Or what if the administrator wanted to not only create the account, but set a password and use the `chage` command to specify some password aging rules. That would involve a lot of typing.
+But what if it was twenty user accounts? Or what if the administrator wanted to not only create the account, but set a password and use the <mark style="color:red;">`chage`</mark> command to specify some password aging rules. That would involve a lot of typing.
 
-Using a `for` loop, this process becomes a lot easier. The basic syntax of a `for` loop is:
+Using a <mark style="color:red;">`for`</mark> loop, this process becomes a lot easier. The basic syntax of a <mark style="color:red;">`for`</mark> loop is:
 
 ```bash
 for name in list_of_values
@@ -556,7 +556,7 @@ sysadmin@localhost:~$ seq 1 20
 10                       
 ```
 
-The `seq` command can also accept three arguments: an initial value, a step value, and a final value. For example, to start at 0, and increment the value by 10 until reaching 100, you could execute:
+The <mark style="color:red;">`seq`</mark> command can also accept three arguments: an initial value, a step value, and a final value. For example, to start at 0, and increment the value by 10 until reaching 100, you could execute:
 
 ```bash
 sysadmin@localhost:~$ seq 0 10 100                                              
@@ -587,4 +587,3 @@ sysadmin@localhost:~$ seq 12 -3 -12
 -9                                                                              
 -12
 ```
-

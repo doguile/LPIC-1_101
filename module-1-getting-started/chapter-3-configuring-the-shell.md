@@ -266,7 +266,7 @@ The **global configuration files** are located in the **`/etc`** directory. **Lo
 
 The following diagram illustrates the different files that are started with a typical login shell versus an interactive shell:
 
-![](<../.gitbook/assets/image (19).png>)
+![](<../.gitbook/assets/image (19) (1).png>)
 
 #### Bash started as a login shell
 

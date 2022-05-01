@@ -151,3 +151,237 @@ EndSection
 ```
 
 ### Widget/Toolkit libraries
+
+Typically, **a windows manager will use one library or widger toolkit for all of its widgets**: icons, buttons, checkboxes, sliders, etc. Widget toolkits include the old and one propietary Motif (which was standardized by the Common Desktop Enviroment used by UNIX), and the very common Gtk+ (GIMP toolkit) used for C development of graphical applications.
+
+To aid in making this task easier, pre-tested combinations of components are available, which are known as Desktop Environments. Two of the most popular desktop environments are:
+
+* GNOME
+* KDE
+
+One of the benefits of installing the desktop manager with a desktop environment is that it will come bundled with a number of programs that use the same library for their widgets. As a result, all of the programs will show the same appearance and usability.
+
+The state of the Graphical User Interface (GUI) for Linux is always evolving. Thirty years after the introduction of the X Window project at the Massachusetts Institute of Technology (MIT), the future for the X11 protocol is uncertain.
+
+The Wayland protocol seems to be one of the more promising alternatives to X. Although the reference implementation of the Wayland Protocol, known as Weston, could be possibly replace the X server, the protocol currently allows for one or more X servers to be used for backward compatibility.
+
+## Configuring X Windows
+
+There are many types of hardware that may be used in an X Windows configuration:
+
+* Video cards
+* Display monitors
+* Keyboards
+* Mice
+* Pointing devices
+
+The video card used is the most critical piece of hardware to be detected because if it doesn't work, then it won't be possible to see if anything else works.
+
+For Debian-derived distributions, starting the system in any runlevel other than single-user mode will automatically attempt to start the X server.  For Red Hat-derived systems, the X server is only started in runlevel 5 by default.
+
+{% hint style="info" %}
+Recall that the **X server is responsible for handling updates to the display** **and handles** keyboard and mouse input from the user as well as **communicating with X clients (application)**
+{% endhint %}
+
+If there is any question about the hardware changes to the computer being compatible with X Windows, then running in a non-graphical mode is recommended.
+
+To start a single-user mode, an administrator can press a key at boot time when the GRUB menu appears, select to Edit the kernel parameters, and add one of the following values: `1` ,`s`, `S`, or `single`. The resulting kernel line may appear something like the following with the runlevel specified as the final parameter:
+
+```
+kernel /boot/vmlinuz-3.1.25 root=/dev/sda2 ro 1
+```
+
+If the system is already running, you can attempt to access an alternative consolo by pressing **Ctrl+Alt+F2**. Provided the previous task was successful, it should be possible to log in the system via the command line
+
+After loggin in to the system, switch to runlevel 1 by executing the following with root privileges:
+
+```bash
+root@localhost:~ telinit 1
+root@localhost:~ startx
+```
+
+Normally, most systems only configure the X server for one display; the identifier for this display will be referred to as `0`. If additional displays are configured, they are numbered incrementally, so a second display would be referred to as `1`.
+
+**If the display doesn't start or acts strangely, then the log file for the display can be viewed: the **<mark style="color:orange;">**`/var/log/Xorg.0.log`**</mark> file for display 0, the <mark style="color:orange;">**`/var/log/Xorg.1.log`**</mark> file for display 1, etc. Lines within these files are tagged with the following letters to indicated their importance:
+
+* `II` = Informational
+* **`WW`** = **Warning**
+* **`EE`** = **Error**
+* `**` = From the configuration file
+* `++` = From the command line
+* `--` = Probed
+* `NI` = Not implemented
+* `??` = Unknown
+
+Before describing typical errors in starting the X server and their causes, it will be helpful to understand what the `/etc/X11/xorg.conf` file contains.
+
+### `/etc/X11/xorg.conf` File
+
+The `/etc/X11/xorg.conf` file, along with any file with a `*.conf` extension in the `/etc/X11/xorg.conf.d/` directory, contains numerous sections with configuration items.
+
+{% hint style="danger" %}
+The most recent versions of the X server can actually run without any `xorg.conf` file as they automatically configure themselves when started
+{% endhint %}
+
+But an `xorg.conf` may still be used to create custom configurations. The following is a list of the sections that are defined for this file:
+
+| Section        | Purpose                                                  |
+| -------------- | -------------------------------------------------------- |
+| `Files`        | File pathnames for fonts and modules                     |
+| `ServerFlags`  | Server flags are global options                          |
+| `Module`       | Dynamic module loading of modules that extend the server |
+| `Extensions`   | Extension enabling for the X11 protocol                  |
+| `InputDevice`  | Input device description for keyboard and pointers       |
+| `InputClass`   | Input class description                                  |
+| `Device`       | Video card device description                            |
+| `VideoAdaptor` | Xv video adaptor description                             |
+| `Monitor`      | Monitor description                                      |
+| `Modes`        | Video modes descriptions                                 |
+| `Screen`       | Screen configuration                                     |
+| `ServerLayout` | Overall layout combining other sections                  |
+| `DRI`          | Direct Rendering Infrastructure                          |
+| `Vendor`       | Vendor-specific configuration                            |
+
+## Troubleshooting the X Server
+
+The [http://www.x.org/wiki/FAQErrorMessages](https://www.x.org/wiki/FAQErrorMessages/) web page describes some common error messages seen when attempting to start the X server. The following examples describe some common errors and how to **troubleshoot them based upon this information by modifying the `/etc/X11/xorg.conf` file.**
+
+### **MIssing Configuration File**
+
+If a system does not currently have an `/etc/X11/xorg.conf` file or to create a new configuration file, generate it using the command:
+
+```bash
+root@localhost:~# X -configure
+```
+
+If the X server has not been stopped, then an error message similar to the following will appear:
+
+```bash
+Fatal server error:
+Server is already active for display 0
+If this server is no longer running, remove /tmp/.X0-lock
+⁠⁠ 
+and start again.
+```
+
+If the X server was not running when the command was executed, then a file named `xorg.conf` new should be generated in the current directory.
+
+To test if this newly-generated file will wokr, first make a backup copy of the `/etc/X11/xorg.conf` file, then move the `xorg.conf` file to the `/etc/X11/xorg.conf` file and start the X server:
+
+```bash
+root@localhost:~ cp /etc/X11/xorg.conf /etc/X11/xorg.conf.backup
+root@localhost:~ mv xorg.conf.new /etc/X11/xorg.conf
+root@localhost:~ startx
+```
+
+### No Video Card Detected
+
+This error indicates that the video card device specified in the `Device` section of the file may not be compatible with the video card in your system.
+
+{% hint style="info" %}
+If your video card is made by Nvidia or AMD, then it may not work with the OPen Source driver from your Linux distribution.
+{% endhint %}
+
+**If your video card will not work with a propietary driver, then it may be possible to use a generic driver known as **<mark style="color:orange;">**`vesa`**</mark>, which can drive most video cards that are compatible with VESA (Video Electronics Standards Association) standards.
+
+The output demonstrates the `Drive` section of the `/etc/X11/xorg.conf` file that has been configured to use the generic `vesa` driver.
+
+```bash
+Section "Device"
+    Identifier  "Card0"
+    Driver      "vesa"
+EndSection
+```
+
+### No Display Monitor Detected
+
+The video display monitor is almost as crucial to a functioning X window system as the video card. If the screen stays dark and the X Windows cursor never appears, the problem is likely the video card, the display monitor, or both.
+
+When the video card and display monitor are unable to sync together, the error message from the log file will be something like the following:
+
+```
+(EE) Screen(s) found, but none have a usable configuration.
+```
+
+There are many factor that can limit the compatibility between a video card and a monitor:
+
+1. Horizontal sync rate
+2. Vertical refresh rate
+3. Color depth
+4. Resolution
+
+It is especially likely to have problems when combining a very old video card with a very new monitor, or vice versa.
+
+### Fonts Unavailable
+
+An error message like `font` named `"fixed" cannot be found or loaded` is fatal because if a required font cannot be loaded, then the X server is unable to start.&#x20;
+
+> This error message was more common years ago before fonts were built-in to the X server.
+
+It was previously necessary to ensure that the paths to the fonts on the system were properly configured in the `Files` sectino of the `/etc/X11/xorg.conf` file, which would look something like:
+
+```bash
+Section "Files"
+    FontPath   "/usr/X11R6/lib/X11/fonts/misc/"
+    FontPath   "/usr/X11R6/lib/X11/fonts/Speedo/"
+    FontPath   "/usr/X11R6/lib/X11/fonts/Type1/"
+    FontPath   "/usr/X11R6/lib/X11/fonts/CID/"
+    FontPath   "/usr/X11R6/lib/X11/fonts/75dpi/"
+    FontPath   "/usr/X11R6/lib/X11/fonts/100dpi/"
+EndSection
+```
+
+Another problem that may have occurred in the past was that a separate X font service <mark style="color:red;">`xfs`</mark> was used to provide the fonts for the X server. **If the **<mark style="color:red;">**`xfs`**</mark>** service was not started at the time the X server was started, then fonts would also be unavailable**.
+
+If the `xfs` is in use, then the `Files` section of the `/etc/X11/xorg.conf` file may appear with an entry that refers to a Unix socket with `"unix:/7100"` specified as the FontPath:
+
+```bash
+Section "Files"
+   ModulePath   "/usr/lib/xorg/modules"
+FontPath        "unix/:7100"          # local font server
+# if local font server has problems, fall back on these
+FontPath        "/usr/lib/X11/fonts/misc"
+FontPath        "/usr/lib/X11/fonts/cyrillic"
+FontPath        "/usr/lib/X11/fonts/75dpi/"
+FontPath        "/usr/lib/X11/fonts/100dpi/"
+FontPath        "/usr/X11R6/lib/X11/fonts/sgi"
+FontPath        "/usr/lib/X11/fonts/Type1"
+FontPath        "/usr/lib/X11/fonts/CID"
+FontPath        "/usr/lib/X11/fonts/100dpi:unscaled"
+FontPath        "/usr/lib/X11/fonts/75dpi:unscaled"
+EndSection
+```
+
+Because **the X server now has its own built-in fonts for the required fonts**, the font error mentionend previously may not occur. Be familiar with what the `Files` section looks like for a current X server, which does not use an <mark style="color:red;">`xfs`</mark> service:
+
+```bash
+Section "Files"
+ModulePath   "/usr/lib/xorg/modules"
+FontPath     "catalogue:/etc/X11/fontpath.d"
+⁠⁠ 
+FontPath     "built-ins"
+EndSection
+```
+
+Systems that do not use the `xfs` server use a newer way of finding fonts known as <mark style="color:red;">**`FontConfig`**</mark>. **To install a new font for all users on a system that uses **<mark style="color:red;">**`FontConfig`**</mark>** ,the font files should be copied to a subdirectory of the `/usr/share/fonts` directory.** Subsequently, the administrator can execute the <mark style="color:red;">**`fc-cache`**</mark> command to **update the font information cache of the system**.
+
+For example, if new fonts are copied to the `/usr/share/fonts/local` directory, then it is possible to execute the command:
+
+```
+root@localhost:~# fc-cache /usr/share/fonts/local
+```
+
+For fonts files to be installed for an individual user, the fonts can be copied to a `.fonts` directory in the user's home directory. Then, the user can update their font information cache by executing the following command:
+
+```bash
+root@localhost:~# fc-cache ~/.fonts
+```
+
+### `~/.xsession-errors`
+
+When appplications are started via an icon in X Windows vs the command line, output going to standard error (STDERR) can no longer display on the screen. For some desktop environments (such as GNOME), the output from STDERR is sent to the `~/.xsession-errors` log file, which can be used to troubleshoot problems encountered.
+
+The STDERR output from X Windows and the application running through X Windows are both sent to the `~/.xsession-error` file, so it is worth looking to see if `~/.xsession-errors` exists in your home directory when troubleshooting any X Window problems.
+
+
+

@@ -491,7 +491,7 @@ Each shell uses different initialization files. Additionally, most shells execut
 
 The following diagram ilustrates the different files that are started with a typical login shell versus an interactive shell.
 
-![](<../../.gitbook/assets/image (21).png>)
+![](<../.gitbook/assets/image (21).png>)
 
 When Bash is started as an interactive shell, it executes the `~/.bashrc` file, which may also execute the `/etc/bashrc` file, if exists. Again, since the `~/.bashrc` file is owned by the user who is logging in, the user can prevent execution of the `/etc/bashrc` file.
 

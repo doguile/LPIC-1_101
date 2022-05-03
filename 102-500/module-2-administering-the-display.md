@@ -24,6 +24,8 @@
 
 The primary GUI server used by Linux has historically been based upon the **X Window project**, or simple **X**. The interface provided to the user is called a desktop. This is software that works with the X window system to provide an easy way for the user to interact with the operating system.
 
+GUIs are intended to provide a user with a visual way of issuing commands to the computer through the use of **Windows, Icons, Menus and Pointers (WIMP)**. As opposed to the Commnad Line Interface (CLI) or shell, which is the way commands traditionally been issued to the operating system.
+
 ## Components
 
 The following are some of the more common components of the X Window system
@@ -126,12 +128,14 @@ It is not required that the desktop environment match the display manager that i
 
 The greeting or banner that is displayed for each display manager can be changed. For the <mark style="color:red;">`gdm`</mark> display manager, **the settings for the banner are controlled by modifying an XML file**. Rather than editing this file directly, the <mark style="color:red;">**`gconftool-2`**</mark> **is recommended for making changes**.
 
-For the `kdm` display manager, a banner or greeting can be set if the theme is disabled. An administrator can make changes to the /`etc/kde/kdm/kdmrc` file by modifying the `UseTheme` and `GreetString` keys to the values shown in the following:
+For the <mark style="color:red;">`kdm`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> display manager, a banner or greeting can be set if the theme is disabled. An administrator can make changes to the /`etc/kde/kdm/kdmrc` file by **modifying the** <mark style="color:orange;">**`UseTheme`**</mark>** and **<mark style="color:orange;">**`GreetString`**</mark><mark style="color:orange;">** **</mark><mark style="color:orange;">****</mark>** keys** to the values shown in the following:
 
 ```bash
 UseTheme=false
 GreetString=Message to display in banner
 ```
+
+To make these changes effective, the administrator will need to restart the X server or restart the system.
 
 ### Change Default Color Depth
 

@@ -32,5 +32,5 @@
 
 * [Module 1: Advanced Shell Features](102-500/module-1-advanced-shell-features.md)
   * [Chapter 2: Shell scripts](102-500/chapter-2-shell-scripts.md)
-* [Module 2: Administering the Display](102-500/module-2-administering-the-display.md)
-* [Chapter 4: Graphical Desktops](102-500/chapter-4-graphical-desktops.md)
+* [Module 2: Administering the Display](102-500/module-2-administering-the-display/README.md)
+  * [Chapter 4: Graphical Desktops](102-500/module-2-administering-the-display/chapter-4-graphical-desktops.md)

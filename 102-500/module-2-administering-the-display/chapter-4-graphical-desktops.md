@@ -32,3 +32,39 @@ description: '106.2: Graphical Desktops v2  Weight: 1'
 
 </details>
 
+## Introduction
+
+To meet the need for application productivity, many distributions also come with a graphical user interface (GUI). The graphics themselves are actually built upon several layers, a display server, a display manager, a window manager, and a desktop environment.
+
+From the truncated output of the `pstree` command, we can ascetain that the display manager in the following example is Xorg, the display manager is lightdm, and the desktop environment is Cinnamon.
+
+```bash
+root@localhost:~# pstree | grep dm
+    	|-lightdm-+-Xorg---{Xorg}
+    	|     	|-lightdm-+-cinnamon-sessio-+-applet.py---{applet.py}
+    	|     	|     	`-2*[{lightdm}]
+    	|     	`-2*[{lightdm}]
+```
+
+The desktop environment is the component that users tend to interact with.
+
+## Desktop Environments
+
+### GNOME
+
+The GNOME Desktop and its derivatives are the default desktop for some of the world's most popular Linux distributions, including Debian, Fedora, Ubuntu, and Mint. Majors supporters of the GNOME project include Red Hat (IBM), Cannonical, and Google.
+
+GNOME components are developed in many languages, with the GTK (GNOME Tool Kit) used for widgets.
+
+### KDE
+
+The KDE (K Desktop Environment) has been constant development since 1996; therefore, it has a very rich suite of programs and applications. These include Amarok (music player), Krita (paint app), Konqueror (browser), DigiKam (photo gallery), and many more.
+
+KDE is mostly written in C++ and Qt (pronounced “cute”). [Qt Designer](https://doc.qt.io/qt-5/qtdesigner-manual.html) is an IDE (Integrated Desktop Environment) that is used to build KDE applications efficiently.
+
+### Xfce
+
+Xfce is a lightweight desktop environment. The advantages of using Xfce are load time and responsiveness, while the disadvantages are graphical effects and transparency. This makes Xfce ideal for older computers with less RAM and slower video cards, and those who value performance.
+
+## Installing the Desktop Environment
+

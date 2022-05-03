@@ -47,7 +47,7 @@ The X Window system **uses a server-client model** to manage the GUI on a local 
 
 This, in turn, allows the X client application to talk and make requests for information from the X server, which returns the requested information to the X client. The main executable for the X server is a program simply known as X.
 
-![](<../.gitbook/assets/image (19).png>)
+![](<../../.gitbook/assets/image (19).png>)
 
 ### X Client
 
@@ -69,7 +69,7 @@ The display manager component is **responsible for allowing the user to perform 
 
 Typical display managers currently in use include the X Display Manager (**XDM**), the KDE Display Manager (**KDM**), the GNOME Display Manager (**GDM**), and the MDM Display Manager (**MDM**).
 
-![](<../.gitbook/assets/image (4).png>)
+![](<../../.gitbook/assets/image (4).png>)
 
 Typically, these display managers are included as part of the desktop environment:
 
@@ -104,7 +104,7 @@ In order to switch from one display manager to another, there are couple of tech
 
 For example, executing `sudo dpkg-reconfigure kdm` results in the following dialog box:
 
-![](<../.gitbook/assets/image (8).png>)
+![](<../../.gitbook/assets/image (8).png>)
 
 If the system is a Red Hat-derived Linux distribution, then the <mark style="color:orange;">**`/etc/sysconfig/desktop`**</mark> **file is** **used to set the default display manager and desktop environment**. To use the `gdm` display manager and the GNOME desktop enviroment, this file should be set to contain the following entries:
 

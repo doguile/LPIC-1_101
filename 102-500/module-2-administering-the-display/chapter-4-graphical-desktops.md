@@ -64,7 +64,17 @@ KDE is mostly written in C++ and Qt (pronounced “cute”). [Qt Designer](https
 
 ### Xfce
 
-Xfce is a lightweight desktop environment. The advantages of using Xfce are load time and responsiveness, while the disadvantages are graphical effects and transparency. This makes Xfce ideal for older computers with less RAM and slower video cards, and those who value performance.
+Xfce is a **lightweight desktop environment**. The advantages of using Xfce are load time and responsiveness, while the disadvantages are graphical effects and transparency. This makes Xfce ideal for older computers with less RAM and slower video cards, and those who value performance.
 
 ## Installing the Desktop Environment
+
+The different distributions often make a _meta-package_, or group of packages, to accomplish this task. For Debian-based distributions, there is the `gnome-session` package, which is a meta-package containing the full suite of GNOME applicactions and components. This can save an administrator time and effort in selecting the individual application packages to install along  with the `desktop-base` and `gnome` packages.
+
+For example, if an administrator wanted to install the X Windows system and the GNOME desktop environment on a Debian-based system that didn't have X Windows previously installed, the following command would accomplish this task:
+
+```bash
+sysadmin@localhost:~$ sudo apt-get xserver-xorg gnome-session
+```
+
+> The packages being installed, `xserver-org` and `gnome-session` ,refer to the X Windows system and GNOME desktop environment, respectibely.
 

@@ -205,25 +205,133 @@ sysadmin@localhost:~$cat .Xauthority
 localhost.localdomain0MIT-MAGIC-COOKIE-1R����b���p�s:�p1MIT-
 ```
 
+## Using a Remote X Server
 
+One of the benefits of the X Server is the ability to run a GUI-based program on one system and have its output displayed on another system. **To properly set up a server and client, two things must be set** correctly in order for this functionality to work: the <mark style="color:red;">**`xhost`**</mark> settings and the <mark style="color:red;">**`DISPLAY`**</mark> environment variable.
 
-****
+By default, the X Server will permit connections from clients that are from the same host (known as `localhost`). In order to allow a connection from a remote machine, the <mark style="color:red;">**`xhost`**</mark> command can be **executed to add a host to be permitted**.&#x20;
 
-****
+For example, to permit connections on your local system from two systems, one with a resolvable hostname `server1` and the other with an IP address of `192.168.20.30` ,execute the following command:
 
-****
+```bash
+root@localhost:~ xhost +server1 +192.168.20.30
+server1 being added to access control list
+192.168.20.30 being added to access control list
+```
 
-****
+To restrict access to the X server for `server1` ,remove the host by using the <mark style="color:red;">**`xhost`**</mark> as follows:
 
-****
+```bash
+root@localhost:~ xhost -server1
+server1 being removed from access control list
+```
 
-****
+To verify which host are currently allowed, execute the `xhost` command without any arguments:
 
-****
+```bash
+root@localhost:~# xhost
+access control enabled, only authorized clients can connect
+INET:192.168.20.30
+SI:localuser:root
+```
 
-****
+The syntax for the output of the previous `xhost` command includes the family and the system name in the form of `family:name` .The family name, which is not case-sensitive, is essentially a category which can be one of the following
 
-****
+```bash
+NAMES
+ 
+       A complete name has the syntax ''family:name'' where the	 families  are
+       as follows:
+ 
+       inet	 Internet host (IPv4)
+       inet6	 Internet host (IPv6)
+       dnet	 DECnet host
+       nis	 Secure RPC network name
+       krb	 Kerberos V5 principal
+       local	 contains only one name, the empty string
+       si	 Server Interpreted
+```
+
+While troubleshooting problems with the `xhost` settings, disable the enforcement of any security by allowing all hosts with the following command.
+
+```bash
+root@localhost:~ xhost +
+access control disabled, clients can connect from any host
+```
+
+> Note the output of this command clearly indicates that now any host can display graphic output on the local machine. While this may aid in troubleshooting `xhost` problems, it is not good practice to use this setting permanently
+
+To enable enforcement of security, execute the following:
+
+```
+root@localhost:~#  xhost -
+```
+
+When using the <mark style="color:red;">`xhost`</mark> to forward graphics from an X server to a remote computer, <mark style="color:red;">**`xauth`**</mark> **must be manually invoked to generate an MIT Magic Cookie.**
+
+## Connecting to a Remote Display
+
+This section will outline the process of connectiong to a remote display:
+
+1. The first step in attempting to use an X server remotely will be to **permit X connections from a remote host back to the originating X server** by adding the host with the <mark style="color:red;">`xhost`</mark> command. For example, to connect to a system with a name that can be resolved to a name of `centos` from the system named `server1` , execute the following command on `server1`
+
+```
+root@localhost:~# xhost +centos
+```
+
+2\. The second step is to make the connection to the remote host with the `ssh` or `telnet` command.
+
+3\. The third stop would be set the `DISPLAY` environment variable. In some cases, the value of the variable may be appropriately set automatically and will not need to be changed. If, however, the `DISPLAY` variable contains a hostname that does not resolve back to the address of the system where the `ssh` session originated `server1`, then it will have to be set. For example, when th following command is executed through the remote connection logged into `centos`
+
+```
+centos:~$ echo $DISPLAY
+```
+
+If the output of this command was:
+
+```
+localhost.localdomain:0.0
+```
+
+This means that the X client should try to use the localhost system's first display (0.0). Since `localhost` in this context refers to the host that you have connected to (not the remote system running the X server) this setting will not work correctly. On the other hand, if the output of `echo $DISPLAY` is as show below, then GUI-based output will be sent to the remote machone, `server1`
+
+```
+server1.test:0.0
+```
+
+To set the `DISPLAY` variable manually, execute the following command:
+
+```
+root@localhost:~ export DISPLAY="server1.test:0.0"
+```
+
+4\. The final step would be to verify that an X client would be able to connect back to the X server where the `ssh` session originated. Executing almost any graphical application would work at this step.
+
+```
+centos:~$ xclock
+```
+
+If a graphical clock appears on the remte X system (`server1`), then it is working; otherwise, if output appears like below, then there is a problem:
+
+```
+Error: Can't open display: localhost.localdomain:0.0
+```
+
+Keep in mind that even with a correctly configured `xhost` and `DISPLAY` variable, a remote GUI-based display may not work. Other issues could be interfering:
+
+* Firewall settings on both systems
+* Host access restrictions in the `/etc/hosts.allow` and `/etc/hosts.deny` files.
+* X server settings on the system that is supposed to accept a remote X connectin; for instance , the `/etc/ssh/sshd_config` file
+
+{% hint style="info" %}
+In order to configure a **Red Hat-derived** system with a default installation to accept incoming connections from remote systems to the X server, the **`/etc/gdm/custom.conf`** file must have the following under the `[security]` heading:
+
+```
+DisallowTCP=false
+```
+{% endhint %}
+
+### XDMCP
 
 
 

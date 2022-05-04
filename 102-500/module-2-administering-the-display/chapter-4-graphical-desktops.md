@@ -73,8 +73,171 @@ The different distributions often make a _meta-package_, or group of packages, t
 For example, if an administrator wanted to install the X Windows system and the GNOME desktop environment on a Debian-based system that didn't have X Windows previously installed, the following command would accomplish this task:
 
 ```bash
-sysadmin@localhost:~$ sudo apt-get xserver-xorg gnome-session
+sysadmin@localhost:~$ sudo apt-get install xserver-xorg gnome-session
 ```
 
 > The packages being installed, `xserver-org` and `gnome-session` ,refer to the X Windows system and GNOME desktop environment, respectibely.
+
+To install the X Windows system and the KDE desktop environment on a Debian-based distribution, execute the following command:
+
+```bash
+sysadmin@localhost:~$ sudo apt-get install xserver-xorg kde-standard
+```
+
+For **Red Hat-derived** distributions, there is a package group for the **GNOME desktop environment**, which could be installed by an administrator with the following command:
+
+```bash
+sysadmin@localhost:~$ yum groupinstall general-desktops
+```
+
+To install the package group for the KDE desktop environment on Red Hat-derivded distributions, an administrator can execute the following command:
+
+```
+sysadmin@localhost:~$  yum groupinstall kde-desktop
+```
+
+### Desktop Localization
+
+The Debian-derived KDE package name for a particular language follows the form of **`kde-i18n-`**_**`locale-code`**_. For example, the Debian package for Spanish is `kde-i18n-sp` ,and it could be installed by an administrator with the following command:
+
+```bash
+sysadmin@localhost:~$ sudo apt-get install kde-i18n-sp
+```
+
+For Red Hat-derived distributions, the KDE localization package name follows the form of **`kd3-i18n-`**_**`locale`**_. So the package for Spanish users could be installed with the following command:
+
+```bash
+sysadmin@localhost:~$ sudo apt-get install kde-i18n-Spanish
+```
+
+Successful installation of any of the above packages should result in a ready to use graphical environment, including the X server and chosen desktop environment
+
+The <mark style="color:red;">`localepurge`</mark> tool can be used to remove localization files for languages that you do not use. This can free up considerable space on the hard drive. To install and use the `localepurge` tool on a Debian-based system, use the following command:
+
+```bash
+root@localhost:~ apt install localepurge; dpkgreconfigure localepurge
+```
+
+The terminal will turn blue, revealing a pseudo-graphical interface. Select the languages that you want to keep by using the keyboard arrows and the **Spacebar**. ****&#x20;
+
+![](<../../.gitbook/assets/image (22).png>)
+
+## **Remote Desktop Environments**
+
+#### **X-11 Forwarding**
+
+The Xorg project was forked from the X11 project many years ago; however, **we still refer to sending graphics over a network connection as X11-Forwarding**.
+
+Xorg can pipe graphics over `ssh` ,so the first command needed to get remote graphics working is the following for Debian-based machines:
+
+```bash
+root@remoteserver:~ apt install openssh-server
+```
+
+Or for Red Hat-based machines:
+
+```
+root@remoteserver:~# dnf install openssh-server
+```
+
+From the remote machine, verify that an `ssh` connection can be made.
+
+```bash
+sysadmin@localhost:~$ ssh remoteserver@192.168.0.7
+The authenticity of host '192.168.0.7 (192.168.0.7)' can't be established.
+ECDSA key fingerprint is SHA256:uaE/DovZplLYBbTZoEGNtoBf+WQfxJ0zx3UbU2cG2uI.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '192.168.0.7' (ECDSA) to the list of known hosts.
+remote@192.168.0.7's password:
+Last login: Sun Dec 22 11:37:24 2019 from 192.168.0.7
+remote@server ~ $
+```
+
+Once connectivity has been established, graphical programs can be run on the server by invoking them with the <mark style="color:red;">`DISPLAY`</mark> variable.
+
+```bash
+remote@server ~ $ DISPLAY=0 gnome-calculator
+```
+
+Unfortunately, the graphics will appear on the remote server while the client sees nothing. Close the program, exit the `ssh` session, and try again, this time using the <mark style="color:red;">**`-X`**</mark> option.
+
+```bash
+remote@server ~ $ exit
+logout
+Connection to 192.168.0.7 closed.
+sysadmin@localhost:~$ ssh -X remote@192.168.0.7
+remote@192.168.0.7's password:
+Last login: Sun Dec 22 12:37:31 2019 from 192.168.0.7
+remote@server ~ $ gnome-calculator
+```
+
+This time, the `DISPLAY` variable does not need to be used, and the graphical program appears on the local computer.&#x20;
+
+> Remote forwarding in this fashion is very useful for thin clientes such as kiosks and cash registers.
+
+{% hint style="warning" %}
+To view and modify various <mark style="color:red;">`ssh`</mark> settings on your server, including X11-Forwading, refer to the **`/etc/ssg/sshd_config`** file.
+{% endhint %}
+
+For an X server to be able to forward graphical programs to another computer, an authorization file must be referred to. Fortunately, this is taken care of during an <mark style="color:red;">`ssh`</mark> connection. The program which accomplishes this is called <mark style="color:red;">`xauth`</mark> ,which generates an MIT Magic Cookie. **This cookie is typically stored in a hidden file called **<mark style="color:red;">**`.Xauthority`**</mark>** **&#x20;
+
+{% hint style="info" %}
+Any computer that has a copy of this cookie is allowed to remotely run graphical programs generated by the X server.
+{% endhint %}
+
+```bash
+sysadmin@localhost:~$ xauth -v
+Using authority file /home/sysadmin/.Xauthority
+xauth> ?
+Commands:
+    	add   	exit  	extract   help  	info  	list 	 
+    	merge 	nextract  nlist 	nmerge	quit  	remove    
+    	source	version   ?     	generate
+xauth> exit
+```
+
+This file is data, not text; therefore the output of this fiel appears to be corrupted, but the words MIT MAGIC-COOKIE can be still discerned
+
+```bash
+sysadmin@localhost:~$ file .Xauthority
+.Xauthority: data
+sysadmin@localhost:~$cat .Xauthority
+localhost.localdomain0MIT-MAGIC-COOKIE-1R����b���p�s:�p1MIT-
+```
+
+
+
+****
+
+****
+
+****
+
+****
+
+****
+
+****
+
+****
+
+****
+
+****
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

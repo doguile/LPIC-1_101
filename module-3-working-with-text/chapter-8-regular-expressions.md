@@ -508,7 +508,7 @@ grep: ./Work: Is a directory
 
 Rather than displaying every line in every file that matches the pattern, it may be preferable to see a list of the file names that have at least one line that matches the pattern. The <mark style="color:red;">**`-l`**</mark> option will list file names that contain matches, rather than the matches themselves:
 
-![](<../.gitbook/assets/image (5).png>)
+![](<../.gitbook/assets/image (5) (1).png>)
 
 Using the <mark style="color:red;">**`-r`**</mark> **option will allow for directory searches to be recursive,** rather than just the files in the current directory.
 

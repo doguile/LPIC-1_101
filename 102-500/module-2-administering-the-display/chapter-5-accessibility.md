@@ -57,23 +57,23 @@ Several keyboard settings can be enabled by going to the Keyboard Accessibility 
 
 ### Repeat Keys
 
-The poin of the Repeat Keys setting is to prevent the user from accidentally repeating keys if they type too slowly
+The poin of the Repeat Keys setting is to **prevent the user from accidentally repeating keys if they type too slowly**
 
 ### Sticky Keys
 
-It allows the user to perform key combinations such as **Ctrl + C** without having to hold both keys at once. Instead, the user can press the **Ctrl** key and then press the **C** key to effectively type **Ctrl + C**.
+It allows the user to perform key combinations such as **Ctrl + C** **without having to hold both keys** at once. Instead, the user can press the **Ctrl** key and then press the **C** key to effectively type **Ctrl + C**.
 
 ### Slow Keys
 
-Slow keys are the opposite of Repeat Keys, so both should not be enabled together. With slow keys, it will only accept each keypress if a key is held down for a specific period of time. Slow keys are for users who have "heavy hands" and accidentally press keys while moving from one key to another.
+Slow keys are the opposite of Repeat Keys, so both should not be enabled together. With slow keys, **it will only accept each keypress if a key is held down for a specific period of time**. Slow keys are for users who have "heavy hands" and accidentally press keys while moving from one key to another.
 
-Bounce Keys
+### Bounce Keys
 
-Bounce Keys help prevent a key from being repeated if it is pressed again too quickly after first time it is pressed.
+Bounce Keys help **prevent a key from being repeated if it is pressed again too quickly** after first time it is pressed.
 
 ### Toggle Keys
 
-The Toggle Keys feature initially provided audio feedback when keyboard modifier keys, like **Shift**, **Alt**, and **Ctrl**, are pressed. It also can provide feedback when other accessibility features are used.
+The Toggle Keys feature initially **provided audio feedback when keyboard modifier keys**, like **Shift**, **Alt**, and **Ctrl**, are pressed. It also can provide feedback when other accessibility features are used.
 
 Users may get frustrated trying to find Toggle Keys as there is nothing that is actually labeled Toggle Keys in the Typing Assist dialog. However, the Audio Feedback box on the Typing Assist window
 

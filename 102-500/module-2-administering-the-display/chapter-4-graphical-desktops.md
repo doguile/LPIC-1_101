@@ -333,19 +333,135 @@ DisallowTCP=false
 
 ### XDMCP
 
+**XDMCP** is a protocol built into Xorg, **used to share a remote screen**, similar to X11-Forwarding over SSH. Unlike X11-Forwarding, the **XDMCP protocol is** **not encrypted**. Therefore, XDCMP is not recommended for use in a production environment.
 
+To use XDMCP, settings need to be added in the display manager. In this case, the following lines would be added to the <mark style="color:red;">`lightdm`</mark> configuration file:
 
+```bash
+root@localhost:~ nano /etc/lightdm/lightdm.conf
+```
 
+```bash
+GNU nano 2.9.3         /etc/lightdm/lightdm.conf                  Modified
+ 
+[Seat:*]
+autologin-guest=false
+autologin-user=computer
+autologin-user-timeout=0
+[XDMCPServer]
+enabled=true
+[security]
+DisallowTCP=false
+```
 
+After restarting the display server, **XDMCP can be seen running on UDP port 177** using either the <mark style="color:red;">`netstat`</mark> or <mark style="color:red;">`ss`</mark> command.
 
+```bash
+root@localhost:~ ss -tunl | grep 177
+udp UNCONN 0    0    0.0.0.0:177   0.0.0.0:*
+udp UNCONN 0    0    *:177         *:*
+```
 
+Once the port has been allowed through the firewall, an XDMCP client can be used to connect to the server. _Remmina_ is a client that can be used to communicate over many protocols, including RDP, SSH, Spice, VNC, XDMCP, and more.
 
+## Virtual Network Computing (VNC)
 
+**VNC** is an open source, platform-independent **graphical desktop sharing program**. It relies upon the **Remote Frame Buffer protocol to transmit graphics across a network to a remote host**. The ability to share a user's dekstop makes VNC a handy tool for a network administrator to have.
 
+There are several variants. We are going to use `vnc4server` for both the client and server as they are available in the repositories. To install and run `vnc4server` in a Debian-based environment type:
 
+```bash
+root@localhost:~ apt install vnc4server; vncserver
+```
 
+For Red Hat-based environment:
 
+```bash
+root@localhost:~ dnf install x11vnc; x11vnc -usepw
+```
 
+The shared desktop can be accessed from the client using either the IP address or the hostname of the server. The `DISPLAY` variable may coincide with the screen that is being shared.
 
+```bash
+sysadmin@localhost:~# xvnc4viewer 192.168.0.9:1
+VNC Viewer Free Edition 4.1.1 for X - built Feb 25 2015 22:57:51
+Copyright (C) 2002-2005 RealVNC Ltd.
+See http://www.realvnc.com for information on VNC.
+ 
+Sun Dec 22 20:28:10 2019
+ CConn:   	connected to host 192.168.0.9 port 5901
+ CConnection: Server supports RFB protocol versi
+```
 
+The desktop of the machine hosting the VNC server can now be seen and manipulated by the client.
 
+One of the more user-friendly VNC implementations comes from the KDE project. **K Remote Frame Buffer** (<mark style="color:red;">`krfb`</mark>) and **K Remote Desktop Client** (<mark style="color:red;">`krdc`</mark>) are the server and client programs respectively.
+
+## Spice
+
+Spice is an open source _guest_, _server_, _protocol_, and _client_. **The guest is an interface to a kernel virtual machine (KVM).** The KVM virtual technology allows for Linux to be run as a hypervisor, which can host virtual machines (VMs). _QEMU_, which is short for Quick EMUlator, is a processor emulator that is used to virtualize the hardware used by VMs. For instace, _QEMU_ is capable of emulating a processor on an X86\_64 PC. The following components of <mark style="color:red;">`spice`</mark> provide access to the guest.
+
+The server portion of <mark style="color:red;">**`spice`**</mark> is implemented using <mark style="color:red;">**`libspice`**</mark> . **Interfaces to the virtual machine are provided using a virtual device interface (VDI)**. This allows guest and client to share USB devices, run multiples screens, share audio, and more.
+
+**The **<mark style="color:red;">**`spice`**</mark>** protocol is optimized for streaming**. This also provides the user with a better experience. Audio and video streams can be passed from the guest through the server using the protocol to the client efficiently and seamlessly.
+
+There are many client that support <mark style="color:red;">`spice`</mark>, including `remmina`, `spice-client`, and `spice-html5`. The p`spice` client allows user to access a remote system by using a remote viewer called _virt-viewer._&#x20;
+
+{% hint style="info" %}
+How to use spice
+
+linux-kvm.org/page/SPICE
+{% endhint %}
+
+## Remote Desktop Protocol (RDP)
+
+RDP is a propietary protocol developed by Microsoft for use with its Remote Desktop Connection software included with Windows. In order to interface with Windows systems, Linux system are able to use various clients, including `rdesktop` and `xfreerdp`
+
+In order to use the `rdesktop` client in a Debian-based distribution and Red Hat-based system, install it using `apt` and `dnf` respectively:
+
+```
+root@localhost:~# apt install rdesktop
+root@localhost:~# dnf install rdesktop
+```
+
+Given the username and IP address of the Windows system that is being connected to, used the following command:
+
+```bash
+root@localhost:~ rdesktop -u USER 192.168.0.1
+```
+
+Normally, an RDP client would connect to a Windows Server, but a compatible program called `xrdp` is available to use as a server. On another machine, install it using `apt` or `dnf`
+
+```
+root@localhost:~# apt install xrdp
+root@localhost:~ dnf install xrdp
+```
+
+The configuration file for `xrdp` is located at `/etc/xrdp/xrdp.ini`. You may want to change the listening port number to something other than 3389 as RDP is well-know service and often scanned for by malicious actor.
+
+```
+root@localhost:~# nano /etc/xrdp/xrdp.ini
+```
+
+Note that while the service may be running, the IP address or port may not be open for the `xrdp` server to listen for a connection. This could be due to the `/etc/xrdp/xrdp.ini` file or a firewall rule.
+
+```bash
+root@localhost:~ systemctl status xrdp.service
+● xrdp.service - xrdp daemon
+   Loaded: loaded (/lib/systemd/system/xrdp.service; enabled; vendor preset: enabled)
+   Active: active (running) since Tue 2020-01-07 17:21:16 EST; 15min ago
+			< Output Omitted >
+Jan 07 17:21:17 computer xrdp[6236]: (6236)(140149882738496)[INFO ] listening to port 3389 on 0.0.0.0
+```
+
+Assuming the default port is used, in preparation for the connection, ensure that the firewall allows TCP port 3389 through.
+
+```bash
+root@localhost:~ ufw allow 3389/tcp
+```
+
+For increased security, limit RDP access to a specific client or subnet of clients:
+
+```bash
+root@localhost:~ ufw allow from 192.168.0.0/24 to any port 3389
+```

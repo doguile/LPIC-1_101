@@ -68,7 +68,7 @@ Xfce is a **lightweight desktop environment**. The advantages of using Xfce are 
 
 ## Installing the Desktop Environment
 
-The different distributions often make a _meta-package_, or group of packages, to accomplish this task. For Debian-based distributions, there is the `gnome-session` package, which is a meta-package containing the full suite of GNOME applicactions and components. This can save an administrator time and effort in selecting the individual application packages to install along  with the `desktop-base` and `gnome` packages.
+The different distributions often make a _meta-package_, or group of packages, to accomplish this task. For Debian-based distributions, there is the <mark style="color:red;">**`gnome-session`**</mark>** package, which is a meta-package containing the full suite of GNOME applicactions and components**. This can save an administrator time and effort in selecting the individual application packages to install along  with the <mark style="color:red;">`desktop-base`</mark> and <mark style="color:red;">`gnome`</mark> packages.
 
 For example, if an administrator wanted to install the X Windows system and the GNOME desktop environment on a Debian-based system that didn't have X Windows previously installed, the following command would accomplish this task:
 

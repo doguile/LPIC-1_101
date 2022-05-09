@@ -38,7 +38,7 @@ The K Desktop Environment has a software package named `kdeaccessibility` which 
 
 * A screen magnifier called _KMagnifier_ (<mark style="color:red;">`kmag`</mark>) . This allows you to zoom in on the screen and specify a zoom ratio.
 * An automatic clicking tool called KMouseTool (<mark style="color:red;">`kmousetool`</mark>)
-* A text-to-speech screen reader called KMouth (<mark style="color:red;">`kmouth`</mark>)
+* A text-to-speech screen reader called KMouth (<mark style="color:red;">`kmouth`</mark>) used to read text that the user pastes into the KMouth window
 
 ## Keyboard Accessibility Settings
 
@@ -62,6 +62,8 @@ The poin of the Repeat Keys setting is to **prevent the user from accidentally r
 ### Sticky Keys
 
 It allows the user to perform key combinations such as **Ctrl + C** **without having to hold both keys** at once. Instead, the user can press the **Ctrl** key and then press the **C** key to effectively type **Ctrl + C**.
+
+A shortcut to enable or disable the sticky keys is to **press the shift key on the keyboard five times**.
 
 ### Slow Keys
 
@@ -106,3 +108,11 @@ For the GNOME desktop environment, the Orca screen reader is used as the preferr
 ### On-Screen Keyboard
 
 For users who may not be able to type on a normal keyboard, a graphical version of a keyboard can be presented on-screen for the user to use by way of a pointing device or mouse
+
+### Text-To-Speech
+
+Besides the Orca application that reads screen dialogs, there are separate applications which can be used to read aloud the text from a file:
+
+1. Emacspeak
+2. Espeak
+3. Festival

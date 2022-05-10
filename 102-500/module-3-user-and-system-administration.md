@@ -297,7 +297,50 @@ root@localhost:~ grep team /etc/group
 team:x:1004:
 ```
 
+### User Private Groups
 
+Many Linux distributions, including Red Hat and Debian/Ubuntu, utilize User Private Groups (UPGs). When a new user is created with the <mark style="color:red;">`useradd`</mark> command, a group with the same name is also created. The new user is added as the only member of this private group.
+
+```bash
+root@localhost:~ useradd test_user2  
+root@localhost:~ grep test_user2 /etc/passwd
+test_user2:x:1007:1009::/home/test_user2:/bin/bash
+root@localhost:~ tail -1 /etc/group
+test_user2:x:1009:
+```
+
+The above output shows the UID created for `test_user2` is `1007` and the primary group create is `test_user2` with the GID of `1009.`
+
+The UPG feature can be overridden by executing the <mark style="color:red;">`useradd`</mark> command with the <mark style="color:red;">`-N`</mark> and <mark style="color:red;">`-g`</mark> options, so that instead of a private group, another primary group can be associated with the new user.
+
+The purpose of UPG is often confused, even by experienced administrators. Prior to UPG, it was a common practice for administrators to place all new users into a default group called `staff` (or `users` on some Linux distributions). This led to problems regarding file security because, by having everyone in the same group, the group permissions were essentially the same as the others permission set. In other words, a file with the `rwxrw----` permissions provided read and write permissions to every user on the system in cases where all users belonged to a common group.
+
+UPG was designed to counter this problem. **By giving all users their own private group by default, the group permissions only applied to one person**: the owner of the file. However, this has the unintended side effect of regular users getting into the bad habit of changing the others permissions to provide access to a file for one person, which in turn gives access to everyone! As with the initial problem of having everyone in a single group, this essentially makes group permissions worthless.
+
+{% hint style="info" %}
+If you decide to use UPG, then consider making each user an administrator of their own group. This can be accomplished by executing the <mark style="color:red;">**`gpasswd -A`**</mark> command as `root`.
+
+For example, to make the `test_user1` account a group administrator of the `test_user1` group, execute the following:
+
+```bash
+root@localhost:~ gpasswd -A test_user1 test_user1
+```
+
+
+
+After a user has been assigned to be a group administrator, they can add new members to their own group with the <mark style="color:red;">`-a`</mark> option to the <mark style="color:red;">`gpasswd`</mark> command:
+
+```bash
+root@localhost:~ gpasswd -A test_user2 test_user2    
+root@localhost:~ su - test_user2                          
+test_user2@localhost:~$ gpasswd -a sysadmin test_user2                                
+Adding user sysadmin to group test_user2                                        
+test_user2@localhost:~$ grep test_user2 /etc/group                                    
+test_user2:x:1009:sysadmin
+```
+{% endhint %}
+
+### Template Initialization Files for New Users
 
 
 

@@ -342,17 +342,77 @@ test_user2:x:1009:sysadmin
 
 ### Template Initialization Files for New Users
 
+The `/etc/skel` directory **contains the default set of "skeleton" (template) files and directories**, which are copied to the home directory of a user that is created with the <mark style="color:red;">`useradd`</mark> command. This **provides a uniform directory structure for all new users of the system**. If the adminstator wnats to make a change in the directory structure or file content, then the `/etc/skel` directory ensures that the change will be propagated for all new users.
 
+Important notes:
 
+* The **`/etc/skel`** directory is **only used to propagate accounts when an account is created**. If you add files to the `/etc/skel` directory, then these files are not automatically added to existing user's home directories.
+* After files are copied into the user's home directories, t**he ownership of these new files is changed to the new user's accounts**. This means that a user can modify the contents of these files, since they are owned by the user.
+* Some of the commonly found files in this directory are:
+  * `.bashrc` - contains alias definitions, enables shell features, etc
+  * `.profile` - contains variable and one-time-only commands to set the user's environment
+  * `bash_logout` - contains actions to take when logging out
 
+Typically, **an administrator will use the `/etc/skel` directory to generate a custom environment for new user accounts**. For example, to have the Firefox web browser contain default bookmarks for each new user, take the following steps:
 
+1. Create a temporary user account that will be used to generate the Firefox bookmarks.
+2. Log into the temporary user account
+3. Launch Firefox and establish the bookmarks.
+4. Log out of the temporary user account
+5. Copy the `.mozilla` directory structure from the temporary user account's home directory to the `/etc/skel` directory.
 
+As a result of the previous steps, all new user accounts would have a `.mozilla` directory automatically created in their home directory. When the Firefox web browser is launched, these bookmarks will be available.
 
+It's also possible to create different `skel` directories for different types of user accounts. For example, consider a situation that requires different customization files for three groups of users: `developers`, `sales`, and `admin`. Create three different directories (for example `/etc/skel_dev`, `/etc/skel_sales`, and `/etc/skel_admin`) and populate each directory with different customization files. Then **specifies the template directory with the **_**skel**_**  **<mark style="color:red;">**`-k`**</mark>** option** (must be used with the _**create home**_ <mark style="color:red;">**`-m`**</mark> **option**) to the <mark style="color:red;">`useradd`</mark> command. The example below creates the new user `dan` with the directory structure copied from `/etc/skel_dev`
 
+```bash
+root@localhost:~ useradd -m -k /etc/skel_dev dan
+```
 
+### Updating User Passwords
 
+The <mark style="color:red;">`passwd`</mark> command is used to update a user's password. Users can only change their own passwords, whereas the root user can update the password for any user.
 
+If the root user wants to change the password for `sysadmin` ,then they would execute the following command:
 
+```bash
+root@localhost:~ passwd sysadmin                                               
+Enter new UNIX password:                                                        
+Retype new UNIX password:                                                       
+passwd: password updated successfully
+```
+
+If the user wants to view the status information about their password, then they can execute the following command:
+
+```bash
+sysadmin@localhost:~$ passwd -S sysadmin
+sysadmin P 04/24/2019  0 99999 7 -1
+```
+
+The output fields are explained below:
+
+| Field                     | Example      | Meaning                                                                                                                        |
+| ------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| User Name                 | `sysadmin`   | Name of the user                                                                                                               |
+| Password status           | `P`          | <p><code>P</code> means usable password</p><p><code>L</code> means locked password</p><p><code>NP</code> means no password</p> |
+| Last password change date | `03/01/2020` | Date when the password was last changed                                                                                        |
+| Minimum                   | `0`          | Minimum number of days that must pass before the current password can be changed by the user                                   |
+| Maximum                   | `99999`      | Maximum number of days remaining for the password to expire                                                                    |
+| Warn                      | `7`          | Number of days prior to password expiry that the user is warned                                                                |
+| Inactive                  | `-1`         | Number of days after password expiry that the user account remains active                                                      |
+
+The root user can enforce a password change in the next login attempt by executing the following command
+
+```bash
+root@localhost:~ passwd -e sysadmin                                               
+passwd: password expiry information changed.
+```
+
+This will cause the existing password of the user `sysadmin` to expire and force the user to provide a new password during the next login.
+
+### New User Password Aging Defaults
+
+The `/etc/login.defs` file contains parameters that define the defaults
 
 
 

@@ -371,7 +371,7 @@ root@localhost:~ useradd -m -k /etc/skel_dev dan
 
 ### Updating User Passwords
 
-The <mark style="color:red;">`passwd`</mark> command is used to update a user's password. Users can only change their own passwords, whereas the root user can update the password for any user.
+**The **<mark style="color:red;">**`passwd`**</mark>** command is used to update a user's password**. Users can only change their own passwords, whereas the root user can update the password for any user.
 
 If the root user wants to change the password for `sysadmin` ,then they would execute the following command:
 
@@ -382,7 +382,7 @@ Retype new UNIX password:
 passwd: password updated successfully
 ```
 
-If the user wants to view the status information about their password, then they can execute the following command:
+If the **user wants to view the status information about their password**, then they can execute the <mark style="color:red;">**`-S`**</mark> option to the <mark style="color:red;">**`passwd`**</mark> command:
 
 ```bash
 sysadmin@localhost:~$ passwd -S sysadmin
@@ -401,7 +401,7 @@ The output fields are explained below:
 | Warn                      | `7`          | Number of days prior to password expiry that the user is warned                                                                |
 | Inactive                  | `-1`         | Number of days after password expiry that the user account remains active                                                      |
 
-The root user can enforce a password change in the next login attempt by executing the following command
+The **root user can enforce a password change** in the next login attempt by executing the <mark style="color:red;">**`-e`**</mark> option to the <mark style="color:red;">**`passwd`**</mark> command
 
 ```bash
 root@localhost:~ passwd -e sysadmin                                               
@@ -412,21 +412,122 @@ This will cause the existing password of the user `sysadmin` to expire and force
 
 ### New User Password Aging Defaults
 
-The `/etc/login.defs` file contains parameters that define the defaults
+The `/etc/login.defs` file contains parameters that define the defaults values used when new Linux user accounts are created, for items such as home directory location, new file permissions, password aging controls, etc. **This is a plain text file with one configuration parameter on each line**. There are three types of parameters: boolean (true or false), number, and string. The three parameters that set the default password aging control are described in the table below.
 
+| Parameter       | Type   | Meaning                                                                                                               |
+| --------------- | ------ | --------------------------------------------------------------------------------------------------------------------- |
+| `PASS_MAX_DAYS` | number | <p>Maximum number of days a password is valid</p><p>A value of <code>99999</code> means “no maximum password age”</p> |
+| `PASS_MIN_DAYS` | number | <p>Minimum number of days a password is valid</p><p>A value of <code>0</code> means “no minimum password age”</p>     |
+| `PASS_WARN_AGE` | number | Number of days before password expiry that a warning message is given                                                 |
 
+{% hint style="info" %}
+Modifying the password aging or any parameter in the `/etc/login.defs` file only affects new user accounts. **Use the **<mark style="color:red;">**`chage`**</mark>** (change aging) command to modify password aging information for existing accounts**.
+{% endhint %}
 
+### Locking User Accounts
 
+The root user can lock and unlock a user's account by using the <mark style="color:red;">**`passwd -l username`**</mark> to lock a username and <mark style="color:red;">**`passwd -u username`**</mark> command to unlock the username, repectively.
 
+When an account is locked, the password entry in the `/etc/shadow` file is made invalid by prepending a <mark style="color:red;">`!`</mark> or <mark style="color:red;">`!!`</mark> to the encrypted password. To unlock the entry, the `!` or `!!` characters are removed.
 
+```bash
+root@localhost:~ grep sysadmin /etc/shadow                                     
+sysadmin:$6$8.BhF.gs$gVnGSxU/JM4mcKgdbvgIOPWGT5XN25cZwEyI4W3/Nvh0p14UrUrSuvqp3SpPBBq9xYGpmbCAYPHfLgYLpnmL81:18010:0:99999:7:::                                       
 
+root@localhost:~ passwd -l sysadmin                                            
+passwd: password expiry information changed.
 
+root@localhost:~ grep sysadmin /etc/shadow                                     
+sysadmin:!$6$8.BhF.gs$gVnGSxU/JM4mcKgdbvgIOPWGT5XN25cZwEyI4W3/Nvh0p14UrUrSuvqp3SpPBBq9xYGpmbCAYPHfLgYLpnmL81:18010:0:99999:7:::                                     
+‌⁠​​⁠
+root@localhost:~ passwd -u sysadmin                                            
+passwd: password expiry information changed.
 
+root@localhost:~ grep sysadmin /etc/shadow                                     
+sysadmin:$6$8.BhF.gs$gVnGSxU/JM4mcKgdbvgIOPWGT5XN25cZwEyI4W3/Nvh0p14UrUrSuvqp3SpPBBq9xYGpmbCAYPHfLgYLpnmL81:18010:0:99999:7:::
+```
 
+The root user can **remove the encrypted password entry for a user** account by running the <mark style="color:red;">**`-d`**</mark> option to the <mark style="color:red;">`passwd`</mark> command.
 
+```bash
+root@localhost:~ passwd -d sysadmin                                            
+passwd: password expiry information changed.
+root@localhost:~ grep sysadmin /etc/shadow                                     
+sysadmin::18010:0:99999:7:::
+```
 
+### Password Policy
 
+The <mark style="color:red;">**`chage`**</mark> command is used to **update the information related to passwod expiration**. Using this command, **the administrator can enforce a password changing and expiry policy** for specific user accounts.
 
+This command can be run by the root user to modify user accounts; regular user cna use a view-only option.
+
+```bash
+sysadmin@localhost:~$ chage -l sysadmin                                         
+Last password change                                    : Apr 24, 2019          
+Password expires                                        : never                 
+Password inactive                                       : never                 
+Account expires                                         : never                 
+Minimum number of days between password change          : 0                     
+Maximum number of days between password change          : 99999                 
+Number of days of warning before password expires       : 7    
+```
+
+#### Force Users to change passwords periodically
+
+The <mark style="color:red;">`chage`</mark> command can be used to **change the number of days between when a user creates a new password and when the user is required to change the password again**. For example, to force `test_user` to change their password within 90 days from when it was last changed (otherwise the password will _expire_ ), execue the <mark style="color:red;">`chage`</mark> command with the <mark style="color:red;">`-M`</mark> option.
+
+```bash
+root@localhost:~ chage -M 90 test_user1                                         
+root@localhost:~ !grep                                                         
+grep test_user1 /etc/shadow                                                      
+test_user1:$6$VBdpqLwC$.HwlyAvpTbvxT0ruyFULvWb/1:18163:0:90:7:::
+```
+
+{% hint style="info" %}
+By using the <mark style="color:red;">`–m`</mark> option to the `chage` command, **it is possible to specify a minimum number of days** (fourth field in `/etc/shadow`; `default=0`) that the **user will have to wait before being allowed to change their password** and thus prevent them from immediately changing it back to their previous password:
+
+```bash
+root@localhost:~ chage -m 5 test_user                                         
+root@localhost:~ !grep                                                         
+grep test_user /etc/shadow                                                      
+test_user1:$6$VBdpqHivxT0ruyFULvWb/1:18163:5:90:7:::
+```
+
+****
+
+**PAM** (Pluggable Authentication Module) provides a method to have Linux remember previously used passwords, forcing users to create a new passwords each time they are forced to change their password
+{% endhint %}
+
+#### **Providing Warnings and Allowing Grace Login**
+
+If a user has a maximum password age limit of 90 days and they attempt to log in 91 days after the last time the account password was changed, the account will automatically be locked. The sixth (warning) field in the `/etc/shadow` file allows administrators to specify how many days before the account will be locked that the user will be warned of the potential lock-out
+
+Note that this warning only appears when the user logs in:
+
+```bash
+Login: test_user1                                                      
+Password:                                                                       
+Warning:  your password will expire in 7 days
+```
+
+To **set the warning field** in the `/etc/shadow` file for a user, use the <mark style="color:red;">`-W`</mark> option to the <mark style="color:red;">`chage`</mark> command:
+
+```bash
+root@localhost:~ chage -W 3 test_user1
+root@localhost:~ grep test_user1 /etc/shadow                                    
+test_user1:$6$VBdpqLwC$.HwlyAvpb28M.vBjcfYcHivxT0ruyFULvWb/1:18163:5:90:3:::
+```
+
+When the user fails to heed the warnings, they will be locked out of their account, requiring a system administrator to unlock it. **To provide the user with a bit more time to change the password**, a grace login period can be permitted with the <mark style="color:red;">`-I`</mark> (inactive) option to the <mark style="color:red;">`chage`</mark> command:
+
+```bash
+root@localhost:~ chage -I 10 test_user1
+root@localhost:~ grep test_user1 /etc/shadow                                    
+test_user1:$6$gLAMp5rD$.lh2mLPolR0ZzRZXlBwiJ0CgxeZ1:16468:0:90:3:10::
+```
+
+The preceding command sets the grace login period to `10` days. This means for the 10-day period after the maximum password age limit has been reached, the **user can log in and will be force to change their password** during the login process.
 
 
 

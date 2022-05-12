@@ -46,9 +46,9 @@ Linux is a multi-user operating system, allowing multiple users to access the sy
 
 ## User and System Account Files
 
-#### The `/etc/passwd` File
+#### <mark style="background-color:orange;">The /etc/passwd File</mark>
 
-The **`/etc/passwd`** file contains the details of special system accounts used to run services, and user accounts on the system. Without an entry in the **`/etc/passwd`** file, users are unable to log in to the system. **This file has read access for all users, but write access is limited to the root user.**
+The **`/etc/passwd`** file **contains the details of special system accounts used to run services**, and user accounts on the system. Without an entry in the **`/etc/passwd`** file, users are unable to log in to the system. **This file has read access for all users, but write access is limited to the root user.**
 
 ```bash
 sysadmin@localhost:~$ cat /etc/passwd                                         
@@ -120,9 +120,9 @@ No Plan.
 ```
 {% endhint %}
 
-#### The `/etc/shadow` File
+#### <mark style="background-color:orange;">The /etc/shadow File</mark>
 
-The `/etc/shadow` file contains the encrypted password of the user and some parameters related to password security. In addition to providing the administrator with the ability to set password expiration fields.
+The `/etc/shadow` file **contains the encrypted password of the user and some parameters related to password security**. In addition to providing the administrator with the ability to set password expiration fields.
 
 {% hint style="warning" %}
 Only the root user can view the `/etc/shadow` file
@@ -654,23 +654,206 @@ root@localhost:~ userdel -f test_user1
 
 ## Group Accounts
 
+Users are organized in groups to facilitate the management, monitoring, and control of users and resources. Below are two examples of using a group:
 
+* The root user can create an `admin` group, which can be configured to allow group members the rights to execute administration-based tasks.
+* When a server is being shared by multiple teams in an organization, a separate group can be created for each team. Their shared resources, such as files and directories, will be accessed securely by team members only.
 
+**Every user is associated with at least one group know their primary group**. Recall that the user's primary group is stored in the fourth field of the `/etc/passwd` file. Any additional group membership will be indicated in the `/etc/group` file, which is used to store group account information.&#x20;
 
+### The `/etc/group` File
 
+The `/etc/group` file is a text file that defines the groups to which a user belongs, plus various system groups automatically created as part of the Linux installation.
 
+```bash
+sysadmin@localhost:~$ head /etc/group                                           
+root:x:0:                                                                       
+daemon:x:1:                                                                     
+bin:x:2:                                                                        
+sys:x:3:                                                                        
+adm:x:4:syslog,sysadmin                                                         
+tty:x:5:                                                                        
+disk:x:6:                                                                       
+lp:x:7:        
+```
 
+Each record in the `/etc/group` files contains the following four field, separated by colons:
 
+```
+group_name:password:GID:group_list
+```
 
+| Field      | Example                       | Significance                                                                                                                                                                                                                                                                                                                                                    |
+| ---------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Group Name | `marketing`                   | Name of the group                                                                                                                                                                                                                                                                                                                                               |
+| Password   |                               | <p>This field is blank for most of the groups</p><p>Traditionally, it can store an encrypted password for privileged groups, although most modern distributions of Linux stores group passwords in the <code>/etc/gshadow</code> file</p><p>An <code>x</code> in this field indicates there might be a group password in the <code>/etc/gshadow</code> file</p> |
+| GID        | `1002`                        | The Group ID                                                                                                                                                                                                                                                                                                                                                    |
+| Group List | `Madeleine,Colin,Condoleezza` | List of the user ids who are members of this group                                                                                                                                                                                                                                                                                                              |
 
+A user can be a member of multiple groups, but at any point in time, only one group will be the user's primary group. **The user's primary group is used to determine what group will be given ownership of a file when the user creates a new file**.
 
+To check the current group memebership of a particular user, use the <mark style="color:red;">`groups`</mark> command.
 
+```bash
+sysadmin@localhost:~$ groups                                                    
+sysadmin adm sudo
+```
 
+To see the group membership of a different user account, specify the account name as an argument to the `groups` command:
 
+```bash
+sysadmin@localhost:~$ groups root                                               
+root : root
+```
 
+Another method to determine a user's default primary group is the <mark style="color:red;">`getent`</mark> (get entries) command. **The **<mark style="color:red;">**`getent`**</mark>** command is an easy way to query administrative files** (`passwd`, `shadow`, `groups`, `hosts`, etc) called databases that store user information. The command syntax is:
 
+```
+getent database [optional key]
+```
 
+```bash
+sysadmin@localhost:~$ getent group sysadmin                                     
+sysadmin:x:1001:
+```
 
+Notice that the primary group is also the first one listed when executing the <mark style="color:red;">`groups`</mark> command. However, keep in mind that a user can temporarily change their primary group with the <mark style="color:red;">`newgrp`</mark> command. The <mark style="color:red;">`newgrp`</mark> command will open a new shell with the group specified as the primary group.
 
+```bash
+sysadmin@localhost:~$ groups                                                    
+sysadmin adm sudo                                                               
+sysadmin@localhost:~$ newgrp adm                                                
+sysadmin@localhost:~$ groups                                                    
+adm sudo sysadmin
+```
 
+The difference between the output from the <mark style="color:red;">`groups`</mark> command and the <mark style="color:red;">`getent`</mark> command is that **the **<mark style="color:red;">**`groups`**</mark>** command displays the user's current primary group** as the first group while **the **<mark style="color:red;">**`getent`**</mark>** command will always display the default primary group** for the user's account.
 
+The <mark style="color:red;">`groups`</mark> command also list all of the secondary groups for the user, while the <mark style="color:red;">`getent`</mark> command only displays the user's primary group.
+
+### Creating a new group
+
+The <mark style="color:red;">`groupadd`</mark> command is **used to create a new group**. For example, to add a new group named `programmers`, execute the following command as root:
+
+```bash
+sysadmin@localhost:~$ sudo groupadd programmers
+root@localhost:~ tail -1 /etc/group
+programmers:x:1008:
+```
+
+By default, the <mark style="color:red;">`groupadd`</mark> command automatically assigns a GID to the new group using the next available GID. **To create a group with a specific GID, use the **<mark style="color:red;">**`-`**</mark>**`g` option**:
+
+```bash
+root@localhost:~ groupadd programmers -g 1980
+programmers:x:1980:
+```
+
+### Modifying a Group
+
+The <mark style="color:red;">**`groupmod`**</mark> command is used to **modify the properties of an existing group account**. For example, **to modify the group's GID, use the **<mark style="color:red;">**`-g`**</mark>** option**
+
+```
+root@localhost:~ groupmod programmers -g 1990                    
+root@localhost:~ tail -1 /etc/group
+programmers:x:1990:
+```
+
+To change the group name, execute the `groupmod` with the `-n` option:
+
+```
+root@localhost:~ groupmod programmers -n programmers2                       
+root@localhost:~ tail -1 /etc/group
+programmers2:x:1990:
+```
+
+{% hint style="info" %}
+Group level passwords may be assigned, and these passwords are stored in the **`/etc/gshadow`** file. These passwords affect the ability of users to execute the <mark style="color:red;">`newgrp`</mark> command used to switch to a different primary group.
+{% endhint %}
+
+Similar to the `/etc/shadow` file, the `/etc/gshadow` file is used to store group password information and other security-related group data. **If a group is added, deleted, or modified, then the `/etc/gshadow` file is also updated.**
+
+```bash
+root@localhost:~ tail /etc/gshadow                                     
+colord:!::                                                                      
+bind:!::                                                                        
+mysql:!::                                                                       
+smmta:!::                                                                       
+smmsp:!::                                                                       
+ssh:!::                                                                         
+ntpd:!::                                                                        
+sysadmin:!:: 
+userdmin:!::                                                                                                                                   
+programmers:$1$nfffgggc$pGt4:useradmin:sarah,mickey,dinesh
+```
+
+Each record in the /etc/gshadow file contains the following 4 fields, separated by colons:
+
+```
+group_name:encrypted_password:group_administrators:members
+```
+
+| Field                | Example               | Significance                                                                                                                                                           |
+| -------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Group Name           | `programmers`         | Valid existing group name                                                                                                                                              |
+| Encrypted Password   | `$1$nfffgggc$pGt#4`   | Used when a user who is not a member of the group wants to gain permission to this group. An exclamation mark at the beginning of the password indicates it is locked. |
+| Group Administrators | `useradmin`           | Comma-separated list of group administrators                                                                                                                           |
+| Members              | `sarah,mickey,dinesh` | Comma-separated list of group users that will not be prompted for a password                                                                                           |
+
+The <mark style="color:red;">**`gpasswd`**</mark> command is used by the root user to **update the group information** in the `/etc/gshadow` file. For example, to give administrative rights to user `sysadmin` for group `programmers` ,execute the following
+
+```bash
+root@localhost:~ gpasswd -A sysadmin programmers
+root@localhost:~ tail -1 /etc/gshadow                                                                                                                                                         
+programmers:$1$nfffgggc$pGt4:sysadmin:
+```
+
+To set a group password, execute the `gpasswd` command with no options
+
+```
+root@localhost:~# gpasswd programmers
+Changing the password for group programmers
+New Password:
+Re-enter new password:
+```
+
+To **remove a group password**, execute the <mark style="color:red;">`gpasswd`</mark> command with the <mark style="color:red;">**`-r`**</mark> **option**:
+
+```bash
+root@localhost:~ gpasswd -r programmers
+```
+
+### Deleting a Group
+
+The <mark style="color:red;">**`groupdel`**</mark> command is **used to delete a group that is no longer needed**. For example to delete the group named `programmers` ,execute the following
+
+```
+root@localhost:~# groupdel programmers
+```
+
+An error message is displayed when the group being deleted is the primary group of any existing user:
+
+```bash
+root@localhost:~ groupdel sysadmin
+groupdel:  cannot remove the primary group of user ‘sysadmin’
+```
+
+The user needs to be deleted first or reassigned to a different group before the group can be deleted.
+
+{% hint style="info" %}
+Keep in mind that deleting a group that owns files could cause access problems.
+
+In reality, **files are owned by GID numbers, not by groups**.&#x20;
+{% endhint %}
+
+## Using Pluggable Authentication Modules
+
+Many Linux distributions use the Pluggable Authentication Modules (PAM) framework for implementing security and authentication. Authentication is the process of ensuring user accounts are valid and that credentials provided by the user are valid.
+
+There are many applications running on the system which need to use an authentication mechanism to check the credentials of the users trying to access resources or services. Using PAM allows a uniform authentication method for application access and also facilitates a standard configuration.
+
+The module can be plugged into the system without the need for any recompilation. PAM considers the following aspects for providing secure access:
+
+1. Authentication
+2. Managing sessions
+3. Managing accounts
+4. Updating authentication information

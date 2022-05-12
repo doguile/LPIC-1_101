@@ -529,9 +529,38 @@ test_user1:$6$gLAMp5rD$.lh2mLPolR0ZzRZXlBwiJ0CgxeZ1:16468:0:90:3:10::
 
 The preceding command sets the grace login period to `10` days. This means for the 10-day period after the maximum password age limit has been reached, the **user can log in and will be force to change their password** during the login process.
 
+#### Set an Expiration Date
 
+To **set the expiration for a user account** to a specific date, use the <mark style="color:red;">`chage`</mark> command with the <mark style="color:red;">`-E`</mark> (Expiration) option, followed by the date in the YYYY-MM-DD format (or the format of your location)
 
+```bash
+root@localhost:~ chage -E “2025-04-15” test_user1
+root@localhost:~ grep test_user1 /etc/shadow                                    
+test_user1:$6$VBdpqLwC$.HwltbvxT0ruyFULvWb/1:18163:5:90:3::20193:
+```
 
+The command above will update the eight field of the `/etc/shadow` file for the `test_user` account to `20193` days from 1 January, 1970, which in this case is 15 April, 2025; the day the account will be locked.
+
+{% hint style="info" %}
+UNIX and Linux systems have historically kept track of time as a value since January 1, 1970, measuring it from that date until now.
+{% endhint %}
+
+#### Viewing Password Aging Policies
+
+Any user can **display the password aging policies** for their own account by executing the        <mark style="color:red;">**`chage -l sysadmin`**</mark> command. For example
+
+```bash
+sysadmin@localhost:~$ chage -l sysadmin                                         
+Last password change                                : Apr 24, 2019          
+Password expires                                    : never                 
+Password inactive                                   : never                 
+Account expires                                     : never                 
+Minimum number of days between password change      : 0                     
+Maximum number of days between password change      : 99999                 
+Number of days of warning before password expires   : 7
+```
+
+The administrator can use this command for any user account. This is especially useful for translating the expiration field into an actual date.
 
 
 

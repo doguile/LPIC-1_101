@@ -36,3 +36,4 @@
   * [Chapter 4: Graphical Desktops](102-500/module-2-administering-the-display/chapter-4-graphical-desktops.md)
   * [Chapter 5: Accessibility](102-500/module-2-administering-the-display/chapter-5-accessibility.md)
 * [Module 3: User and System Administration](102-500/module-3-user-and-system-administration.md)
+* [Chapter 7: Scheduling Jobs](102-500/chapter-7-scheduling-jobs.md)

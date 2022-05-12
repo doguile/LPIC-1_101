@@ -473,7 +473,7 @@ Maximum number of days between password change          : 99999
 Number of days of warning before password expires       : 7    
 ```
 
-#### Force Users to change passwords periodically
+#### <mark style="background-color:orange;">Force Users to change passwords periodically</mark>
 
 The <mark style="color:red;">`chage`</mark> command can be used to **change the number of days between when a user creates a new password and when the user is required to change the password again**. For example, to force `test_user` to change their password within 90 days from when it was last changed (otherwise the password will _expire_ ), execue the <mark style="color:red;">`chage`</mark> command with the <mark style="color:red;">`-M`</mark> option.
 
@@ -499,7 +499,7 @@ test_user1:$6$VBdpqHivxT0ruyFULvWb/1:18163:5:90:7:::
 **PAM** (Pluggable Authentication Module) provides a method to have Linux remember previously used passwords, forcing users to create a new passwords each time they are forced to change their password
 {% endhint %}
 
-#### **Providing Warnings and Allowing Grace Login**
+#### <mark style="background-color:orange;">**Providing Warnings and Allowing Grace Login**</mark>
 
 If a user has a maximum password age limit of 90 days and they attempt to log in 91 days after the last time the account password was changed, the account will automatically be locked. The sixth (warning) field in the `/etc/shadow` file allows administrators to specify how many days before the account will be locked that the user will be warned of the potential lock-out
 
@@ -529,7 +529,7 @@ test_user1:$6$gLAMp5rD$.lh2mLPolR0ZzRZXlBwiJ0CgxeZ1:16468:0:90:3:10::
 
 The preceding command sets the grace login period to `10` days. This means for the 10-day period after the maximum password age limit has been reached, the **user can log in and will be force to change their password** during the login process.
 
-#### Set an Expiration Date
+#### <mark style="background-color:orange;">Set an Expiration Date</mark>
 
 To **set the expiration for a user account** to a specific date, use the <mark style="color:red;">`chage`</mark> command with the <mark style="color:red;">`-E`</mark> (Expiration) option, followed by the date in the YYYY-MM-DD format (or the format of your location)
 
@@ -545,7 +545,7 @@ The command above will update the eight field of the `/etc/shadow` file for the 
 UNIX and Linux systems have historically kept track of time as a value since January 1, 1970, measuring it from that date until now.
 {% endhint %}
 
-#### Viewing Password Aging Policies
+#### <mark style="background-color:orange;">Viewing Password Aging Policies</mark>
 
 Any user can **display the password aging policies** for their own account by executing the        <mark style="color:red;">**`chage -l sysadmin`**</mark> command. For example
 
@@ -562,11 +562,97 @@ Number of days of warning before password expires   : 7
 
 The administrator can use this command for any user account. This is especially useful for translating the expiration field into an actual date.
 
+### Modifying a User
 
+Periodically, an administrator receives a request to modify user account parameters to accommodate a job-role change, a system change, or to simply update user information in the comment field of the `passwd` file. Experienced administrator can make direct changes to the `/etc/passwd` and `/etc/shadow` files, but it is **best to use the **<mark style="color:red;">**`usermod`**</mark>** (user modification)** command.
 
+The <mark style="color:red;">`usermod`</mark> command is **used by the root account to modify existing user account parameters** such as home directory, login name, login shell, password aging information, etc. Verify all changes with the `grep` command.
 
+To **change the home directory location** of the user `test_user1` from `/home/test_user1` to `/home/qa/test_user1` ,execute the <mark style="color:red;">**`usermod`**</mark> command with the <mark style="color:red;">**`-d`**</mark> option:
 
+```bash
+root@localhost:~ mkdir -p /home/qa                                           
+root@localhost:~ usermod -d /home/qa/test_user1 test_user1                       
+root@localhost:~ grep test_user1 /etc/passwd                                   
+test_user1:x:1005:1008::/home/qa/test_user1:/bin/bash
+```
 
+{% hint style="warning" %}
+The <mark style="color:red;">`useradd`</mark> command only changes the home directory field in the `/etc/passwd`
+{% endhint %}
+
+**To lock** (insert an exclamation point <mark style="color:red;">`!`</mark> in front of the encrypted password in `/etc/shadow`) and **unlock** (remove the exclamation point <mark style="color:red;">`!`</mark>) the password for user `test_user1` ,use the <mark style="color:red;">`usermod`</mark> command with the <mark style="color:red;">**`-L`**</mark> and <mark style="color:red;">**`-U`**</mark> options respectively:
+
+```bash
+root@localhost:~ usermod -L test_user1
+root@localhost:~ grep test_user1 /etc/shadow                                    
+test_user1:!$6$VBdpqLwC$.HwlyAvpb28M..cNnCTbtbr1/./1:18163:5:90:3::20193:     
+root@localhost:~ usermod -U test_user1
+```
+
+To **set the expiry date** of `test_user1` to April 30, 2025, use the <mark style="color:red;">**`-e`**</mark> option (note the different format than the <mark style="color:red;">`chage`</mark> command)
+
+```bash
+root@localhost:~ usermod test_user1 -e 2025-04-30
+root@localhost:~ grep test_user /etc/shadow                                    
+test_user1:!$6$VBdpqLwC$.HwlyAvpb28M/1:18163:5:90:3::20208:
+```
+
+**To change** the `test_user1` **primary group** to the `team` group, use the <mark style="color:red;">**`-g`**</mark> option.
+
+```bash
+root@localhost:~ usermod test_user1 -g team
+```
+
+To **append the accounts group to the list of existing supplementary/secondary groups** for `test_user1`, use both the <mark style="color:red;">**`-a`**</mark> (append) and <mark style="color:red;">**`-G`**</mark>(group) options.
+
+```bash
+root@localhost:~ usermod -a -G accounts test_user1
+```
+
+{% hint style="info" %}
+Use the <mark style="color:red;">`-G`</mark> option (without the <mark style="color:red;">`-a`</mark> option) to list, separated by a comma, all supplementary/secondary groups that the user is a member of. If the user is currently a member of a group that is not listed, the user will removed from the group
+{% endhint %}
+
+To **change the comment** (or GECOS field) in the `/etc/passwd` file, use the <mark style="color:red;">**`-c`**</mark> option:
+
+```bash
+root@localhost:~ usermod test_user1 -c "engineering team"
+root@localhost:~ grep test_user1 /etc/passwd                                   
+test_user1:x:1005:1004:engineering team:/home/qa/test_user1:/bin/bash
+```
+
+To **change the login shell** of `test_user1` to the C shell, use the <mark style="color:red;">**`-s`**</mark> option:
+
+```bash
+root@localhost:~ usermod test_user1 -s /bin/csh
+```
+
+On Red Hat-based system, the <mark style="color:red;">`usermod`</mark> command verifies that the user is not logged in before changing attributes such as the user ID and home directory.
+
+### Deleting a User
+
+The <mark style="color:red;">`userdel`</mark> command is used to **delete a user account information**, preventing the user from logging in and optionally removing all files related to the account.
+
+The home directory of the user, including all files and directories created by the user, will not be deleted but can be searched and later removed using the `find` command.
+
+To **delete the user account along with the user's home directory** and mail spool (file containing user's unread mail), use the <mark style="color:red;">**`-r`**</mark> **option**
+
+```bash
+root@localhost:~ userdel -r test_user1
+```
+
+{% hint style="danger" %}
+The `-r` option only deletes the user's home directory and mail spool; any other files owned by the user in other directories must be deleted manually.
+{% endhint %}
+
+In the event an active employee is terminated immediately, **the user account can be forcefully deleted even if the user is logged in by using the **<mark style="color:red;">**`-f`**</mark>** option**.
+
+```bash
+root@localhost:~ userdel -f test_user1
+```
+
+## Group Accounts
 
 
 

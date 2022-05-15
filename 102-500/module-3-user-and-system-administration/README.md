@@ -46,9 +46,9 @@ Linux is a multi-user operating system, allowing multiple users to access the sy
 
 ## User and System Account Files
 
-#### The `/etc/passwd` File
+#### <mark style="background-color:orange;">The /etc/passwd File</mark>
 
-The **`/etc/passwd`** file contains the details of special system accounts used to run services, and user accounts on the system. Without an entry in the **`/etc/passwd`** file, users are unable to log in to the system. **This file has read access for all users, but write access is limited to the root user.**
+The **`/etc/passwd`** file **contains the details of special system accounts used to run services**, and user accounts on the system. Without an entry in the **`/etc/passwd`** file, users are unable to log in to the system. **This file has read access for all users, but write access is limited to the root user.**
 
 ```bash
 sysadmin@localhost:~$ cat /etc/passwd                                         
@@ -120,9 +120,9 @@ No Plan.
 ```
 {% endhint %}
 
-#### The `/etc/shadow` File
+#### <mark style="background-color:orange;">The /etc/shadow File</mark>
 
-The `/etc/shadow` file contains the encrypted password of the user and some parameters related to password security. In addition to providing the administrator with the ability to set password expiration fields.
+The `/etc/shadow` file **contains the encrypted password of the user and some parameters related to password security**. In addition to providing the administrator with the ability to set password expiration fields.
 
 {% hint style="warning" %}
 Only the root user can view the `/etc/shadow` file
@@ -371,7 +371,7 @@ root@localhost:~ useradd -m -k /etc/skel_dev dan
 
 ### Updating User Passwords
 
-The <mark style="color:red;">`passwd`</mark> command is used to update a user's password. Users can only change their own passwords, whereas the root user can update the password for any user.
+**The **<mark style="color:red;">**`passwd`**</mark>** command is used to update a user's password**. Users can only change their own passwords, whereas the root user can update the password for any user.
 
 If the root user wants to change the password for `sysadmin` ,then they would execute the following command:
 
@@ -382,7 +382,7 @@ Retype new UNIX password:
 passwd: password updated successfully
 ```
 
-If the user wants to view the status information about their password, then they can execute the following command:
+If the **user wants to view the status information about their password**, then they can execute the <mark style="color:red;">**`-S`**</mark> option to the <mark style="color:red;">**`passwd`**</mark> command:
 
 ```bash
 sysadmin@localhost:~$ passwd -S sysadmin
@@ -401,7 +401,7 @@ The output fields are explained below:
 | Warn                      | `7`          | Number of days prior to password expiry that the user is warned                                                                |
 | Inactive                  | `-1`         | Number of days after password expiry that the user account remains active                                                      |
 
-The root user can enforce a password change in the next login attempt by executing the following command
+The **root user can enforce a password change** in the next login attempt by executing the <mark style="color:red;">**`-e`**</mark> option to the <mark style="color:red;">**`passwd`**</mark> command
 
 ```bash
 root@localhost:~ passwd -e sysadmin                                               
@@ -412,49 +412,448 @@ This will cause the existing password of the user `sysadmin` to expire and force
 
 ### New User Password Aging Defaults
 
-The `/etc/login.defs` file contains parameters that define the defaults
+The `/etc/login.defs` file contains parameters that define the defaults values used when new Linux user accounts are created, for items such as home directory location, new file permissions, password aging controls, etc. **This is a plain text file with one configuration parameter on each line**. There are three types of parameters: boolean (true or false), number, and string. The three parameters that set the default password aging control are described in the table below.
 
+| Parameter       | Type   | Meaning                                                                                                               |
+| --------------- | ------ | --------------------------------------------------------------------------------------------------------------------- |
+| `PASS_MAX_DAYS` | number | <p>Maximum number of days a password is valid</p><p>A value of <code>99999</code> means “no maximum password age”</p> |
+| `PASS_MIN_DAYS` | number | <p>Minimum number of days a password is valid</p><p>A value of <code>0</code> means “no minimum password age”</p>     |
+| `PASS_WARN_AGE` | number | Number of days before password expiry that a warning message is given                                                 |
 
+{% hint style="info" %}
+Modifying the password aging or any parameter in the `/etc/login.defs` file only affects new user accounts. **Use the **<mark style="color:red;">**`chage`**</mark>** (change aging) command to modify password aging information for existing accounts**.
+{% endhint %}
 
+### Locking User Accounts
 
+The root user can lock and unlock a user's account by using the <mark style="color:red;">**`passwd -l username`**</mark> to lock a username and <mark style="color:red;">**`passwd -u username`**</mark> command to unlock the username, repectively.
 
+When an account is locked, the password entry in the `/etc/shadow` file is made invalid by prepending a <mark style="color:red;">`!`</mark> or <mark style="color:red;">`!!`</mark> to the encrypted password. To unlock the entry, the `!` or `!!` characters are removed.
 
+```bash
+root@localhost:~ grep sysadmin /etc/shadow                                     
+sysadmin:$6$8.BhF.gs$gVnGSxU/JM4mcKgdbvgIOPWGT5XN25cZwEyI4W3/Nvh0p14UrUrSuvqp3SpPBBq9xYGpmbCAYPHfLgYLpnmL81:18010:0:99999:7:::                                       
 
+root@localhost:~ passwd -l sysadmin                                            
+passwd: password expiry information changed.
 
+root@localhost:~ grep sysadmin /etc/shadow                                     
+sysadmin:!$6$8.BhF.gs$gVnGSxU/JM4mcKgdbvgIOPWGT5XN25cZwEyI4W3/Nvh0p14UrUrSuvqp3SpPBBq9xYGpmbCAYPHfLgYLpnmL81:18010:0:99999:7:::                                     
+‌⁠​​⁠
+root@localhost:~ passwd -u sysadmin                                            
+passwd: password expiry information changed.
 
+root@localhost:~ grep sysadmin /etc/shadow                                     
+sysadmin:$6$8.BhF.gs$gVnGSxU/JM4mcKgdbvgIOPWGT5XN25cZwEyI4W3/Nvh0p14UrUrSuvqp3SpPBBq9xYGpmbCAYPHfLgYLpnmL81:18010:0:99999:7:::
+```
 
+The root user can **remove the encrypted password entry for a user** account by running the <mark style="color:red;">**`-d`**</mark> option to the <mark style="color:red;">`passwd`</mark> command.
 
+```bash
+root@localhost:~ passwd -d sysadmin                                            
+passwd: password expiry information changed.
+root@localhost:~ grep sysadmin /etc/shadow                                     
+sysadmin::18010:0:99999:7:::
+```
 
+### Password Policy
 
+The <mark style="color:red;">**`chage`**</mark> command is used to **update the information related to passwod expiration**. Using this command, **the administrator can enforce a password changing and expiry policy** for specific user accounts.
 
+This command can be run by the root user to modify user accounts; regular user cna use a view-only option.
 
+```bash
+sysadmin@localhost:~$ chage -l sysadmin                                         
+Last password change                                    : Apr 24, 2019          
+Password expires                                        : never                 
+Password inactive                                       : never                 
+Account expires                                         : never                 
+Minimum number of days between password change          : 0                     
+Maximum number of days between password change          : 99999                 
+Number of days of warning before password expires       : 7    
+```
 
+#### <mark style="background-color:orange;">Force Users to change passwords periodically</mark>
 
+The <mark style="color:red;">`chage`</mark> command can be used to **change the number of days between when a user creates a new password and when the user is required to change the password again**. For example, to force `test_user` to change their password within 90 days from when it was last changed (otherwise the password will _expire_ ), execue the <mark style="color:red;">`chage`</mark> command with the <mark style="color:red;">`-M`</mark> option.
 
+```bash
+root@localhost:~ chage -M 90 test_user1                                         
+root@localhost:~ !grep                                                         
+grep test_user1 /etc/shadow                                                      
+test_user1:$6$VBdpqLwC$.HwlyAvpTbvxT0ruyFULvWb/1:18163:0:90:7:::
+```
 
+{% hint style="info" %}
+By using the <mark style="color:red;">`–m`</mark> option to the `chage` command, **it is possible to specify a minimum number of days** (fourth field in `/etc/shadow`; `default=0`) that the **user will have to wait before being allowed to change their password** and thus prevent them from immediately changing it back to their previous password:
 
+```bash
+root@localhost:~ chage -m 5 test_user                                         
+root@localhost:~ !grep                                                         
+grep test_user /etc/shadow                                                      
+test_user1:$6$VBdpqHivxT0ruyFULvWb/1:18163:5:90:7:::
+```
 
+****
 
+**PAM** (Pluggable Authentication Module) provides a method to have Linux remember previously used passwords, forcing users to create a new passwords each time they are forced to change their password
+{% endhint %}
 
+#### <mark style="background-color:orange;">**Providing Warnings and Allowing Grace Login**</mark>
 
+If a user has a maximum password age limit of 90 days and they attempt to log in 91 days after the last time the account password was changed, the account will automatically be locked. The sixth (warning) field in the `/etc/shadow` file allows administrators to specify how many days before the account will be locked that the user will be warned of the potential lock-out
 
+Note that this warning only appears when the user logs in:
 
+```bash
+Login: test_user1                                                      
+Password:                                                                       
+Warning:  your password will expire in 7 days
+```
 
+To **set the warning field** in the `/etc/shadow` file for a user, use the <mark style="color:red;">`-W`</mark> option to the <mark style="color:red;">`chage`</mark> command:
 
+```bash
+root@localhost:~ chage -W 3 test_user1
+root@localhost:~ grep test_user1 /etc/shadow                                    
+test_user1:$6$VBdpqLwC$.HwlyAvpb28M.vBjcfYcHivxT0ruyFULvWb/1:18163:5:90:3:::
+```
 
+When the user fails to heed the warnings, they will be locked out of their account, requiring a system administrator to unlock it. **To provide the user with a bit more time to change the password**, a grace login period can be permitted with the <mark style="color:red;">`-I`</mark> (inactive) option to the <mark style="color:red;">`chage`</mark> command:
 
+```bash
+root@localhost:~ chage -I 10 test_user1
+root@localhost:~ grep test_user1 /etc/shadow                                    
+test_user1:$6$gLAMp5rD$.lh2mLPolR0ZzRZXlBwiJ0CgxeZ1:16468:0:90:3:10::
+```
 
+The preceding command sets the grace login period to `10` days. This means for the 10-day period after the maximum password age limit has been reached, the **user can log in and will be force to change their password** during the login process.
 
+#### <mark style="background-color:orange;">Set an Expiration Date</mark>
 
+To **set the expiration for a user account** to a specific date, use the <mark style="color:red;">`chage`</mark> command with the <mark style="color:red;">`-E`</mark> (Expiration) option, followed by the date in the YYYY-MM-DD format (or the format of your location)
 
+```bash
+root@localhost:~ chage -E “2025-04-15” test_user1
+root@localhost:~ grep test_user1 /etc/shadow                                    
+test_user1:$6$VBdpqLwC$.HwltbvxT0ruyFULvWb/1:18163:5:90:3::20193:
+```
 
+The command above will update the eight field of the `/etc/shadow` file for the `test_user` account to `20193` days from 1 January, 1970, which in this case is 15 April, 2025; the day the account will be locked.
 
+{% hint style="info" %}
+UNIX and Linux systems have historically kept track of time as a value since January 1, 1970, measuring it from that date until now.
+{% endhint %}
 
+#### <mark style="background-color:orange;">Viewing Password Aging Policies</mark>
 
+Any user can **display the password aging policies** for their own account by executing the        <mark style="color:red;">**`chage -l sysadmin`**</mark> command. For example
 
+```bash
+sysadmin@localhost:~$ chage -l sysadmin                                         
+Last password change                                : Apr 24, 2019          
+Password expires                                    : never                 
+Password inactive                                   : never                 
+Account expires                                     : never                 
+Minimum number of days between password change      : 0                     
+Maximum number of days between password change      : 99999                 
+Number of days of warning before password expires   : 7
+```
 
+The administrator can use this command for any user account. This is especially useful for translating the expiration field into an actual date.
 
+### Modifying a User
 
+Periodically, an administrator receives a request to modify user account parameters to accommodate a job-role change, a system change, or to simply update user information in the comment field of the `passwd` file. Experienced administrator can make direct changes to the `/etc/passwd` and `/etc/shadow` files, but it is **best to use the **<mark style="color:red;">**`usermod`**</mark>** (user modification)** command.
 
+The <mark style="color:red;">`usermod`</mark> command is **used by the root account to modify existing user account parameters** such as home directory, login name, login shell, password aging information, etc. Verify all changes with the `grep` command.
 
+To **change the home directory location** of the user `test_user1` from `/home/test_user1` to `/home/qa/test_user1` ,execute the <mark style="color:red;">**`usermod`**</mark> command with the <mark style="color:red;">**`-d`**</mark> option:
 
+```bash
+root@localhost:~ mkdir -p /home/qa                                           
+root@localhost:~ usermod -d /home/qa/test_user1 test_user1                       
+root@localhost:~ grep test_user1 /etc/passwd                                   
+test_user1:x:1005:1008::/home/qa/test_user1:/bin/bash
+```
+
+{% hint style="warning" %}
+The <mark style="color:red;">`useradd`</mark> command only changes the home directory field in the `/etc/passwd`
+{% endhint %}
+
+**To lock** (insert an exclamation point <mark style="color:red;">`!`</mark> in front of the encrypted password in `/etc/shadow`) and **unlock** (remove the exclamation point <mark style="color:red;">`!`</mark>) the password for user `test_user1` ,use the <mark style="color:red;">`usermod`</mark> command with the <mark style="color:red;">**`-L`**</mark> and <mark style="color:red;">**`-U`**</mark> options respectively:
+
+```bash
+root@localhost:~ usermod -L test_user1
+root@localhost:~ grep test_user1 /etc/shadow                                    
+test_user1:!$6$VBdpqLwC$.HwlyAvpb28M..cNnCTbtbr1/./1:18163:5:90:3::20193:     
+root@localhost:~ usermod -U test_user1
+```
+
+To **set the expiry date** of `test_user1` to April 30, 2025, use the <mark style="color:red;">**`-e`**</mark> option (note the different format than the <mark style="color:red;">`chage`</mark> command)
+
+```bash
+root@localhost:~ usermod test_user1 -e 2025-04-30
+root@localhost:~ grep test_user /etc/shadow                                    
+test_user1:!$6$VBdpqLwC$.HwlyAvpb28M/1:18163:5:90:3::20208:
+```
+
+**To change** the `test_user1` **primary group** to the `team` group, use the <mark style="color:red;">**`-g`**</mark> option.
+
+```bash
+root@localhost:~ usermod test_user1 -g team
+```
+
+To **append the accounts group to the list of existing supplementary/secondary groups** for `test_user1`, use both the <mark style="color:red;">**`-a`**</mark> (append) and <mark style="color:red;">**`-G`**</mark>(group) options.
+
+```bash
+root@localhost:~ usermod -a -G accounts test_user1
+```
+
+{% hint style="info" %}
+Use the <mark style="color:red;">`-G`</mark> option (without the <mark style="color:red;">`-a`</mark> option) to list, separated by a comma, all supplementary/secondary groups that the user is a member of. If the user is currently a member of a group that is not listed, the user will removed from the group
+{% endhint %}
+
+To **change the comment** (or GECOS field) in the `/etc/passwd` file, use the <mark style="color:red;">**`-c`**</mark> option:
+
+```bash
+root@localhost:~ usermod test_user1 -c "engineering team"
+root@localhost:~ grep test_user1 /etc/passwd                                   
+test_user1:x:1005:1004:engineering team:/home/qa/test_user1:/bin/bash
+```
+
+To **change the login shell** of `test_user1` to the C shell, use the <mark style="color:red;">**`-s`**</mark> option:
+
+```bash
+root@localhost:~ usermod test_user1 -s /bin/csh
+```
+
+On Red Hat-based system, the <mark style="color:red;">`usermod`</mark> command verifies that the user is not logged in before changing attributes such as the user ID and home directory.
+
+### Deleting a User
+
+The <mark style="color:red;">`userdel`</mark> command is used to **delete a user account information**, preventing the user from logging in and optionally removing all files related to the account.
+
+The home directory of the user, including all files and directories created by the user, will not be deleted but can be searched and later removed using the `find` command.
+
+To **delete the user account along with the user's home directory** and mail spool (file containing user's unread mail), use the <mark style="color:red;">**`-r`**</mark> **option**
+
+```bash
+root@localhost:~ userdel -r test_user1
+```
+
+{% hint style="danger" %}
+The `-r` option only deletes the user's home directory and mail spool; any other files owned by the user in other directories must be deleted manually.
+{% endhint %}
+
+In the event an active employee is terminated immediately, **the user account can be forcefully deleted even if the user is logged in by using the **<mark style="color:red;">**`-f`**</mark>** option**.
+
+```bash
+root@localhost:~ userdel -f test_user1
+```
+
+## Group Accounts
+
+Users are organized in groups to facilitate the management, monitoring, and control of users and resources. Below are two examples of using a group:
+
+* The root user can create an `admin` group, which can be configured to allow group members the rights to execute administration-based tasks.
+* When a server is being shared by multiple teams in an organization, a separate group can be created for each team. Their shared resources, such as files and directories, will be accessed securely by team members only.
+
+**Every user is associated with at least one group know their primary group**. Recall that the user's primary group is stored in the fourth field of the `/etc/passwd` file. Any additional group membership will be indicated in the `/etc/group` file, which is used to store group account information.&#x20;
+
+### The `/etc/group` File
+
+The `/etc/group` file is a text file that defines the groups to which a user belongs, plus various system groups automatically created as part of the Linux installation.
+
+```bash
+sysadmin@localhost:~$ head /etc/group                                           
+root:x:0:                                                                       
+daemon:x:1:                                                                     
+bin:x:2:                                                                        
+sys:x:3:                                                                        
+adm:x:4:syslog,sysadmin                                                         
+tty:x:5:                                                                        
+disk:x:6:                                                                       
+lp:x:7:        
+```
+
+Each record in the `/etc/group` files contains the following four field, separated by colons:
+
+```
+group_name:password:GID:group_list
+```
+
+| Field      | Example                       | Significance                                                                                                                                                                                                                                                                                                                                                    |
+| ---------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Group Name | `marketing`                   | Name of the group                                                                                                                                                                                                                                                                                                                                               |
+| Password   |                               | <p>This field is blank for most of the groups</p><p>Traditionally, it can store an encrypted password for privileged groups, although most modern distributions of Linux stores group passwords in the <code>/etc/gshadow</code> file</p><p>An <code>x</code> in this field indicates there might be a group password in the <code>/etc/gshadow</code> file</p> |
+| GID        | `1002`                        | The Group ID                                                                                                                                                                                                                                                                                                                                                    |
+| Group List | `Madeleine,Colin,Condoleezza` | List of the user ids who are members of this group                                                                                                                                                                                                                                                                                                              |
+
+A user can be a member of multiple groups, but at any point in time, only one group will be the user's primary group. **The user's primary group is used to determine what group will be given ownership of a file when the user creates a new file**.
+
+To check the current group memebership of a particular user, use the <mark style="color:red;">`groups`</mark> command.
+
+```bash
+sysadmin@localhost:~$ groups                                                    
+sysadmin adm sudo
+```
+
+To see the group membership of a different user account, specify the account name as an argument to the `groups` command:
+
+```bash
+sysadmin@localhost:~$ groups root                                               
+root : root
+```
+
+Another method to determine a user's default primary group is the <mark style="color:red;">`getent`</mark> (get entries) command. **The **<mark style="color:red;">**`getent`**</mark>** command is an easy way to query administrative files** (`passwd`, `shadow`, `groups`, `hosts`, etc) called databases that store user information. The command syntax is:
+
+```
+getent database [optional key]
+```
+
+```bash
+sysadmin@localhost:~$ getent group sysadmin                                     
+sysadmin:x:1001:
+```
+
+Notice that the primary group is also the first one listed when executing the <mark style="color:red;">`groups`</mark> command. However, keep in mind that a user can temporarily change their primary group with the <mark style="color:red;">`newgrp`</mark> command. The <mark style="color:red;">`newgrp`</mark> command will open a new shell with the group specified as the primary group.
+
+```bash
+sysadmin@localhost:~$ groups                                                    
+sysadmin adm sudo                                                               
+sysadmin@localhost:~$ newgrp adm                                                
+sysadmin@localhost:~$ groups                                                    
+adm sudo sysadmin
+```
+
+The difference between the output from the <mark style="color:red;">`groups`</mark> command and the <mark style="color:red;">`getent`</mark> command is that **the **<mark style="color:red;">**`groups`**</mark>** command displays the user's current primary group** as the first group while **the **<mark style="color:red;">**`getent`**</mark>** command will always display the default primary group** for the user's account.
+
+The <mark style="color:red;">`groups`</mark> command also list all of the secondary groups for the user, while the <mark style="color:red;">`getent`</mark> command only displays the user's primary group.
+
+### Creating a new group
+
+The <mark style="color:red;">`groupadd`</mark> command is **used to create a new group**. For example, to add a new group named `programmers`, execute the following command as root:
+
+```bash
+sysadmin@localhost:~$ sudo groupadd programmers
+root@localhost:~ tail -1 /etc/group
+programmers:x:1008:
+```
+
+By default, the <mark style="color:red;">`groupadd`</mark> command automatically assigns a GID to the new group using the next available GID. **To create a group with a specific GID, use the **<mark style="color:red;">**`-`**</mark>**`g` option**:
+
+```bash
+root@localhost:~ groupadd programmers -g 1980
+programmers:x:1980:
+```
+
+### Modifying a Group
+
+The <mark style="color:red;">**`groupmod`**</mark> command is used to **modify the properties of an existing group account**. For example, **to modify the group's GID, use the **<mark style="color:red;">**`-g`**</mark>** option**
+
+```
+root@localhost:~ groupmod programmers -g 1990                    
+root@localhost:~ tail -1 /etc/group
+programmers:x:1990:
+```
+
+To change the group name, execute the `groupmod` with the `-n` option:
+
+```
+root@localhost:~ groupmod programmers -n programmers2                       
+root@localhost:~ tail -1 /etc/group
+programmers2:x:1990:
+```
+
+{% hint style="info" %}
+Group level passwords may be assigned, and these passwords are stored in the **`/etc/gshadow`** file. These passwords affect the ability of users to execute the <mark style="color:red;">`newgrp`</mark> command used to switch to a different primary group.
+{% endhint %}
+
+Similar to the `/etc/shadow` file, the `/etc/gshadow` file is used to store group password information and other security-related group data. **If a group is added, deleted, or modified, then the `/etc/gshadow` file is also updated.**
+
+```bash
+root@localhost:~ tail /etc/gshadow                                     
+colord:!::                                                                      
+bind:!::                                                                        
+mysql:!::                                                                       
+smmta:!::                                                                       
+smmsp:!::                                                                       
+ssh:!::                                                                         
+ntpd:!::                                                                        
+sysadmin:!:: 
+userdmin:!::                                                                                                                                   
+programmers:$1$nfffgggc$pGt4:useradmin:sarah,mickey,dinesh
+```
+
+Each record in the /etc/gshadow file contains the following 4 fields, separated by colons:
+
+```
+group_name:encrypted_password:group_administrators:members
+```
+
+| Field                | Example               | Significance                                                                                                                                                           |
+| -------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Group Name           | `programmers`         | Valid existing group name                                                                                                                                              |
+| Encrypted Password   | `$1$nfffgggc$pGt#4`   | Used when a user who is not a member of the group wants to gain permission to this group. An exclamation mark at the beginning of the password indicates it is locked. |
+| Group Administrators | `useradmin`           | Comma-separated list of group administrators                                                                                                                           |
+| Members              | `sarah,mickey,dinesh` | Comma-separated list of group users that will not be prompted for a password                                                                                           |
+
+The <mark style="color:red;">**`gpasswd`**</mark> command is used by the root user to **update the group information** in the `/etc/gshadow` file. For example, to give administrative rights to user `sysadmin` for group `programmers` ,execute the following
+
+```bash
+root@localhost:~ gpasswd -A sysadmin programmers
+root@localhost:~ tail -1 /etc/gshadow                                                                                                                                                         
+programmers:$1$nfffgggc$pGt4:sysadmin:
+```
+
+To set a group password, execute the `gpasswd` command with no options
+
+```
+root@localhost:~# gpasswd programmers
+Changing the password for group programmers
+New Password:
+Re-enter new password:
+```
+
+To **remove a group password**, execute the <mark style="color:red;">`gpasswd`</mark> command with the <mark style="color:red;">**`-r`**</mark> **option**:
+
+```bash
+root@localhost:~ gpasswd -r programmers
+```
+
+### Deleting a Group
+
+The <mark style="color:red;">**`groupdel`**</mark> command is **used to delete a group that is no longer needed**. For example to delete the group named `programmers` ,execute the following
+
+```
+root@localhost:~# groupdel programmers
+```
+
+An error message is displayed when the group being deleted is the primary group of any existing user:
+
+```bash
+root@localhost:~ groupdel sysadmin
+groupdel:  cannot remove the primary group of user ‘sysadmin’
+```
+
+The user needs to be deleted first or reassigned to a different group before the group can be deleted.
+
+{% hint style="info" %}
+Keep in mind that deleting a group that owns files could cause access problems.
+
+In reality, **files are owned by GID numbers, not by groups**.&#x20;
+{% endhint %}
+
+## Using Pluggable Authentication Modules
+
+Many Linux distributions use the Pluggable Authentication Modules (PAM) framework for implementing security and authentication. Authentication is the process of ensuring user accounts are valid and that credentials provided by the user are valid.
+
+There are many applications running on the system which need to use an authentication mechanism to check the credentials of the users trying to access resources or services. Using PAM allows a uniform authentication method for application access and also facilitates a standard configuration.
+
+The module can be plugged into the system without the need for any recompilation. PAM considers the following aspects for providing secure access:
+
+1. Authentication
+2. Managing sessions
+3. Managing accounts
+4. Updating authentication information

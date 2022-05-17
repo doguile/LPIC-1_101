@@ -235,7 +235,7 @@ The following chart describes environment variables that are typically used to m
 
 ## Character Encoding
 
-Character enconding is the process of maintaining the mapping between the character and its internal value.
+Character enconding is the **process of maintaining the mapping between the character and its internal value.**
 
 Common examples of character encoding systems are: Morse code, the American Standard Code for Information Interchange (ASCII), and Unicode.
 

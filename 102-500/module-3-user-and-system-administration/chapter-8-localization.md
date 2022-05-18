@@ -235,7 +235,7 @@ The following chart describes environment variables that are typically used to m
 
 ## Character Encoding
 
-Character enconding is the **process of maintaining the mapping between the character and its internal value.**
+Character enconding is the process of maintaining the mapping between the character and its internal value.
 
 Common examples of character encoding systems are: Morse code, the American Standard Code for Information Interchange (ASCII), and Unicode.
 
@@ -447,89 +447,67 @@ Other Linux distributions may use different approaches to change the time zone. 
 * `system-config-date`
 {% endhint %}
 
-### Changing the System Time Zone Using the Command Line Method
+``
 
-This procedure requires an administrator to log in as the root user. Before changing the time zone, first, check the current time zone by using the <mark style="color:red;">`date`</mark> command.
 
-```
-sysadmin@localhost:~$ date                                                      
-Wed Sep 25 20:18:08 UTC 2019
-```
 
-The previous example shows UTC (Coordinated Universal Time ) as the current time zone.
 
-The `/usr/share/zoneinfo` directory contains a list of time zone regions. Display the contents of this directory:
 
-```
-sysadmin@localhost:~$ ls /usr/share/zoneinfo                                    
-Africa      Cuba     GMT+0      Kwajalein  Poland     WET                       
-America     EET      GMT-0      Libya      Portugal   Zulu                      
-Antarctica  EST      GMT0       MET        ROC        iso3166.tab               
-Arctic      EST5EDT  Greenwich  MST        ROK        leap-seconds.list         
-Asia        Egypt    HST        MST7MDT    Singapore  localtime                 
-Atlantic    Eire     Hongkong   Mexico     SystemV    posix                     
-Australia   Etc      Iceland    NZ         Turkey     posixrules  
-```
 
-To set a new system time zone:
 
-1. Find the city that represents the desired time zone by either:
-   1. Using the <mark style="color:red;">`tzselect`</mark> utility, or
-   2. Searching the time zone directory by first changing to the appropiate continent or ocean subdirectory
 
-```bash
-sysadmin@localhost:~/Documents$ ls /usr/share/zoneinfo/Europe/Madrid            
-/usr/share/zoneinfo/Europe/Madrid
-```
 
-2\. Before changing the time zone, backup the current time zone settings file using the following command:
 
-```bash
-root@localhost:~ cp /etc/localtime  /etc/localtime.org
-```
 
-3\. Create a symbolic link for the machine's clock to the city in the new time zone
 
-```bash
-root@localhost:~ ln -sf /usr/share/zoneinfo/Europe/Madrid /etc/localtime
-```
 
-4\. Verify the new time zone by running the `date` command again
 
-```bash
-sysadmin@localhost:~/Documents$ date                                            
-Mon May 16 18:46:51 CEST 2022   
-```
 
-### Setting System Date and Time
 
-#### Method 1
 
-The root user can use the `date` command to set the system date and time
 
-```
-date MMDDhhmmYYYY.ss
-```
 
-For example, to set the time and date value to Mar 29, 15:26:07 2020, execute the following command:
 
-```
-root@localhost:~# date 032915262020.07
-```
 
-#### Method 2
 
-Use the <mark style="color:red;">`-s`</mark> or <mark style="color:red;">`--set`</mark> option to set the system date and time using a more user-friendly notation:
 
-```
-root@localhost:~# date -s “Mon Mar 23 17:00:00 UTC 2020”
-Mon Mar 23 17:00:00 UTC  2020
-```
 
-{% hint style="info" %}
-The <mark style="color:red;">`date`</mark> command is very powerful and useful beyond simply displaying or setting the current date and time. In addition to the many output format options, <mark style="color:red;">`date`</mark> is also used to display a relative date (<mark style="color:red;">`date --date="next mon`</mark>`"`), past dates (<mark style="color:red;">`date --date="1 year ago"`</mark>), Universal time and the last modification time of a file. It is worthy of further exploration.
-{% endhint %}
 
-{% hint style="warning" %}
-On <mark style="color:red;">`systemd`</mark> systems, the <mark style="color:red;">`timedatectl`</mark> command is used as a replacement for the <mark style="color:red;">`date`</mark> command to view and configure system time.
-{% endhint %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

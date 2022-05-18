@@ -305,7 +305,7 @@ See crontab(1) for more information
 
 ## `at` Command
 
-The <mark style="color:red;">`cron`</mark> command is a good tool for scheduling tasks that are required to run at regular intervals. **For scheduling one-time tasks, the **<mark style="color:red;">**`at`**</mark>** and **<mark style="color:red;">**`batch`**</mark>** command are more useful**.
+The `cron` command is a good tool for scheduling tasks that are required to run at regular intervals. **For scheduling one-time tasks, the **<mark style="color:red;">**`at`**</mark>** and **<mark style="color:red;">**`batch`**</mark>** command are more useful**.
 
 There are 2 prerequisites for running the <mark style="color:red;">`at`</mark> command: the <mark style="color:red;">**`at`**</mark>** package must be installed**, and <mark style="color:red;">**`atd`**</mark>** service must be running**.
 
@@ -428,17 +428,17 @@ To delete a jobm you must either be the owner of the job or the root user
 
 ### Configuring Access to the `at` Command
 
-While the root user can always use the <mark style="color:red;">`at`</mark> and <mark style="color:red;">`batch`</mark> commands, user may not be able to use these commands:
+While the root user can always use the `at` and `batch` commands, user may not be able to use these commands:
 
-**Access to the **<mark style="color:red;">**`at`**</mark>** and **<mark style="color:red;">**`batch`**</mark>** commands is controlled by the following two files**:
+Access to the `at` and `batch` commands is controlled by the following two files:
 
 1. The `/etc/at.allow` file
 2. The `/etc/at.deny` file
 
-The format of these files is similar to `cron.allow` and `cron.deny` files. Both the file contain a list of user names, one on each line. The rules mentioned for `cron` access are applicable for <mark style="color:red;">`at`</mark> access also:
+The format of these files is similar to `cron.allow` and `cron.deny` files. Both the file contain a list of user names, one on each line. The rules mentioned for `cron` access are applicable for `at` access also:
 
-1. If both files do not exist, then all regular users are denied the ability to execute the <mark style="color:red;">`at`</mark> and <mark style="color:red;">`batch`</mark> commands.
-2. If only the `at.allow` file exists, then only the users listed in the file can execute the <mark style="color:red;">`at`</mark> and <mark style="color:red;">`batch`</mark> commands.
+1. If both files do not exist, then all regular users are denied the ability to execute the `at` and `batch` commands.
+2. If only the `at.allow` file exists, then only the users listed in the file can execute the `at` and `batch` commands.
 3. If only the `at.deny` file exists, then all users listed in this file are denied the ability to execute the `at` and `batch` commands, and all other users are allowed to execute the `at` and `batch` commands.
 4. If both the `at.allow` and the `at.deny` files exist, the `at.allow` file applies and the `at.deny` file is ignored. As only one of these files should exist, the presence of both files is typically due to a mistake made by the administrator.
 

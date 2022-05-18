@@ -77,7 +77,7 @@ sysadmin@localhost:~$ echo $PATH
 
 With administration rights, a script can be placed in any of the directories listed in the `PATH` variable. However, **the ideal location for scripts designed to be shared by regular users would be the **<mark style="color:red;">**`/usr/local/bin`**</mark>** directory**. For scripts designed to be executed by administrators place the script in the `/usr/local/sbin` directory.
 
-Regular users don’t have the rights to place files in these directories. **For a user’s own script, the ideal place to put the script is the **<mark style="color:red;">**`/home/USER/bin`**</mark>** directory**, where `USER` is the name of the current user account.&#x20;
+Regular users don’t have the rights to place files in these directories. **For a user’s own script, the ideal place to put the script is the **<mark style="color:red;">**`/home/`**</mark>_<mark style="color:red;">**`USER`**</mark>_<mark style="color:red;">**`/bin`**</mark>** directory**, where `USER` is the name of the current user account.&#x20;
 
 ## Script Permissions
 
@@ -115,7 +115,9 @@ Downloads
 Music         
 ```
 
+{% hint style="info" %}
 The <mark style="color:red;">**`exec`**</mark> command is also **commonly used in scripts to start a new shell with a clean environment** as read by the shell startup files.
+{% endhint %}
 
 ## Command Substitution
 

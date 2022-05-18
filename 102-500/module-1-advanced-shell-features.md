@@ -70,7 +70,7 @@ Variables names should **start with a letter** (alpha character) **or underscore
 Variable names are case-sensitive
 {% endhint %}
 
-Just as with arguments to commands, single or double quotes should be used when special characters are included in the value assigned to the variable to prevent shell expansion.
+Just as with arguments to commands, **single or double quotes should be used when special characters are included in the value** assigned to the variable to prevent shell expansion.
 
 | Valid Variable Assignments | Invalid Variable Assignments |
 | -------------------------- | ---------------------------- |
@@ -80,7 +80,7 @@ Just as with arguments to commands, single or double quotes should be used when 
 | `Name='Jose Romero'`       | `'user name'=anything`       |
 | `sshdirectory='/etc/ssh'`  | `"sshdirectory"=etc/ssh`     |
 
-The Bash shell and many commands make extensive use of variables. The Bash shell and commands can behave in different ways, based on the value of variables. For the shell, variables can affect what the prompt displays, the directories the shell will search for commands to execute, and much more.
+The Bash shell and many commands make extensive use of variables. The Bash shell and commands can behave in different ways, based on the value of variables. For the shell, **variables can affect what the prompt displays**, the directories the shell will search for commands to execute, and much more.
 
 ### Local and Environment Variables
 
@@ -88,7 +88,7 @@ A _local_ variable is only available to the shell in which it was created. An _e
 
 > By convention, lowercase characters are used to create local variables names, and uppercase characters are used when naming an environment variable.
 
-There are several ways to display the values of variables. The <mark style="color:red;">**`set`**</mark> **command** by itself will **display all variables (local and environment).**
+There are several ways to display the values of variables. The <mark style="color:red;">**`set`**</mark> command by itself will **display all variables (local and environment).**
 
 ```bash
 sysadmin@localhost:~$ set | head
@@ -105,7 +105,7 @@ BASH_LINENO=()
 BASH_SOURCE=()                          
 ```
 
-To displau only environment variables, there are several commands that provide nearly the same output: <mark style="color:red;">`env`</mark>, <mark style="color:red;">`declare -x`</mark>, <mark style="color:red;">`typeset -x`</mark>, or <mark style="color:red;">`export -p`</mark>
+To display **only environment variables**, there are several commands that provide nearly the same output: <mark style="color:red;">**`env`**</mark>, <mark style="color:red;">**`declare -x`**</mark>, <mark style="color:red;">**`typeset -x`**</mark>, or <mark style="color:red;">**`export -p`**</mark>
 
 ```bash
 sysadmin@localhost:~$ declare -x | tail -5                                      
@@ -128,7 +128,7 @@ declare -x TERM="xterm"
 declare -x USER="sysadmin"as
 ```
 
-To display the value of a specific variable, use the <mark style="color:red;">`echo`</mark> command with the name of the variable prefixed by the dollar <mark style="color:red;">`$`</mark> sign. For example, to display the value of the `PATH` variable, you would execute `echo $PATH`
+To display the value of a specific variable, use the <mark style="color:red;">`echo`</mark> command with the name of the variable prefixed by the dollar <mark style="color:red;">`$`</mark> sign. For example, to display the value of the `PATH` variable, you would execute <mark style="color:red;">`echo $PATH`</mark>
 
 ```bash
 sysadmin@localhost:~$ echo $PATH
@@ -142,7 +142,7 @@ sysadmin@localhost:~$ echo $PATH
 
 ## Creating Environment Variable
 
-By default, when a variable is assigned in the Bash shell, it is initially set as local variable. There are a few ways that a local variable can also be made to be an environment variable. First, an existing local variable can be exported with the <mark style="color:red;">`export`</mark> command:
+By default, when a variable is assigned in the Bash shell, it is initially set as local variable. There are a few ways that a local variable can also be made to be an environment variable. First, **an existing local variable can be exported with the **<mark style="color:red;">**`export`**</mark>** command**:
 
 ```bash
 sysadmin@localhost:~$ ENVIRONMENT_A=1
@@ -155,16 +155,16 @@ Second, a new variable can be _exported_ and assigned a value with a single comm
 sysadmin@localhost:~$ export ENVIRONMENT_B=2
 ```
 
-Third, the `declare` or `typeset` command can be used, to declare a variable to be an enviroment variable. These commands are synonymous and work the same way.
+Third, the <mark style="color:red;">**`declare`**</mark> or <mark style="color:red;">**`typeset`**</mark> command can be used, to declare a variable to be an enviroment variable. These commands are synonymous and work the same way.
 
 ```bash
 sysadmin@localhost:~$ declare -x ENVIRONMENT_C=3
 sysadmin@localhost:~$ typeset -x ENVIRONMENT_D=3
 ```
 
-Using the following syntax, the `env` command can also be used to temporarily set a variable:
+Using the following syntax, the <mark style="color:red;">**`env`**</mark> command can also be used to temporarily set a variable:
 
-```
+```bash
 env VARIABLE_NAME=TEMP_VALUE command
 ```
 
@@ -177,11 +177,11 @@ Fri Sep 18 16:27:54 EST 2020
 
 ## Unsetting Variables
 
-If the shell option <mark style="color:red;">`nounset`</mark> is enabled with the <mark style="color:red;">`set -o nounset`</mark> command, then referring to an unset variable will result in an `unbound variable` error. When the command is used within a script, referencing an unset variable will cause the script to exit.
+If the shell option <mark style="color:red;">`nounset`</mark> is enabled with the <mark style="color:red;">`set -o nounset`</mark> command, then referring to an unset variable will result in an **`unbound variable`** error. When the command is used within a script, referencing an unset variable will cause the script to exit.
 
 This option may be turned off, using the <mark style="color:red;">`set +o nounset`</mark> command, where any reference to an unset variable will return a null value.
 
-If you create a variable and then no longer want that variable to be defined, use the <mark style="color:red;">`unset`</mark> command to delete it.
+If you create a variable and then no longer want that variable to be defined, use the <mark style="color:red;">**`unset`**</mark> command to delete it.
 
 ```bash
 sysadmin@localhost:~$ variable_1="This is a variable." 
@@ -209,10 +209,10 @@ sysadmin@localhost:~$ echo $PATH
 /usr/games:/usr/local/games
 ```
 
-The `PATH` variable contains a list of directories that are used to search for commands entered by the user.
+The <mark style="color:red;">`PATH`</mark> variable **contains a list of directories that are used to search for commands** entered by the user.
 
 {% hint style="info" %}
-Before searching the `PATH` variable for the command, the shell will first determine if the command is an alias or function, which may result in the `PATH` variable not being utilized when that specific command is executed.
+Before searching the `PATH` variable for the command, **the shell will first determine if the command is an alias or function**, which may result in the `PATH` variable not being utilized when that specific command is executed.
 
 Additionally, if the command happens to be built-in to the shell, the `PATH` variable will not be utilized.
 
@@ -240,10 +240,10 @@ To execute commands that are not contained in the directories that are listed in
 
 ### Modify `PATH` Variable
 
-It is possible to add the `PATH` variable without overwriting its previous contents. **Import the current value of the **<mark style="color:red;">**`$PATH`**</mark>** variable into the newly-defined `PATH` variable** by using it on both sides of the assignment statement.
+It is possible to add the `PATH` variable without overwriting its previous contents. **Import the current value of the **<mark style="color:red;">**`$PATH`**</mark>** variable into the newly-defined **<mark style="color:red;">**`PATH`**</mark>** variable** by using it on both sides of the assignment statement.
 
-```
-sysadmin@localhost:~$ PATH=$PATH
+```bash
+sysadmin@localhost:~$ PATH=$PATH:
 ```
 
 Finish it with the value of the additional home directory path.
@@ -267,8 +267,10 @@ How can you tell if a command that you are creating might have the same name as 
 ```bash
 sysadmin@localhost:~$ type echo
 echo is a shell builtin
+
 sysadmin@localhost:~$ type ls
 ls is aliased to `ls --color=auto'
+
 sysadmin@localhost:~$ type cal
 cal is /usr/bin/cal
 ```
@@ -282,7 +284,7 @@ Typically, the prompt includes the user name, hostname, and current directory:
 sysadmin@localhost:~$
 ```
 
-This prompt can be changed by modifying the `PS1(Promp Shell 1)` variable. Before making any changes to the `PS1` ,back it up using a local variable so it can be restored to its original state:
+**This prompt can be changed by modifying the `PS1(Promp Shell 1)` variable**. Before making any changes to the `PS1` ,back it up using a local variable so it can be restored to its original state:
 
 ```bash
 sysadmin@localhost:~$ echo $PS1                                                 
@@ -308,7 +310,7 @@ sysadmin@localhost:~/doc$ pwd
 
 Several variables affect the use of the <mark style="color:red;">`history`</mark> command. Recall that the <mark style="color:red;">`history`</mark> command can be used to re-execute previously executed commands. The **`HISTSIZE`** variable will **determine how many commands to keep in memory** for each Bash shell.
 
-When the shell program is close, it **takes commands stored in memory and saves them into the history file, which is `~/.bash_history` by default**. If a user wants to store the history commands in a different file, then the user cna specify an absolute path as the value for the **`HISTFILE`** local variable:
+When the shell program is close, it **takes commands stored in memory and saves them into the history file, which is `~/.bash_history` by default**. If a user wants to store the history commands in a different file, then the user can specify an absolute path as the value for the **`HISTFILE`** local variable:
 
 ```
 HISTFILE=/tmp/history
@@ -468,10 +470,10 @@ sysadmin console      Sep 18 21:58
  23:09:31 up 9 days, 21:50,  1 user,  load average: 0.30, 0.48, 0.45
 ```
 
-Using an OR list, when one command is executed, another command will be executed only if it fails. In this example, the `test` command is used to see if a directory `$HOME/bin` exists. If this test fails, then the directory is created.
+Using an **`OR`** list, when one command is executed, another command will be executed only if it fails. In this example, the <mark style="color:red;">`test`</mark> command is used with the <mark style="color:red;">`-d`</mark> option to see if a directory `$HOME/bin` exists. If this test fails, then the directory is created.
 
 ```bash
-sysadmin@localhost:~$ test -e $HOME/bin || mkdir $HOME/bin
+sysadmin@localhost:~$ test -d $HOME/bin || mkdir $HOME/bin
 sysadmin@localhost:~$ ls $HOME
 Backup   Documents  Music     Public     Videos  my.sh                          
 Desktop  Downloads  Pictures  Templates  bin
@@ -481,7 +483,7 @@ Desktop  Downloads  Pictures  Templates  bin
 
 When a user opens a new shell, either during login or when they run a terminal that starts a shell, the shell is customized by files called **initialization (or configuration) files**. These initialization files **set the value of variables, create aliases and functions**, and execute other commands that are useful in starting the shell.
 
-There are two types of initialization files: _global_ initialization files that affect all users on the system and _local_ initialization files that are specific to an individual user.
+There are two types of initialization files: _**global**_** initialization files** that affect all users on the system and _**local**_** initialization files** that are specific to an individual user.
 
 The global configuration files are located in the `/etc` directory. Local configuration files are stored in the user's home directory.
 
@@ -506,7 +508,7 @@ The following chart illustrates the purpose of each of these files, providing ex
 
 ## Modifying Initialization Files
 
-The way a user's shell operates can be changed by modifying that user's initialization files. **Modifying global configuration requires administrative access** to the system as the files under the `/etc` directory can only be modified by an administrator.
+The way a user's shell operates can be changed by modifying that user's initialization files. **Modifying global configuration requires administrative access** to the system as the files under the <mark style="color:orange;">`/etc`</mark> directory can only be modified by an administrator.
 
 {% hint style="danger" %}
 A user can only modify the initialization files in their home directory.

@@ -39,7 +39,7 @@ To create a shell script, use the following steps:
 #!/bin/bash
 ```
 
-* Use the `chmod` command to make the file executable
+* Use the <mark style="color:red;">`chmod`</mark> command to make the file executable
 
 In the following example, a scritp has been created that will create a report of disk space usage in the `/usr/share/doc` directory.
 
@@ -89,11 +89,11 @@ If the script must be executed with root privileges by an ordinary user, then a 
 
 **A wrapper is a script whose purpose is to simply configure and launch another program**. One way to creae a wrapper script is to use the <mark style="color:red;">`exec`</mark> command, which takes another command to execute as an argument. A wrapper script often uses the following as the last line of the script to execute another program:
 
-```
+```bash
 exec program
 ```
 
-The <mark style="color:red;">`exec`</mark> command replaces the current process with a specified command. If no command is specified, the <mark style="color:red;">`exec`</mark> command spawns a new shell process and returns a shell prompt. Running the <mark style="color:red;">`exec`</mark> command with no argument allows a user to change the current shell environment, including using redirection.
+The <mark style="color:red;">`exec`</mark> command replaces the current process with a specified command. **If no command is specified, the **<mark style="color:red;">**`exec`**</mark>** command spawns a new shell process and returns a shell prompt**. Running the <mark style="color:red;">`exec`</mark> command with no argument allows a user to change the current shell environment, including using redirection.
 
 ```bash
 sysadmin@localhost:~$ ls
@@ -102,7 +102,7 @@ sysadmin@localhost:~$ exec > my_commands.txt
 sysadmin@localhost:~$ ls
 ```
 
-Notice in the example above, there was no output for the `ls` command because the <mark style="color:red;">`exec`</mark> command has replaced the current process and is redirecting all output to the `my_commands.txt` file. Exit the `exec` session and then open a new shell:
+Notice in the example above, there was no output for the `ls` command because the <mark style="color:red;">`exec`</mark> command has replaced the current process and is redirecting all output to the `my_commands.txt` file. Exit the <mark style="color:red;">`exec`</mark> session and then open a new shell:
 
 ```bash
 sysadmin@localhost:~$  exit 
@@ -168,7 +168,7 @@ sysadmin@localhost:~/test$ du -sh $(cat dirs.txt)
 
 The <mark style="color:red;">`read`</mark> statemnet **can be used to gather information from the user** who is running the script. The user will be presented with a blinking cursor that will **accept keyboard input and place what the user types** into oner or more variables.
 
-```
+```bash
 read variable
 ```
 
@@ -178,7 +178,7 @@ For example, the following command will read the user's input into a variable ca
 read name
 ```
 
-It would be helpful for the user to know what sort of input is being requested. The <mark style="color:red;">`-p`</mark> option to the <mark style="color:red;">`read`</mark> command allows you to issue a prompt:
+It would be helpful for the user to know what sort of input is being requested. The <mark style="color:red;">**`-p`**</mark> option to the <mark style="color:red;">`read`</mark> command allows you to issue a prompt:
 
 ```bash
 read –p "Please enter your name: " name
@@ -232,12 +232,12 @@ The following chart illustrates some of the comparisions that are possible:
 | True if first integer is greater than or equal to second integer | `-ge`  | `int1 -ge int2`      |
 | True if first integer is less than second integer                | `-lt`  | `int1 -lt int2`      |
 | True if first integer is less than or equal to second integer    | `-le`  | `int1 -le int2`      |
-| True if file is a directory                                      | `-d`   | `-d file`            |
-| True if file is a plain file                                     | `-f`   | `-f file`            |
-| True if file exists                                              | `-e`   | `-e file`            |
-| True if file has read permission for current user                | `-r`   | `-r file`            |
-| True if file has write permission for current user               | `-w`   | `-w file`            |
-| True if file has execute permission for current user             | `-x`   | `-x file`            |
+| **True if element is a directory**                               | `-d`   | `-d element`         |
+| **True if element is a plain file**                              | `-f`   | `-f element`         |
+| **True if element exists**                                       | `-e`   | `-e element`         |
+| **True if element has read permission for current user**         | `-r`   | `-r element`         |
+| **True if element has write permission for current user**        | `-w`   | `-w element`         |
+| **True if element has execute permission for current user**      | `-x`   | `-x element`         |
 
 While you can execute the <mark style="color:red;">`test`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command specifically, within an `if` statement, you can have the test statement implicity called by placing the arguments of the test statement within square brackets. So, instead of writing...
 
@@ -257,9 +257,9 @@ When using the square bracket technique, **make sure you place space characters 
 
 ## `if` Statement
 
-A script performs different functions based on test, called _branching_. The `if` statement is the basic operator to implement branching.
+A script performs different functions based on test, called _branching_. The <mark style="color:red;">`if`</mark> statement is the basic operator to implement branching.
 
-The basic syntax of an `if` statement is:
+The basic syntax of an <mark style="color:red;">`if`</mark> statement is:
 
 ```bash
 if COND

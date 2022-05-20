@@ -464,7 +464,7 @@ fi
 
 ## `while` Statement
 
-The <mark style="color:red;">`while`</mark> statement is u**sed to determine if a condition is true or false**; if it is true, then a series of actions take place, and the condition is checked again. If the condition is false, then no action takes place, and the program continues.&#x20;
+The <mark style="color:red;">`while`</mark> statement is **used to determine if a condition is true or false**; if it is true, then a series of actions take place, and the condition is checked again. If the condition is false, then no action takes place, and the program continues.&#x20;
 
 {% hint style="info" %}
 The <mark style="color:red;">`while`</mark> statement, along with the block of statements to be executed when the condition is true, is also known as a `while loop`
@@ -513,6 +513,16 @@ echo "Thank you, $zip is a correct zip code"
 
 The statements between the <mark style="color:red;">`do`</mark> and <mark style="color:red;">`done`</mark> keywords will be executed until the value of the `zip` variable contains exactly five digits. Once that value is entered, execution would resume at the `echo` statement following the `done` keyword.
 
+```bash
+#!/bin/bash
+
+CONT=0
+while [ $CONT -lt 10 ]; do
+	echo "El numero es $CONT"
+	CONT=$(($CONT+1))
+done
+```
+
 ## `for` Statement
 
 The <mark style="color:red;">`for`</mark> statement is extremely valuable **when you want to perform an operation on multiple items.**  For example, suppose an administrator wants to create five user accounts named `ted`, `fred`, `ned`, `jed`, and `bob`. He could execute five separate commands:
@@ -537,6 +547,14 @@ done
 ```
 
 The `name` is a variable that will be used to enumerate the items in the `list_of_values`. The `list_of_values` is a list, like a list of user names, file names, or directory names. With the `for` loop, the name variable will be assigned from the `list_of_values`, one at a time.
+
+```bash
+#!/bin/bash
+
+for i in $(seq 5 8); do
+	echo la variable i = $i
+done
+```
 
 ## `seq` Statement
 

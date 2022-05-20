@@ -179,7 +179,7 @@ There are many types of hardware that may be used in an X Windows configuration:
 * Mice
 * Pointing devices
 
-The video card used is the most critical piece of hardware to be detected because if it doesn't work, then it won't be possible to see if anything else works.
+The **video card used is the most critical piece of hardware** to be detected because if it doesn't work, then it won't be possible to see if anything else works.
 
 For Debian-derived distributions, starting the system in any runlevel other than single-user mode will automatically attempt to start the X server.  For Red Hat-derived systems, the X server is only started in runlevel 5 by default.
 
@@ -195,9 +195,9 @@ To start a single-user mode, an administrator can press a key at boot time when 
 kernel /boot/vmlinuz-3.1.25 root=/dev/sda2 ro 1
 ```
 
-If the system is already running, you can attempt to access an alternative consolo by pressing **Ctrl+Alt+F2**. Provided the previous task was successful, it should be possible to log in the system via the command line
+If the system is already running, you can attempt to access an alternative console by pressing **Ctrl+Alt+F2**. Provided the previous task was successful, it should be possible to log in the system via the command line
 
-After loggin in to the system, switch to runlevel 1 by executing the following with root privileges:
+After logging into the system, switch to runlevel 1 by executing the following with root privileges:
 
 ```bash
 root@localhost:~ telinit 1
@@ -250,12 +250,12 @@ But an `xorg.conf` may still be used to create custom configurations. The follow
 
 The [http://www.x.org/wiki/FAQErrorMessages](https://www.x.org/wiki/FAQErrorMessages/) web page describes some common error messages seen when attempting to start the X server. The following examples describe some common errors and how to **troubleshoot them based upon this information by modifying the `/etc/X11/xorg.conf` file.**
 
-### **MIssing Configuration File**
+### **Missing Configuration File**
 
 If a system does not currently have an `/etc/X11/xorg.conf` file or to create a new configuration file, generate it using the command:
 
 ```bash
-root@localhost:~# X -configure
+root@localhost:~ X -configure
 ```
 
 If the X server has not been stopped, then an error message similar to the following will appear:
@@ -270,7 +270,7 @@ and start again.
 
 If the X server was not running when the command was executed, then a file named `xorg.conf` new should be generated in the current directory.
 
-To test if this newly-generated file will wokr, first make a backup copy of the `/etc/X11/xorg.conf` file, then move the `xorg.conf` file to the `/etc/X11/xorg.conf` file and start the X server:
+To test if this newly-generated file will work, first make a backup copy of the `/etc/X11/xorg.conf` file, then move the `xorg.conf` file to the `/etc/X11/xorg.conf` file and start the X server:
 
 ```bash
 root@localhost:~ cp /etc/X11/xorg.conf /etc/X11/xorg.conf.backup
@@ -356,7 +356,7 @@ FontPath        "/usr/lib/X11/fonts/75dpi:unscaled"
 EndSection
 ```
 
-Because **the X server now has its own built-in fonts for the required fonts**, the font error mentionend previously may not occur. Be familiar with what the `Files` section looks like for a current X server, which does not use an <mark style="color:red;">`xfs`</mark> service:
+Because **the X server now has its own built-in fonts for the required fonts**, the font error mentioned previously may not occur. Be familiar with what the `Files` section looks like for a current X server, which does not use an <mark style="color:red;">`xfs`</mark> service:
 
 ```bash
 Section "Files"
@@ -386,6 +386,3 @@ root@localhost:~# fc-cache ~/.fonts
 When appplications are started via an icon in X Windows vs the command line, output going to standard error (STDERR) can no longer display on the screen. For some desktop environments (such as GNOME), the output from STDERR is sent to the `~/.xsession-errors` log file, which can be used to troubleshoot problems encountered.
 
 The STDERR output from X Windows and the application running through X Windows are both sent to the `~/.xsession-error` file, so it is worth looking to see if `~/.xsession-errors` exists in your home directory when troubleshooting any X Window problems.
-
-
-

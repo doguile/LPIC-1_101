@@ -43,7 +43,7 @@ The following are some of the more common components of the X Window system
 
 ### X Server
 
-The X Window system **uses a server-client model** to manage the GUI on a local machine or a network of computers. **The design of X Window is network-oriented with the X11 protocol** allowing the user to have the X client application, like a terminal application, located either remotely or locally on the same system as the X server.
+The X Window system **uses a server-client model** to manage the GUI on a local machine or a network of computers. **The design of X Window is network-oriented with the **_**X11 protocol**_ allowing the user to have the X client application (like a terminal application), located either remotely or locally on the same system as the X server.
 
 This, in turn, allows the X client application to talk and make requests for information from the X server, which returns the requested information to the X client. The main executable for the X server is a program simply known as X.
 
@@ -51,11 +51,11 @@ This, in turn, allows the X client application to talk and make requests for inf
 
 ### X Client
 
-Although the concept of an application being a client to a local X server might seem confusing at first, it makes sense when you think that the server is the component that updates the display and handles keyboard and mouse input from the user. The X client could also be running on a remote machine where the screen is being updated with output from an X application running locally.
+Although the concept of an application being a client to a local X server might seem confusing at first, it makes sense when you think that the server is the component that updates the display and handles keyboard and mouse input from the user. **The X client could also be running on a remote machine where the screen is being updated with output from an X application running locally**.
 
 #### Window Manager
 
-It is the job of the _window manager_ to **manage the placement of windows and determine which window components** (menus, mouse pointers, etc.) **will be visible**. The window manager is also an X client with the special privilege of being able to manage other X clients.
+It is the job of the _window manager_ to **manage the placement of windows and determine which window components** (menus, mouse pointers, etc.) **will be visible**. The window manager **is also an X client** with the special privilege of being able to manage other X clients.
 
 To think of X Window as a complete GUI would be a big mistake. Instead, **X Window defines the X11 protocol for communication and graphic primitives**. This protocol defines only the basic rules by which GUI-based deives communicate.
 
@@ -65,7 +65,7 @@ By design, X Window does not specify what windows, buttons, icons, menus, pointe
 
 ### Display Manager
 
-The display manager component is **responsible for allowing the user to perform a graphical login** making **use of a network login protocol**, the <mark style="color:orange;">**X Display Manager Control Protocol (XDMCP)**</mark>, and starting the window manager.
+The display manager component is **responsible for allowing the user to perform a graphical login** making **use of a network login protocol**, the <mark style="color:orange;">**X Display Manager Control Protocol (XDMCP)**</mark>, and starting the <mark style="color:orange;">**window manager**</mark>.
 
 Typical display managers currently in use include the X Display Manager (**XDM**), the KDE Display Manager (**KDM**), the GNOME Display Manager (**GDM**), and the MDM Display Manager (**MDM**).
 
@@ -73,9 +73,9 @@ Typical display managers currently in use include the X Display Manager (**XDM**
 
 Typically, these display managers are included as part of the desktop environment:
 
-1. The GNOME desktop environment provides the `gdm` dislpay manager
-2. The KDE desktop environment provides the `kdm` display manager
-3. If no desktop environment is installed, the `xdm` display manager is used
+1. The GNOME desktop environment provides the **`gdm`** dislpay manager
+2. The KDE desktop environment provides the **`kdm`** display manager
+3. **If no desktop environment is installed, the `xdm` display manager is used**
 4. Some distributions have developed their own display manager. For example manager for Ubunto is called `lightdm`
 
 Each display manager mentioned above also has set of configuration files:

@@ -122,6 +122,21 @@ The terminal will turn blue, revealing a pseudo-graphical interface. Select the 
 
 ![](<../../.gitbook/assets/image (22).png>)
 
+**To update the x-session-manager** you can run the `update-alternatives` command:
+
+```bash
+sysadmin:[~]$ sudo update-alternatives --config x-session-manager
+There are 2 choices for the alternative x-session-manager (providing /usr/bin/x-session-manager).
+
+  Selection    Path                      Priority   Status
+------------------------------------------------------------
+* 0            /usr/bin/gnome-session     50        auto mode
+  1            /usr/bin/gnome-session     50        manual mode
+  2            /usr/bin/startplasma-x11   40        manual mode
+
+Press <enter> to keep the current choice[*], or type selection number: 
+```
+
 ## **Remote Desktop Environments**
 
 #### **X-11 Forwarding**

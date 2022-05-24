@@ -34,7 +34,7 @@ Improved accessibility for users within the GUI environment can be achieved by m
 
 ## Accessibility Utilites
 
-The K Desktop Environment has a software package named `kdeaccessibility` which includes the following utilites:
+The K Desktop Environment has a software package named <mark style="color:orange;">`kdeaccessibility`</mark> which includes the following utilites:
 
 * A screen magnifier called _KMagnifier_ (<mark style="color:red;">`kmag`</mark>) . This allows you to zoom in on the screen and specify a zoom ratio.
 * An automatic clicking tool called KMouseTool (<mark style="color:red;">`kmousetool`</mark>)

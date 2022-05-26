@@ -365,13 +365,13 @@ The `/etc/skel` directory **contains the default set of "skeleton" (template) fi
 Important notes:
 
 * The **`/etc/skel`** directory is **only used to propagate accounts when an account is created**. If you add files to the `/etc/skel` directory, then these files are not automatically added to existing user's home directories.
-* After files are copied into the user's home directories, t**he ownership of these new files is changed to the new user's accounts**. This means that a user can modify the contents of these files, since they are owned by the user.
+* After files are copied into the user's home directories, **the ownership of these new files is changed to the new user's accounts**. This means that a user can modify the contents of these files, since they are owned by the user.
 * Some of the commonly found files in this directory are:
   * `.bashrc` - contains alias definitions, enables shell features, etc
   * `.profile` - contains variable and one-time-only commands to set the user's environment
   * `bash_logout` - contains actions to take when logging out
 
-Typically, **an administrator will use the `/etc/skel` directory to generate a custom environment for new user accounts**. For example, to have the Firefox web browser contain default bookmarks for each new user, take the following steps:
+Typically, **an administrator will use the **<mark style="color:orange;">**`/etc/skel`**</mark>** directory to generate a custom environment for new user accounts**. For example, to have the Firefox web browser contain default bookmarks for each new user, take the following steps:
 
 1. Create a temporary user account that will be used to generate the Firefox bookmarks.
 2. Log into the temporary user account
@@ -661,7 +661,7 @@ root@localhost:~ userdel -r test_user1
 ```
 
 {% hint style="danger" %}
-The `-r` option only deletes the user's home directory and mail spool; any other files owned by the user in other directories must be deleted manually.
+The <mark style="color:red;">`-r`</mark> option only deletes the user's home directory and mail spool; any other files owned by the user in other directories must be deleted manually.
 {% endhint %}
 
 In the event an active employee is terminated immediately, **the user account can be forcefully deleted even if the user is logged in by using the **<mark style="color:red;">**`-f`**</mark>** option**.

@@ -34,7 +34,7 @@ Improved accessibility for users within the GUI environment can be achieved by m
 
 ## Accessibility Utilites
 
-The K Desktop Environment has a software package named <mark style="color:orange;">`kdeaccessibility`</mark> which includes the following utilites:
+The K Desktop Environment has a software package named `kdeaccessibility` which includes the following utilites:
 
 * A screen magnifier called _KMagnifier_ (<mark style="color:red;">`kmag`</mark>) . This allows you to zoom in on the screen and specify a zoom ratio.
 * An automatic clicking tool called KMouseTool (<mark style="color:red;">`kmousetool`</mark>)
@@ -57,7 +57,7 @@ Several keyboard settings can be enabled by going to the Keyboard Accessibility 
 
 ### Repeat Keys
 
-The point of the Repeat Keys setting is to **prevent the user from accidentally repeating keys if they type too slowly**
+The poin of the Repeat Keys setting is to **prevent the user from accidentally repeating keys if they type too slowly**
 
 ### Sticky Keys
 
@@ -103,7 +103,7 @@ The ability to display text as Braille **for blind users** is possible with the 
 
 ### Screen Reader
 
-For the **GNOME** desktop environment, the <mark style="color:orange;">**Orca**</mark> <mark style="color:orange;">**screen reader**</mark> is used as the preferred application.
+For the GNOME desktop environment, the Orca screen reader is used as the preferred application.
 
 ### On-Screen Keyboard
 

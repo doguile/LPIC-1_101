@@ -57,7 +57,7 @@ Several keyboard settings can be enabled by going to the Keyboard Accessibility 
 
 ### Repeat Keys
 
-The poin of the Repeat Keys setting is to **prevent the user from accidentally repeating keys if they type too slowly**
+The point of the Repeat Keys setting is to **prevent the user from accidentally repeating keys if they type too slowly**
 
 ### Sticky Keys
 
@@ -103,7 +103,7 @@ The ability to display text as Braille **for blind users** is possible with the 
 
 ### Screen Reader
 
-For the GNOME desktop environment, the Orca screen reader is used as the preferred application.
+For the **GNOME** desktop environment, the <mark style="color:orange;">**Orca**</mark> <mark style="color:orange;">**screen reader**</mark> is used as the preferred application.
 
 ### On-Screen Keyboard
 

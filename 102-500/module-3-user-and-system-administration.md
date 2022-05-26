@@ -297,6 +297,24 @@ root@localhost:~ grep team /etc/group
 team:x:1004:
 ```
 
+{% hint style="info" %}
+<mark style="color:orange;">`/etc/shadow`</mark>
+
+File that store the cipher passwords of every use and information regarding its duration
+
+```bash
+sysadmin:$6$8.BhF.gs$gVnGSxU/Nvh0p14UrmL81:18010:0:99999:7:::
+```
+
+1. Usarname
+2. Cipher Password with format `$id$salt$hashed`. The `$id` indicates the cipher algorith: `$1` MD5, `$2a$` o `$2y$` Blowfish, `$5$` SHA-256, `$6$` SHA-512
+3. Save when was change it for the last time the password (number of days from 01/01/1970)
+4. Minimum days that need to pass until it can be changed
+5. Maximum days of validity of the password
+6. Number of days during the user will be warned that it has to change the password
+7. Days that will pass since the key expires until the account is disabled
+{% endhint %}
+
 ### User Private Groups
 
 Many Linux distributions, including Red Hat and Debian/Ubuntu, utilize User Private Groups (UPGs). When a new user is created with the <mark style="color:red;">`useradd`</mark> command, a group with the same name is also created. The new user is added as the only member of this private group.
@@ -485,7 +503,7 @@ test_user1:$6$VBdpqLwC$.HwlyAvpTbvxT0ruyFULvWb/1:18163:0:90:7:::
 ```
 
 {% hint style="info" %}
-By using the <mark style="color:red;">`–m`</mark> option to the `chage` command, **it is possible to specify a minimum number of days** (fourth field in `/etc/shadow`; `default=0`) that the **user will have to wait before being allowed to change their password** and thus prevent them from immediately changing it back to their previous password:
+By using the <mark style="color:red;">**`–m`**</mark> option to the <mark style="color:red;">`chage`</mark> command, **it is possible to specify a minimum number of days** (fourth field in `/etc/shadow`; `default=0`) that the **user will have to wait before being allowed to change their password** and thus prevent them from immediately changing it back to their previous password:
 
 ```bash
 root@localhost:~ chage -m 5 test_user                                         

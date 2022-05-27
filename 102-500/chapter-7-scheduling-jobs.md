@@ -179,7 +179,7 @@ As defined in the <mark style="color:red;">`crontab`</mark> man page, the follow
 | <p><code>@daily</code></p><p><code>@midnight</code></p>  | Run once a day       | `0 0 * * *`   |
 | `@hourly`                                                | Run once an hour     | `0 * * * *`   |
 
-For example, the `crontab` entry to execute the `/home/sysadmin/bin/daily-backup` script at 00:00 (midnight) every day could be entered in one of three ways:
+For example, the <mark style="color:red;">`crontab`</mark> entry to execute the `/home/sysadmin/bin/daily-backup` script at 00:00 (midnight) every day could be entered in one of three ways:
 
 ```
 0 0 * * *  /home/sysadmin/bin/daily-backup
@@ -199,7 +199,7 @@ OR
 
 ## Maintaining User crontab Files
 
-**The **<mark style="color:red;">**`crontab`**</mark>** command is used for maintaining user `crontab` files**. The user `crontab` files are **stored in the `/var/spool/cron` ** directory, but should not be edited directly.&#x20;
+**The **<mark style="color:red;">**`crontab`**</mark>** command is used for maintaining user **<mark style="color:orange;">**`crontab`**</mark>** files**. The user `crontab` files are **stored in the **<mark style="color:orange;">**`/var/spool/cron`**</mark>** ** directory, but should not be edited directly.&#x20;
 
 > In fact, regular users don't have any access to this directory, so a user must use the `crontab` command to display or edit his own `crontab` file. This also means that a regular user can't display `crontab` file of other users.
 
@@ -226,9 +226,9 @@ The <mark style="color:red;">`crontab`</mark> command will start a text editor p
 # daemon's notion of time and timezones.                      
 ```
 
-To specify a different editot, set the `EDITOR` variable before executing the <mark style="color:red;">`crontab -e`</mark> command. For example, to use the `gedit` editor (a graphical editor), use the <mark style="color:red;">`export EDITOR=gedit`</mark> command.
+To specify a different editor, set the `EDITOR` variable before executing the <mark style="color:red;">`crontab -e`</mark> command. For example, to use the `gedit` editor (a graphical editor), use the <mark style="color:red;">`export EDITOR=gedit`</mark> command.
 
-> The `crond` daemon will automatically update the `crontab` file that it stores in memory, so the changes take effect inmediately
+> The <mark style="color:red;">`crond`</mark> daemon will automatically update the `crontab` file that it stores in memory, so the changes take effect inmediately
 
 One of the useful features of the <mark style="color:red;">`crontab`</mark> command is that it performs some basic error checking. For example, if an invalid time field is specified, the <mark style="color:red;">`crontab`</mark> command will issue a warning and provide the opportunity to fix the error.
 
@@ -305,7 +305,7 @@ See crontab(1) for more information
 
 ## `at` Command
 
-The `cron` command is a good tool for scheduling tasks that are required to run at regular intervals. **For scheduling one-time tasks, the **<mark style="color:red;">**`at`**</mark>** and **<mark style="color:red;">**`batch`**</mark>** command are more useful**.
+The <mark style="color:red;">`cron`</mark> command is a good tool for scheduling tasks that are required to run at regular intervals. **For scheduling one-time tasks, the **<mark style="color:red;">**`at`**</mark>** and **<mark style="color:red;">**`batch`**</mark>** command are more useful**.
 
 There are 2 prerequisites for running the <mark style="color:red;">`at`</mark> command: the <mark style="color:red;">**`at`**</mark>** package must be installed**, and <mark style="color:red;">**`atd`**</mark>** service must be running**.
 
@@ -428,17 +428,17 @@ To delete a jobm you must either be the owner of the job or the root user
 
 ### Configuring Access to the `at` Command
 
-While the root user can always use the `at` and `batch` commands, user may not be able to use these commands:
+While the root user can always use the <mark style="color:red;">`at`</mark> and <mark style="color:red;">`batch`</mark> commands, user may not be able to use these commands:
 
-Access to the `at` and `batch` commands is controlled by the following two files:
+**Access to the **<mark style="color:red;">**`at`**</mark>** and **<mark style="color:red;">**`batch`**</mark>** commands is controlled by the following two files**:
 
 1. The `/etc/at.allow` file
 2. The `/etc/at.deny` file
 
-The format of these files is similar to `cron.allow` and `cron.deny` files. Both the file contain a list of user names, one on each line. The rules mentioned for `cron` access are applicable for `at` access also:
+The format of these files is similar to `cron.allow` and `cron.deny` files. Both the file contain a list of user names, one on each line. The rules mentioned for `cron` access are applicable for <mark style="color:red;">`at`</mark> access also:
 
-1. If both files do not exist, then all regular users are denied the ability to execute the `at` and `batch` commands.
-2. If only the `at.allow` file exists, then only the users listed in the file can execute the `at` and `batch` commands.
+1. If both files do not exist, then all regular users are denied the ability to execute the <mark style="color:red;">`at`</mark> and <mark style="color:red;">`batch`</mark> commands.
+2. If only the `at.allow` file exists, then only the users listed in the file can execute the <mark style="color:red;">`at`</mark> and <mark style="color:red;">`batch`</mark> commands.
 3. If only the `at.deny` file exists, then all users listed in this file are denied the ability to execute the `at` and `batch` commands, and all other users are allowed to execute the `at` and `batch` commands.
 4. If both the `at.allow` and the `at.deny` files exist, the `at.allow` file applies and the `at.deny` file is ignored. As only one of these files should exist, the presence of both files is typically due to a mistake made by the administrator.
 
@@ -523,7 +523,7 @@ To specify what days of the week to run a timer, use the `DayofWeek` field. The 
 OnCalendar=Mon,Wed,Fri *-*-* 00:00:00
 ```
 
-To run a timer on a specifc day of the mont, use the `Day` field. The following entry will run a timer on the first day of every month at 10PM
+To run a timer on a specifc day of the month, use the `Day` field. The following entry will run a timer on the first day of every month at 10PM
 
 ```
 OnCalendar=*-*-01 22:00:00
@@ -546,7 +546,7 @@ systemctl COMMAND UNIT_NAME [OPTION]
 systemctl LIST_UNIT
 ```
 
-To list all the services that are being run on the system, the following command can be used:
+To **list all the services that are being run on the system**, the following command can be used:
 
 ```bash
 root@localhost:~ systemctl list-units --type=service
@@ -560,7 +560,7 @@ dbus.service                loaded active running D-bus System Message Bus
 getty@tty1.service          loaded active running Getty on tty1
 ```
 
-To show what timers are active on you system, simply run:
+To **show what timers are active** on you system, simply run:
 
 ```bash
 root@localhost:~ systemctl list-timers
@@ -576,7 +576,7 @@ Pass --all to see loaded but inactive timers, too.
 lines 1-9/9 (END)
 ```
 
-To show all of the systemd timer units on a system, including the inactive systemd timer units, execute the following:
+To **show all of the `systemd` timer units on a system**, including the inactive systemd timer units, execute the following:
 
 ```bash
 root@localhost:~ systemctl list-timers --all
@@ -599,9 +599,9 @@ systemctl enable name.timer
 systemctl disable name.timer
 ```
 
-Outside of the `.timer` files, the `systemd-run` command can be used to run a _transient_ job, one which does not have a `.timer` file. The `systemd-run` command can be used to run a command or execute a systemd `.service` unit.
+Outside of the `.timer` files, the `systemd-run` command can be used to run a _transient_ job, one which does not have a `.timer` file. The <mark style="color:red;">`systemd-run`</mark> command can be used to run a command or execute a systemd `.service` unit.
 
-For example, to execute the `touch /home/sysadmin/newfile` command one hour after running the `systemd-run` command use:
+For example, to execute the `touch /home/sysadmin/newfile` command one hour after running the <mark style="color:red;">`systemd-run`</mark> command use:
 
 ```bash
 root@localhost:~ systemd-run --on-active=”1h” /bin/touch /home/sysadmin/newfile
@@ -613,4 +613,4 @@ To execute a systemd `.service` unit, use the `--unit` option:
 root@localhost:~# systemd-run --on-active=”1h” --unit=greeting.service
 ```
 
-After creating a systemd timer via `systemd-run`, the name of the transient systemd job is returned to you. Executing the `systemctl list-timers` command will display the name of the systemd transient job listed in the `UNIT` column
+After creating a systemd timer via <mark style="color:red;">`systemd-run`</mark>, the name of the transient systemd job is returned to you. Executing the <mark style="color:red;">`systemctl list-timers`</mark> command will display the name of the systemd transient job listed in the `UNIT` column

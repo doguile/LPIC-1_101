@@ -455,7 +455,7 @@ Note that if a user has been denied access to the <mark style="color:red;">`at`<
 
 Similar to the <mark style="color:red;">`at`</mark> command, the <mark style="color:red;">**`batch`**</mark>** command is used to schedule one-time tasks**. However, instead of specifying an execution time, <mark style="color:red;">**`batch`**</mark>** commands are executed as soon as the system's load average drops below `0.8`** (80% of CPU usage). The default value of `0.8` **can be changed by using the **<mark style="color:red;">**`-l`**</mark>** option to the **<mark style="color:red;">**`atd`**</mark>** ** command**.**
 
-The <mark style="color:red;">`batch`</mark> command will prompt for command input. A job number is issued upon the successful completion of input. Alternatively, it can read input from a file by using the <mark style="color:red;">`-f`</mark> option. For example, to sort the large `marketing_data` file at the point when the system load average drops below `0.8` execute the following
+The <mark style="color:red;">`batch`</mark> command will prompt for command input. A job number is issued upon the successful completion of input. Alternatively, it can **read input from a file by using the **<mark style="color:red;">**`-f`**</mark>** option**. For example, to sort the large `marketing_data` file at the point when the system load average drops below `0.8` execute the following
 
 ```bash
 sysadmin@localhost:~$ batch
@@ -466,7 +466,7 @@ job 5 at Mon Feb  3  09:26:00  2025
 
 ## Systemd Timer Units
 
-Many modern system use <mark style="color:red;">`systemd`</mark> rather than the much older system daemon `init` for managing system services. <mark style="color:red;">`Systemd`</mark> is a service and **system manager** that have <mark style="color:red;">`systemd`</mark> as a replacement for the tradition `init` process provide an alternative to <mark style="color:red;">`crond`</mark> for scheduling jobs and managing services, called _systemd timer_
+Many modern system use <mark style="color:red;">**`systemd`**</mark> rather than the much older system daemon <mark style="color:red;">`init`</mark> for managing system services. <mark style="color:red;">`Systemd`</mark> is a service and **system manager** that have <mark style="color:red;">`systemd`</mark> as a replacement for the tradition <mark style="color:red;">`init`</mark> process provide an alternative to <mark style="color:red;">`crond`</mark> for scheduling jobs and managing services, called _systemd timer_
 
 > `systemd` timer jobs are logged via the `systemd` journal, providing output in a centralized place and format.
 
@@ -494,14 +494,14 @@ Below is a breakdown of the file sections:
 
 <mark style="color:red;">`systemd`</mark> uses two different type of timers: **monotonic** and **realtime**.
 
-*   &#x20;With _**monotonic**_ timers, the `systemd` timer allows a jobs to be executed after an event has occurred. This type can be used to run a job when the system boots (`OnBootSec` option) or a `systemd` unit is active (`OnActiveSec` option)
+*   &#x20;With _**monotonic**_ timers, the <mark style="color:red;">`systemd`</mark> timer allows a jobs to be **executed after an event has occurred**. This type can be used to run a job when the system boots (`OnBootSec` option) or a `systemd` unit is active (`OnActiveSec` option)
 
     ```
     OnBootSec=10sec
     ```
 
 
-*   With the _**realtime**_ timers work like `cron` and execute a job when a specified time has occurred. To create a realtime timer, the `OnCalendar` option should be used in the `[Timer]` section of the `.timer` file. The format of an `OnCalendar` time entry is:
+*   With the _**realtime**_ timers work like <mark style="color:red;">`cron`</mark> and **execute a job when a specified time has occurred**. To create a realtime timer, the `OnCalendar` option should be used in the `[Timer]` section of the `.timer` file. The format of an `OnCalendar` time entry is:
 
     ```
     DayofWeek Year-Month-Day Hour:Minute:Second
@@ -539,7 +539,7 @@ A `.timer` unit file should correspond to a `systemd` service, which is a `.serv
 
 ## `systemctl` Command
 
-To better manage systemd timers, as well as other services with systemd, some knowledge of the `systemctl` command is required. **The **<mark style="color:red;">**`systemctl`**</mark>** command is used to interface with and control systemd units**. The syntax to use `systemctl` command is the following:
+To better manage systemd timers, as well as other services with systemd, some knowledge of the <mark style="color:red;">`systemctl`</mark> command is required. **The **<mark style="color:red;">**`systemctl`**</mark>** command is used to interface with and control systemd units**. The syntax to use `systemctl` command is the following:
 
 ```
 systemctl COMMAND UNIT_NAME [OPTION]
@@ -599,7 +599,7 @@ systemctl enable name.timer
 systemctl disable name.timer
 ```
 
-Outside of the `.timer` files, the `systemd-run` command can be used to run a _transient_ job, one which does not have a `.timer` file. The <mark style="color:red;">`systemd-run`</mark> command can be used to run a command or execute a systemd `.service` unit.
+Outside of the `.timer` files, the <mark style="color:red;">`systemd-run`</mark> command can be used to run a _transient_ job, one which does not have a `.timer` file. The <mark style="color:red;">`systemd-run`</mark> command can be used to run a command or execute a systemd `.service` unit.
 
 For example, to execute the `touch /home/sysadmin/newfile` command one hour after running the <mark style="color:red;">`systemd-run`</mark> command use:
 

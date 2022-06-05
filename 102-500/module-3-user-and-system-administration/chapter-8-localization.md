@@ -292,7 +292,7 @@ Unicode has become the main scheme for internal processing and storage of text i
 
 UTF-8 (Unicode Transformation Format - 8 bit) is an encoding that can represent every character in the Unicode character set with 1 to 4 bytes. UTF-8 is backward-compatible with ASCII
 
-UTF-8 encoding is widely-used for websites, as well as programming languages, operating systems, adn software applications.
+UTF-8 encoding is widely-used for websites, as well as programming languages, operating systems, and software applications.
 
 In Linux, UTF-8 mode can be activated by setting the `LANG` enviroment variable to the appropiate locale.
 

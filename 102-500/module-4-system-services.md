@@ -44,13 +44,91 @@ Almost every activity on the server needs to be aware of the system time.
 Linux-based systems have two types of clocks:
 
 * **System Clock**: This is a clock maintained by the kernel and is _interrupt-driven_. **The value of this clock is initialized from the hardware clock at boot time**. The system time is calculated as the number of seconds since `January 1st 1970 00:00:00` (This reference time is known as epoch time or sometimes UNIX time). The system clock contains the current time as well as time zone information.
-* **Hardware** **Clock**: This is a battery-powered clock that keeps time even when the system is shut down. When the system boots, the system clock is set using the hardware clock. When the system is shut down, the hardware clock is set to the value of the system clock. This ensures that both the clocks are synchronized.
+* **Hardware** **Clock**: This is a **battery-powered clock that keeps time even when the system is shut down**. When the system boots, the system clock is set using the hardware clock. When the system is shut down, the hardware clock is set to the value of the system clock. This ensures that both the clocks are synchronized. The hardware clock is also knows as the _**real time clock (RTC)**_ or the CMOS/BIOS clock.
 
+## Maintaining the Hardware clock
 
+The <mark style="color:red;">`hwclock`</mark> (hardware clock) command is used by the root user to **update and query the hardware clock**. The command accesses the hardware clock by performing Input/Output(I/O) via the `/dev/rtc` device file.&#x20;
 
+To view the time of the hardware clock, execute the following command as root:
 
+```bash
+root@localhost:~  hwclock                                                    
+2019-11-21 02:18:18.577020+0000
+```
 
+To set the value of the hardware clock, execute the following command as root:
 
+```bash
+root@localhost:~ hwclock --set --date "1/1/2025 18:30:50"                      
+root@localhost:~ hwclock                                                    
+2025-01-01 18:30:50.045616+0000
+```
+
+The primary purpose of the **hardware clock is to maintain the time on the computer** **while the system is powered off**, and its really the system clock that is used by the kernel and most applications in Linux.
+
+An administrator should view the values of both clocks prior to determining which way to perform the sync. To view the system clock, use the `date` command. To view both clocks at the same time, separate the commands with a semicolon:
+
+```bash
+root@localhost:~ hwclock -r; date                                              
+Wed Jan  1 18:33:34 2025  -1.065081 seconds                                     
+Tue Dec 17 17:23:35 UTC 2024
+```
+
+To set the hardware clock from the current system time, execute either of the following commands:
+
+```bash
+root@localhost:~ hwclock -w
+root@localhost:~ hwclock --systohc
+```
+
+To set the system time from the hardware clock, execute either of the following commands:
+
+```bash
+root@localhost:~# hwclock -s
+root@localhost:~# hwclock --hctosys
+```
+
+After setting the hardware or system time , the <mark style="color:red;">`hwclock`</mark> command can be used with the `-r` option, which reads from the hardware clock, and the <mark style="color:red;">`date`</mark> command againg to view the changes:
+
+```
+root@localhost:~# hwclock -r; date                                              
+Tue Dec 17 17:25:55 2024  -1.042681 seconds                                     
+Tue Dec 17 17:25:55 UTC 2024
+```
+
+To specify the UTC or local time format of the hardware clock, use the `--utc` or `--localtime` option as shown below:
+
+```
+root@localhost:~# hwclock --set --date "1/1/2025 18:30:50" --utc                
+root@localhost:~# hwclock --set --date "1/1/2025 18:30:50" --localtime          
+root@localhost:~# hwclock                                                       
+Wed Jan  1 18:30:54 2025  -1.059914 seconds
+```
+
+If neither of the option is specified, then the setting which was used during the last execution of the <mark style="color:red;">`hwclock`</mark> command is used. **This information is saved in the `/etc/adjtime` file** and referenced during subsequent executions of the <mark style="color:red;">`hwclock`</mark> command. When the <mark style="color:red;">`hwclock`</mark> command is used to update the system clock, it refers to the `/etc/localtime` file to retrieve time zone details.
+
+{% hint style="info" %}
+The <mark style="color:red;">`hwclock`</mark> command maintains the `/etc/adjtime` file for storing information about the past clock values. This file is created the first time the hardware clock is set, and each time the hardware clock is adjusted, the timestamp is written in this file.&#x20;
+
+If you issue the <mark style="color:red;">`hwclock --adjust`</mark> command, it will add 1 second to the hardware clock per day since the last time the hardware clock was adjusted.
+{% endhint %}
+
+## Maintaining the System Clock
+
+The `date` command is used to display and set the sytem date and time. To view the current date and time, execute the following command:
+
+```
+root@localhost:~# date                                                          
+Tue Dec 17 18:50:20 UTC 2024
+```
+
+The system date can be displayed in different formats to suit a user 's need. For example to display only the month , day and year, execute the following:
+
+```
+root@localhost:~# date "+%m/%d/%y"                                              
+12/17/24
+```
 
 
 

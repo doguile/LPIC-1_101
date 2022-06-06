@@ -116,7 +116,7 @@ If you issue the <mark style="color:red;">`hwclock --adjust`</mark> command, it 
 
 ## Maintaining the System Clock
 
-The `date` command is used to display and set the sytem date and time. To view the current date and time, execute the following command:
+The <mark style="color:red;">`date`</mark> command is used to display and set the sytem date and time. To view the current date and time, execute the following command:
 
 ```
 root@localhost:~# date                                                          
@@ -130,6 +130,225 @@ root@localhost:~# date "+%m/%d/%y"
 12/17/24
 ```
 
+The following table list the common format options that the <mark style="color:red;">`date`</mark> command supports:
+
+| Specifier | Meaning                       |
+| --------- | ----------------------------- |
+| `%d`      | Day of month (e.g., `30`)     |
+| `%H`      | Hour (`0-23`)                 |
+| `%I`      | Hour (`1-12`)                 |
+| `%m`      | Month (`1-12`)                |
+| `%M`      | Minute (`0-59`)               |
+| `%S`      | Seconds (`0-60`)              |
+| `%T`      | Time (`%H:%M:%S`)             |
+| `%u`      | Day of week (`1-7, 1=`Monday) |
+| `%Y`      | Year                          |
+| `%F`      | Full date; same as `%Y-%m-%d` |
+
+In addtion to displaying and setting the date, the <mark style="color:red;">`date`</mark> command is regularly used in scripts for assigning filenames with timestamps suffixed to them.&#x20;
+
+For example, to create separate log files for each day by moving the old log file to a new name with the current date appended, execute the following:
+
+```bash
+root@localhost:~ mv app_log app_log_`date +%F`                             
+root@localhost:~ ls app*                                                   
+app_log_2025-12-17
+```
+
+To change the system date, execute the following command as the root user
+
+```bash
+root@localhost:~ date -s "01/02/2028 12:00:00"
+```
+
+{% hint style="info" %}
+The <mark style="color:red;">`date`</mark> command should not be used to attempt to update the system clock if the NTP service, which syncs the software clock with internet time servers, has been set up on the server.&#x20;
+{% endhint %}
+
+## Displaying and Setting the Time Zone
+
+There are two files that manage the time zone, depending on the distribution being used.
+
+#### The `/etc/localtime` File
+
+On some distributions (i.e CentOS), the `/etc/localtime` file is used to configure the time zone of the system. The time zone data for different regions is maintained in the `/usr/share/zoneinfo` directory. To set up a particular time zone, a symbolic link is created from the `/etc/localtime` file to the corresponding file in the `/usr/share/zoneinfo` directory.
+
+To view the contents of the `/usr/share/zoneinfo` directory, execute the following
+
+```bash
+root@localhost:~ ls /usr/share/zoneinfo                                        
+Africa      Cuba     GMT+0      Kwajalein  Poland     WET                       
+America     EET      GMT-0      Libya      Portugal   Zulu                      
+Antarctica  EST      GMT0       MET        ROC        iso3166.tab               
+Arctic      EST5EDT  Greenwich  MST        ROK        leap-seconds.list         
+Asia        Egypt    HST        MST7MDT    Singapore  localtime                 
+Atlantic    Eire     Hongkong   Mexico     SystemV    posix                     
+Australia   Etc      Iceland    NZ         Turkey     posixrules                
+Brazil      Europe   Indian     NZ-CHAT    UCT        right         
+```
+
+To view the details of a particular zone, view the subdirectory with the `ls` command as follows:
+
+```
+root@localhost:~# ls /usr/share/zoneinfo/Australia                              
+ACT          Canberra  Hobart     Melbourne  Queensland  Victoria               
+Adelaide     Currie    LHI        NSW        South       West                   
+Brisbane     Darwin    Lindeman   North      Sydney      Yancowinna             
+Broken_Hill  Eucla     Lord_Howe  Perth      Tasmania
+```
+
+To set the time zone to the America TIjuana time zone (PST), execute the following link `ln` command as the root user , then verify the change with `date`:
+
+```bash
+root@localhost:~:~# date                                                          
+Tue Dec 17 21:00:59 UTC 2024                                                    
+root@localhost:~ ln -sf /usr/share/zoneinfo/America/Tijuana /etc/localtime     
+root@localhost:~ date                                                          
+Tue Dec 17 13:01:32 PST 2024
+```
+
+#### The `/etc/timezone` File
+
+On Debian-based systems there is secondary file `/etc/timezone` :
+
+```
+root@localhost:~# cat /etc/timezone
+Etc/UTC
+```
+
+This can be changed by using a text editor to edit the `/etc/timezone` file to include the same time zone , relative to the `/usr/share/zoneinfo` directory, that was used to link to the `/etc/localtime` file.
+
+```
+root@localhost:~# vi /etc/timezone
+America/Tijuana
+~
+~
+~
+“/etc/timezone” 1 line, 16 characters
+```
+
+{% hint style="info" %}
+Users can override the system's time zone by using the `TZ` environment variable. For example, if the client application running in Singapore needs to sync the databse instance running on a server in Amercia, the user can change the time zone using the `TZ` enviroment variable to ensure that both applications run in the same time zone:
+
+```
+root@localhost:~# export TZ=America/New_York
+```
+{% endhint %}
+
+## Network Time Protocol
+
+The Network Time Protocol (NTP) is the most used method for synchronizing the local server's system time with the time provided by designated local or internet-based time severs.
+
+{% hint style="info" %}
+The reference time used by NTP is UTC. The NTP software will convert this to the appropiate time zone for any given system.
+{% endhint %}
+
+The NTP package contains the NTP daemon and some additional programs to configure the service and query the time servers.
+
+### Understanding ntpd
+
+The NTP daemon, `ntpd` ,sets and updates the system time in synchronization with one or more reference time servers. This daemon sends messages to and receives messages from preconfigured servers at certain intervals. The `ntpd` daemon can also be configured to act as a server, so other clients may query this server to synchronize their system time.
+
+> It can also read data from external hardware resources such as GPS receivers.
+
+The following table lists some of the key options of the `ntpd` daemon:
+
+| Option         | Meaning                                                                                                   |
+| -------------- | --------------------------------------------------------------------------------------------------------- |
+| `-g`           | Allow `ntpd` to be started on a system whose clock has crossed the panic threshold (1000 secs by default) |
+| `-n`           | Do not run `ntpd` as a daemon (i.e., run it as a foreground process)                                      |
+| `-c file_name` | Use the specified file for configuration instead of the default file (the `/etc/ntp.conf` file)           |
+| `-N`           | Run at the highest possible priority                                                                      |
+| `-q`           | Quit after setting the time (i.e., one-time synchronization)                                              |
+
+### `/etc/ntp.conf` File
+
+The `/etc/ntp.conf` file is the **configuration file for setting up the `ntpd` daemon** as either an NTP client or server. The NTP package provides a default configuration, which makes the system behave as an NTP client.&#x20;
+
+> If the system has access to the internet, this file should be configured automatically to use 3 NTP servers from the ntp.org domain
+
+A sample `/etc/ntp.conf` file looks like the following:
+
+```
+#List of public NTP servers to be queried
+server 0.pool.ntp.org iburst
+server 1.pool.ntp.org iburst
+server 2.pool.ntp.org iburst
+ 
+restrict default ignore 
+ 
+restrict 127.0.0.1
+ 
+driftfile /var/lib/ntp/ntp.drift
+logfile /var/log/ntpser.log
+```
+
+The fields for this file are described below:
+
+#### Server
+
+```
+server 0.pool.ntp.org iburst
+```
+
+The server lines **indicates the NTP servers to synchronize with**. The server keyword indicates an association between the client and the specified remote server so that the local clock can be synchronized to the server. The **`iburst`** mode indicates that if the server is unreachable, then send a burst of eight requests instead of the usual one. It also serves to speed up the initial synchronization.
+
+{% hint style="info" %}
+If more than one server is specified, then all servers will be queried, and the time that is returned by the majority of the servers will be used.&#x20;
+{% endhint %}
+
+#### Restrict
+
+```
+restrict default ignore
+```
+
+The first restrict line is **used to restrict access to other computers**. This means that this computer will not act as an NTP servers for other machines. Oddly enough, this also prevents your own system from getting date/time information from the `ntpd` daemon, which is the purpose of the next line.
+
+```
+restrict 127.0.0.1
+```
+
+The second restrict line indicates that the localhost (127.0.0.1) will be able to monitor the `ntpd`daemon.
+
+#### Driftfile
+
+```
+driftfile /var/lib/ntp/ntp.drift
+```
+
+The driftfile setting indicates the file that is **used to store the drift time** . This file contains a value that is an average over time of how much the local time "drifts" from the NTP server time. Over time, this file is consulted by the `ntpd` daemon to allow it to adjust the local time without having to contact the NTP servers as frequently.
+
+#### Logfile
+
+```
+logfile /var/log/ntpser.log
+```
+
+The logfile setting indicates the location where the NTP log file is stored. For occasions when NTP errors occur, it is possible to find the cause by looking at the log file.
+
+{% hint style="info" %}
+If the system is to be configured as an NTP server, then add a server line that has the current machine's IP address and add the following restrict line:
+
+```
+server 127.127.1.0
+restrict default nomodify nopeer noquery
+```
+
+This will allow  the server to service incoming time requests. The options of `nomodify`, `nopeer`, `noquery` make the NTP server more secure.
+
+After saving the `/etc/ntp.conf` file, restart the `ntpd` daemon by executing the following:
+
+```
+root@localhost:~# service ntpd restart
+```
+
+To set the `ntpd` daemon to start at boot time, execute the following command:
+
+```
+root@localhost:~# chkconfig ntpd on
+```
+{% endhint %}
 
 
 
@@ -151,9 +370,7 @@ root@localhost:~# date "+%m/%d/%y"
 
 
 
-
-
-
+\
 
 
 

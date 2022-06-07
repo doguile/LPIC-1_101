@@ -247,7 +247,7 @@ The NTP package contains the NTP daemon and some additional programs to configur
 
 ### Understanding ntpd
 
-The NTP daemon, `ntpd` ,sets and updates the system time in synchronization with one or more reference time servers. This daemon sends messages to and receives messages from preconfigured servers at certain intervals. The `ntpd` daemon can also be configured to act as a server, so other clients may query this server to synchronize their system time.
+The NTP daemon, <mark style="color:red;">`ntpd`</mark> ,**sets and updates the system time in synchronization with one or more reference time servers**. This daemon sends messages to and receives messages from preconfigured servers at certain intervals. The <mark style="color:red;">`ntpd`</mark> daemon **can also be configured to act as a server,** so other clients may query this server to synchronize their system time.
 
 > It can also read data from external hardware resources such as GPS receivers.
 
@@ -263,7 +263,7 @@ The following table lists some of the key options of the `ntpd` daemon:
 
 ### `/etc/ntp.conf` File
 
-The `/etc/ntp.conf` file is the **configuration file for setting up the `ntpd` daemon** as either an NTP client or server. The NTP package provides a default configuration, which makes the system behave as an NTP client.&#x20;
+The `/etc/ntp.conf` file is the **configuration file for setting up the **<mark style="color:red;">**`ntpd`**</mark>** daemon** as either an NTP client or server. The NTP package provides a default configuration, which makes the system behave as an NTP client.&#x20;
 
 > If the system has access to the internet, this file should be configured automatically to use 3 NTP servers from the ntp.org domain
 
@@ -325,7 +325,7 @@ The driftfile setting indicates the file that is **used to store the drift time*
 logfile /var/log/ntpser.log
 ```
 
-The logfile setting indicates the location where the NTP log file is stored. For occasions when NTP errors occur, it is possible to find the cause by looking at the log file.
+The logfile setting indicates the **location where the NTP log file is stored**. For occasions when NTP errors occur, it is possible to find the cause by looking at the log file.
 
 {% hint style="info" %}
 If the system is to be configured as an NTP server, then add a server line that has the current machine's IP address and add the following restrict line:
@@ -350,21 +350,130 @@ root@localhost:~# chkconfig ntpd on
 ```
 {% endhint %}
 
+### Querying NTP
 
+The <mark style="color:red;">`ntpq`</mark> utility is used to **query NTP and monitor the performance of the `ntpd` daemon**. It can be executed either in command line mode or interactive mode. To print a summary of the peers of your server, the following command can be used:
 
+```bash
+root@localhost:~ ntpq –pn
+remote              refid      s  t  when  poll    reach  delay    offset    jitter
+====================================================================================
+‌
+*ts0.example.com  194.20.10.2  1  u  648   1024    259    31.234    3.353    3.096
+```
 
+The following table explains some of the fileds in the output above:
 
+| Field    | Example Value      | Significance                                               |
+| -------- | ------------------ | ---------------------------------------------------------- |
+| `remote` | `*ts0.example.com` | Refers to the server being synced                          |
+| `refid`  | `194.20.10.2`      | Specifies the IP address of the server                     |
+| `s`      | `1`                | Stratum, see below                                         |
+| `t`      | `u`                | Refers to the type (unicast, broadcast, etc.)              |
+| `when`   | `648`              | Refers to how many seconds since the last polling was done |
 
+**An NTP **_**stratum**_** is a number that refers to how close to a reference clock the NTP server is.** A reference clock should have the most accurate possible time. A reference clock is referred to as a _Stratum-0_ clock. An NTP server that updates its time to a reference clock is referred to as a _Stratum-1_ clock.
 
+> Hence the higher stratum number, the less likely the clock is accurate as it is furthest away from the most accurate clock.
 
+### Tracing NTP
 
+The <mark style="color:red;">`ntptrace`</mark> utility is **useful for debugging and provides the trace of the chain of NTP server to the source**. It traverse the path starting from the `localhost` to the time servers from which the time has been derived.
 
+To check the trace of the current system, execute the `ntptrace` command.
 
+```bash
+root@localhost:~ ntptrace
+localhost: stratum 4, offset 0.0019529, synch distance 0.144135
+server1del.com: stratum 2, offset 0.0129876, synch distance 0.102469
+iitb.edu: stratum 2, offset 0.0018257, synch distance 0.011658, refid ’WWWN’
+```
 
+The important fileds in the output are the hostname, the stratum number, and the time difference in seconds between the two hosts in the path traversed.
 
+### Setting Time using `ntpdate`
 
+The <mark style="color:red;">**`ntpdate`**</mark> utility is **used to set the system date and time using NTP**. The functionallity of this utility is **equivalent to using the **<mark style="color:red;">**`ntpd -q`**</mark> .The <mark style="color:red;">`-q`</mark> option to the <mark style="color:red;">`ntpd`</mark> command makes the <mark style="color:red;">`ntpdate`</mark> command redundant, and as a result, the `ntpdate` command may not be supported in future releases of Linux distro
 
+The root user can execute the `ntpdate` command to explicity set the time if the NTP daemon is not running, or it can be executed in a startup script if there is a requirement to set the time via NTP even before the NTP daemon has started.
 
+To verify if a specific NTP server is available, execute the <mark style="color:red;">`ntpdate`</mark> command with the query <mark style="color:red;">`-q`</mark> option.
+
+```bash
+root@localhost:~ ntpdate -q 2.asia.pool.ntp.org
+server 212.26.18.41, stratum 1, offset -0.011471, delay 0.23927
+server 27.114.150.12, stratum 2, offset -0.037521, delay 0.30266
+server 137.189.4.10, stratum 1, offset -0.013831, delay 0.24474
+server 185.23.153.237, stratum 2, offset -0.001132, delay 0.29622
+11 Mar 13:22:13 ntpdate[8924]: adjust time server 212.26.18.41 offset -0.011471 sec
+```
+
+To set the date and time using an NTP server, execute the following command:
+
+```
+root@localhost:~# ntpdate 2.asia.pool.ntp.org
+```
+
+Some of the key options of the `ntpdate` command are:
+
+| Option               | Meaning                                                                            |
+| -------------------- | ---------------------------------------------------------------------------------- |
+| `-p <numof_samples>` | Number of samples to be polled from each server, valid range is `1 – 8`            |
+| `-t <timeout>`       | Maximum time to wait for a response from the server should be expressed in seconds |
+
+### Setting time using `timdatectl`
+
+System using **`systemd`** as their init-system use the <mark style="color:red;">`timedatectl`</mark> command to **view and control time on the system**. Running the <mark style="color:red;">`timedatectl`</mark> command without any arguments shows the current time and the time settings for the system.
+
+```
+sysadmin@localhost:~$ timedatectl
+               Local time: Fri 2019-10-18 07:46:03 CDT
+           Universal time: Fri 2019-10-18 12:46:03 UTC
+                 RTC time: Fri 2019-10-18 12:46:03
+                Time zone: America/Chicago (CDT, -0500)
+System clock synchronized: yes
+              NTP service: active
+          RTC in local TZ: no
+```
+
+The most commonly-used arguments for the `timedatectl` command are listed below:
+
+| Argument          | Description                                                                                                                                                                                                                                    |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `set-time`        | Set the system clock to the specified time. This will also update the RTC time accordingly. The time may be specified in the format: 4-Digit Year-Month-Day Hour in 24-hr format: Minutes:seconds.                                             |
+| `set-timezone`    | Set the system time zone to the specified value. Available time zones can be listed with list-timezones. If the RTC is configured to be the local time, this will also update the RTC time. This call will alter the `/etc/localtime` symlink. |
+| `list-timezones`  | List available time zones, one per line. Entries from the list can be set as the system time zone with set-timezone.                                                                                                                           |
+| `timesync-status` | Show the current status of synchronization to the current Network Time Protocol (NTP) time source, such as the NTP server being used and the polling interval.                                                                                 |
+| `set-ntp [BOOL]`  | Controls whether network time synchronization is active and enabled. Using the BOOL if true or false will enable or disable using NTP on the system.                                                                                           |
+
+To set the time on a `systemd` enabled system , use the `set-time` command for the `timedatectl` command.
+
+```
+sysadmin@localhost:~$ sudo timedatectl set-time “2019-10-18 08:24:00”
+[sudo] password for sysadmin:
+```
+
+If there are no problems, you will not get any output from the above command. If the system is using NTP, you will get the following error:
+
+```bash
+sysadmin@localhost:~$ sudo timedatectl set-time “2019-10-18 08:24:00”
+[sudo] password for sysadmin:
+Failed to set time: Automatic time synchronization is enabled
+```
+
+{% hint style="warning" %}
+Dual boot systems with Linux and Windows can be off by the difference between the timezone in which they are set and UTC every time the user swithces operating systems.&#x20;
+
+To remedy this issue, the following command can be used:
+
+```bash
+sysadmin@localhost:~$ sudo timedatectl set-local-rtc 1 --adjust-system-clockas
+```
+{% endhint %}
+
+### Using `pool.ntp.org`
+
+``
 
 
 

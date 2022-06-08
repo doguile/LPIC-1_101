@@ -473,36 +473,149 @@ sysadmin@localhost:~$ sudo timedatectl set-local-rtc 1 --adjust-system-clockas
 
 ### Using `pool.ntp.org`
 
-``
+The <mark style="color:blue;">pool.ntp.org</mark> domain is a **virtual cluster of time servers** providing NTP service to systems across the globe.
 
+> &#x20;The default entries in the `/etc/ntp.conf` file refer to a set of servers that are randomly updated every hour
 
+To verify this, view the output of the <mark style="color:red;">`ntpq -pn`</mark> command now and then an hour later.
 
+The implementation of the server pool is such that the servers close to the geographic location of the NTP client will be alocated to the `ntpd` daemon . The user also has the option to specify the preferred continent or country zone to pick up the pool from. For example, to specify the Asia servers, update the `/etc/ntp.conf` file as follows:
 
+```
+server 0.asia.pool.ntp.org
+server 1.asia.pool.ntp.org
+server 2.asia.pool.ntp.org
+```
 
-\
+## Understanding `chronyd`
 
+As an alternative to `ntpd`, <mark style="color:red;">`chrony`</mark> lends itself to **working well in envrionments with intermittent network connectivity**, such as on a laptop or virtual system that may be created through an automated process.
 
+{% hint style="info" %}
+<mark style="color:red;">`chrony`</mark> is a set of programs that are used to ensure that the clock on a system is accurate.
+{% endhint %}
 
+The daemon portion of `chrony` is the command `chronyd.` The daemon synchronizes the system with time retrieved from NTP servers. Along with synchronizing time on the system it is running, `chronyd` can also operates as an NTP server providing time service to other systems that are allowed network access.
 
+To control `chronyd` ,you use the <mark style="color:red;">`chronyc`</mark> program to interface with `chronyd` via the command line. The <mark style="color:red;">`chronyc`</mark> command can be used in two different modes; _interactive and non-interactive_ mode.
 
+> If no argument is specified on the command line, the `chronyc` command will run in interactive mode and return a `chrony>` prompt where you can then enter `chronyc` commands.
 
+```bash
+root@localhost:~# chronyc
+chrony version 3.2
+Copyright © 1997-2003, 2007, 2009-2017 Richard P. Curnow and others
+crony comes with ABSOLUTELY  NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions. See the GNU General Public License version 2 for details. 
+ 
+chronyc>
+```
 
+Note that the `chronyc` command should be run as the root user since some of the `chronyc` commands may be restricted for regular users.
 
+Common `chronyc` command are listed below:
 
+| Argument         | Description                                                                                                                                                                                                                             |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tracking`       | Displays **performance statistics** about the system clock                                                                                                                                                                              |
+| `sources`        | Displays the **NTP sources being used** for `chronyd`                                                                                                                                                                                   |
+| `activity`       | Displays the **status of NTP sources**                                                                                                                                                                                                  |
+| `settime <TIME>` | <p>Allows you to manually set the time used for <code>chronyd</code>. The format for <code>settime</code> can be any of the below:</p><p><code>hh:mm</code></p><p><code>hh:mm:ss</code></p><p><code>Month Day, YYYY hh:mm:ss</code></p> |
 
+To demonstrate, if you want to display information and performance statistics about the system clock in interactive mode, use the `tracking` command at the `chronyc>` prompt:
 
+```
+chronyc> tracking
+Reference ID    : 6C3D49F3 (hydrogen.constant.com)
+Stratum         : 3
+Ref time (UTC)  : Thu Nov 07 03:10:17 2019
+System time     : 0.000021801 seconds slow of NTP time
+Last offset     : -0.00021801 seconds
+RMS offset      : 0.000106846 seconds
+Frequency       : 26.657 ppm slow
+Residual freq   : -0.007 ppm
+Skew            : 0.093 ppm
+```
 
+The **Ctrl+D** keys can be used to exit interactive mode.
 
+To run `chronyc` in non-interactive mode, the following syntax can be used:
 
+```
+chronyc command
+```
 
+For example, to display a list of NTP sources being used for `chronyd` in non-interactive mode, use the following command:
 
+```
+root@localhost:~# chronyc sources
+210 Number of sources = 4
+MS Name/IP address        Stratum Poll Reach LastRx Last sample
+=============================================================================
+^_ au.kashra.pictures          2   6  377        4 -2991us[-2991us] +/- 125ms
+^* hydrogen.constant.com       2   9  377      205  -756us[ -678us] +/-  33ms
+^- lax1.justaguy.be            2   8  377       20 +1559us[+1559us] +/-  98ms
+^+ li924-200.members.linode>   2  10  377      671 +1321us[+1394us] +/-  31ms
+```
 
+### `/etc/chrony.conf` File
 
+The configuration file that controls `chronyd` is the `/etc/chrony.conf` file (on some distributions, the file path is `/etc/chrony/chrony.conf`). The `/etc/chrony.conf` file allows you to specify the NTP pool to use and what files are used for things like logging, skew rate, and if the hardware clock is using UTC.
 
+```
+# Welcome to the chrony configuration file. See chrony.conf(5) for more
+# information about usable directives.
+ 
+# This will use (up to):
+# - 4 sources from ntp.ubuntu.com which some are ipv6 enabled
+# - 2 sources from 2.ubuntu.pool.ntp.org which is ipv6 enabled as well
+# - 1 source from [01].ubuntu.pool.ntp.org each (ipv4 only atm)
+# This means by default, up to 6 dual-stack and up to 2 additional IPv4-only
+# sources will be used.
+# At the same time it retains some protection against one of the entries being
+# down (compare to just using one of the lines). See (LP: #1754358) for the
+# discussion.
+#
+# About using servers from the NTP Pool Project in general see (LP: #104525).
+# Approved by Ubuntu Technical Board on 2011-02-08.
+# See http://www.pool.ntp.org/join.html for more information.
+pool ntp.ubuntu.com        iburst maxsources 4
+pool 0.ubuntu.pool.ntp.org iburst maxsources 1
+pool 1.ubuntu.pool.ntp.org iburst maxsources 1
+pool 2.ubuntu.pool.ntp.org iburst maxsources 2
+ 
+# This directive specify the location of the file containing ID/key pairs for
+# NTP authentication.
+keyfile /etc/chrony/chrony.keys
+ 
+# This directive specify the file into which chronyd will store the rate
+# information.
+driftfile /var/lib/chrony/chrony.drift
+ 
+# Uncomment the following line to turn logging on.
+#log tracking measurements statistics
+ 
+# Log files location.
+logdir /var/log/chrony
+ 
+# Stop bad estimates upsetting machine clock.
+maxupdateskew 100.0
+ 
+# This directive enables kernel synchronisation (every 11 minutes) of the
+# real-time clock. Note that it can’t be used along with the 'rtcfile' directive.
+rtcsync
+ 
+# Step the system clock instead of slewing it if the adjustment is larger than
+# one second, but only in the first three clock updates.
+makestep 1 3
+```
 
+The `/etc/chrony.conf` file has directives listed with one on each line. These directives are summarized in the table below:
 
-
-
-
-
+| Directive                      | Meaning                                                                                                             |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `pool <pool address>`          | Specify address of the NTP pool to use.                                                                             |
+| `logdir <location for logs>`   | Location where log files will be created.                                                                           |
+| `server <server address>`      | Specify address of the NTP server to use.                                                                           |
+| `allow <IP address or subnet>` | When used as an NTP server, specifies what address/subnets are allowed to access `chronyd` to synchronize time.     |
+| `deny <IP or subnet>`          | When used as an NTP server, specifies what address/subnets are not allowed to access `chronyd` to synchronize time. |
 

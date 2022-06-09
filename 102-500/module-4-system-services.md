@@ -57,7 +57,7 @@ root@localhost:~  hwclock
 2019-11-21 02:18:18.577020+0000
 ```
 
-To set the value of the hardware clock, execute the following command as root:
+To **set the value of the hardware clock**, execute the following command as root:
 
 ```bash
 root@localhost:~ hwclock --set --date "1/1/2025 18:30:50"                      
@@ -67,7 +67,7 @@ root@localhost:~ hwclock
 
 The primary purpose of the **hardware clock is to maintain the time on the computer** **while the system is powered off**, and its really the system clock that is used by the kernel and most applications in Linux.
 
-An administrator should view the values of both clocks prior to determining which way to perform the sync. To view the system clock, use the `date` command. To view both clocks at the same time, separate the commands with a semicolon:
+An administrator should view the values of both clocks prior to determining which way to perform the sync. To **view the system clock, use the **<mark style="color:red;">**`date`**</mark>** command**. To view both clocks at the same time, separate the commands with a semicolon:
 
 ```bash
 root@localhost:~ hwclock -r; date                                              
@@ -75,21 +75,21 @@ Wed Jan  1 18:33:34 2025  -1.065081 seconds
 Tue Dec 17 17:23:35 UTC 2024
 ```
 
-To set the hardware clock from the current system time, execute either of the following commands:
+To **set the hardware clock from the current system time**, execute either of the following commands:
 
 ```bash
 root@localhost:~ hwclock -w
 root@localhost:~ hwclock --systohc
 ```
 
-To set the system time from the hardware clock, execute either of the following commands:
+To **set the system time from the hardware clock**, execute either of the following commands:
 
 ```bash
 root@localhost:~# hwclock -s
 root@localhost:~# hwclock --hctosys
 ```
 
-After setting the hardware or system time , the <mark style="color:red;">`hwclock`</mark> command can be used with the `-r` option, which reads from the hardware clock, and the <mark style="color:red;">`date`</mark> command againg to view the changes:
+After setting the hardware or system time , the <mark style="color:red;">`hwclock`</mark> command can be used with the <mark style="color:red;">`-r`</mark> option, which reads from the hardware clock, and the <mark style="color:red;">`date`</mark> command againg to view the changes:
 
 ```
 root@localhost:~# hwclock -r; date                                              

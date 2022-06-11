@@ -43,7 +43,7 @@ Almost every activity on the server needs to be aware of the system time.
 
 Linux-based systems have two types of clocks:
 
-* **System Clock**: This is a clock maintained by the kernel and is _interrupt-driven_. **The value of this clock is initialized from the hardware clock at boot time**. The system time is calculated as the number of seconds since `January 1st 1970 00:00:00` (This reference time is known as epoch time or sometimes UNIX time). The system clock contains the current time as well as time zone information.
+* **System Clock**: This is a clock maintained by the kernel and is _interrupt-driven_. **The value of this clock is initialized from the hardware clock at boot time**. The system time is calculated as the number of seconds since `January 1st 1970 00:00:00` (This reference time is known as <mark style="color:orange;">**epoch**</mark> time or sometimes UNIX time). The system clock contains the current time as well as time zone information.
 * **Hardware** **Clock**: This is a **battery-powered clock that keeps time even when the system is shut down**. When the system boots, the system clock is set using the hardware clock. When the system is shut down, the hardware clock is set to the value of the system clock. This ensures that both the clocks are synchronized. The hardware clock is also knows as the _**real time clock (RTC)**_ or the CMOS/BIOS clock.
 
 ## Maintaining the Hardware clock
@@ -109,7 +109,7 @@ Wed Jan  1 18:30:54 2025  -1.059914 seconds
 If neither of the option is specified, then the setting which was used during the last execution of the <mark style="color:red;">`hwclock`</mark> command is used. **This information is saved in the `/etc/adjtime` file** and referenced during subsequent executions of the <mark style="color:red;">`hwclock`</mark> command. When the <mark style="color:red;">`hwclock`</mark> command is used to update the system clock, it refers to the `/etc/localtime` file to retrieve time zone details.
 
 {% hint style="info" %}
-The <mark style="color:red;">`hwclock`</mark> command maintains the `/etc/adjtime` file for storing information about the past clock values. This file is created the first time the hardware clock is set, and each time the hardware clock is adjusted, the timestamp is written in this file.&#x20;
+The <mark style="color:red;">`hwclock`</mark> command maintains the `/etc/adjtime` file for **storing information about the past clock values.** This file is created the first time the hardware clock is set, and each time the hardware clock is adjusted, the timestamp is written in this file.&#x20;
 
 If you issue the <mark style="color:red;">`hwclock --adjust`</mark> command, it will add 1 second to the hardware clock per day since the last time the hardware clock was adjusted.
 {% endhint %}
@@ -211,8 +211,8 @@ Tue Dec 17 13:01:32 PST 2024
 
 On Debian-based systems there is secondary file `/etc/timezone` :
 
-```
-root@localhost:~# cat /etc/timezone
+```bash
+root@localhost:~ cat /etc/timezone
 Etc/UTC
 ```
 
@@ -303,7 +303,7 @@ If more than one server is specified, then all servers will be queried, and the 
 restrict default ignore
 ```
 
-The first restrict line is **used to restrict access to other computers**. This means that this computer will not act as an NTP servers for other machines. Oddly enough, this also prevents your own system from getting date/time information from the `ntpd` daemon, which is the purpose of the next line.
+The first restrict line is **used to restrict access to other computers**. This means that this computer will not act as an NTP servers for other machines. Oddly enough, this also prevents your own system from getting date/time information from the <mark style="color:red;">`ntpd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> daemon, which is the purpose of the next line.
 
 ```
 restrict 127.0.0.1
@@ -317,7 +317,7 @@ The second restrict line indicates that the localhost (127.0.0.1) will be able t
 driftfile /var/lib/ntp/ntp.drift
 ```
 
-The driftfile setting indicates the file that is **used to store the drift time** . This file contains a value that is an average over time of how much the local time "drifts" from the NTP server time. Over time, this file is consulted by the `ntpd` daemon to allow it to adjust the local time without having to contact the NTP servers as frequently.
+The driftfile setting indicates the file that is **used to store the drift time** . This file **contains a value that is an average over time of how much the local time "drifts" from the NTP server time**. Over time, this file is consulted by the `ntpd` daemon to allow it to adjust the local time without having to contact the NTP servers as frequently.
 
 #### Logfile
 
@@ -352,7 +352,7 @@ root@localhost:~# chkconfig ntpd on
 
 ### Querying NTP
 
-The <mark style="color:red;">`ntpq`</mark> utility is used to **query NTP and monitor the performance of the `ntpd` daemon**. It can be executed either in command line mode or interactive mode. To print a summary of the peers of your server, the following command can be used:
+The <mark style="color:red;">`ntpq`</mark> utility is used to **query NTP and monitor the performance of the **<mark style="color:red;">**`ntpd`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** daemon**. It can be executed either in command line mode or interactive mode. To print a summary of the peers of your server, the following command can be used:
 
 ```bash
 root@localhost:~ ntpq –pn
@@ -380,7 +380,7 @@ The following table explains some of the fileds in the output above:
 
 The <mark style="color:red;">`ntptrace`</mark> utility is **useful for debugging and provides the trace of the chain of NTP server to the source**. It traverse the path starting from the `localhost` to the time servers from which the time has been derived.
 
-To check the trace of the current system, execute the `ntptrace` command.
+To check the trace of the current system, execute the <mark style="color:red;">`ntptrace`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command.
 
 ```bash
 root@localhost:~ ntptrace
@@ -395,7 +395,7 @@ The important fileds in the output are the hostname, the stratum number, and the
 
 The <mark style="color:red;">**`ntpdate`**</mark> utility is **used to set the system date and time using NTP**. The functionallity of this utility is **equivalent to using the **<mark style="color:red;">**`ntpd -q`**</mark> .The <mark style="color:red;">`-q`</mark> option to the <mark style="color:red;">`ntpd`</mark> command makes the <mark style="color:red;">`ntpdate`</mark> command redundant, and as a result, the `ntpdate` command may not be supported in future releases of Linux distro
 
-The root user can execute the `ntpdate` command to explicity set the time if the NTP daemon is not running, or it can be executed in a startup script if there is a requirement to set the time via NTP even before the NTP daemon has started.
+The root user can execute the <mark style="color:red;">`ntpdate`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command to explicity set the time if the NTP daemon is not running, or it can be executed in a startup script if there is a requirement to set the time via NTP even before the NTP daemon has started.
 
 To verify if a specific NTP server is available, execute the <mark style="color:red;">`ntpdate`</mark> command with the query <mark style="color:red;">`-q`</mark> option.
 
@@ -414,7 +414,7 @@ To set the date and time using an NTP server, execute the following command:
 root@localhost:~# ntpdate 2.asia.pool.ntp.org
 ```
 
-Some of the key options of the `ntpdate` command are:
+Some of the key options of the <mark style="color:red;">`ntpdate`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command are:
 
 | Option               | Meaning                                                                            |
 | -------------------- | ---------------------------------------------------------------------------------- |
@@ -438,17 +438,17 @@ System clock synchronized: yes
 
 The most commonly-used arguments for the `timedatectl` command are listed below:
 
-| Argument          | Description                                                                                                                                                                                                                                    |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `set-time`        | Set the system clock to the specified time. This will also update the RTC time accordingly. The time may be specified in the format: 4-Digit Year-Month-Day Hour in 24-hr format: Minutes:seconds.                                             |
-| `set-timezone`    | Set the system time zone to the specified value. Available time zones can be listed with list-timezones. If the RTC is configured to be the local time, this will also update the RTC time. This call will alter the `/etc/localtime` symlink. |
-| `list-timezones`  | List available time zones, one per line. Entries from the list can be set as the system time zone with set-timezone.                                                                                                                           |
-| `timesync-status` | Show the current status of synchronization to the current Network Time Protocol (NTP) time source, such as the NTP server being used and the polling interval.                                                                                 |
-| `set-ntp [BOOL]`  | Controls whether network time synchronization is active and enabled. Using the BOOL if true or false will enable or disable using NTP on the system.                                                                                           |
+| Argument          | Description                                                                                                                                                                                                                                        |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `set-time`        | **Set the system clock to the specified time.** This will also update the RTC time accordingly. The time may be specified in the format: 4-Digit Year-Month-Day Hour in 24-hr format: Minutes:seconds.                                             |
+| `set-timezone`    | **Set the system time zone to the specified value**. Available time zones can be listed with list-timezones. If the RTC is configured to be the local time, this will also update the RTC time. This call will alter the `/etc/localtime` symlink. |
+| `list-timezones`  | List available time zones, one per line. Entries from the list can be set as the system time zone with set-timezone.                                                                                                                               |
+| `timesync-status` | **Show the current status of synchronization** to the current Network Time Protocol (NTP) time source, such as the NTP server being used and the polling interval.                                                                                 |
+| `set-ntp [BOOL]`  | Controls whether network time synchronization is active and enabled. Using the BOOL if true or false will enable or disable using NTP on the system.                                                                                               |
 
 To set the time on a `systemd` enabled system , use the `set-time` command for the `timedatectl` command.
 
-```
+```bash
 sysadmin@localhost:~$ sudo timedatectl set-time “2019-10-18 08:24:00”
 [sudo] password for sysadmin:
 ```
@@ -495,7 +495,7 @@ As an alternative to `ntpd`, <mark style="color:red;">`chrony`</mark> lends itse
 <mark style="color:red;">`chrony`</mark> is a set of programs that are used to ensure that the clock on a system is accurate.
 {% endhint %}
 
-The daemon portion of `chrony` is the command `chronyd.` The daemon synchronizes the system with time retrieved from NTP servers. Along with synchronizing time on the system it is running, `chronyd` can also operates as an NTP server providing time service to other systems that are allowed network access.
+The daemon portion of <mark style="color:red;">`chrony`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> is the command <mark style="color:red;">`chronyd`</mark>`.` The daemon synchronizes the system with time retrieved from NTP servers. Along with synchronizing time on the system it is running, <mark style="color:red;">`chronyd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> can also operates as an NTP server providing time service to other systems that are allowed network access.
 
 To control `chronyd` ,you use the <mark style="color:red;">`chronyc`</mark> program to interface with `chronyd` via the command line. The <mark style="color:red;">`chronyc`</mark> command can be used in two different modes; _interactive and non-interactive_ mode.
 
@@ -523,7 +523,7 @@ Common `chronyc` command are listed below:
 
 To demonstrate, if you want to display information and performance statistics about the system clock in interactive mode, use the `tracking` command at the `chronyc>` prompt:
 
-```
+```bash
 chronyc> tracking
 Reference ID    : 6C3D49F3 (hydrogen.constant.com)
 Stratum         : 3
@@ -546,7 +546,7 @@ chronyc command
 
 For example, to display a list of NTP sources being used for `chronyd` in non-interactive mode, use the following command:
 
-```
+```bash
 root@localhost:~# chronyc sources
 210 Number of sources = 4
 MS Name/IP address        Stratum Poll Reach LastRx Last sample
@@ -618,4 +618,3 @@ The `/etc/chrony.conf` file has directives listed with one on each line. These d
 | `server <server address>`      | Specify address of the NTP server to use.                                                                           |
 | `allow <IP address or subnet>` | When used as an NTP server, specifies what address/subnets are allowed to access `chronyd` to synchronize time.     |
 | `deny <IP or subnet>`          | When used as an NTP server, specifies what address/subnets are not allowed to access `chronyd` to synchronize time. |
-

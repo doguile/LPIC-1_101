@@ -305,6 +305,43 @@ include /etc/logrotate.d
 
 **The primary use of having separated configurations is to organize **<mark style="color:red;">**`logrotate`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** configurations**. For example, if an application has multiple log files, all <mark style="color:red;">`logrotate`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> configuration for the logs can be done in one configuration file: `/etc/logrotate.d/`- The same directives can be used in the different <mark style="color:red;">`logrotate`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> configuration files.
 
+For example, maybe you have a service that needs longer retention than any of the other log files. In that case, you can create a `logrotate` configuration file in `/etc/logrotate.d/` that has the needed `logrotate` directives for the service's logs. Below is an example of a `logrotate` configuration file that has settings different than the settings in `/etc/logrotate.conf`&#x20;
+
+```bash
+/var/log/apt/term.log {  
+      rotate 12
+      monthly
+      compress
+      missingok
+}
+/var/log/history.log {
+      rotate 12
+      monthly 
+      compress
+      missingok
+}
+```
+
+Note that the full path to the log file needs to be specified and then a curly `{` brace to open the stanza. The desired directives need to be entered into the stanza, with only one directive per line. The stanza then should be closed with another curly `{` brace.
+
+In the example `/etc/logrotate.d/` file above, the `/var/log/apt/term.log` and `/var/log/history.log` lines specify the location of the log files that the following stanza pertains to. The `rotate` directive for each log file tells the `logrotate` tool how many rotated files to keep before it deletes an old log file. The `monthly` directive tells `logrotate` how often the log file needs to be rotated. The rotated log files will be compressed due to the `compress` directive. Lastly, the `missingok` directive prevents an error from appearing if `logrotate` doesn't find the log file when it attempts to rotate the log file.
+
+## systemd journal
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

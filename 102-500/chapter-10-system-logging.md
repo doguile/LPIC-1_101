@@ -242,13 +242,68 @@ It is recommended that all administrators become familiar with log review and ma
 
 ### `logrotate`
 
-The <mark style="color:red;">`logrotate`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> tool is used to allow a system administrator to automate the rotation of log files with different settings for different services.
+The <mark style="color:red;">`logrotate`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> tool is used to allow a system administrator to **automate the rotation of log files** with different settings for different services.
 
+General settings for <mark style="color:red;">`logrotate`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> are controlled by the `/etc/logrotate.conf` file and s**ervice-specific settings are controlled with configuration files** in the `/etc/logrotate.d/` directory. Below is an example of a default `/etc/logrotate.conf` file.
 
+```bash
+# see "man logrotate" for details 
+# rotate log files weekly       
+weekly             
+  
+# use the syslog group by default, since this is the owning group      
+# of /var/log/syslog. 
+su root syslog 
+ 
+# keep 4 weeks worth of backlogs   
+ rotate 4 
+ 
+# create new (empty) log files after rotating old ones 
+create 
+ 
+# uncomment this if you want your log files compressed 
+#compress 
+ 
+# packages drop log rotation information into this directory 
+include /etc/logrotate.d 
+ 
+# no packages own wtmp, or btmp -- we'll rotate them here 
+/var/log/wtmp {  
+      missingok 
+      monthly 
+      create 0664 root utmp 
+      rotate 1
+} 
+ 
+/var/log/btmp { 
+      missingok
+monthly 
+      create 0660 root utmp  
+      rotate 1
+} 
+ 
+# system-specific logs may be configured here
+```
 
+The `/etc/logrotate.conf` file contains directives for the default configuration of the <mark style="color:red;">`logrotate`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> utility. The following table summarizes the settings found in the `/etc/logrotate.conf` configuration file above
 
+| Directive                     | Purpose                                                                                                                                                                          |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `weekly/daily/monthly/yearly` | Rotates the logs at the specified time interval                                                                                                                                  |
+| `rotate 4`                    | Determines how many rotated logs are kept before <mark style="color:red;">`logrotate`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> deletes older logs |
+| `compress`                    | Specifies <mark style="color:red;">`logrotate`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> to compress rotated logs                                  |
+| `missingok`                   | Tells <mark style="color:red;">`logrotate`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> not to return an error if the log file is not found           |
 
+Files in the `/etc/logrotate.d` directory are loaded by the include `/etc/logrotate.d` statement in the `/etc/logrotate.conf` file.
 
+```bash
+# packages drop log rotation information into this directory 
+include /etc/logrotate.d
+```
+
+**These files allow the system administrator to have different configurations for the logs of different services.** The `/etc/logrotate.conf` directives that are not part of a stanza after a specified log file are used as the defaults for files managed by the <mark style="color:red;">`logrotate`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> utility. If a specific setting is set for the log file in `/etc/logrotate.conf` or a configuration file in `/etc/logrotate.d`/, it will override the defaults.
+
+**The primary use of having separated configurations is to organize **<mark style="color:red;">**`logrotate`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** configurations**. For example, if an application has multiple log files, all <mark style="color:red;">`logrotate`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> configuration for the logs can be done in one configuration file: `/etc/logrotate.d/`- The same directives can be used in the different <mark style="color:red;">`logrotate`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> configuration files.
 
 
 

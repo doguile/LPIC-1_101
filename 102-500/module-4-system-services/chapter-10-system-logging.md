@@ -82,7 +82,7 @@ authpriv.*                             /var/log/secure
 
 #### Facility
 
-![](<../.gitbook/assets/imagen (1).png>)
+![](<../../.gitbook/assets/imagen (1).png>)
 
 **The facility identifies the part of the system that produced some kind of message**. For example, messages from the Linux kernel can be selected using the `kern` facility.
 
@@ -108,7 +108,7 @@ To make up the first part of a selector, the following standard facilities are i
 
 **Priority**
 
-![](<../.gitbook/assets/imagen (4).png>)
+![](<../../.gitbook/assets/imagen (4).png>)
 
 The other part of the selector is the _priority_, which defines the severity of the message.&#x20;
 
@@ -131,7 +131,7 @@ There is also a special priority called `none` ,which means do not log from that
 
 #### Selector
 
-![](<../.gitbook/assets/imagen (3).png>)
+![](<../../.gitbook/assets/imagen (3).png>)
 
 The selector is comprised of both the _facility_ and the _priority_ separated by a period `.` character. The following table illustrates some common selectors. Note that an asterisk `*` wildcard character can be used to represent either all facilities or all priorities in a selector:
 
@@ -148,7 +148,7 @@ The selector is comprised of both the _facility_ and the _priority_ separated by
 
 #### Action
 
-![](<../.gitbook/assets/imagen (2).png>)
+![](<../../.gitbook/assets/imagen (2).png>)
 
 Combining a selector with an action results in a complete line in the `/etc/rsyslog.conf` file. The most common action is to specify the absolute path, the file that will store the information that is selected. The following table demonstrates the available actions:
 
@@ -328,53 +328,157 @@ In the example `/etc/logrotate.d/` file above, the `/var/log/apt/term.log` and `
 
 ## systemd journal
 
+On systems using `systemd` as their `init` system, <mark style="color:red;">**`rsyslog`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** has been replaced by the **<mark style="color:red;">**`systemd-journal`**</mark> .On systems using `rsyslog` and older logging systems, log files are not kept in a central location. Each appplication could have files in different places, which makes it a challenge to find useful log information, especially in urgent situations such as a service unexpectedly not running.
 
+A `systemd` _unit_ named <mark style="color:red;">`systemd-journal`</mark> handles logs from other `systemd` units. Using the <mark style="color:red;">`systemd-journal`</mark>, the log information is written to binary databases in the <mark style="color:orange;">**`/var/log/journal/`**</mark> directory instead of writing to text files like `rsyslog`&#x20;
 
+While the log information is available in whichever format is being used, the tools to access and manipulate the log information differs depending on the format the logs are stored in. For text-based logs from `rsyslog` ,Linux tools such as `cat`,`less`, `grep`,`head`, and `tail` can directly view the log files. With the `systemd-journal` you need to use another program (usually <mark style="color:red;">`journalctl`</mark>) to interpret and present the logs in a huma-readable format.
 
+## systemd journal Configuration
 
+The `/etc/systemd/journald.conf` file controls the `systemd-journal`, but the most used directive controls the amount of space that is used for storing _**persistent**_** logs found in **<mark style="color:orange;">**`/var/log/journal/`**</mark> if the directory exists. Otherwise, the <mark style="color:red;">**`systemd-journal`**</mark>** store logs in volatile memory (RAM)** located at <mark style="color:red;">`/run/log/journal`</mark> .&#x20;
 
+* Persistent storage is a type of storage used to **ensure that data is not modified after it is stored** and is available even if updates are made to the storage software.
+* Files stored in volatile memory **disappear when a computer is reset**.&#x20;
 
+By default, the `systemd-journal` uses up to 10% of the total partition space for persistent journal storage, with a cap of 4GB. However, that setting can be controlled with the `SystemMaxUse` directive in `/etc/systemd/journald.conf`&#x20;
 
+The following table summarizes common directives used in the `/etc/systemd/journald.conf` configuration file:
 
+| Directive           | Purpose                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Storage`           | Determines how the journal will be stored. The `volatile` option keeps the journal only in memory. The `persistent` option stores the log data on the disk. The `auto` option stores to the disk also, but will not create a log file it doesn’t already exist. The `none` option does not store the journal data, but only displays it on the console. |
+| `Compress`          | Specifies if the journal logs should be compressed or not.                                                                                                                                                                                                                                                                                              |
+| `SystemMaxUse`      | Limits the amount of space a log can use on the disk. By default, the limit is set to 10% of the total disk space with a cap of 4GB.                                                                                                                                                                                                                    |
+| `SystemMaxFileSize` | Specifies the maximum size that an individual journal file can be before the file is rotated.                                                                                                                                                                                                                                                           |
 
+## systemd journal Log Management
 
+To interact with the `systemd-journald`, the <mark style="color:red;">`journalctl`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is used. The output from the <mark style="color:red;">`journalctl`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command uses a pager by default.
 
+In addtion, the output from `journalctl` can span months and provide more information than is needed; therefore, command flags can be used to help narrow down the output. The table below provides example flags for the `journalctl` command.
 
+| Option              | Purpose                                                                                                              |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `-b`                | Limits output to only journal data since the **last time the system booted**.                                        |
+| `-u <systemd unit>` | Limits output to only contain output from the specified `systemd` unit. An example would be “journalctl -u postfix”. |
+| `-n <number>`       | Shows only the last of lines specified.                                                                              |
+| `-r`                | **Reverses chronology**. Shows logs with the newest first and then each older entry in order.                        |
 
+The power of <mark style="color:red;">`journalctl`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> comes from the ability to use flags at the same time to output the data needed from the logs. For example, the command below will show only entries since the last boot (<mark style="color:red;">`-b`</mark>), in reverse chronological order (<mark style="color:red;">`-r`</mark>), and only for the systemd-timedated `systemd` unit (<mark style="color:red;">`-u systemd-timedated`</mark>)
 
+```bash
+sysadmin@localhost:~$ journalctl -b -r -u systemd-timedated
+-- Logs begin at Thu 2019-10-31 23:40:51 CDT, end at Fri 2019-11-01 11:13:54 CDT. --
+Nov 01 11:07:17 ubuntu systemd-timedated[661]: Changed timezone to ‘CST6CDT’. 
+Nov 01 11:06:45 ubuntu systemd[1]: Started Time & Date Service.
+Nov 01 11:06:45 ubuntu systemd[1]: Starting Time & Date Service...
+```
 
+Since the more recent entries in the logs are found at the end of the log file, in many cases, it makes sense to limit output show only the last lines of the log file. By default, the <mark style="color:red;">`-n`</mark> flag used with the <mark style="color:red;">`journalctl`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command will display the last ten most recent log entries.
 
+```bash
+sysadmin@localhost:~$ journalctl -n 
+-- Logs begin at Mon 2019-06-17 16:37:10 UTC, end at Wed 209-11-06 04:58:32 UTC. --
+Nov 06 04:58:32 ubuntu systemd[1]: Starting User Manager for UID 0…
+Nov 06 04:58:32 ubuntu systemd[611]: pam_unix(systems-user:session): session opened for user root by
+Nov 06 04:58:32 ubuntu systemd[611]: Reached target Timers.
+Nov 06 04:58:32 ubuntu systemd[611]: Reached target Paths.
+Nov 06 04:58:32 ubuntu systemd[611]: Reached target Sockets.
+Nov 06 04:58:32 ubuntu systemd[611]: Reached target Basic System.
+Nov 06 04:58:32 ubuntu systemd[611]: Reached target Default.
+Nov 06 04:58:32 ubuntu systemd[1]: Startup User Manager for UID 0.
+Nov 06 04:58:32 ubuntu login[616]: ROOT LOGIN on `/dev/tty1'
+```
 
+To **manage the log files** created by `systemd-journald`,the <mark style="color:red;">`journalctl`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command **has flags to clear the log and set rotation** due to time or size limits. These flags are summarized in the table below:
 
+| Option                 | Purpose                                                                                                                                         |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--rotate`             | Rotates all of the `systemd-journald` log files immediately.                                                                                    |
+| `--vacuum-time=<time>` | Removes any `systemd-journald` log data older than the time specified. Time can be in minutes (m), hours (h), weeks (weeks), or months (month). |
+| `--vacuum-size=<size>` | Removes the oldest `systemd-journald` log data until the log data takes less than the size listed.                                              |
 
+To demonstrate, the following command clears all of the `systemd-journald` log data that is older than 2 weeks:
 
+```bash
+sysadmin@localhost:~$ journalctl --vacuum-time=2weeks
+```
 
+{% hint style="info" %}
+Please note that no output will be generated; however, using the `journalctl` command again to view the logs will only display `systemd-journald` log data that is 2 weeks old or newer.
+{% endhint %}
 
+In some cases, a system will fail while booting, which makes it difficult to access the `systemd-journald` logs. The `systemd-journald` logs may contain information as to why the system failed to boot, so it is important to be able to access these logs. In these cases, the failed system's disk can be mounted on a recovery system.
 
+After mounting the disk, the <mark style="color:red;">**`systemd-nspawn`**</mark> command can be **used to view the `systemd-journald` log of the failed system.**
 
+{% hint style="warning" %}
+First, boot the failed system via a rescue ISO image. Then create a directory in the `/mnt` directory to mount the failed system's disk to. Netx, mount the failed system's disk.
 
+```bash
+sysadmin@localhost:~$ mkdir /mnt/failedsys
+sysadmin@localhost:~$ mount /dev/vda1 /mnt/failedsys
+```
 
+If the disk device name for the failed system is unknow, using the `lsblk` command will show you all disks the system detects.
 
+After mounting the failed system's disk, launch a `systemd-nspawn` container that allows access to the `systemd-journald`&#x20;
 
+```bash
+sysadmin@localhost:~$ systemd-nspawn --directory /mnt/failedsys --boot -- --unit rescue.target
+Spawning container failedsys on /mnt/failedsys.
+Press ^] three times within 1s to kill container
+```
 
+Once the <mark style="color:red;">`systemd-nspawn`</mark> container has been spwaned, the normal <mark style="color:red;">`journalctl`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> commands can be used to view the failed system's `systemd-journald` logs. Since the system was booted on a rescue ISO, the system can then just be powered off once you have viewed the `systemd-journald` logs.
+{% endhint %}
 
+### systemd-cat
 
+Since `systemd-journald` stores data in a binary database, instead of text files, adding data to the logs requires the use of a tool. The `systemd-cat` command allows you to add to the `systemd-journald` data.
 
+> The output from a command can be piped into `systemd-cat` to have the outputfrom the command entered into the logs.
 
+Similar to the <mark style="color:red;">`logger`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command, using <mark style="color:red;">`systemd-cat`</mark> to send command output to logs can be used to verify that entries that have been made in the `/etc/systemd/journald.conf` file are working as expected. The `systemd-cat` command can be executed with the following syntax:
 
+```
+systemd-cat [OPTIONS...] [COMMAND] [ARGUMENTS...]
+```
 
+When piping a command to <mark style="color:red;">`systemd-cat`</mark> ,all of the output is added to the `systemd-journald` ,and no output shows up on the screen. **To allow the output to show on the screen and add the output to the logs, you can use the **<mark style="color:red;">**`tee`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command.** Below is an example of adding the process list for the user to the `systemd-journald` while showing the output to the terminal.
 
+```bash
+sysadmin@localhost:~$ ps | tee /dev/tty1 | systemd-cat
+  PID TTY          TIME CMD
+  586 tty1     00:00:00 bash
+  668 tty1     00:00:00 ps
+  669 tty1     00:00:00 tee
+  670 tty1     00:00:00 cat
+sysadmin@localhost:~$ journalctl -r
+-- Logs begin at Fri 2019-11-01 09:44:11 CDT, end at Fri 2019-11-01 20:56:04 CDT. --
+Nov 01 20:56:02 ubuntu cat[670]: 670 pts/0    00:00:00 cat
+Nov 01 20:56:02 ubuntu cat[670]: 669 pts/0    00:00:00 tee
+Nov 01 20:56:02 ubuntu cat[670]: 668 pts/0    00:00:00 ps
+Nov 01 20:56:02 ubuntu cat[670]: 586 pts/0    00:00:00 bash
+Nov 01 20:56:02 ubuntu cat[4567]: PID TTY          TIME CMD
+```
 
+By examining the output of the `journalctl -r` command above, we can see the process list appears in the logs.
 
+{% hint style="info" %}
+Consider this
 
+If journaling is disabled on a production server, it could indicate that the system has been compromised. The following output can verify whether journaling has been disabled.
 
+```
+sysadmin@localhost:~$ echo "Hello" | systemd-cat
+Failed to create stream fd: No such file or directory
+```
 
+This can also be confirmed with the following command:
 
-
-
-
-
-
-
-
-
+```
+sysadmin@localhost:~$ sudo systemctl list-unit-files | grep journal
+```
+{% endhint %}

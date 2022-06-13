@@ -28,23 +28,23 @@ description: '108.2: System logging v2  Weight: 4'
 
 ## Introduction
 
-System loggin is the process of capturing most everything that happens on and to the Linux system and sending the information to log files to be viewed later. Logging system activity is one of the most useful Linux features as it allows an administrator to manage, optimize, secure, and troubleshoot the system and applications.
+System **logging is the process of capturing most everything that happens** on and to the Linux system and sending the information to log files to be viewed later. Logging system activity is one of the most useful Linux features as it allows an administrator to **manage**, **optimize**, **secure**, and **troubleshoot** the system and applications.
 
-In the past, the `syslogkd` and `klogd` daemons were two main components of `syslogd` that provided logging facilities for Linux.
+In the past, the <mark style="color:red;">`syslogkd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> and <mark style="color:red;">`klogd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> daemons were two main components of <mark style="color:red;">`syslogd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> that provided logging facilities for Linux.
 
 {% hint style="info" %}
-The `syslogkd` daemon provided applications and programs with logging services while the `klogd` daemon provided logging services for the Linux Kernel.
+The <mark style="color:red;">`syslogkd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> daemon provided applications and programs with logging services while the <mark style="color:red;">`klogd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> daemon provided logging services for the Linux Kernel.
 {% endhint %}
 
-A system logging daemon with additional capabilities called <mark style="color:red;">`syslog-ng`</mark> was later released as a replacement for `syslogd` .The <mark style="color:red;">`syslog-ng`</mark> service provided more detailed message sorting and formating than was available for `syslogd.`
+**A system logging daemon with additional capabilities called **<mark style="color:red;">**`syslog-ng`**</mark>** was later released as a replacement for **<mark style="color:red;">**`syslogd`**</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> .The <mark style="color:red;">`syslog-ng`</mark> service provided more detailed message sorting and formating than was available for `syslogd.`
 
 Many Linux distributions have replaced the combination of the `syslogd` and `klogd` daemons with the more recently developed <mark style="color:red;">`rsyslogd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> daemon. **The **<mark style="color:red;">**`rsyslog`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** service was designed as an alternative to **<mark style="color:red;">**`syslog-ng`**</mark>**.**
 
 {% hint style="info" %}
-<mark style="color:red;">`rsyslog`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> uses the basic <mark style="color:red;">`syslog`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> protocol but expands it to provide additional capabilites such as message filtering, queuing to manage offline output, and additional configuration options.
+<mark style="color:red;">`rsyslog`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> uses the basic <mark style="color:red;">`syslog`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> protocol but expands it to provide additional capabilites such as **message filtering**, **queuing** to **manage offline output**, and additional configuration options.
 {% endhint %}
 
-The `rsyslog` daemon configuration settings are stored in the `/etc/rsyslog.conf` file. This file contains syntax largely backward compatible with the `/etc/syslog.conf` configuration file for the `syslogd` service running  on legacy Linux systems.
+The <mark style="color:red;">`rsyslog`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> daemon configuration settings are stored in the <mark style="color:orange;">`/etc/rsyslog.conf`</mark> file. This file contains syntax largely backward compatible with the `/etc/syslog.conf` configuration file for the `syslogd` service running  on legacy Linux systems.
 
 ## Log File Location
 
@@ -82,7 +82,7 @@ authpriv.*                             /var/log/secure
 
 #### Facility
 
-![](<../../.gitbook/assets/imagen (1).png>)
+![](<../.gitbook/assets/imagen (1).png>)
 
 **The facility identifies the part of the system that produced some kind of message**. For example, messages from the Linux kernel can be selected using the `kern` facility.
 
@@ -108,7 +108,7 @@ To make up the first part of a selector, the following standard facilities are i
 
 **Priority**
 
-![](<../../.gitbook/assets/imagen (4).png>)
+![](<../.gitbook/assets/imagen (4).png>)
 
 The other part of the selector is the _priority_, which defines the severity of the message.&#x20;
 
@@ -131,7 +131,7 @@ There is also a special priority called `none` ,which means do not log from that
 
 #### Selector
 
-![](<../../.gitbook/assets/imagen (3).png>)
+![](<../.gitbook/assets/imagen (3).png>)
 
 The selector is comprised of both the _facility_ and the _priority_ separated by a period `.` character. The following table illustrates some common selectors. Note that an asterisk `*` wildcard character can be used to represent either all facilities or all priorities in a selector:
 
@@ -148,7 +148,7 @@ The selector is comprised of both the _facility_ and the _priority_ separated by
 
 #### Action
 
-![](<../../.gitbook/assets/imagen (2).png>)
+![](<../.gitbook/assets/imagen (2).png>)
 
 Combining a selector with an action results in a complete line in the `/etc/rsyslog.conf` file. The most common action is to specify the absolute path, the file that will store the information that is selected. The following table demonstrates the available actions:
 
@@ -199,6 +199,14 @@ To set up the host to do remote logging on a central server an entry needs to be
 ```
 
 After setting the `rsyslogd` options, the logging service would need to be restarted or the system rebooted for the change to take effect.
+
+{% hint style="info" %}
+Another way to verify that the logging service is running would be to check the status of the `rsyslog` service by executing:
+
+```
+rsyslogd -N1
+```
+{% endhint %}
 
 ## `logger` Command
 

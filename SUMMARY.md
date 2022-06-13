@@ -38,5 +38,5 @@
 * [Module 3: User and System Administration](102-500/module-3-user-and-system-administration.md)
   * [Chapter 7: Scheduling Jobs](102-500/chapter-7-scheduling-jobs.md)
   * [Chapter 8: Localization](102-500/module-3-user-and-system-administration/chapter-8-localization.md)
-* [Module 4: System Services](102-500/module-4-system-services/README.md)
-  * [Chapter 10: System Logging](102-500/module-4-system-services/chapter-10-system-logging.md)
+* [Module 4: System Services](102-500/module-4-system-services.md)
+  * [Chapter 10: System Logging](102-500/chapter-10-system-logging.md)

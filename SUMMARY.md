@@ -40,3 +40,4 @@
   * [Chapter 8: Localization](102-500/module-3-user-and-system-administration/chapter-8-localization.md)
 * [Module 4: System Services](102-500/module-4-system-services.md)
   * [Chapter 10: System Logging](102-500/chapter-10-system-logging.md)
+  * [Chapter 11: Email Configuration](102-500/module-4-system-services/chapter-11-email-configuration.md)

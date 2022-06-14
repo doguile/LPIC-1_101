@@ -293,13 +293,49 @@ The behaviour of the <mark style="color:red;">`newaliases`</mark> <mark style="c
 
 ## Mail Forwarding
 
+The `~/.forward` file, when placed in a user's home directory, is **used for automatically forwarding mail as it is received**. When a user receives an email, the MTA program checks the user's home directory for the `~/.forward` file. If the file exists, then the message is sent to the address(es) or alias(es) specified in this file.
 
+A sample `~/.forward` file:
 
+```bash
+sysadmin@localhost:~$ cat ~/.forward                                              
+support, psgsupport
+```
 
+This **will forward the incoming messages to the mailboxes** of `support` and `psgsupport` .The addresses or aliases specified should be valid addresses on the network. Once the message is forwarded, **a copy will not be retained in the user's mailbox.**
 
+> Program names can also be specified in the `~/.forward` file. For example, the following will forward the incoming messages to the mailbox of `support` and to the `vacation` command:
+>
+> ```bash
+> sysadmin@localhost:~$ cat ~/.forward                                              
+> support, "|/usr/bin/vacation"
+> ```
+>
+> The <mark style="color:red;">`vacation`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> utility is used to send auto-responses to mail.
 
+One of the common uses of `~/.forward` file is to configure mail forwarding in situations when the user will be out of the office for an extended period. It is also possible to apply specific rules while forwarding if using the `exim` MTA.
 
+> For example, if the subject contains the phrase `Production Problem` ,then the`exim` MTA could be configured to escalate the message and sent ot a certain set of recipients with high priority.
 
+The `~/.forward` file should be deleted when the forwarding feature is no longer needed.
+
+## SMTP Mail Protocol and Mail Transfer Agents
+
+Simple Mail Transfer Protocol (SMTP) is the **** standard protocol for communication between email servers. Most email systems that send mail over the internet use **SMTP to send messages from one server to another**; the messages are then **retrieved with an email client using either POP3** (Post Office Protocol) **or IMAP** (Internet Message Access Protocol).
+
+{% hint style="info" %}
+Most Internet Service Providers (ISPs) provide both an SMTP server (such as `sendmail`) and a POP3 or IMAP server
+{% endhint %}
+
+SMTP can transfer mail over the same network or to some other network via a gateway. **It uses TCP/UDP port number 25 for communication**.
+
+{% hint style="danger" %}
+While configuring an email client, like Thunderbird, it is essential to specify the address of the SMTP server for outgoing mail.
+{% endhint %}
+
+The **Mail Transfer Agent (MTA) is a program on a server that is responsible for transferring and routing an email message** from the sender's computer to the recipient's computer. **MTAs use SMTP to transfer emails**.&#x20;
+
+End-users use email clients, known as **Mail User Agents (MUAs) to retrieve, read, and send email.**
 
 
 

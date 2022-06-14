@@ -337,9 +337,29 @@ The **Mail Transfer Agent (MTA) is a program on a server that is responsible for
 
 End-users use email clients, known as **Mail User Agents (MUAs) to retrieve, read, and send email.**
 
+#### Mail Transfer Agents
 
+There are many MTAs available, each with their own strengths and weaknesses. Some are easy to install and configure, some have strong security. **Microsoft Exchange** and **UNIX/Linux **<mark style="color:red;">**`sendmail`**</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> are two of the more common MTAs used today.&#x20;
 
+Four of the most popular MTAs found on Linux systems are: <mark style="color:red;">`sendmai`</mark><mark style="color:red;">l</mark>, <mark style="color:red;">`postfix`</mark>, <mark style="color:red;">`qmail`</mark>, and <mark style="color:red;">`exim`</mark>.
 
+{% hint style="warning" %}
+The `qmail` MTA is mentioned for historical purposes in the even an administrator needs to administer an older Linux system.
+{% endhint %}
+
+### sendmail
+
+The first version of `sendmail` was released in 1979 and was known as `delivermail`.  To adapt to the TCP protocol, `sendmail` was rewritten. At one point, `sendmail` was the standard MTA.
+
+<mark style="color:red;">**`sendmail`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** uses DNS fro translating hostnames into their network addresses**. It is designed to transport messages between various types of systems such as Solaris, Linux, and AIX
+
+`sendmail` has two major components: the `sendmail` program (referred to as the binary) and the `sendmail` configuration file (`/etc/mail/sendmail.cf` ) to allow for complex customization.
+
+The `sendmail` configuration file is the core of its funciontality. It contains the information required for all tasks, such as locations of files, access permissions, and mode of operation. It also holds rules for converting mail addresses into formats required for delivery.
+
+> The symbols used for writting the rules make it difficult for understanding and parsing the rules using scripts.
+
+When a message arrives for delivery, it is processed as follows:
 
 
 

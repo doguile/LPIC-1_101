@@ -30,6 +30,22 @@ CUPS implements the **Internet Printing Protocol (IPP)** to send jobs from clien
 
 When a document or web page is printed, CUPS creates a queue to keep track of the print job. The printer can be connected directly to the computer, or it could be on the network.The queue contains the name of the document being printed and can be monitored by the user. The user can cancel the job while it is in the queue. Once the job is completed, CUPS  removes it from the queue and sends the next job in the queue to the printer.
 
+{% hint style="warning" %}
+To automatically start at boot time, you could execute the following command for legacy systems:
+
+```
+[root@localhost ~]# chkconfig cups on
+```
+
+Or the following command for systemd systems:
+
+```
+[root@localhost ~]# systemctl enable cups
+```
+
+While the previous step is not required for this lab, in the real world you would want to execute this command so that the CUPS services would be turned on after each system reboot.
+{% endhint %}
+
 ## Configuring CUPS
 
 The <mark style="color:orange;">**`/etc/cups/`**</mark> directory **contains the configuration files for CUPS**. The key configuration files for CUPS are as follows:
@@ -183,6 +199,8 @@ By default, **CUPS can only be administered by the root user**. Users who are me
 lpadmin -p testprinter -E -v parallel:/dev/lp
 ```
 
+> The <mark style="color:red;">`-p`</mark> option is used to **specify the printer name**. The <mark style="color:red;">`-E`</mark> option is used to **enable the printer to accept jobs**. The <mark style="color:red;">`-v`</mark> option is used to **specify the device** (the file that represents the printer) **that will be used.** The `/dev/lp` device represents the parallel port.
+
 This will add a new printer called `testprinter` on the parallel port. **The **<mark style="color:red;">**`-E`**</mark>** option** **enables the printer and accepts jobs.**
 
 To make `testprinter` the **default printer, execute **<mark style="color:red;">**`-d`**</mark>** option** to the `lpadmin` command followed by the name of the new printer.
@@ -198,6 +216,12 @@ lpadmin -x testnewprinter
 ```
 
 This will delete the printer and pending jobs in its queue. If a job is currently being printed, the it will be aborted.
+
+**Check the status of all printers** on the system by executing the <mark style="color:red;">`lpstat -a`</mark> command:
+
+```
+lpstat -a
+```
 
 ## CUPS Scheduler
 

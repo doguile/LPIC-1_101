@@ -41,3 +41,4 @@
 * [Module 4: System Services](102-500/module-4-system-services.md)
   * [Chapter 10: System Logging](102-500/chapter-10-system-logging.md)
   * [Chapter 11: Email Configuration](102-500/module-4-system-services/chapter-11-email-configuration.md)
+  * [Chapter 12: Printer Management](102-500/module-4-system-services/chapter-12-printer-management.md)

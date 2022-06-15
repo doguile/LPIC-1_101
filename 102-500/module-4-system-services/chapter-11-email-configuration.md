@@ -234,7 +234,7 @@ The fields in the output are described below:
 The mail behaviour of the <mark style="color:red;">`mailq`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> commands is identical to the <mark style="color:red;">`sendmail -bp`</mark> command for systems that are using the `sendmail` service.
 {% endhint %}
 
-To have messages in the mail queue re-sent, use the <mark style="color:red;">`-q`</mark> option to the `mailq` command
+To have **messages** in the mail queue **re-sent, use the **<mark style="color:red;">**`-q`**</mark>** option to the **<mark style="color:red;">**`mailq`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command**
 
 ## Aliasing Email Address
 

@@ -140,7 +140,7 @@ Deny uk.netdevgroup.com
 ```
 {% endhint %}
 
-The <mark style="color:orange;">**`/etc/cups/printers.conf`**</mark> file is used by the `cupsd` daemon to **store the list of available local printers.** This is a plain text file, which can be updated using the web interface or the `lpadmin` command.
+The <mark style="color:orange;">**`/etc/cups/printers.conf`**</mark> file is used by the <mark style="color:red;">`cupsd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> daemon to **store the list of available local printers.** This is a plain text file, which **can be updated using the web interface or the **<mark style="color:red;">**`lpadmin`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command.**
 
 A sample `printers.conf` file would look like the following:
 
@@ -157,7 +157,7 @@ KLimit 0
 </Printer>
 ```
 
-The **`DefaultPrinter` ** directive indicates the printer as the default print server. The `DeviceURI` directive specifies the device file allocated to this printer.
+The **`DefaultPrinter` ** directive **indicates the printer as the default print server.** The `DeviceURI` directive specifies the device file allocated to this printer.
 
 The CUPS Web Interface is the easiest way to configure and manage local and network printers and can be accessed through any web browser using the URL: _//localhost:631_
 
@@ -174,7 +174,7 @@ _**Print classes are a set of printers that have been assigned a single name**_,
 {% endhint %}
 
 {% hint style="info" %}
-By default, CUPS can only be administered by the root user. Users who are members of the group specified in the `SystemGroup` directive in the `/etc/cups/cupsd.conf` file can also administer CUPS.
+By default, **CUPS can only be administered by the root user**. Users who are members of the group specified in the `SystemGroup` directive in the `/etc/cups/cupsd.conf` file can also administer CUPS.
 {% endhint %}
 
 **The commnad line alternative to the CUPS Web Interface** program for adding CUPS printers and classes **is the **<mark style="color:red;">**`lpadmin`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command**. For example, to **add a new local printer** execute the <mark style="color:red;">**`-p`**</mark> option:
@@ -183,7 +183,7 @@ By default, CUPS can only be administered by the root user. Users who are member
 lpadmin -p testprinter -E -v parallel:/dev/lp
 ```
 
-This will add a new printer called `testprinter` on the parallel port. The <mark style="color:red;">`-E`</mark> option **enables the printer and accepts jobs.**
+This will add a new printer called `testprinter` on the parallel port. **The **<mark style="color:red;">**`-E`**</mark>** option** **enables the printer and accepts jobs.**
 
 To make `testprinter` the **default printer, execute **<mark style="color:red;">**`-d`**</mark>** option** to the `lpadmin` command followed by the name of the new printer.
 

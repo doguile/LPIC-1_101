@@ -34,6 +34,8 @@ The sending and receiving of email has been an important form of communication s
 
 The core functionality of each MTA is identical, but the format of configuration files is distinct.
 
+![](<../../.gitbook/assets/imagen (2).png>)
+
 ## `mail` Command
 
 The <mark style="color:red;">**`mail`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command is a built-in-text-based _**Mail Userg Agent (MUA)**_ for Linux that **does not support attachments.** The <mark style="color:red;">`mail`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command provides a command interface for the mail system.&#x20;
@@ -170,7 +172,7 @@ EOT
 To delete/reply a specific message, use `d/r` followed by a message number, such as `d2` or `r1`, followed by **Enter**
 {% endhint %}
 
-To end the current mail session and preserver any unread messages, type `q` or `quit` after the mail prompt.
+To **end the current mail session and preserver any unread messages**, type <mark style="color:red;">`q`</mark> or `quit` after the mail prompt.
 
 ```
 ? q
@@ -181,10 +183,10 @@ sysadmin@localhost:~$
 
 Some of the key options of the <mark style="color:red;">`mail`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command are:
 
-| Option         | Meaning                                                                                                                                        |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `-f file_name` | <p>Read and process the contents of the mailbox or the specified file</p><p>Upon quitting, undeleted messages are written back to the file</p> |
-| `-n`           | Do not read `/etc/mail.rc` at startup time                                                                                                     |
+| Option                                         | Meaning                                                                                                                                        |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| <mark style="color:red;">`-f file_name`</mark> | <p>Read and process the contents of the mailbox or the specified file</p><p>Upon quitting, undeleted messages are written back to the file</p> |
+| <mark style="color:red;">`-n`</mark>           | Do not read `/etc/mail.rc` at startup time                                                                                                     |
 
 ### Sending Mail
 
@@ -234,7 +236,7 @@ The fields in the output are described below:
 The mail behaviour of the <mark style="color:red;">`mailq`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> commands is identical to the <mark style="color:red;">`sendmail -bp`</mark> command for systems that are using the `sendmail` service.
 {% endhint %}
 
-To have messages in the mail queue re-sent, use the <mark style="color:red;">`-q`</mark> option to the `mailq` command
+To have **messages** in the mail queue **re-sent, use the **<mark style="color:red;">**`-q`**</mark>** option to the **<mark style="color:red;">**`mailq`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command**
 
 ## Aliasing Email Address
 
@@ -349,61 +351,110 @@ The `qmail` MTA is mentioned for historical purposes in the even an administrato
 
 ### sendmail
 
-The first version of `sendmail` was released in 1979 and was known as `delivermail`.  To adapt to the TCP protocol, `sendmail` was rewritten. At one point, `sendmail` was the standard MTA.
+The first version of <mark style="color:red;">`sendmail`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> was released in 1979 and was known as <mark style="color:red;">`delivermail`</mark>.  To adapt to the TCP protocol, `sendmail` was rewritten. At one point, `sendmail` was the standard MTA.
 
 <mark style="color:red;">**`sendmail`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** uses DNS fro translating hostnames into their network addresses**. It is designed to transport messages between various types of systems such as Solaris, Linux, and AIX
 
-`sendmail` has two major components: the `sendmail` program (referred to as the binary) and the `sendmail` configuration file (`/etc/mail/sendmail.cf` ) to allow for complex customization.
+<mark style="color:red;">`sendmail`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> has two major components: **the `sendmail` program** (referred to as the binary) and **the `sendmail` configuration file** (`/etc/mail/sendmail.cf` ) to allow for complex customization.
 
-The `sendmail` configuration file is the core of its funciontality. It contains the information required for all tasks, such as locations of files, access permissions, and mode of operation. It also holds rules for converting mail addresses into formats required for delivery.
+The <mark style="color:red;">`sendmail`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> configuration file is the core of its funciontality. It contains the information required for all tasks, such as locations of files, access permissions, and mode of operation. It also holds rules for converting mail addresses into formats required for delivery.
 
 > The symbols used for writting the rules make it difficult for understanding and parsing the rules using scripts.
 
 When a message arrives for delivery, it is processed as follows:
 
+* If both the recepient and the sender are on the same machine, then `sendmail` delivers the message directly
+* If the sender's and recepient's machines share a UUCP (Unix to Unix Copy) connection, then `sendmail` uses the `uux` program to delivery the message
+* If the recepient's address is an internet address, then `sendmail` uses SMTP to deliver the message.
 
+{% hint style="warning" %}
+Since all messages cannot be delivered instantaneously, an intermediate storage location is required to hold messages for sending later. `sendmail` saves such messages in queues, which are files or directories on the file system. A message will be queued under the following conditions:
 
+* `sendmail` can be configured to queue all messages by default to protect against message loss in case the system crashes
+* If a message is intended for multiple recipients and delivery to some of the recipients fails, then the failed messages will be queued and retried again at a later time.
+* If the destination machine is unreachable for any reason, then the message will be queued and scheduled for delivery only when the machine becomes available again.
+{% endhint %}
 
+The _header_ of a message is the most important component from the `sendmail` program's perspective. The `sendmail` program will analyze the header for routing information and, based on the rules in the configuration file, process the message.
 
+**The **<mark style="color:red;">**`sendmail`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** daemon manages the mail service**. The `/etc/mail/sendmail.cf` file is used to configure the `sendmail` daemon.
 
+### sendmail Commnad
 
+The `sendmail` facility, which includes the MTA components described above, also includes the `sendmail` command, which is a text-based email client used to send messages to recipients. **It handles the required routing to ensure correct delivery**.&#x20;
 
+The main function of the `sendmail` command is to deliver pre-formatted messages. The `sendmail` command is an alternative to the simpler `mail` command.
 
+Some of the key options of the `sendmail` command are:
 
+| Option                                      | Meaning                                                                                                                                           |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <mark style="color:red;">`-B type`</mark>   | Set the message’s body type to type, allowed values are `7BIT` or `8BITMIME`                                                                      |
+| <mark style="color:red;">`-bd`</mark>       | Run in the background as a daemon                                                                                                                 |
+| <mark style="color:red;">`-bD`</mark>       | Run as a foreground process                                                                                                                       |
+| <mark style="color:red;">`-bi`</mark>       | Initialize the alias database                                                                                                                     |
+| <mark style="color:red;">`-bp`</mark>       | List the mail queue                                                                                                                               |
+| <mark style="color:red;">`-bv`</mark>       | Verify the address without sending an actual message                                                                                              |
+| <mark style="color:red;">`-C file`</mark>   | Use the specified file as the configuration file                                                                                                  |
+| <mark style="color:red;">`-R return`</mark> | Used when a message bounces. If set to `full`, then the entire message will be returned. If set to `hdrs`, then only the header will be returned. |
+| <mark style="color:red;">`-t`</mark>        | Read message for recipients. The `To:`, `Cc:`, and `Bcc:` lines will be searched for valid recipient addresses.                                   |
 
+While many end-users will uses graphical-based email programs like Evolution. Thunderbird, and Pine or text-based programs like `mail`, `mailx`, `mutt` to send mail, a system administrator will use the `sendmail` command to test the functionality of the `sendmail` daemon.
 
+For example, to send mail to the `root` user on the local system, execute the following:
 
+```bash
+root@localhost:~ sendmail root@localhost
+```
 
+After entering the previous command, the cursor is placed on a blank line where the message can be entered via standard input (keyboard). **To send the message, enter a `.` (period) on a new line** and press the **Enter** key.
 
+```
+From: sysadmin@localhost To: root@localhost This is a test message!
+.
+```
 
+Message contents can be specified in a file and read by `sendmail` instead of typing manually like the example above. To use this method, create a file (i.e `sendmail.msg1`) with the following contents:
 
+```bash
+From: sysadmin@localhost 
+To: root@localhost 
+Subject: Test
+ 
+This is a test message!
+```
 
+To process this file, execute the following command:
 
+```bash
+root@localhost:~ sendmail -t -i < sendmail.msg1
+```
 
+This will read the `To:` line from the file and send the message to the specified recipient(s).
 
+### Postfix
 
+A limitation of the `sendmail` email program is its monolithic design. Many functins, such as queuing mail, interpreting `.forward` files, retrying mail and attempting SMTP deliveries are handled by a single executable, which causes potential security issues since the executable is owned by the `root` user
 
+Generally, Red Hat-based systems have two MTAs available, `postfix` and `sendmail`, with the default being `postfix` .Only one MTA should be running at a time.
 
+In the 1990s, the `postfix` program was developed at IBM as an alternative to `sendmail`. **The main advantages of the **<mark style="color:red;">**`postfix`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** program are its enhanced security and ease of administration.**
 
+{% hint style="info" %}
+The `postfix` program runs in a router-like mode where it accepts messages from different sources (such as local users and SMTP), support lookups in its maps to decide where to send messages, and applies any rules if specified on the message.
+{% endhint %}
 
+The `master` daemon oversees the operations of other `postfix` daemons. The queue manager daemon delegates delivery tasks to the local and SMTP daemons. It maintains a limited number of messages in the active queue and keeps the remaining messages in the deferred queue. **The **<mark style="color:red;">**`showq`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** daemon list the mail queue to provide the information required by the **<mark style="color:red;">**`mailq`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command.**
 
+The configuration file of the `postfix` program can be updated easily using the Postfix Admin web-based program.
 
+The <mark style="color:red;">`postfix`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> program provides a faster, secure, and easy to use alternative to <mark style="color:red;">`sendmail`</mark>
 
+### `exim`
 
+In 1995, anotehr alternative to the `sendmail` program, know as the `exim` program was developed. Like other alternatives to `sendmail` the main focus of the `exim` program was better security.
 
+The `exim` program follows a single binary for all functions design, similar to the `sendmail` program. But the `exim` program has an improved implementation with a focus on security. Also, it provides many features such as access control lists, for better policy control, integration with spam and virus scanners ,and managing  delivery issues with retry rules.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+The creators of the `exim` program opted to have the majority of the messages delivered immediately as long as there are no errors. So they tried to implement a mechanism where the message delivery time was reduced by doing away with a queuing mechanism.
 

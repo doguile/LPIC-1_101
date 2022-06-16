@@ -148,7 +148,7 @@ The selector is comprised of both the _facility_ and the _priority_ separated by
 
 #### Action
 
-![](<../.gitbook/assets/imagen (2).png>)
+![](<../.gitbook/assets/imagen (2) (1).png>)
 
 Combining a selector with an action results in a complete line in the `/etc/rsyslog.conf` file. The most common action is to specify the absolute path, the file that will store the information that is selected. The following table demonstrates the available actions:
 

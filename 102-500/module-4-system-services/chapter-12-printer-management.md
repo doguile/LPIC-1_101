@@ -320,7 +320,7 @@ For example, to print the `info.txt` file to the **default printer, execute the 
 lpr info.txt
 ```
 
-To send the `info.txt` file to a **specific printer** named `floor1`; execute the `lpr` command **with the **<mark style="color:red;">**`-P`**</mark>** option** followed by the name of the printer:
+To send the `info.txt` file to a **specific printer** named `floor1`; execute the <mark style="color:red;">`lpr`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command **with the **<mark style="color:red;">**`-P`**</mark>** option** followed by the name of the printer:
 
 ```bash
 lpr -P floor1 info.txt
@@ -332,7 +332,11 @@ To **print 3 copies** of the `info.txt` file, execute the following command:
 lpr -# 3 infor.txt
 ```
 
-The line printer remove <mark style="color:red;">`lprm`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is **used to delete queued print jobs.** To remove a job, either the user name or the job name could be specified. If the job name refers to a job currently being printed, then printing will be stopped and restarted after removing this print job.
+{% hint style="success" %}
+Recall that the <mark style="color:red;">`lpr`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command provides similar functionality to the <mark style="color:red;">`lp`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command.
+{% endhint %}
+
+The **line printer remove** <mark style="color:red;">`lprm`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is **used to delete queued print jobs.** To remove a job, either the user name or the job name could be specified. If the job name refers to a job currently being printed, then printing will be stopped and restarted after removing this print job.
 
 For example to **remove the last job that was submitted**, execute the <mark style="color:red;">`lprm`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command
 
@@ -384,4 +388,4 @@ sysadmin@localhost:~$ lpq -a
 
 The line printer control <mark style="color:red;">`lpc`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is **used to manage the print queues,** including starting and stopping the printers and changing the order of jobs on the print queues.
 
-The `lpd` commands, such as `lpr`, `lprm`, `lpq`, are suported in newer printing systems such as CUPS and allow users to send jobs to the printers and control the print queues using the command line.
+The <mark style="color:red;">`lpd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> commands, such as <mark style="color:red;">`lpr`</mark>, `lprm`, `lpq`, are suported in newer printing systems such as CUPS and allow users to send jobs to the printers and control the print queues using the command line.

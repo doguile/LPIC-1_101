@@ -101,25 +101,62 @@ An IPv4 network addressing scheme has been designed on the basis of the octects.
 * **Class D -** These addresses are **not assigned to network interfaces** and are **used for multicast operations** such as audio-video streaming. The 1st, 2nd, 3rd, and 4th bits of the first octet are set to `1, 1, 1,` and `0` respectively. The range values permissible are <mark style="color:red;">`224.0.0.0 - 239.255.255.255`</mark>&#x20;
 * **Class E -** These addresses are reserved for future use and the ranges values are <mark style="color:red;">`240.0.0.0 - 255.255.255.255`</mark>
 
-| Class   | Range                       |
-| ------- | --------------------------- |
-| Class A | `1.0.0.0 - 126.0.0.0`       |
-| Class B | `128.0.0.0 - 191.255.0.0`   |
-| Class C | `192.0.0.0 - 223.255.255.0` |
-| Class D | `224.0.0.0 - 239.0.0.0`     |
-| Class E | `240.0.0.0 - 255.0.0.0`     |
+| Class             | Range                                                                                   |
+| ----------------- | --------------------------------------------------------------------------------------- |
+| Class A           | `1.0.0.0 - 126.0.0.0`                                                                   |
+| Class A (private) | <p><code>0.0.0.0 - 0.255.255.255</code><br><code>127.0.0.0 - 127.255.255.255</code></p> |
+| Class B           | `128.0.0.0 - 191.255.0.0`                                                               |
+| Class C           | `192.0.0.0 - 223.255.255.0`                                                             |
+| Class D           | `224.0.0.0 - 239.0.0.0`                                                                 |
+| Class E           | `240.0.0.0 - 255.0.0.0`                                                                 |
 
+## Understanding Network Masks
 
+In order for computers to communicate directly on the same network, all the computers must be on the same subnet. A subnet is either an entire class A,B or C network or a portion of one of these networks.
 
+> To take a large class network and create a smaller portion, use a subnet mask.
 
+The **subnet mask is used to differentiate the network and subnet components of the IP address**. The subnet mask is not an IP address in itself; it is a numeric pattern used to indicate the portion of the IP addres that contains the network identifier.
 
+The addresses for Class A, B and C have default mask as follows:
 
+| Network Class | Subnet Mask     |
+| ------------- | --------------- |
+| Class A       | `255.0.0.0`     |
+| Class B       | `255.255.0.0`   |
+| Class C       | `255.255.255.0` |
 
+For example, consider a standard Class A IP address `10.9.8.1` and its default subnet mask expressed in binary format:
 
+* IP address: `00001010. 00001001. 00001000. 00000001`
+* Subnet mask: `11111111. 0000000. 00000000. 00000000`
 
+In the subnet mask, the octets where the **mask bits are `1`** represent the **network ID**, whereas the octets where the **mask bits are `0`** represent the **host ID**
 
+```bash
+11111111. 00000000. 00000000. 00000000
+|______|  |__________________________|  
+   |                    |
+Network ID           Host ID
+```
 
+In the previous example IP Address `10.9.8.1`, the network ID is `10` and the host ID is `9.8.1`.
 
+For example of a custom subnet, assume that a class C network, `202.16.8.0` has been allocated. In this case, you would take two bits from its default subnet mask and replace them with `1s` as follows:
+
+* Default Mask: `11111111. 11111111. 11111111. 00000000`
+* Subnet Mask: `11111111. 11111111. 11111111. 11000000`
+
+Using the two bits will give 4 (2^2) subnets, the remaining 6 bits will give 64 (2^6) host addresses for each subnet. The address range will be as follows:
+
+* `202.16.8.0 - 202.16.8.64`
+* `202.16.8.65 - 202.16.8.128`
+* `202.16.8.129 - 202.16.8.192`
+* `202.16.8.193 - 202.16.8.224`
+
+The subnet mask `255.255.255.192` has partitioned the class C network address into 4 sub-networks, and each of these sub-networks can be assigned to a particular group of machines.
+
+## Public and Private IPv4 Adresses
 
 
 

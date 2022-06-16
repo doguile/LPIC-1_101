@@ -34,7 +34,7 @@ The sending and receiving of email has been an important form of communication s
 
 The core functionality of each MTA is identical, but the format of configuration files is distinct.
 
-![](<../../.gitbook/assets/imagen (2).png>)
+![](<../../.gitbook/assets/imagen (2) (1).png>)
 
 ## `mail` Command
 

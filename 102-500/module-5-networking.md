@@ -81,11 +81,33 @@ The IP address is made up of 4 octets, which are sets of 8-bits values. The valu
 Octet #1   Octet #2   Octet #3  Octet #4
 ```
 
+{% hint style="warning" %}
+**Note**
 
+The 8-bit binary format can be translated to decimal value by using a multiplier. Only bits set to `1` will use a multiplier, and the multiplier is based on the location of the bit in the octet. Bits set to `1` should be assigned a value of 2, and bits set to `0` should be assigned a value of 0. The following shows what multipliers to use, based on the location of the bit:
 
+<img src="../.gitbook/assets/imagen (3).png" alt="" data-size="original">
 
+To demonstrate, based on the information above, we can determine by adding the multiplied bits (8+2) that the octet `00001010` has a decimal value of 10:
 
+![](<../.gitbook/assets/imagen (2).png>)
+{% endhint %}
 
+An IPv4 network addressing scheme has been designed on the basis of the octects. It classifies networks into 5 classes: A,B,C,D and ,E.
+
+* **Class A -** The **network is denoted by the first octect**, and the r**emaining three octets are used to create subnets** or identify hosts on the network. The first bit of the first octet is always `0` , so the range of values permissible is `00000001 - 01111111` ,i.e., `1 - 127` in decimal value (the first number of an IP address cannot be `0` by definition of IP addresses).  <mark style="color:red;">`1.0.0.0 - 126.0.0.0`</mark>
+* **Class B -** The **network is denoted by the 1st and 2nd octets**, and the **remaining 2 octets are used to create subnets** or identify hosts. The range values permissible are <mark style="color:red;">`128.0.0.0 - 191.255.0.0`</mark>&#x20;
+* **Class C -** The **network is denoted by the 1st, 2nd and 3rd octets**, and **the last octet is used to create subnets** or identify hosts.The range values permissible are <mark style="color:red;">`192.0.0.0 - 223.255.255.0`</mark>&#x20;
+* **Class D -** These addresses are **not assigned to network interfaces** and are **used for multicast operations** such as audio-video streaming. The 1st, 2nd, 3rd, and 4th bits of the first octet are set to `1, 1, 1,` and `0` respectively. The range values permissible are <mark style="color:red;">`224.0.0.0 - 239.255.255.255`</mark>&#x20;
+* **Class E -** These addresses are reserved for future use and the ranges values are <mark style="color:red;">`240.0.0.0 - 255.255.255.255`</mark>
+
+| Class   | Range                       |
+| ------- | --------------------------- |
+| Class A | `1.0.0.0 - 126.0.0.0`       |
+| Class B | `128.0.0.0 - 191.255.0.0`   |
+| Class C | `192.0.0.0 - 223.255.255.0` |
+| Class D | `224.0.0.0 - 239.0.0.0`     |
+| Class E | `240.0.0.0 - 255.0.0.0`     |
 
 
 

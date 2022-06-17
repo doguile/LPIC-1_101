@@ -101,14 +101,13 @@ An IPv4 network addressing scheme has been designed on the basis of the octects.
 * **Class D -** These addresses are **not assigned to network interfaces** and are **used for multicast operations** such as audio-video streaming. The 1st, 2nd, 3rd, and 4th bits of the first octet are set to `1, 1, 1,` and `0` respectively. The range values permissible are <mark style="color:red;">`224.0.0.0 - 239.255.255.255`</mark>&#x20;
 * **Class E -** These addresses are reserved for future use and the ranges values are <mark style="color:red;">`240.0.0.0 - 255.255.255.255`</mark>
 
-| Class             | Range                                                                                   |
-| ----------------- | --------------------------------------------------------------------------------------- |
-| Class A           | `1.0.0.0 - 126.0.0.0`                                                                   |
-| Class A (private) | <p><code>0.0.0.0 - 0.255.255.255</code><br><code>127.0.0.0 - 127.255.255.255</code></p> |
-| Class B           | `128.0.0.0 - 191.255.0.0`                                                               |
-| Class C           | `192.0.0.0 - 223.255.255.0`                                                             |
-| Class D           | `224.0.0.0 - 239.0.0.0`                                                                 |
-| Class E           | `240.0.0.0 - 255.0.0.0`                                                                 |
+| Class   | Range                       |
+| ------- | --------------------------- |
+| Class A | `1.0.0.0 - 126.0.0.0`       |
+| Class B | `128.0.0.0 - 191.255.0.0`   |
+| Class C | `192.0.0.0 - 223.255.255.0` |
+| Class D | `224.0.0.0 - 239.0.0.0`     |
+| Class E | `240.0.0.0 - 255.0.0.0`     |
 
 ## Understanding Network Masks
 
@@ -158,17 +157,110 @@ The subnet mask `255.255.255.192` has partitioned the class C network address in
 
 ## Public and Private IPv4 Adresses
 
+There are two types of IP addresses used on a network: _public_ and _private_. The **InterNIC (Network Information Center)** is the global body responsible for assigning public addresses. They assign class-based network IPs, which are always unique. The public addresses are available with internet routers so that data can be delivered correctly
 
+{% hint style="info" %}
+Only systems such as email servers, web servers, and proxies (which hanlde intermediary request from clients seeking resources from other servers) need direct connectivity to the internet so that users outside of the LAN can connect to these servers.
+{% endhint %}
 
+On the other hand, users who work on their own machines and want to connect to the internet do not need a globally unique IP address. Instead, they can be assigned private IP addresses, which are then converted to public IP addresses by the gateway/router.
 
+According to **RFC 1918**, a portion of the IP address space has been designated as "_private addresses_". This range of addresses does not overlap with the public addresses.
 
+> The private addresses can be reused, which means the risk of running out of addresses on the internet has been mitigated. The private address space is not directly reachable through the internet.
 
+To access devices utilizing the private address space, a router using NAT (Network Address Translation) will need to be configured. There are 3 blocks of private addresses:
 
+**Class A  -** This range address allow from `10.0.0.1 - 10.255.255.254`. The 24 bits from the host ID are available for subnetting
 
+```
+10.0.0.0/8 - 255.0.0.0
+```
 
+**Class B -** network allows the range of addresses from `127.16.0.1 - 172.31.255.254` .The 20 bits from the host ID are available for subnetting.
 
+```
+172.16.0.0/12 - 255.240.0.0
+```
 
+Class C - network allows the range of addresses from `192.168.0.1 - 192.168.255.254`. The 16 bits from the host ID are available for subnetting.
 
+```
+192.168.0.0/16 - 255.255.0.0
+```
+
+## Comparing IPv4 and IPv6
+
+The IPv4 addresses are made up of four 8-bit octets for a total of 32-bit. This means the maximum numbner of possible addresses is 2^32, which is less than 4,294,967,296.
+
+The IPv6 addresses are based on 128-bit. Using similar calculations,as shown above, the maximum number of possible addresses is 2^128, which gives a massively large pool of addresses.
+
+{% hint style="info" %}
+The IPv6 addresses consist of eight 16-bit segments, which means each segment can have 2^16 possible values, and are expressed in hexadecimal format.
+{% endhint %}
+
+A brief comparison of IPv4 vs IPv6
+
+| Feature             | IPv4                                                       | IPv6                                                                                      |
+| ------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Address Size        | 32-bit                                                     | 128-bit                                                                                   |
+| Address Format      | <p>Decimal dotted quad</p><p><code>192.168.20.8</code></p> | <p>Hex notation</p><p><code>4AAE:F200:0342:AA00:0135:4680:7901:ABCD</code></p>            |
+| Number of addresses | 232                                                        | 2128                                                                                      |
+| Broadcasting        | Uses broadcasting to send data to all hosts on a subnet    | No broadcast addresses, uses multicast scoped addresses as a way to selectively broadcast |
+
+## Default Route
+
+The function of routing is to send and IP packet, consisting of a header (source and destination address) and encapsulated data, from one point to another.
+
+All devices have **routing tables**, which contain routes **used to calculate the optimal journey of hte messages** that it is responsible for forwarding through other routers in the same or other networks.
+
+When a computer sends packets to another computer, it consults its routing table. **If a packet is being sent to a destination on the same subnet, no routing is needed**, and the packet is sent directly to the computer. **If a packet is being sent to another network**, **then the first "hop" a packet will go** **is to whatever is in the default gateway field** and lets the router decide the optimal path forward.
+
+The router for the network will have its own routing table, including its own _default route_. The routing table is a list of other routers that are connected to the current router. If the router receives a packet for a network destination that it has in its routing table, it simply forwards it. Otherwise, **the router will send the packet to its default route**.
+
+To view the existing routing table, execute the `route` command:
+
+```bash
+root@localhost:~# route                                                  
+Kernel IP routing table
+Destination       Gateway       Genmask         Flags Metric Ref Use Iface
+default           192.168.1.1     0.0.0.0       UG    0       0   0   eth1
+192.168.1.0       *           255.255.255.0     UG    0       0   0   eth1
+192.168.2.0       *           255.255.255.0     UG    0       0   0   eth0
+```
+
+In the output of the kernel routing table:
+
+* The first column contains the `Destination` network addresses. The word `default` signifies the default route.
+* The second column contains the defined `Gateway` for the specified destination. In the event that **an asterisk **<mark style="color:red;">**`*`**</mark>** is shown**, it means that **a gateway is not needed to access the destination network**.
+* The `Genmask` column shows the netmask for the destination network.
+* In the `Flags` column, **a **<mark style="color:red;">**`U`**</mark>** means the route is up and available**, whereas the <mark style="color:red;">**`G`**</mark>** means that the specified gateway should be used for this route**.
+* The <mark style="color:red;">**`Metric`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> column defines the **distance to the destination**. This is typically listed in the **number of hops** (the number of routers between source and destination)
+* The `Ref` column is not used by the Linux Kernel.
+* The <mark style="color:red;">**`Use`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> column is used to define the **number of lookups for the route**.
+* Finally, the `Iface` column is used to define the exit interface for this route.
+
+All other network packets are sent to the router with the IP address of 192.168.1.1 via the `eth1` network card.
+
+```bash
+route add default gw 192.168.1.1 eht1
+```
+
+Now , if any of the routes in the routing table do not match the specified address, then the packet will be forwarded to `192.168.1.1` (the default route)
+
+{% hint style="info" %}
+The <mark style="color:red;">`route`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command has been superseded by the <mark style="color:red;">`ip route`</mark> command ,which is part of the <mark style="color:red;">`iproute2`</mark> suite of utilities.
+{% endhint %}
+
+## Understanding TCP
+
+The _Transmission Control Protocol (TCP)_ provides **connection-oriented service** between two applications exchanging data. The protocol **guarantees delivery of data**.
+
+The **sequence number** mechanism in the header **ensures ordered delivery of data**. The web server will then service GET requests sent on the HTTP port for web pages. **For error control**, **TCP uses the acknowledgment number** in the header.
+
+> The client sends the acknowledgment number to the server. If the server sends 2000 bytes of data to the client and the client acknoledges only 1000 bytes, then it indicates loss of data. The web server will thne retransmit the data.
+
+## Using FTP
 
 
 

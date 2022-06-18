@@ -249,7 +249,18 @@ route add default gw 192.168.1.1 eht1
 Now , if any of the routes in the routing table do not match the specified address, then the packet will be forwarded to `192.168.1.1` (the default route)
 
 {% hint style="info" %}
-The <mark style="color:red;">`route`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command has been superseded by the <mark style="color:red;">`ip route`</mark> command ,which is part of the <mark style="color:red;">`iproute2`</mark> suite of utilities.
+The <mark style="color:red;">`route`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command has been superseded by the <mark style="color:red;">`ip route show`</mark> command ,which is part of the <mark style="color:red;">`iproute2`</mark> suite of utilities.
+{% endhint %}
+
+{% hint style="info" %}
+New routes can be added on-the-fly with the <mark style="color:red;">`ip route add`</mark> command, but they are not persistent. To add a router device that has the IP address of `10.0.0.0` as a new default route, execute the following command.&#x20;
+
+```bash
+sudo ip route add 10.0.0.0/24 dev ens3
+ip route show
+```
+
+
 {% endhint %}
 
 ## Understanding TCP

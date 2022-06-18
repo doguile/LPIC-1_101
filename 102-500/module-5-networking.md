@@ -262,9 +262,304 @@ The **sequence number** mechanism in the header **ensures ordered delivery of da
 
 ## Using FTP
 
+FTP is a protocol that **uses TCP for transport** and reliable delivery. The <mark style="color:red;">`ftp`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command provides the user interface to the standard File Transfer Protocol (FTP). Using the <mark style="color:red;">`ftp`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> utility, **a user can transfer files to and from remote machines**. It can be used for UNIX as well as non-UNIX machines. The service is **provided by the **<mark style="color:red;">**`ftpd`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** daemon**, which uses the TCP protocol and listens to the FTP ports specified in the `/etc/services` file for FTP requests.
 
+To connect to a particular host via `ftp`, execute the command:
 
+```bash
+ftp ftp_server_host_name [or IP address]
+```
 
+For example:
 
+```bash
+sysadmin@localhost:~$ ftp 127.0.0.1
+ftp>
+```
 
+If the FTP service is running on the specified host, the user will be prompted to log in using a known user name and password.
 
+{% hint style="danger" %}
+**Consider this**
+
+The username and password used to log in to an FTP server are sent over the network without being encrypted. The opportunity for someone to capture this information as it crosses from network to network and host to host is very dangerous.
+{% endhint %}
+
+Once logged into the FTP server, the `ftp>` prompt will be displayed. You will find that you can view and navigate the filesystem of the FTP server similar to your own local filesystem using command like `ls` and `cd` commands.
+
+The <mark style="color:red;">`lcd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command can be **used to change your local working directory** to affect where files will get downloaded or uploaded.
+
+```bash
+ftp>  lcd                                         
+Local Directory now /home/sysadmin                                               
+ftp>  lcd  /tmp                                        
+Local Directory now /tmp
+```
+
+To **execute other commands** on your local machine while logged in to the FTP server, prefix a command with **an **<mark style="color:red;">**`!`**</mark>** exclamation point**.
+
+```bash
+ftp> !ping 127.0.0.1                                        
+PING 127.0.0.1[127.0.0.1]  56(84)  bytes of data.
+64 bytes from 127.0.0.1:  icmp_seq=0  ttl=255  time=0.5 ms
+64 bytes from 127.0.0.1:  icmp_seq=1  ttl=255  time=0.3 ms
+ 
+‌⁠​​⁠​ 
+---  127.0.0.1  ping statistics ---
+2 packets transmitted, 2 packets received,  0% packet loss round-trip
+```
+
+For additional assistance, use the <mark style="color:red;">`help`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command while logged in to the FTP server.
+
+```bash
+ftp> help
+ftp> ?
+```
+
+The **default file transfer mode for the** <mark style="color:red;">`ftp`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> **utility is **_**ASCII**_, which is used for ordinary text files. To transfer other types of files (i.e program files, zip files, or tar files, etc.) it is recommended that the server is in **binary transfer mode**. To set the file transfer mode to binary, execute the <mark style="color:red;">`bin`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command in the FTP server.
+
+```bash
+ftp> bin
+```
+
+To **retrieve or download a file from the remote machine** to your local machine, **use the **<mark style="color:red;">**`get`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command**. For example, to download the `devsrcode.tar` file (binary) from the FTP server named `server1` to the `/tmp` directory on the local machine, execute the following `ftp` commands:
+
+```bash
+sysadmin@localhost:~$ ftp server1
+ftp> bin
+ftp> lcd /tmp
+Local Directory no /tmp
+ftp> get devsrcode.tar
+local: devsrccode.tar remote: devsrccode.tar
+200 PORT command successful.  Consider using PASV.
+150 Opening BINARY mode data connection for devsrccode.tar (1000 bytes).
+226 Transfer complete.
+ftp> !ls
+devsrcode.tar
+```
+
+To **send or upload a file from your local machine** to the remote machine, **use the **<mark style="color:red;">**`put`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command**. For example, to upload the `devrscode.tar` from the local machine to the server, execute the following command:
+
+```bash
+ftp> put devsrcode.tar
+```
+
+To download multiple files, use the `mget` command. If you wanted to download all the `*.tar` files in a particular directory from the server to the local machine, execute the following command:
+
+```bash
+ftp> mget *.tar
+```
+
+To quit <mark style="color:red;">`ftp`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> ,execute the command:
+
+```bash
+ftp> quit
+sysadmin@localhost:~$
+```
+
+## Using Telnet
+
+Telnet is another protocol that **uses TCP for transport and reliable delivery**. The telnet Protocol is **used for interactive communication** with host machines using TCP/IP. The <mark style="color:red;">`telnet`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command provides the user interface to the standard Telnet protocol. T**he service is provided by the `telnetd` daemon,** which services requests from clients to connect to the Telnet port specified in the `/etc/services` file.
+
+To open a <mark style="color:red;">`telnet`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> session to the server, execute the following:
+
+```
+telnet host_name [or IP address]
+```
+
+If either the hostname or IP address is specified, then the <mark style="color:red;">`telnet`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command implicity executes the `open` option to open a connection to the host. If the telnet service is running on the specified host, then the user will be prompted to log in using their user name and password.
+
+```bash
+sysadmin@localhost:~$ telnet server1
+Trying 192.9.49.10 …
+Connected to server1
+Escape character is ‘^]’.
+Welcome to server1
+ 
+‌⁠​​⁠​ 
+login: root
+Password:
+Last login:  Mon Mar 8 8:35:15 from localhost
+root@localhost:~#
+```
+
+To end a <mark style="color:red;">`telnet`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> session, log out normally with the <mark style="color:red;">`logout`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> or <mark style="color:red;">`exit`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command. **If you find yourself stuck within the **<mark style="color:red;">**`telnet`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** client**, use **Ctrl+]** to get to a <mark style="color:red;">`telnet`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> prompt. From the <mark style="color:red;">`telnet`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> prompt, type `help` to get assisstance or `quit` to exit `telnet`
+
+The `telnet` protocol can be very **useful as a troubleshooting tool to determine whether a daemon is listening and responding on a certain port**. To specify a port other than the standard port 23, you add the port number after the host specification. For example, to see if there is a service or daemon listening on port 25 on your own host, execute:
+
+```bash
+root@localhost:~# telnet localhost 25                                           
+Trying ::1...                                                                   
+Trying 127.0.0.1...                                                             
+Connected to localhost.                                                         
+Escape character is '^]'.                                                       
+220 localhost ESMTP Sendmail 8.14.4/8.14.4/Debian-4.1ubuntu1; Mon, 8 Mar 2015 
+8:40:15 GMT; (No UCE/UBE) logging access from: localhost(OK)-localhost [127.0.0.
+1]                                                                              
+^C
+```
+
+{% hint style="info" %}
+**Consider this**
+
+The <mark style="color:red;">`telnet`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> protocol suffers the same defect as <mark style="color:red;">`ftp`</mark>; the packets that are sent aare not encrypted.
+{% endhint %}
+
+## Understanding UDP
+
+_User Datagram Protocol (UDP)_ provides **connectionless service** between two applications exchanging data. Unlike TCP, **UDP has no error control** and does not guarantee the transfer of data.
+
+UDP **sends data without notifying the receiver prior to sending**. As a result, it does not offer either ordered or reliable delivery.
+
+The header of UDP packets is lightweight as compared to TCP packets since it **does not contain sequence or acknowledgment numbers**. It uses a simple, optional checksum mechanism for error-checking.
+
+**UDP is faster than TCP** and is used in services such as VoIP, streaming video, and DNS.
+
+## `/etc/services` File
+
+In order to make it easy to distinguish between packets destined for different services, each service is assigned one or more port numbers.
+
+The `/etc/services` file is used for mapping application service names to port numbers. This file exists on each system and can be modified only by the root user. Generally, there is no need to modify this file since most of the service use their own configuration files to determine port numbers; however, this file does provide a good reference for standard port numbers.
+
+{% hint style="info" %}
+**Consider this**
+
+**The **<mark style="color:orange;">**`/etc/services`**</mark>** file is queried by programs using the **<mark style="color:orange;">**`getportbyname()`**</mark>** ** Application program interface (API) to determine the port number that they should open a socket connection to.&#x20;
+
+For example, if the <mark style="color:red;">`finger`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is used to do a name lookup for a user on a remote machine, then it executes a `getporbyname()` API for the <mark style="color:red;">`finger`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> service and fetches the corresponding port number, which is 79.
+{% endhint %}
+
+The port numbers in the range `0 - 1023` are assigned as per the Request For Commnets (RFC) 1700 standard. This RFC also mentions the standard use of ports beyond `1023`
+
+The mapping of some of the commonly-used TCP and UDP ports are:
+
+| Port Number | Service        |
+| ----------- | -------------- |
+| `20/tcp`    | `ftp-data`     |
+| `21/tcp`    | `ftp`          |
+| `21/udp`    | `ftp`          |
+| `22/tcp`    | `ssh`          |
+| `22/udp`    | `ssh`          |
+| `23/tcp`    | `telnet`       |
+| `25/tcp`    | `smtp`         |
+| `53/tcp`    | `domain (dns)` |
+| `53/udp`    | `domain (dns)` |
+| `80/tcp`    | `http`         |
+| `80/udp`    | `http`         |
+| `110/tcp`   | `pop3`         |
+| `110/udp`   | `pop3`         |
+| `119/tcp`   | `nntp`         |
+| `139/tcp`   | `netbios-ssn`  |
+| `139/udp`   | `netbios-ssn`  |
+| `143/tcp`   | `imap2`        |
+| `143/udp`   | `imap2`        |
+| `161/tcp`   | `snmp`         |
+| `161/udp`   | `snmp`         |
+| `443/tcp`   | `https`        |
+| `443/udp`   | `https`        |
+| `465/tcp`   | `ssmtp`        |
+| `993/tcp`   | `imaps`        |
+| `993/udp`   | `imaps`        |
+| `995/tcp`   | `pop3s`        |
+| `995/udp`   | `pop3s`        |
+
+## Queying DNS Servers
+
+The `host` and `dig` command are used for DNS (Domain Name System) lookups. A DNS server provides hostname to IP address translation.
+
+Although it has been deprecated for a long time, there is also a command called `nslookup` .Many Linux systems still have the `nslookup` command, but there has been no development for this tool for a long time.
+
+### `host` Command
+
+To find the IP address of a host, execute the `host` command:as
+
+```bash
+sysadmin@localhost:~$  host netdevgroup.com
+netdevgroup.com has address 152.46.6.105
+```
+
+The `host` command also does reverse lookups of IP addresses to names by executing the same syntax:
+
+```bash
+sysadmin@localhost:~$  host 152.46.6.105
+netdevgroup.com has address netdevgroup.com
+```
+
+To **find the DNS servers for a domain**, do not specify the host and **use the **<mark style="color:red;">**`-t`**</mark>** option with an argument of **<mark style="color:red;">**`ns`**</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> ,and execute the command:
+
+```bash
+sysadmin@localhost:~$  host -t ns netdevgroup.com
+netdevgroup.com name server ns-1328.awsdns-38.org
+netdevgroup.com name server ns-1635.awsdns-12.co.uk.
+netdevgroup.com name server ns-461.awsdns-57.com
+netdevgroup.com name server ns-703.awsdns-23.net
+```
+
+### `dig` Command
+
+The `dig` (Domain Information Groper) command is used for troubleshooting the configuration of DNS servers. DNS server administrators like the output of `dig` command because it is in the same format that the information is entered into a DNS server configuration file.
+
+The utility performs DNS lookups and displays the responses received from the name servers listed in the `/etc/resolv.conf` file.
+
+To perform a simple lookup of a hostname, execute the following:
+
+```bash
+sysadmin@localhost:~$  dig example.com
+; <<>> DiG 9.9.5-3ubuntu0.1-Ubuntu <<>> example.com                             
+;; global options: +cmd                                                         
+;; Got answer:                                                                  
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 14876                       
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 1          
+.. OUTPUT OMITTED ...                                        
+;; ANSWER SECTION:                                                              
+example.com.            86400   IN      A       192.168.1.2                     
+;; AUTHORITY SECTION:                                                           
+example.com.            86400   IN      NS      example.com. 
+;; Query time: 0 msec                                                           
+;; SERVER: 127.0.0.1#53(127.0.0.1)                                              
+;; WHEN: Wed Mar 11 15:23:13 UTC 2015                                           
+;; MSG SIZE  rcvd: 70
+```
+
+To view the trace of domain name servers from the servers where the lookup begins, and each name server along the way, execute the `+trace` option to the `dig` command:
+
+```bash
+sysadmin@localhost:~$  dig +trace example.com
+```
+
+For a reverse lookup, using an IP address instead of a hostname, execute the `-x` option:
+
+```bash
+sysadmin@localhost:~$  dig -x 192.168.1.2
+```
+
+Some of the key options of this command are:
+
+|     Option    | Meaning                                                                               |
+| :-----------: | ------------------------------------------------------------------------------------- |
+| `-f filename` | Operate in batch mode by reading a list of lookups to be done from the specified file |
+|   `-p port#`  | Query the specified port other than the standard DNS port                             |
+|      `-4`     | Use IPv4 query transport                                                              |
+|      `-6`     | Use IPv6 query transport                                                              |
+
+## Understanding ICMP
+
+The TCP protocol provides an error control mechanism but does not contain information about possible reasons for errors. The Internet Control Message Protocol (ICMP) is a diagnostic protocol used to notify about network problems that are causing delivery failures. This protocol is considered as a part of the IP protocol, though it is processed differently tna normal IP packets.
+
+Some of the common types of ICMP messages are:
+
+* Destination unreachable
+* Redirect
+* Time exceeded
+* Source quench (i.e host or router is congested)
+* Echo Reply/Request (i.e the `ping` command)
+
+A summary of the key features and differences of TCP, UDP, IP and ICMP is shown below.
+
+|                          | TCP                 | UDP              | IP                                    | ICMP                     |
+| ------------------------ | ------------------- | ---------------- | ------------------------------------- | ------------------------ |
+| **OSI Networking Layer** | Transport           | Transport        | Internet                              | Internet                 |
+| **Packet Header Size**   | 20 bytes            | 8 bytes          | Minimum 20 bytes                      | 8 bytes                  |
+| **Unit of Data**         | Segment             | UDP Datagram     | IP Datagram                           | Messages                 |
+| **Contents**             | Application Data    | Application Data | Encapsulates TCP/UDP application data | Query and Error Messages |
+| **Type of Connection**   | Connection-Oriented | Connectionless   | Connectionless                        | Connectionless           |

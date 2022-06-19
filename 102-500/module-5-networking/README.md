@@ -86,11 +86,11 @@ Octet #1   Octet #2   Octet #3  Octet #4
 
 The 8-bit binary format can be translated to decimal value by using a multiplier. Only bits set to `1` will use a multiplier, and the multiplier is based on the location of the bit in the octet. Bits set to `1` should be assigned a value of 2, and bits set to `0` should be assigned a value of 0. The following shows what multipliers to use, based on the location of the bit:
 
-<img src="../.gitbook/assets/imagen (3).png" alt="" data-size="original">
+<img src="../../.gitbook/assets/imagen (3).png" alt="" data-size="original">
 
 To demonstrate, based on the information above, we can determine by adding the multiplied bits (8+2) that the octet `00001010` has a decimal value of 10:
 
-![](<../.gitbook/assets/imagen (2).png>)
+![](<../../.gitbook/assets/imagen (2).png>)
 {% endhint %}
 
 An IPv4 network addressing scheme has been designed on the basis of the octects. It classifies networks into 5 classes: A,B,C,D and ,E.

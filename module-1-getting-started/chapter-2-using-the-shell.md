@@ -454,7 +454,7 @@ By default, there are **nine** **sections** of man pages:
 
 To determine which section a specific man page belongs to, look at the numeric value on the first line of the output of the man page.
 
-![](<../.gitbook/assets/imagen (1) (1).png>)
+![](<../.gitbook/assets/imagen (1) (1) (1).png>)
 
 ### Specifying a Section
 

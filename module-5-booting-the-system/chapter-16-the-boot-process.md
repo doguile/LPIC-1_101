@@ -46,7 +46,7 @@ The boot process takes places in 4 main stages:
 * Kernel Stage
 * Init Stage
 
-![](../.gitbook/assets/imagen.png)
+![](<../.gitbook/assets/imagen (1).png>)
 
 ## Firmware Stage
 

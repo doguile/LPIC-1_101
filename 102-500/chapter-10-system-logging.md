@@ -82,7 +82,7 @@ authpriv.*                             /var/log/secure
 
 #### Facility
 
-![](<../.gitbook/assets/imagen (1).png>)
+![](<../.gitbook/assets/imagen (1) (1).png>)
 
 **The facility identifies the part of the system that produced some kind of message**. For example, messages from the Linux kernel can be selected using the `kern` facility.
 

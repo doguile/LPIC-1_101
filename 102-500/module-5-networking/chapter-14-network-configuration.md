@@ -719,10 +719,25 @@ Name resolutions services on systems that use systemd are handled by `systemd-re
 * Manual, or local DNS stub mode where alternate DNS servers are provided in the `resolvd.conf` file.
 
 {% hint style="warning" %}
-It is important to understand how `resolv.conf` and `systemd-resolvd` interact with each other to ensure proper DNS configuration.
+It is important to understand how `resolv.conf` and `systemd-resolvd` interact with each other to ensure proper DNS configuration. The `systemd-resolved` system service creates its own DNS/DNSSEC stub resolver that local applications cna use for network name resolution. It also reads the data in `/etc/resolv.conf` to discover other DNS servers configured in the system.
+
+This compatibility function only works directly on the `/etc/resolv.conf` ,not on symlinks.
 {% endhint %}
 
+The `systemd-resolved` service provides a tool called `resolvectl` ,which can be used for resolving domain names, IPv4 and IPv6 address, and DNS resource records and services.
 
+```
+resolvectl [OPTIONS...] {COMMAND} [NAME...]
+```
 
+To demonstrate, find the IP address for a domain name using `resolvectl` with the `query` option:
 
+```bash
+sysadmin@localhost:~$ resolvectl query netdevgroup.com
+netdevgroup.com: 34.214.209.23
+ 
+-- Information acquired via protocol DNS in 25.1ms.
+-- Data is authenticated: no
+```
 
+The query above uses the `systemd-resolved.service` resolver service to find the IP address for netdevgroup.com.

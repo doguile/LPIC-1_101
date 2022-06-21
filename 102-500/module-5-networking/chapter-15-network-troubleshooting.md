@@ -184,13 +184,13 @@ A _network socket_ is a communication endpoint between nodes (devices) on a netw
 The socket address commonly **consists of the IP address of the node** that it is "attached" to **and a port number.**
 {% endhint %}
 
-The main reason a user would use the `ss` command is to view what connections are currently established between their local machines and remote machines, statistics about those connections, etc. To use the `ss` command, follow the syntax below:
+The main reason a user would use the <mark style="color:red;">`ss`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is to **view what connections are currently established between their local machines and remote machines**, statistics about those connections, etc. To use the <mark style="color:red;">`ss`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command, follow the syntax below:
 
 ```bash
 ss [options] [FILTER]
 ```
 
-Similar to the `netstat` command, you can get a great deal of useful information from the `ss` command just by itself, as shown in the example below:
+Similar to the <mark style="color:red;">`netstat`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command, you can get a great deal of useful information from the <mark style="color:red;">`ss`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command just by itself, as shown in the example below:
 
 ```bash
 root@localhost:~# ss
@@ -207,7 +207,7 @@ u_str  ESTAB      0      0                    * 16242                     * 1624
 u_str  ESTAB      0      0          @/tmp/dbus-opsTQoGE 15471  
 ```
 
-The output is very similar to the output of the `netstat` command with no options. The columns above are:
+The output is very similar to the output of the <mark style="color:red;">`netstat`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command with no options. The columns above are:
 
 * `Netid` - the socket type and transport protocol
 * `State` - Connected or Unconnected, depending on the protocol
@@ -260,15 +260,15 @@ UNCONN   0         0                      [::]:domain
 
 ## Using `ip`&#x20;
 
-The `ifconfig` command is becoming obsolete in some Linux distributions and is being replacedd with a form of the `ip` command, specially `ip address` .
+The <mark style="color:red;">`ifconfig`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is becoming obsolete in some Linux distributions and is being replacedd with a form of the <mark style="color:red;">`ip`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command, specially <mark style="color:red;">`ip address`</mark> .
 
-The format for the `ip` command is as follows:
+The format for the <mark style="color:red;">`ip`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is as follows:
 
 ```
 ip [OPTIONS] OBJECT COMMAND
 ```
 
-While the `ifconfig` is limited primarly to the modification of networking parameters, and displaying the configuration details of networking components, the `ip` command branches out to do some of the work of several other legacy command such as `route` and `arp`.
+While the <mark style="color:red;">`ifconfig`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> is limited primarly to the modification of networking parameters, and displaying the configuration details of networking components, **the **<mark style="color:red;">**`ip`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command branches out to do some of the work of several other legacy command such as **<mark style="color:red;">**`route`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** and **<mark style="color:red;">**`arp`**</mark>.
 
 ```bash
 sysadmin@localhost:~$ ifconfig
@@ -308,7 +308,7 @@ sysadmin@localhost:~$ ip address
 
 Both command show the type of interface, protocols, hardware and IP addresses, network masks, and various other pieces of information about each of the active interfaces on the system.
 
-Another useful option with the `ip` command is the `-statistics` or `-s` option, which shows statistics for the object referenced in the command. For example, to show statistics for active IP addresses, you can type:
+Another useful option with the <mark style="color:red;">`ip`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is the <mark style="color:red;">`-statistics`</mark> or <mark style="color:red;">`-s`</mark> option, which shows statistics for the object referenced in the command. For example, to **show statistics for active IP addresses**, you can type:
 
 ```bash
 root@localhost:~# ip -s address
@@ -335,12 +335,114 @@ root@localhost:~# ip -s address
 ```
 
 {% hint style="info" %}
-Multiple dropped packets could indicate a Layer 1 issue where network cabling could be the problem.
+**Multiple dropped packets could indicate a Layer 1 issue** where network cabling could be the problem.
 {% endhint %}
 
+## Using `ping`
 
+The _**packet internet groper**_ <mark style="color:red;">`ping`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is **used to check the connectivity to a host**. It is a simple test that can be performed from the command prompt when a particular network service is not available.
 
+This utility sends the ICMP protocol's **`ECHO_REQUEST` (ping)** **datagram** to a host, and the host sends an **`ECHO_RESPONSE` (pong) datagram** in response. Each datagram will have an IP header, an ICMP header, a timeval structure, and some additional bytes used for padding.
 
+The time to live (**TTL**) value is the **maximum number of IP routers that may attempt to route a packet.** Every time a router attempts to route the packets, its TTL count is decremented by 1. If a router receives a packet and the TTL of a packet is zero, then the packet is discarded.
+
+{% hint style="info" %}
+Typically, a packet will have a maximum TTL of 30 hops by default.
+{% endhint %}
+
+The Linux <mark style="color:red;">`ping`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command continuously displays the TTL value of each packet it receives until **Ctrl-C** is pressed to cancel. The **count **<mark style="color:red;">**`-c`**</mark>** option stops after sending **_**n**_** packets** as seen in the example below, which sends 5 packets (<mark style="color:red;">`-c 5`</mark>) and then stops:
+
+```bash
+sysadmin@localhost:~$ ping -c 5 192.168.1.2                                     
+PING 192.168.1.2 (192.168.1.2) 56(84) bytes of data.                            
+64 bytes from 192.168.1.2: icmp_seq=1 ttl=64 time=0.065 ms                      
+64 bytes from 192.168.1.2: icmp_seq=2 ttl=64 time=0.059 ms                      
+64 bytes from 192.168.1.2: icmp_seq=3 ttl=64 time=0.056 ms                      
+64 bytes from 192.168.1.2: icmp_seq=4 ttl=64 time=0.058 ms                      
+64 bytes from 192.168.1.2: icmp_seq=5 ttl=64 time=0.068 ms 
+ 
+--- 192.168.1.2 ping statistics ---                                             
+5 packets transmitted, 5 received, 0% packet loss, time 4001ms                  
+rtt min/avg/max/mdev = 0.056/0.061/0.068/0.006 ms
+```
+
+> The hostname can also be specified instead of the IP address as follows.
+
+Some of the key options of the <mark style="color:red;">`ping`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command are:
+
+| Option                                          | Meaning                                         |
+| ----------------------------------------------- | ----------------------------------------------- |
+| <mark style="color:red;">`-c count`</mark>      | Stop after sending count `ECHO_REQUEST` packets |
+| <mark style="color:red;">`-s packetsize`</mark> | Specifies the number of data bytes to be sent   |
+| <mark style="color:red;">`-t ttl`</mark>        | Sets the IP Time to Live                        |
+| <mark style="color:red;">`-w timeout`</mark>    | Sets the timeout in seconds for ping to exit    |
+
+The <mark style="color:red;">`ping6`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is similar to the <mark style="color:red;">`ping`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command, but it uses `ICMPv6 ECHO_REQUEST` to verify network connectivity. The <mark style="color:red;">`ping6`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command can use either a hostname or an IPv6 address to request a response from remote systems.
+
+```bash
+sysadmin@localhost:~$ ping6 ipv6.google.com
+PING ipv6.google.com(dfw25s34-in-x0e.1e100.net (2607:f8b0:4000:808::200e)) 56 data bytes
+64 bytes from dfw25s34-in-x0e.1e100.net (2607:f8b0:4000:808::200e): icmp_seq=1 ttl=55 time=16.10 ms
+64 bytes from dfw25s34-in-x0e.1e100.net (2607:f8b0:4000:808::200e): icmp_seq=2 ttl=55 time=18.5 ms
+64 bytes from dfw25s34-in-x0e.1e100.net (2607:f8b0:4000:808::200e): icmp_seq=3 ttl=55 time=18.7 ms
+64 bytes from dfw25s34-in-x0e.1e100.net (2607:f8b0:4000:808::200e): icmp_seq=4 ttl=55 time=15.2 ms
+64 bytes from dfw25s34-in-x0e.1e100.net (2607:f8b0:4000:808::200e): icmp_seq=5 ttl=55 time=16.2 ms
+64 bytes from dfw25s34-in-x0e.1e100.net (2607:f8b0:4000:808::200e): icmp_seq=6 ttl=55 time=15.10 ms
+64 bytes from dfw25s34-in-x0e.1e100.net (2607:f8b0:4000:808::200e): icmp_seq=7 ttl=55 time=14.8 ms
+64 bytes from dfw25s34-in-x0e.1e100.net (2607:f8b0:4000:808::200e): icmp_seq=8 ttl=55 time=16.4 ms
+64 bytes from dfw25s34-in-x0e.1e100.net (2607:f8b0:4000:808::200e): icmp_seq=9 ttl=55 time=14.6 ms
+64 bytes from dfw25s34-in-x0e.1e100.net (2607:f8b0:4000:808::200e): icmp_seq=10 ttl=55 time=14.10 ms
+^C
+--- ipv6.google.com ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 20ms
+rtt min/avg/max/mdev = 14.563/16.227/18.664/1.388 ms
+```
+
+## Using `traceroute`
+
+The <mark style="color:red;">`traceroute`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is **used to trace the route of packets to a specified host**. This utility uses the IP header's TTL field and tries to fetch an ICMP `TIME_EXCEEDED` response from each router on the path to the host. The probing is done by sending ICMP ping packets with a small TTL value and then checking the ICMP `TIME_EXCEEDED` response.
+
+Networks administrators use this command to test and isolate network problems. This command can be run by roout users only.
+
+To trace the route to a particular host, execute the following command:
+
+```bash
+sysadmin@localhost:~$ traceroute example.com                                    
+traceroute to example.com (192.168.1.2), 30 hops max, 60 byte packets           
+ 1  example.com (192.168.1.2)  0.026 ms  0.015 ms  0.013 ms
+```
+
+Some of the key options of the <mark style="color:red;">`traceroute`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command are:
+
+| Option                                         | Meaning                                                                     |
+| ---------------------------------------------- | --------------------------------------------------------------------------- |
+| <mark style="color:red;">`-T`</mark>           | Probe using TCP SYN                                                         |
+| <mark style="color:red;">`-f first_ttl`</mark> | Specifies the initial TTL value                                             |
+| <mark style="color:red;">`-m max_ttl`</mark>   | Specifies the maximum number of hops to be probed                           |
+| <mark style="color:red;">`-w timeout`</mark>   | Sets the timeout in seconds to exit after waiting for a response to a probe |
+
+The <mark style="color:red;">`traceroute`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command, commonly **used for seeing how a transmission travels between a local host machine to a remote system** can also be used for IPv6 connections. To use the <mark style="color:red;">`traceroute6`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command, which is the same as <mark style="color:red;">`traceroute -6`</mark> to view the IPv6 path to `ipv6.google.com` execute the following command:
+
+```
+sysadmin@localhost:~$ traceroute6 ipv6.google.com
+```
+
+```bash
+sysadmin@localhost:~$ traceroute6 ipv6.google.com
+traceroute to ipv6.l.google.com (2607:f8b0:4009:811::200e) from 2600:380:5c6b:897e:443b:aa22:6729:5980, 30 hops max, 24 byte packets
+1 2600:380:5c6b:897e:3504:968f:d7a4:fbcc (2600:380:5c6b:897e:3504:968f:d7a4:fbcc)   2.219 ms 1.481 ms 1.725 ms
+2 * * *
+3 * * *
+4 2600:300:2000:2604::1 (2600:300:2000:2604::1) 72.578 ms 52.919 ms 34.129 ms
+5 2600:300:2000:2622::1 (2600:300:2000:2622::1) 40.852 ms 38 ms 40.568 ms
+6 * * *
+7 2001:1890:ff:ffff:12:83:188:242 (2001:1890:ff:ffff:12:83:188:242) 69.811 ms 67.35 ms 87.242 ms
+8 cgcil21crs.ipv6.att.net (2001:1890:ff:ffff:12:122:2:225) 61.877 ms 96.87 ms 77.492 ms 
+9 2001:1890:ff:ffff:12:122:22:52 (2001:1890:ff:ffff:12:122:22:78.746 ms 82.986 ms 81.595 ms
+10 2001:1890:c02:f00::115e:4d7d (2001:1890:c02:f00::115e:4d7d) 70.623 ms 67.296 ms 43.987 ms
+11 2607:f8b0:8289::1 (2607:f8b0:8289::1) 41.813 ms 85.667 ms 76.925 ms
+12 ord38s01-in-x0e.1e100.net (2607:f8b0:4009:811::200e) 78.578 ms 53.261 ms 86.931 ms
+```
 
 
 

@@ -707,11 +707,11 @@ It is important to mention that many of the tools used in this module, such as t
 
 ## systemd-networkd
 
-A great benefit to using modern Linux systems running systemd is the `systemd-networkd` system daemon. This background program detects and manages network configurations, automatically configuring devices as they appear, such as when a USB ethernet connector is plugged in, or a WiFi radio is turned on. The `systemd-networkd` daemon is also useful for creating virtual devices such as the devices used with containers and other cloud objects.
+A great benefit to using modern Linux systems running systemd is the <mark style="color:red;">`systemd-networkd`</mark> **system daemon**. This background program **detects and manages network configurations**, automatically **configuring devices as they appear, such as when a USB** ethernet connector is plugged in, or a WiFi radio is turned on. The <mark style="color:red;">`systemd-networkd`</mark> daemon is also **useful for creating virtual devices** such as the devices used with containers and other cloud objects.
 
-The `systemd-networkd` daemon functions through configuration files, which reside in the `/usr/lib/systemd/network/`, `/run/systemd/network`, `/etc/systemd/network` directories.
+The <mark style="color:red;">`systemd-networkd`</mark> daemon functions through configuration files, which reside in the <mark style="color:red;">`/usr/lib/systemd/network/`</mark>, <mark style="color:red;">`/run/systemd/network`</mark>, <mark style="color:red;"></mark> <mark style="color:red;"></mark><mark style="color:red;">`/etc/systemd/network`</mark> directories.
 
-Name resolutions services on systems that use systemd are handled by `systemd-resolved`. This systemd service tells local applications where to find domain name information on a network. The `systemd-resolved` service can operate in 4 differents modes, which are:
+**Name resolutions services on systems that use systemd are handled by **<mark style="color:red;">**`systemd-resolved`**</mark>. This systemd service tells local applications where to find domain name information on a network. The `systemd-resolved` service can operate in 4 differents modes, which are:
 
 * Using a systemd DNS stub file located at `/run/systemd/stub-resolv.conf`
 * Preserving the legacy `resolv.conf` file.
@@ -724,13 +724,13 @@ It is important to understand how `resolv.conf` and `systemd-resolvd` interact w
 This compatibility function only works directly on the `/etc/resolv.conf` ,not on symlinks.
 {% endhint %}
 
-The `systemd-resolved` service provides a tool called `resolvectl` ,which can be used for resolving domain names, IPv4 and IPv6 address, and DNS resource records and services.
+The <mark style="color:red;">`systemd-resolved`</mark> service provides a tool called <mark style="color:red;">**`resolvectl`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** ,which can be used for resolving domain names, IPv4 and IPv6 address, and DNS resource records and services.**
 
 ```
 resolvectl [OPTIONS...] {COMMAND} [NAME...]
 ```
 
-To demonstrate, find the IP address for a domain name using `resolvectl` with the `query` option:
+To demonstrate, find the IP address for a domain name using <mark style="color:red;">`resolvectl`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> with the <mark style="color:red;">`query`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> option:
 
 ```bash
 sysadmin@localhost:~$ resolvectl query netdevgroup.com
@@ -740,4 +740,4 @@ netdevgroup.com: 34.214.209.23
 -- Data is authenticated: no
 ```
 
-The query above uses the `systemd-resolved.service` resolver service to find the IP address for netdevgroup.com.
+The query above uses the <mark style="color:red;">`systemd-resolved.service`</mark> resolver service to find the IP address for netdevgroup.com.

@@ -49,7 +49,7 @@ Some commonly-observerd network issues are:
 
 Whne troubleshooting a network, it is useful to gather information about networking services such as open ports, interface statistics, routing tables, and network connections.
 
-## Using `netstat`
+### Using `netstat`
 
 The `netstat` command is used by the system administrator to monitor the traffic on the network, and check connections that are not trustworthy.
 
@@ -174,7 +174,7 @@ tcp6       0      0 localhost:953           [::]:*
 While no further development is being done on the <mark style="color:red;">`netstat`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command, it is still an excellent tool for displaying network information. The goal is to eventually replace the <mark style="color:red;">`netstat`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command with commands such as the <mark style="color:red;">`ss`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> and <mark style="color:red;">`ip`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> commands.
 {% endhint %}
 
-## Using `ss`
+### Using `ss`
 
 The <mark style="color:red;">`ss`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is designed to **show socket statistics** and supports all the major packet and socket types.
 
@@ -258,7 +258,7 @@ UNCONN   0         0                127.0.0.11:47117             0.0.0.0:*
 UNCONN   0         0                      [::]:domain      
 ```
 
-## Using `ip`&#x20;
+### Using `ip`&#x20;
 
 The <mark style="color:red;">`ifconfig`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is becoming obsolete in some Linux distributions and is being replacedd with a form of the <mark style="color:red;">`ip`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command, specially <mark style="color:red;">`ip address`</mark> .
 
@@ -338,7 +338,7 @@ root@localhost:~# ip -s address
 **Multiple dropped packets could indicate a Layer 1 issue** where network cabling could be the problem.
 {% endhint %}
 
-## Using `ping`
+### Using `ping`
 
 The _**packet internet groper**_ <mark style="color:red;">`ping`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is **used to check the connectivity to a host**. It is a simple test that can be performed from the command prompt when a particular network service is not available.
 
@@ -398,7 +398,7 @@ PING ipv6.google.com(dfw25s34-in-x0e.1e100.net (2607:f8b0:4000:808::200e)) 56 da
 rtt min/avg/max/mdev = 14.563/16.227/18.664/1.388 ms
 ```
 
-## Using `traceroute`
+### Using `traceroute`
 
 The <mark style="color:red;">`traceroute`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is **used to trace the route of packets to a specified host**. This utility uses the IP header's TTL field and tries to fetch an ICMP `TIME_EXCEEDED` response from each router on the path to the host. The probing is done by sending ICMP ping packets with a small TTL value and then checking the ICMP `TIME_EXCEEDED` response.
 

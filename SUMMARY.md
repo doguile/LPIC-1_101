@@ -44,3 +44,4 @@
   * [Chapter 12: Printer Management](102-500/module-4-system-services/chapter-12-printer-management.md)
 * [Module 5: Networking](102-500/module-5-networking/README.md)
   * [Chapter 14: Network Configuration](102-500/module-5-networking/chapter-14-network-configuration.md)
+  * [Chapter 15: Network Troubleshooting](102-500/module-5-networking/chapter-15-network-troubleshooting.md)

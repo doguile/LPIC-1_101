@@ -423,7 +423,7 @@ Some of the key options of the <mark style="color:red;">`traceroute`</mark> <mar
 
 The <mark style="color:red;">`traceroute`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command, commonly **used for seeing how a transmission travels between a local host machine to a remote system** can also be used for IPv6 connections. To use the <mark style="color:red;">`traceroute6`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command, which is the same as <mark style="color:red;">`traceroute -6`</mark> to view the IPv6 path to `ipv6.google.com` execute the following command:
 
-```
+```bash
 sysadmin@localhost:~$ traceroute6 ipv6.google.com
 ```
 
@@ -444,7 +444,250 @@ traceroute to ipv6.l.google.com (2607:f8b0:4009:811::200e) from 2600:380:5c6b:89
 12 ord38s01-in-x0e.1e100.net (2607:f8b0:4009:811::200e) 78.578 ms 53.261 ms 86.931 ms
 ```
 
+### Using `tracepath`
 
+The <mark style="color:red;">**`tracepath`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command is **used to trace the path to a network host, discovering MTU** (maximum transmission unit) along the path. The functionality is similar to `traceroute`. **It sends ICMP and UDP messages** of various sizes to find the MTU size on the path.&#x20;
+
+{% hint style="warning" %}
+Using UDP messages to trace the path can be **useful when routers are configured to filter ICMP traffic.**
+{% endhint %}
+
+To trace the path to a host, execute the following command:
+
+```bash
+sysadmin@localhost:~$ tracepath netdevgroup.com
+1?:    [LOCALHOST]                    pmtu 1500
+⁠⁠ 
+1:    192.168.1.1                    2.041ms
+1:    192.168.1.1                    1.387ms
+2:    172.72.53.1                    2.285ms
+3:    sur02.englewood.co.denver.comcast.net        13.123ms
+4:    edge3.Denver.Level3.net                14.657ms
+5:    car2.Charlotte1.Level3.net            54.875ms
+6:    rtp7600-gw-tg4-2-to-trp-crs-gw.ncren.net    58.711ms
+7:    dc6500-1-10g.dcs.mcnc.org            59.248ms
+13:    no reply
+```
+
+Much like the `traceroute6` command, the `tracepath6` command can also be used to determine what route communications travel between local and remote systems.
+
+The <mark style="color:red;">`tracepath`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> and <mark style="color:red;">`tracepath6`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command **use the sockets API to map out paths**, which can be useful when routers are configured to filter out ICMP traffic.
+
+### Using `ethtool`
+
+The <mark style="color:red;">**`ethtool`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> utility is **useful for configuring and troubleshooting network devices such as Ethernet cards** and their device drivers.
+
+```
+ethtool [OPTION...] devname
+```
+
+In the example below, the <mark style="color:red;">`ethtool`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is used with the <mark style="color:red;">`-i`</mark> or <mark style="color:red;">`--driver`</mark> option to show the driver information for Ethernet device `ens3`
+
+```bash
+sysadmin@localhost:~$ sudo ethtool -i ens3 | head -n 20
+MAC Registers
+-------------
+0x00000: CTRL (Device control register)  0x48140240
+     Endian mode (buffers):              little
+     Link reset:                         normal
+     Set link up:                        1
+     Invert Loss -Of-Signal:             no
+     Receive flow control:               enabled
+     Transmit flow control:              disabled
+     VLAN mode:                          enabled
+     Auto speed detect:                  disabled
+     Speed select:                       1000MB/s
+     Force speed:                        no
+     Force duplex:                       no
+0x00008: STATUS (Device status register) 0x80080783
+     Duplex:                             full
+     Link up:                            link config
+   TBI mode:                             disabled
+   Link speed:                           1000Mb/s
+   Bus type:                             PCI
+```
+
+The <mark style="color:red;">`ethtool`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command can also be **used to display other useful troubleshooting information**, such as the speed of an interface.
+
+```bash
+sysadmin@localhost:~$ sudo ethtool ens3 | grep Speed
+             Speed:1000Mb/s
+```
+
+### Using `ip neighbor`
+
+One of the most useful things to know when troubleshooting networks is what machines are on the same network segment as you. The <mark style="color:red;">`ip neighbor`</mark> command, part of the <mark style="color:red;">`iproute2`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command suite, is **used to add, change, or replace entries in the ARP (Address Resolution Table) cache tables.**
+
+To **display the ARP cache on a specific interface**, use the <mark style="color:red;">`ip neighbor show`</mark> command with the interface name&#x20;
+
+```
+ip [OPTION...] neighbor command
+```
+
+The following command will display the contents of the local ARP cache entries (IP addresses that have been resolved to MAC addresses accessible on the network) for the `ens3` network interface.
+
+```bash
+root@localhost:~# ip neighbor show dev ens3
+10.0.2.2 lladdr 52:55:0a:00:02:02 STALE
+10.0.2.3 11addr 52:55:0a:00:02:03 STALE
+```
+
+### Using `ip link`&#x20;
+
+The <mark style="color:red;">`ip link`</mark> command ,introduces as part of the <mark style="color:red;">`iproute2`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> tools, replaces the `ifconfig` command. It is **useful for network troubleshooting at the Data-Link (OSI Layer 2) level**.&#x20;
+
+The <mark style="color:red;">`ip link`</mark> command is used to display and manage network interfaces.
+
+```
+ip link { COMMAND | help }
+```
+
+The <mark style="color:red;">`ip link`</mark> command is executed by itself will display all interfaces on the network and their state:
+
+```bash
+root@localhost:~# ip link
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: ens3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_code1 state UP mode DEFAULT group default qlen 1000
+    link/ether 52:54:00:12:34:56 brd ff:ff:ff:ff:ff:ff
+```
+
+If you are trying to determine the status of previously configured interfaces, the <mark style="color:red;">`ip link show`</mark> command is one tool for doing so. To display information about a specific pre-configured interface, use the <mark style="color:red;">**`ip link show ens3`**</mark> **command**.
+
+```bash
+root@localhost:~# ip link show ens3
+2: ens3: <LOOPBACK,UP,LOWER_UP> mtu 1500 qdisc fq_code state UP mode DEFAULT group default qlen 1000
+link/ether 52:54:00:12:34:56 brd ff:ff:ff:ff:ff:ff
+```
+
+Including the <mark style="color:red;">**`-br (--brief)`**</mark> option **only prints basic information** formatted in a tabular output that is easier to read.
+
+```bash
+sysadmin@localhost:~$ ip -br link show                                          
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP>        
+eth0@if39386     UP             02:42:c0:a8:01:02  <BROADCAST,MULTICAST,UP,LOWER_UP>
+```
+
+### Using `netcat`
+
+The <mark style="color:red;">`netcat`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> utility it has many features for **monitoring and debugging network connections**. Some **uses are trasferring data, acting as a network proxy, and scanning for open ports**.
+
+```bash
+netcat [-options] hostname port[s] [ports] ...
+```
+
+The <mark style="color:red;">`netcat`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command can also be used in the short form, which is <mark style="color:red;">`nc`</mark>.&#x20;
+
+To demonstrate using the `netcat` utility to find ports, the following example will scan for open ports on the local interface `192.168.1.2`, using the <mark style="color:red;">`netcat`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command with the <mark style="color:red;">`-z`</mark> option, which **tells it to only scan for open ports** without sending any data to them, as well as with the <mark style="color:red;">`-v`</mark> option for verbose output.
+
+The command below will scan ports 20 through 25 on the `192.168.1.2` interface:
+
+```bash
+sysadmin@localhost:~$ netcat -z -v 192.168.1.2 20-25                            
+netcat: connect to 192.168.1.2 port 20 (tcp) failed: Connection refused         
+netcat: connect to 192.168.1.2 port 21 (tcp) failed: Connection refused         
+Connection to 192.168.1.2 22 port [tcp/ssh] succeeded!                          
+netcat: connect to 192.168.1.2 port 23 (tcp) failed: Connection refused         
+netcat: connect to 192.168.1.2 port 24 (tcp) failed: Connection refused         
+netcat: connect to 192.168.1.2 port 25 (tcp) failed: Connection refused
+```
+
+Upon examining the results above, we can see that only port 22 (`ssh`) is open on this system.
+
+The <mark style="color:red;">`netcat`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command can also be **used to create a communication socket between computers**. Given two computers and the knowledge of one of their IP addresses, use the following command to initiate a TCP session on port 23.
+
+```bash
+sysadmin@localhost:~$ sudo netcat -l 23
+```
+
+With knowledge of the IP address of the first computer, type the following on the second computer:
+
+```bash
+sysadmin@localhost:~$ netcat 192.168.1.2 23
+```
+
+Now, anything typed on either computer will appear on both
+
+## Troubleshooting Network Interfaces
+
+When troubleshooting a network interface, it is important to know how to verify network connectivity systematically. By using the Open Systems Interconnection (OSI) model as a reference, you will be able to test interface connectivity, network addressing, gateways, routing, DNS, and more.
+
+| Layer          |
+| -------------- |
+| 7 Application  |
+| 6 Presentation |
+| 5 Session      |
+| 4 Transport    |
+| 3 Network      |
+| 2 Data-Link    |
+| 1 Physical     |
+
+### Physical Layer
+
+The physical layer of the OSI model defines hardware between connections and turns binary data into physicial pulse (electrical, light or radio waves)
+
+The first questions that an administrator would need to answer when determining network connectivity are. "It the device on?", "Is my network card detected", etc.
+
+{% hint style="warning" %}
+No amount of Bash commands can turn the wireless switch on, but you can test for it by using the following command:
+{% endhint %}
+
+```bash
+sysadmin@localhost:~$ ip link
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    
+2: enp4s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP mode DEFAULT group default qlen 1000
+    link/ether 0c:9d:92:60:00:52 brd ff:ff:ff:ff:ff:ff
+    
+3: enx000ec6a415ca: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc fq_codel state DOWN mode DEFAULT group default qlen 1000
+    link/ether 00:0e:c6:a4:15:ca brd ff:ff:ff:ff:ff:ff
+```
+
+The highlighted **`NO-CARRIER`** message in the output of the `enx000ec6a415ca` interface **indicates that the interface is not connected to a network**. In some cases, the output may not even contain the interface at all.
+
+```bash
+sysadmin@localhost:~$ ip link
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    
+2: eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc pfifo_fast state DOWN mode DEFAULT group default qlen 1000
+    link/ether b8:27:eb:b6:76:14 brd ff:ff:ff:ff:ff:ff
+    
+3: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DORMANT group default qlen 1000
+    link/ether b8:27:eb:e3:23:41 brd ff:ff:ff:ff:ff:ff
+```
+
+It is possible that the device does not detect a network card or has not loaded a kernel driver for it. To **verify that a network card is detected**, use the <mark style="color:red;">**`lspci`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command.
+
+```bash
+sysadmin@localhost:~$ lspci | grep Ethernet
+04:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller (rev 15)
+```
+
+In the **event that the device does not have a PCI bus**, or there is a USB to Ethernet converter installed, the <mark style="color:red;">**`lsusb`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> and <mark style="color:red;">**`lsmod`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command may be useful
+
+```bash
+sysadmin@localhost:~$ lsusb
+Bus 003 Device 003: ID 0b95:7720 ASIX Electronics Corp. AX88772
+Bus 003 Device 002: ID 046d:c52b Logitech, Inc. Unifying Receiver
+Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+sysadmin@localhost:~$ lsmod | grep asix
+asix                   45056  0
+usbnet                 45056  1 asix
+mii                    16384  3 r8169,usbnet,asix
+```
+
+{% hint style="warning" %}
+Wireless devices may not show any network hardware using either <mark style="color:red;">`lspci`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> or <mark style="color:red;">`lsusb`</mark>.
+{% endhint %}
+
+{% hint style="info" %}
+Although be aware that the <mark style="color:red;">`iwconfig`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> and <mark style="color:red;">`iwlist`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command can be used to determine wireless connectivity.
+{% endhint %}
+
+### Data-Link Layer
 
 
 

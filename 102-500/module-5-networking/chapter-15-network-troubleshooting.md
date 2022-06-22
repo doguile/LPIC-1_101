@@ -624,7 +624,7 @@ When troubleshooting a network interface, it is important to know how to verify 
 
 ### Physical Layer
 
-The physical layer of the OSI model defines hardware between connections and turns binary data into physicial pulse (electrical, light or radio waves)
+The physical layer of the OSI model **defines hardware connections and turns binary data into physicial pulse** (electrical, light or radio waves)
 
 The first questions that an administrator would need to answer when determining network connectivity are. "It the device on?", "Is my network card detected", etc.
 
@@ -688,6 +688,91 @@ Although be aware that the <mark style="color:red;">`iwconfig`</mark> <mark styl
 {% endhint %}
 
 ### Data-Link Layer
+
+The data-link layer of the OSI model defines the interface to the physical layer. It also **monitors and corrects for errors** in the physical layer **by using a frame check sequence (FCS)**
+
+The **data link layer keeps a table of IP address to MAC address translations**. This is called the address resolution protocol (**ARP**) table. The <mark style="color:red;">**`ip neighbor`**</mark> command displays a list of translations or ARP.
+
+```bash
+sysadmin@localhost:~$ ip neighbor
+192.168.0.3 dev enp4s0 lladdr 10:3d:0a:47:5b:53 STALE
+192.168.0.23 dev enp4s0 lladdr 00:08:22:e2:4d:fb STALE
+192.168.0.13 dev enp4s0 lladdr b8:27:eb:e3:23:41 STALE
+10.10.10.156 dev enx000ec6a415ca lladdr 00:18:dd:02:01:35 STALE
+192.168.0.1 dev enp4s0 lladdr 2c:30:33:90:46:0a REACHABLE
+192.168.0.4 dev enp4s0 lladdr 00:18:61:0f:00:d5 STALE
+192.168.0.253 dev enp4s0 lladdr b8:27:eb:34:1c:ac REACHABLE
+fe80::2e30:33ff:fe90:460a dev enp4s0 lladdr 2c:30:33:90:46:0a router
+```
+
+From the output above, and administrator can input the MAC address into the Wireshark OUI tool to determine the manufacturer of the network card. This information can be useful in determining if a particular device is found on the network.
+
+The <mark style="color:red;">`ethtool`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is also **useful for determining connectivity at the data-link layer** along with the link connection speed, duplex, and other details.
+
+```bash
+root@localhost:~ ethtool enp4s0 | tail
+Cannot get wake-on-lan settings: Operation not permitted
+    Link partner advertised FEC modes: Not reported
+    Speed: 1000Mb/s
+    Duplex: Full
+    Port: MII
+    PHYAD: 0
+    Transceiver: internal
+    Auto-negotiation: on
+    Current message level: 0x00000033 (51)
+                   drv probe ifdown ifup
+```
+
+{% hint style="info" %}
+The <mark style="color:red;">`arp -a`</mark> command performs a similar function to <mark style="color:red;">`ip neighbor`</mark> ,as does the Windows <mark style="color:red;">`arp`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command
+{% endhint %}
+
+## Network Layer
+
+The network layer of the OSI model **performs network routing functions**, **defines logical addresses**, and uses a hierarchical addressing scheme. Various protocols specify packet structure and processing used to carry data from host to host.
+
+Use the <mark style="color:red;">**`ifconfig`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> or <mark style="color:red;">**`ip address`**</mark> command to determine the various addresses assigned to an interface.
+
+```bash
+sysadmin@localhost:~$ ip address
+2: enp4s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 0c:9d:92:60:00:52 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.0.7/24 brd 192.168.0.255 scope global dynamic noprefixroute enp4s0
+       valid_lft 61212sec preferred_lft 61212sec
+    inet6 2601:401:8001:45c:e9d:92ff:fe60:52/64 scope global dynamic mngtmpaddr
+       valid_lft 326281sec preferred_lft 326281sec
+    inet6 fe80::e9d:92ff:fe60:52/64 scope link
+       valid_lft forever preferred_lft forever
+```
+
+From the output above, a network administrator can determine the MAC address of `enp4s0` ,the IPv4 address and subnet mask, and the IPv6 addres and prefix lenght of /64 bits.
+
+{% hint style="info" %}
+Be aware that the <mark style="color:red;">**`dhclient`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command **requests an IP address from a DHCP server**, akin to the **Windows** <mark style="color:red;">`ipconfig \renew`</mark> command.
+
+To use the command, an administrator requires `sudo` access.
+
+```
+root@localhost:~# dhclient enp4s0 -v
+Internet Systems Consortium DHCP Client 4.3.5
+Copyright 2004-2016 Internet Systems Consortium.
+All rights reserved.
+For info, please visit https://www.isc.org/software/dhcp/
+Listening on LPF/enp4s0/0c:9d:92:60:00:52
+Sending on   LPF/enp4s0/0c:9d:92:60:00:52
+Sending on   Socket/fallback
+DHCPREQUEST of 192.168.0.7 on enp4s0 to 255.255.255.255 port 67 (xid=0x372c640d)
+DHCPACK of 192.168.0.7 from 192.168.0.1
+RTNETLINK answers: File exists
+bound to 192.168.0.7 -- renewal in 42030 seconds.
+```
+{% endhint %}
+
+
+
+
+
+
 
 
 

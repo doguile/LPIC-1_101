@@ -772,6 +772,199 @@ bound to 192.168.0.7 -- renewal in 42030 seconds.
 
 When checking network connectivity, ensure that your system can get to the assigned gateway. The network gateway, as defined om your network interface configuration, is the "first hop" or the first place your computer will go to when looking for resources beyond the local network. Use the `ping` command to determine connectivity to the gateway IP:
 
+```bash
+sysadmin@localhost:~$ ping -c 4 192.168.0.1
+PING 192.168.0.1 (192.168.0.1) 56(84) bytes of data.
+64 bytes from 192.168.0.1: icmp_seq=1 ttl=64 time=2.06 ms
+64 bytes from 192.168.0.1: icmp_seq=2 ttl=64 time=1.51 ms
+64 bytes from 192.168.0.1: icmp_seq=3 ttl=64 time=1.21 ms
+64 bytes from 192.168.0.1: icmp_seq=4 ttl=64 time=1.94 ms
+ 
+--- 192.168.0.1 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3004ms
+rtt min/avg/max/mdev = 1.219/1.686/2.068/0.340 ms
+```
+
+The gateway should be configured to route network traffic out from the local network and on to the next router, which can direct your communication towards its ultimate destination. The `iproute2` suite of tools makes it possible to test the routing table with a few commands. First, print the current list of routes available to the system with the <mark style="color:red;">**`ip route show`**</mark> command:
+
+```bash
+sysadmin@localhost:~$ ip route show
+default via 192.168.141.1 dev wlp2s0 proto dhcp metric 600 
+169.254.0.0/16 dev wlp2s0 scope link metric 1000 
+192.168.141.0/24 dev wlp2s0 proto kernel scope link src 192.168.141.187 metric 600
+```
+
+> By default the command above will print the main routing table, other routing tables can be displayed by using the `table` parameter.
+
+The above example shows the local interface, `wlp2s0` ,as having IP address `192.168.141.87` and the default route is `192.168.141.1` . By testing that our computer can use the default route `192.168.141.187` to get to the outside interface at `169.254.0.0/16` ,we can verify that the route from our local machine to the internet is working.
+
+**The addresses to test are specified with the **<mark style="color:red;">**`get`**</mark>**, **<mark style="color:red;">**`to`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** , and **<mark style="color:red;">**`from`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** modifiers.**
+
+```bash
+sysadmin@localhost:~$ ip route get to 169.254.0.0/16 from 192.168.141.187
+169.254.0.0 from 192.168.141.187 dev wlp2s0 uid 1000 
+    cache
+```
+
+### Reaching other networks
+
+Once connectivity to the gateway has been reached, use the `tracepath` or `traceroute` command to determine that a system can reach beyond the network using a well known IP address.
+
+```bash
+sysadmin@localhost:~$ tracepath -n -m 4 1.1.1.1
+ 1?: [LOCALHOST]                      pmtu 1500
+ 1:  192.168.0.1                                           2.361ms
+ 1:  192.168.0.1                                           1.825ms
+ 2:  96.120.41.221                                        20.877ms
+ 3:  68.85.48.49                                          51.052ms
+ 4:  96.108.20.157                                        26.691ms
+     Too many hops: pmtu 1500
+     Resume: pmtu 1500
+```
+
+{% hint style="warning" %}
+If connectivity stops at the gateway, there is network issue that may need to be resolved by the internet service provider (ISP)
+{% endhint %}
+
+### Domain Name Service
+
+Beyond network connectivity, uniform resource locator (URL) addresses need to be resolved to IP addresses using DNS. **Both the **<mark style="color:red;">**`nslookup`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** and **<mark style="color:red;">**`host`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** commands can be useful when determining if DNS is working properly**.
+
+```bash
+sysadmin@localhost:~$ nslookup netdevgroup.com
+Server:        192.168.0.253
+Address:    192.168.0.253#53
+ 
+Non-authoritative answer:
+Name:    netdevgroup.com
+Address: 34.214.209.23
+Name:    netdevgroup.com
+Address: 64:ff9b::22d6:d117
+sysadmin@localhost:~$ host netdevgroup.com
+netdevgroup.com has address 34.214.209.23
+netdevgroup.com has IPv6 address 64:ff9b::22d6:d117
+netdevgroup.com mail is handled by 10 aspmx2.googlemail.com.
+netdevgroup.com mail is handled by 10 aspmx3.googlemail.com.
+netdevgroup.com mail is handled by 1 aspmx.l.google.com.
+netdevgroup.com mail is handled by 5 alt1.aspmx.l.google.com.
+netdevgroup.com mail is handled by 5 alt2.aspmx.l.google.com.
+```
+
+When DNS fails only for certain sites, it is possible that the DNS requests are being filtered, or that an `/etc/hosts` file is providing inaccurate information.
+
+### Firewalls
+
+Windows clients in particular, do not respond to pings by default, based on their firewall settings. Linux uses IP tables to manage network traffic.
+
+There is an easy to use tool that can be installed called Uncomplicated Firewall. Once connectivity has been reestablished, **to verify the status of the firewall, use the **<mark style="color:red;">**`ufw`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command and make changes as needed.**
+
+```bash
+root@localhost:~ ufw status
+Status: inactive
+root@localhost:~ ufw enable
+Firewall is active and enabled on system startup
+```
+
+The <mark style="color:red;">**`gufw`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command is the graphical equivalent.
+
+![](<../../.gitbook/assets/imagen (5).png>)
+
+{% hint style="info" %}
+Details of the firewall logs can be found in the `/var/log/ufw.log` file.
+{% endhint %}
+
+When using a Red Hat-derived distribution, `firewalld` may be blocking access. Verify that it is running using `systemctl.`
+
+```bash
+root@localhost:~ systemctl status firewalld | grep Active
+   Active: active (running) since Sun 2019-12-01 23:27:49 EST; 8min ago
+```
+
+### Starting and Stopping Network Interfaces
+
+The <mark style="color:red;">**`ifup`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> and <mark style="color:red;">**`ifdown`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** legacy commands** are used to bring up and bring down a network interface, respectively.
+
+```
+root@localhost:~# ifdown eth1
+```
+
+```
+root@localhost:~# ifup eth1
+```
+
+It is also neccesary to bring down a network device before assigning an IP address to the device.
+
+For example, if the IP address of the `eth1` device has to be changed, then the steps to be followed are as follows:
+
+1. Bring down `eth1` using the `ifdown` command.
+2. Use the `ifconfig` command to asing the new IP address to `eth1`
+3. Use the `ifconfig` command to view the updated IP address
+4. Bring up `eth1` again using the `ifup` command.
+
+The <mark style="color:red;">**`ip link set <interface> up|down`**</mark> command can also be u**sed to turn the interfaces on and off**
+
+```bash
+root@localhost:~ ip link set enx000ec6a415ca down
+
+root@localhost:~ ip link show enx000ec6a415ca
+3: enx000ec6a415ca: <BROADCAST,MULTICAST> mtu 1500 qdisc fq_codel state DOWN mode DEFAULT group default qlen 1000
+    link/ether 00:0e:c6:a4:15:ca brd ff:ff:ff:ff:ff:ff
+    
+root@localhost:~ ip link set enx000ec6a415ca up
+
+root@localhost:~ ip link show enx000ec6a415ca
+3: enx000ec6a415ca: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP mode DEFAULT group default qlen 1000
+    link/ether 00:0e:c6:a4:15:ca brd ff:ff:ff:ff:ff:ff
+```
+
+### **Deleting Network Interces**
+
+The network interface can be temporarily disabled by using the `ifdown` command as follows:
+
+```bash
+root@localhost:~ ifdown eth1
+```
+
+To make the change permanent, the configuration file for the corresponding interface should be deleted.&#x20;
+
+#### Red Hat-derived
+
+On Red Hat system, the <mark style="color:orange;">**`/etc/sysconfig/network-scripts/ifcfg-eht1`**</mark> file **should be moved to another directory or deleted**, and the network service should be restarted using the following command:
+
+```bash
+root@localhost:~ /etc/init.d/network restart
+```
+
+#### Debian-derived
+
+On Debian systems, the <mark style="color:orange;">**`/etc/network/interfaces`**</mark> file **should be updated**, and any references to the `eth1` interface should be commented out or removed.
+
+The following is a sample <mark style="color:orange;">**`/etc/network/interfaces`**</mark> file including `eth1` references:
+
+```bash
+auto lo                    #automatically activates lo
+iface lo inet loopback            #lo with 127.0.0.1 address 
+iface enp4s0eth0 inet dhcp            #enp4s0eth0 with DHCP configuration
+iface eth1 inet dhcp            #eth1 with DHCP configuration
+```
+
+This is a sample `/etc/network/interfaces` file with `eth1` references commented out.
+
+```bash
+auto lo                    #automatically activates lo
+iface lo inet loopback            #lo with 127.0.0.1 address 
+iface enp4s0eth0 inet dhcp            #enp4s0eth0 with DHCP configuration
+#iface eth1 inet dhcp            #eth1 with DHCP configuration
+```
+
+After modifying this file, the networking service should be restarted with the following command:
+
+```bash
+/etc/init.d/networking restart
+```
+
+## Transport Layer
+
 
 
 

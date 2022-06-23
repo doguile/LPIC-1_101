@@ -768,9 +768,9 @@ bound to 192.168.0.7 -- renewal in 42030 seconds.
 ```
 {% endhint %}
 
+### Routing Table Testing
 
-
-
+When checking network connectivity, ensure that your system can get to the assigned gateway. The network gateway, as defined om your network interface configuration, is the "first hop" or the first place your computer will go to when looking for resources beyond the local network. Use the `ping` command to determine connectivity to the gateway IP:
 
 
 

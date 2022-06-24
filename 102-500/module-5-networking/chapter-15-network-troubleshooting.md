@@ -965,7 +965,29 @@ After modifying this file, the networking service should be restarted with the f
 
 ## Transport Layer
 
+The transport layer of the OSI model performs transparent transfer of data between end users. It is responsible for error recovery and flow control and ensures complete data transfer.
 
+After establishing full network connectivity, anetwork administrator may want to know if a service on their server is running and if it can be reached. To find out if the service is running, we can examine the open ports using the socket statistics <mark style="color:red;">`ss`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command:
 
+```bash
+sysadmin@localhost:~$ ss -tl4
+State      Recv-Q Send-Q           Local Address:Port      Peer Address:Port
+LISTEN     0      128             *:http-alt               *:*                    
+LISTEN     0      128             *:ss                     *:*
+sysadmin@localhost:~$ ss -tln4
+State      Recv-Q Send-Q           Local Address:Port      Peer Address:Port
+LISTEN     0      128             *:8080                   *:*                    
+LISTEN     0      128             *:22                     *:*
+```
 
+{% hint style="info" %}
+The `ss` command replaces the deprecated `netstat` command.
+{% endhint %}
 
+## Remaining Layers
+
+The session, presentation and application layers of the OSI model are all handled by software.
+
+Once all other problems have been eliminated, a network administrator might want to examine various program settings. There could be non-standard port configurations in service configuration files or proxy settings could be incorrect for the system.
+
+To get a good look at the inner workings of network communications, capture some data using `tcpdump` or Wireshark.

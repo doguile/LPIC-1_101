@@ -656,18 +656,18 @@ Access codes that might be reported by the `fuser` commands are:
 
 ## Settings User Limits
 
-The user limit `ulimit` command is used to control resources that can be assigned by a user's login shell and child processes spawned from the shell. The system administrator may need to regulate the use of shared resources to prevent one process from using too much of a resource, preventing another process or user from having sufficient access to that resoruce.
+The user limit <mark style="color:red;">`ulimit`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is **used to control resources that can be assigned by a user's login shell and child processes spawned from the shell**. The system administrator may need to regulate the use of shared resources to prevent one process from using too much of a resource, preventing another process or user from having sufficient access to that resoruce.
 
-The `ulimit` command is used to set limits at the user level and these limits are applicable to all processes running for that user.
+The <mark style="color:red;">`ulimit`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is used to **set limits at the user level and these limits are applicable to all processes running for that user**.
 
 There can be two types of limits; hard limits and soft limits.&#x20;
 
-* Hard limits are set by the root user
-* Soft limits can be set by either the root user or a regular user can set their own soft limit. The main constraint is htat soft limits cannot exceed hard limits.
+* _Hard limits_ are set by the root user
+* _Soft limits_ can be set by either the root user or a regular user can set their own soft limit. The main constraint is that soft limits cannot exceed hard limits.
 
 To **view the currently set limits for a user's accounts**, you must be logged in as the user and execute the <mark style="color:red;">**`ulimit -a`**</mark> command:
 
-```
+```bash
 sysadmin@localhost:~$ ulimit -a                                                 
 core file size          (blocks, -c) 0                                          
 data seg size           (kbytes, -d) unlimited                                  
@@ -687,7 +687,7 @@ virtual memory          (kbytes, -v) unlimited
 file locks                      (-x) unlimited
 ```
 
-Creation of core files of unlimited size for testing purpposes can be enabled, using the `-c` option:
+Creation of core files of unlimited size for testing purpposes can be enabled, using the <mark style="color:red;">`-c`</mark> option:
 
 ```bash
 sysadmin@localhost:~$ ulimit -c unlimited                                       
@@ -696,21 +696,21 @@ core file size          (blocks, -c) unlimited
 Output omitted...
 ```
 
-The `ulimit` command options are provided in parenthesis as part of the `ulimit -a` output.
+The <mark style="color:red;">`ulimit`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command options are provided in parenthesis as part of the <mark style="color:red;">`ulimit -a`</mark>  output.
 
 > For example, (`-u`) indicates the `-u` option is used to set the maximum number of concurrent processes the user can have.
 >
 > Useful in preventing a hacker from creating a fork bomb, which is a form of DoS attack
 
-Based on the `ulimit -a` output above, the user can currently execute 1048576 processes:
+Based on the <mark style="color:red;">`ulimit -a`</mark> output above, the user can currently execute 1048576 processes:
 
 ```
 max user processes              (-u) 1048576
 ```
 
-To reduce this limit, execute `ulimit -u 512` command.
+To reduce this limit, execute <mark style="color:red;">`ulimit -u 512`</mark> command.
 
-```
+```bash
 sysadmin@localhost:~$ ulimit -u 512                                             
 sysadmin@localhost:~$ ulimit -a                                                 
 core file size          (blocks, -c) unlimited                                  
@@ -718,7 +718,7 @@ Output omitted...
 max user processes              (-u) 512
 ```
 
-Some of the key options of `ulimit` are as follows:
+Some of the key options of <mark style="color:red;">`ulimit`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> are as follows:
 
 | Option | Meaning                                                |
 | ------ | ------------------------------------------------------ |
@@ -729,7 +729,7 @@ Some of the key options of `ulimit` are as follows:
 | `-v`   | Maximum virtual memory available to the user’s process |
 | `-l`   | Maximum size that may be locked into memory            |
 
-While it is possible for the administrator to interactively set limits with the `ulimit` command, the `/etc/security/limits.conf` file can be used to set permanent limits for users that are enforced when the user logs in. Also, files that have a file name that matches the glob `*.conf` may be placed in the `/etc/security/limits.d` directory; these files can contain entries to make limits persistent.
+While it is possible for the administrator to interactively set limits with the <mark style="color:red;">`ulimit`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command, the <mark style="color:orange;">`/etc/security/limits.conf`</mark> file can be **used to set permanent limits for users** that are enforced when the user logs in. Also, files that have a **file name that matches the glob `*.conf` may be placed in the **<mark style="color:orange;">**`/etc/security/limits.d`**</mark>** directory**; these files can contain entries to make limits persistent.
 
 The syntax of entries for these configuration files follows the pattern:
 
@@ -796,19 +796,115 @@ sysadmin@localhost:~$ tail -n 14 /etc/security/limits.conf
 # End of file
 ```
 
+## Viewing Current Users
+
+Once users are added, and their account parameters are configured, a system administrator can monitor when the users are logged into the system. **The **<mark style="color:red;">**`who`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command displays a list of users who are currently logged into the system, where they are logged in from, and when they logged in**. Through the use of options, this command is also able to display information such as the current runlevel and the time that the system was booted.
+
+```bash
+sysadmin@localhost:~$ who
+root     	tty2        2013-10-11 10:00
+sysadmin	tty1        2013-10-11 09:58 (:0)
+sysadmin 	pts/0       2013-10-11 09:59 (:0.0)
+sysadmin 	pts/1       2013-10-11 10:00 (example.com)
+```
+
+The following describes the output of the `who` command:
+
+* **Username**
+
+```
+root     	   tty2        2013-10-11 10:00
+```
+
+This column indicates the name of the user who is logged in.
+
+* **Terminal**
+
+```
+root     	   tty2        2013-10-11 10:00
+sysadmin	   pts/0	2013-10-11 09:59 (:0.0)
+```
+
+If the terminal name starts with `tty` (teletype), then this is an indication of a local login, as this is a regular command line terminal. If the terminal starts with `pts` (pseudo terminal slave), then this indicates the user is using a remotely-connected terminal, possibly through SSH or Telnet, or running a process that acts as a terminal.
+
+* **Date**
+
+```
+root     	   tty2        2013-10-11 10:00
+```
+
+* **Host**
+
+```
+sysadmin     tty1        2013-10-11 09:59 (:0)
+sysadmin 	pts/1       2013-10-11 10:00 (example.com)
+```
+
+After the date and time, some location information may appear. If the location information contains a hostname, domain name, or IP address, then the user has logged in remotely.
+
+{% hint style="warning" %}
+If there is a colon and a number, then this indicates that they have performed a _local graphical_ login. If the last column contains a double colon (`::1`) ,then a remote user is able to stream graphical applications using `ssh -X`. If no location is shown in the last column, then this means the user logged in via a _local command line_ process
+{% endhint %}
+
+There may be instances where more information about users, and what they are doing on the system, is needed. **The **<mark style="color:red;">**`w`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command provides a more detailed list about the users currently on the system than the **<mark style="color:red;">**`who`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command**. It also provides a summary of the system status.
+
+```bash
+sysadmin@localhost:~$ w
+ 10:44:03 up 50 min,  4 users,  load average: 0.78, 0.44, 0.19
+USER     	TTY     FROM	    LOGIN@   IDLE  	JCPU   	PCPU    WHAT
+root     	tty2    -           10:00    43:44 	0.01s  	0.01s   -bash
+sysadmin 	tty1    :0          09:58    50:02	5.68s 	0.16s   pam: gdm-password
+sysadmin	pts/0   :0.0        09:59    0.00s      0.14s  	0.13s   ssh 192.168.1.2
+sysadmin 	pts/1   example.com 10:00    0.00s  	0.03s  	0.01s   w
+```
+
+The first line of output from the `w` command shows the current time, how long the system has been running, the total number of users currently logged on, and the load on the system averaged over the last 1, 5, and 15 minute time periods. Load average is CPU utilization, where a value of 1 would mean full (100%) CPU usage during that period of time.
+
+The following describes the rest of the output of the `w` command:
+
+| Column   | Example       | Description                                                                        |
+| -------- | ------------- | ---------------------------------------------------------------------------------- |
+| `USER`   | `root`        | The name of the user who is logged in.                                             |
+| `TTY`    | `tty2`        | Which terminal window the user is working in.                                      |
+| `FROM`   | `example.com` | Where the user logged in from.                                                     |
+| `LOGIN@` | `10:00`       | When the user logged in.                                                           |
+| `IDLE`   | `43:44`       | How long the user has been idle since the last command was executed.               |
+| `JCPU`   | `0.01s`       | The total cpu time (`s`=seconds) used by all processes (programs) run since login. |
+| `PCPU`   | `0.01s`       | The total cpu time for the current process.                                        |
+| `WHAT`   | `-bash`       | The current process that the user is running.                                      |
+
+## Viewing Login History
+
+The `last` command reads the entire login history from the `/var/log/wtmp` file and displays all logins and reboot records by default.
+
+An interesting detail of the reboot records is that it displays the version of Linux Kernel that was booted instead of the login location.
+
+{% hint style="warning" %}
+The `/var/log/wtmp` file keeps a log of all users who have logged in and out of the system
+{% endhint %}
 
 
 
+```
+sysadmin@localhost:~$ last
+computer pts/1    	::1          	Sat Dec  7 23:12 - 23:13  (00:01)
+computer tty7     	:0           	Sat Dec  7 07:28	gone - no logout
+reboot   system boot  4.15.0-72-generi Sat Dec  7 07:28   still running
+computer tty7     	:0           	Fri Dec  6 15:10 - 05:23  (14:12)
+reboot   system boot  4.15.0-72-generi Fri Dec  6 15:10 - 05:23  (14:12)
+computer tty7     	:0           	Thu Dec  5 18:01 - 23:32  (05:31)
+reboot   system boot  4.15.0-72-generi Thu Dec  5 18:01 - 23:32  (05:31)
+computer tty7     	:0           	Thu Dec  5 16:54 - 18:00  (01:05)
+reboot   system boot  4.15.0-72-generi Thu Dec  5 16:54 - 18:00  (01:05)
+computer tty7     	:0           	Wed Dec  4 16:42 - 21:15  (04:33)
+reboot   system boot  4.15.0-72-generi Wed Dec  4 16:42 - 21:15  (04:33)
+computer tty7     	:0           	Tue Dec  3 18:20 - 00:02  (05:42)
+reboot   system boot  4.15.0-72-generi Tue Dec  3 18:20 - 00:02  (05:42)
+computer tty7     	:0           	Tue Dec  3 18:01 - 18:19  (00:18)
+reboot   system boot  4.15.0-70-generi Tue Dec  3 18:01 - 18:19  (00:18)
+computer tty7     	:0           	Mon Dec  2 17:17 - 22:30  (05:12)
+```
 
+By default, it also shows the username, terminal, and login location, not just of the current login sessions, but previous sessions as well.
 
-
-
-
-
-
-
-
-
-
-
-
+Unlike the `who` and `w` commands, it displays the date and time the user logged into the system. If the user has logged off the system, then it will display the total time the user spent logged in; otherwise, it will display `still logged in` or `still running.`

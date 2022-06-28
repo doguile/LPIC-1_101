@@ -310,10 +310,10 @@ Retype new UNIX password:
 ```
 
 {% hint style="info" %}
-The same `passwd` command is used by the root user to change a user's password should they forget
+The same <mark style="color:red;">`passwd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is used by the root user to change a user's password should they forget
 {% endhint %}
 
-After the user account is created using the <mark style="color:red;">`useradd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command and the user's password is set with the <mark style="color:red;">`passwd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command, the system administrator can enforce changing the password upon the user's first login attempt by executing the <mark style="color:red;">**`chage`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> (change password expiry) command.
+After the user account is created using the <mark style="color:red;">`useradd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command and the user's password is set with the <mark style="color:red;">`passwd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command, the system administrator can **enforce changing the password** upon the user's first login attempt by executing the <mark style="color:red;">**`chage`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> (change password expiry) **command**.
 
 ```bash
 root@localhost:~ chage -d 0 testuser1                                              
@@ -328,7 +328,7 @@ Retype new UNIX password:
 testuser1@localhost:/home/sysadmin$ exit
 ```
 
-Changing the password can also be enforced using the `-e` option with the `passwd` command:
+**Changing the password can also be enforced using the **<mark style="color:red;">**`-e`**</mark>** option with the **<mark style="color:red;">**`passwd`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command**:
 
 ```bash
 sysadmin@localhost:~$ sudo passwd -e testuser1
@@ -344,7 +344,7 @@ testuser1@localhost:/home/sysadmin$ exit
 sysadmin@localhost:~$
 ```
 
-The administrator can **lock a user's password**, **preventing them from accessing their account** by executing the <mark style="color:red;">**`passwd -l`**</mark> command or by executing the <mark style="color:red;">**`usermod`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command with the <mark style="color:red;">**`-L`**</mark> option. When the user logs on, the `Authentication Failure` message is displayed.
+The administrator can **lock a user's password**, **preventing them from accessing their account by executing the **<mark style="color:red;">**`passwd -l`**</mark>** command** or by executing **the **<mark style="color:red;">**`usermod -L`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command**. When the user logs on, the `Authentication Failure` message is displayed.
 
 ```bash
 sysadmin@localhost:~$ sudo usermod -L testuser1
@@ -364,7 +364,7 @@ sysadmin@localhost:~$
 ```
 
 {% hint style="info" %}
-A regular user can change their account password using the `passwd` command, while the root user can change the password of any account using the `passwd` command.
+A regular user can change their account password using the <mark style="color:red;">`passwd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command, while the root user can change the password of any account using the `passwd` command.
 
 **The **<mark style="color:red;">**`passwd`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command also provides options to view password expiry.**
 {% endhint %}

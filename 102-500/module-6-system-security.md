@@ -157,28 +157,28 @@ find / -perm 4000 -o -perm 2000 -ls 2>/dev/null > ~/current.perm; diff ~/special
 
 ## Configuring `sudo`
 
-The superuser do `sudo` utility allows a user to execute a single program or command as the root or another user without knowing their password or remaining logged in as that user, thus improving security.
+The superuser do <mark style="color:red;">`sudo`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> utility **allows a user to execute a single program or command as the root or another user without knowing their password or remaining logged in as that user,** thus improving security.
 
 > For example, if a regular user wants to install a software package, they would execute the following command:
 >
-> ```
+> ```bash
 > sysadmin@localhost:~$ sudo apt-get install bsdgames
 > ```
 
 {% hint style="info" %}
-When `sudo` asks for a password, it needs the current user's password, and not the root account password.
+When <mark style="color:red;">`sudo`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> asks for a password, it **needs the current user's password**, and **not the root account password**.
 {% endhint %}
 
-The `/etc/sudoers` file is used to configure `sudo` and define security policies for its use. For example, you can enable specific commands for specific users and groups from specific computers and specify if a password is required.
+The <mark style="color:orange;">`/etc/sudoers`</mark> file is **used to configure **<mark style="color:red;">**`sudo`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** and define security policies** for its use. For example, you can enable specific commands for specific users and groups from specific computers and specify if a password is required.
 
 {% hint style="warning" %}
-By default, the `sudo` command remembers the password for 15 minutes, allowing you to execute multiple commands with `sudo` in quick succession.&#x20;
+By default, the <mark style="color:red;">`sudo`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command remembers the password for 15 minutes, allowing you to execute multiple commands with `sudo` in quick succession.&#x20;
 
 This limit can be changed by the administrator as per the security policy by changing a setting in the <mark style="color:orange;">**`/etc/sudoers`**</mark> file.
 {% endhint %}
 
 {% hint style="info" %}
-The `/etc/sudoers` file should be edited using the <mark style="color:red;">`visudo`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command as root or by using `sudo` and not a standard text editor. <mark style="color:red;">**`visudo`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** is a special editor that validates the syntax of the file before saving the changes.**
+The <mark style="color:orange;">`/etc/sudoers`</mark> file should be edited using the <mark style="color:red;">`visudo`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command as root or by using `sudo` and not a standard text editor. <mark style="color:red;">**`visudo`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** is a special editor that validates the syntax of the file before saving the changes.**
 {% endhint %}
 
 In addition to customized settings, `/etc/sudoers` contains two types of entries:
@@ -213,7 +213,7 @@ testuser1 DBNET=(ALL) ALL
 testuser2 ALL= EDITORS
 ```
 
-The `sudo` settings for the examples above are described below:
+The <mark style="color:red;">`sudo`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> settings for the examples above are described below:
 
 * The 1st line indicates that users who are part of the `OPERATORS` groups can execute any command. The first `ALL` indicates which machines the rule applies to, and the second `ALL` indicates which commands can be executed.
 * The 2nd line indicates that `testuser1` can run any command as any user on any host taht is in the `DBNET` network
@@ -238,6 +238,67 @@ Some of the key options of the `sudo`  command are:
 | <mark style="color:red;">`-k`</mark>           | Invalidates the user’s cached credentials                             |
 | <mark style="color:red;">`-v`</mark>           | Update the user’s cached credentials                                  |
 | <mark style="color:red;">`-n`</mark>           | Do not prompt the user for their password                             |
+
+## Understanding `su`
+
+The superuser <mark style="color:red;">`su`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command is **used to execute a shell with a different user identity**. This command is typically used by a regular user to execute a command which otherwise needs root privileges or when the root user wants to execute a command as a regular user.
+
+> For regular user to use this command, the **password for the other account must be entered**.
+
+Some of the key options of this command are:
+
+| Option                                                                                                   | Meaning                                                                                                                                    |
+| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| <p><mark style="color:red;"><code>-</code></mark><br><mark style="color:red;"><code>-l</code></mark></p> | Start a new user's login shell and execute the initialization (`.rc`) files providing an environment similar to what the user would expect |
+| <mark style="color:red;">`-c command`</mark>                                                             | Pass a single command to the shell. As a result, after the `su` command has completed, the user will revert back to their original shell   |
+| <mark style="color:red;">`-m`</mark>                                                                     | Do not reset the values of environment variables                                                                                           |
+
+```bash
+sysadmin@localhost:~$ su -                                                      
+Password:                                                                       
+root@localhost:~#
+```
+
+Without specifying a username, the <mark style="color:red;">`su -`</mark> command defaults to the root user, making it equivalent to <mark style="color:red;">`su - root`</mark> , and requires the root password. The <mark style="color:red;">`su`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command can be used to switch to any valid user account, provided the account password is known.
+
+For example, to switch identities to the `user1` account and acquire the environment settings of `user1` ,execute the following command and provide the password for `user1`:
+
+```bash
+sysadmin@localhost:~$ su - joe                                                
+Password:                                                                       
+joe@localhost:~$ pwd                                                          
+/home/joe 
+joe@localhost:~$ exit                                                           
+logout
+```
+
+To switch identities to `user1` account while remaining in the environment of the previous account, omit the `-`  .This tells the shell to switch UIDs but don't read the new user's initialization files.
+
+```bash
+sysadmin@localhost:~$ su joe                                                
+Password:                                                                       
+joe@localhost:~$      
+```
+
+{% hint style="info" %}
+**Consider this**
+
+The main differences between <mark style="color:red;">`su`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> and <mark style="color:red;">`sudo`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> are that <mark style="color:red;">**`su`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** switches the current user and remains that user until the account is exited**, whereas <mark style="color:red;">**`sudo`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** runs a single command with root privileges** when provided the current user's password.
+
+Additionally, the <mark style="color:red;">`sudo`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> must be set up by the administrator, while the <mark style="color:red;">`su`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command only requires knowing another user's password.
+{% endhint %}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

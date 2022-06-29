@@ -45,4 +45,5 @@
 * [Module 5: Networking](102-500/module-5-networking/README.md)
   * [Chapter 14: Network Configuration](102-500/module-5-networking/chapter-14-network-configuration.md)
   * [Chapter 15: Network Troubleshooting](102-500/module-5-networking/chapter-15-network-troubleshooting.md)
-* [Module 6: System Security](102-500/module-6-system-security.md)
+* [Module 6: System Security](102-500/module-6-system-security/README.md)
+  * [Chapter 17: Host Security](102-500/module-6-system-security/chapter-17-host-security.md)

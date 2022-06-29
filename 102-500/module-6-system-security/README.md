@@ -875,17 +875,15 @@ The following describes the rest of the output of the `w` command:
 
 ## Viewing Login History
 
-The `last` command reads the entire login history from the `/var/log/wtmp` file and displays all logins and reboot records by default.
+The <mark style="color:red;">**`last`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command reads the entire login history from the **<mark style="color:orange;">**`/var/log/wtmp`**</mark>** file** and displays all logins and reboot records by default.
 
 An interesting detail of the reboot records is that it displays the version of Linux Kernel that was booted instead of the login location.
 
 {% hint style="warning" %}
-The `/var/log/wtmp` file keeps a log of all users who have logged in and out of the system
+The <mark style="color:orange;">**`/var/log/wtmp`**</mark> file **keeps a log of all users who have logged in** and out of the system
 {% endhint %}
 
-
-
-```
+```bash
 sysadmin@localhost:~$ last
 computer pts/1    	::1          	Sat Dec  7 23:12 - 23:13  (00:01)
 computer tty7     	:0           	Sat Dec  7 07:28	gone - no logout
@@ -905,6 +903,6 @@ reboot   system boot  4.15.0-70-generi Tue Dec  3 18:01 - 18:19  (00:18)
 computer tty7     	:0           	Mon Dec  2 17:17 - 22:30  (05:12)
 ```
 
-By default, it also shows the username, terminal, and login location, not just of the current login sessions, but previous sessions as well.
+By default, it also shows the **username**, **terminal**, and **login location**, not just of the current login sessions, but previous sessions as well.
 
-Unlike the `who` and `w` commands, it displays the date and time the user logged into the system. If the user has logged off the system, then it will display the total time the user spent logged in; otherwise, it will display `still logged in` or `still running.`
+Unlike the <mark style="color:red;">`who`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> and <mark style="color:red;">`w`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> commands, it displays the date and time the user logged into the system. If the user has logged off the system, then it will display the total time the user spent logged in; otherwise, it will display `still logged in` or `still running.`

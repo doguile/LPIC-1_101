@@ -361,7 +361,10 @@ The default runlevel should not be changed unless there is a compelling reason t
 
 The `/etc/init.d` directory contains two types of scripts:
 
-*
+* Scripts which are called directly by the `init` process.
+* Scripts which are called indirectly by the `init` process via the `rc` script, which is used while switching runlevels
+
+
 
 
 

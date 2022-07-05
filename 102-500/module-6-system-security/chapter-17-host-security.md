@@ -197,6 +197,12 @@ hosts_access
 sysadmin@localhost:~$ strings /usr/sbin/in.telnetd | grep hosts_access
 ```
 
+```bash
+sysadmin@localhost:~$ strings -f /usr/sbin/* | grep hosts_access
+```
+
+> `-f` especifica el fichero donde se encuentra la linea especificada por la tuberia
+
 A second method to verify if a program is compiled with `tcp_wrappers` is to execute the _list dynamic dependencies_ <mark style="color:red;">`ldd`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command:
 
 ```bash
@@ -359,7 +365,7 @@ The default runlevel should not be changed unless there is a compelling reason t
 
 ## Init scripts
 
-The `/etc/init.d` directory contains two types of scripts:
+The <mark style="color:orange;">**`/etc/init.d`**</mark> directory contains two types of scripts:
 
 * Scripts which are called directly by the <mark style="color:red;">`init`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> process.
 * Scripts which are called indirectly by the <mark style="color:red;">`init`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> process via the <mark style="color:red;">**`rc`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> script, which is **used while switching runlevels**

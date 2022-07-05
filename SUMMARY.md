@@ -47,3 +47,4 @@
   * [Chapter 15: Network Troubleshooting](102-500/module-5-networking/chapter-15-network-troubleshooting.md)
 * [Module 6: System Security](102-500/module-6-system-security/README.md)
   * [Chapter 17: Host Security](102-500/module-6-system-security/chapter-17-host-security.md)
+  * [Chapter 18: Encryption](102-500/module-6-system-security/chapter-18-encryption.md)

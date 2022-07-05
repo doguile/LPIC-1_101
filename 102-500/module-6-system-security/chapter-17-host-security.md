@@ -361,20 +361,34 @@ The default runlevel should not be changed unless there is a compelling reason t
 
 The `/etc/init.d` directory contains two types of scripts:
 
-* Scripts which are called directly by the `init` process.
-* Scripts which are called indirectly by the `init` process via the `rc` script, which is used while switching runlevels
+* Scripts which are called directly by the <mark style="color:red;">`init`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> process.
+* Scripts which are called indirectly by the <mark style="color:red;">`init`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> process via the <mark style="color:red;">**`rc`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> script, which is **used while switching runlevels**
 
+The scrips that are specific to each runlevel are present int the `/etc/init.d` directory. Symbolic links to these files are created in the `/etc/init.d/rc0.d - /etc/rinit.d/rc6.d` directories. Each of these scripts understands the following parameters:
 
+| Option    | Meaning                                                                                             |
+| --------- | --------------------------------------------------------------------------------------------------- |
+| `Start`   | Start the service.                                                                                  |
+| `Stop`    | Stop the service.                                                                                   |
+| `Restart` | Stop and start the service again if it is running already. If the service is not running, start it. |
+| `Status`  | Display the current status of the service.                                                          |
+| `Reload`  | Reload the service’s configuration file without restarting the service.                             |
 
+For example, to restart the networking service, execute the following command:
 
+```bash
+root@localhost:~ /etc/init.d/networking restart
+```
 
+{% hint style="info" %}
+Generally, scripts for services such as networking, FTP, SSH, and Apache are kept in the <mark style="color:orange;">**`/etc/init.d`**</mark> directory
+{% endhint %}
 
+The programs can be linked with different runlevels by creating symbolic links in the corresponding folders. For example, the networking scripts are used at runlevel 3 and the symbolic links for these scripts are placed in the `/etc/init.d/rc3.d` directory.
 
+An administrator can switch from one runlevel to another using the `init` command without having to reboot the system. For example, to switch from runlevel 2 to 3, the process would be:
 
-
-
-
-
-
-
-
+1. The root user initiates the runlevel switch by executing `init 3`
+2. The init process refers to the `/etc/inittab` file
+3. The `/etc/init.d/rc` scripts will be run with parameter `3`
+4. The `rc` (run control) script will stop the appropiate services of the previous runlevel 2 and start the services of the new runlevel 3.

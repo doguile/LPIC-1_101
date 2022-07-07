@@ -644,15 +644,104 @@ Users can also upload their keys to public key servers, which host public keys f
 sysadmin@localhost:~$ gpg --keyserver http://example.com --send-keys 950B76C6
 ```
 
-If you wdfdf
+If you want to **download public keys from a key server**, then you can either search or directly download keys. To search for a key, you could execute:
 
+```bash
+sysadmin@localhost:~$ gpg --search-keys sysadmin@example.com
+```
 
+If a match for `sysadmin@example.com` is found, then the user will be prompted to download it. If the key public identifier is known for a key, then the key can be downloaded with a command like:
 
+```
+sysadmin@localhost:~$ gpg --recv-keys 950B76C6
+```
 
+To send something to a user securely, you can encrypt the data with that user's public key, and then they will be able to decrypt it with their private key. For example, to send the file `data.txt` to the user `sysadmin@example.com` after you have received their public key, execute:
 
+```
+gpg --encrypt --recipient sysadmin@example.com data.txt
+gpg --encrypt --recipient linux@netdevgroup.com data.txt
+```
 
+After executing the command above, an encrypted `data.txt.gpg` file will be created, which could be sent as an attachment to that recipient.
 
+When a user recieves a file encrypted with their public key, they  can use <mark style="color:red;">`gpg`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> to decrypt it.&#x20;
 
+> In fact, by default `gpg` will act as if the `--decrypt` option is given, if no options are used.
 
+When a file is decrypted, a file without the extra `.gpg` is created. For example, decrypting the `data.txt.gpg` file will create a `data.txt` file.
 
+```bash
+sysadmin@localhost:~$ gpg data.txt.gpg
+gpg:  encrypted with 2048-bit RSA key, ID  80365817, created 2014-10-29
+         “Linux Student (GPG Example) <sysadmin@example.com>”
+sysadmin@localhost:~$ cat data.txt
+Wed Oct 29 02:41:16 PDT 2014
+```
 
+**You can use your key to create digital signatures for others as well**. The significance of a signatures is that it authenticates your identity and links it with the signed item.&#x20;
+
+For example, if you digitally sign a software package, then it means that the package has been verified and authenticated by you and is trustworthy. To sign a file with the user's private key, execute the command:
+
+```
+gpg -a --output pkg.sig --detach-sig pkg
+```
+
+To verify the signature, the reciever can execute the command:
+
+```bash
+sysadmin@localhost:~$ gpg --verify  pkg.sig
+```
+
+The default configuration file used by `gpg` is `~/.gnupg/gpg.conf` and is read at initialization. **The **<mark style="color:orange;">**`gpg.conf`**</mark><mark style="color:orange;">** **</mark><mark style="color:orange;">****</mark>** file is automatically created the first time a key is generated with the **<mark style="color:red;">**`gpg --gen-key`**</mark>** command**.&#x20;
+
+```bash
+# Options for GnuPG                                                             
+# Copyright 1998, 1999, 2000, 2001, 2002, 2003,                                 
+#           2010 Free Software Foundation, Inc.                                 
+#                                                                               
+# This file is free software; as a special exception the author gives           
+# unlimited permission to copy and/or distribute it, with or without            
+# modifications, as long as this notice is preserved.
+#
+# An options file can contain any long options which are available in           
+# GnuPG. If the first non white space character of a line is a '#',             
+# this line is ignored.  Empty lines are also ignored.                          
+                           
+Output omitted...
+homedir dir                 # set the name of the gnupg home dir to dir instead of ~/.gnupg
+keyring file                # add file to the current list of keyrings
+keyserver name              # use name as keyserver
+trustdb-name file           # use file instead of the default trustdb
+display-charset utf-8       # bypass all translation 
+```
+
+### `gpg-agent`
+
+To help make the use of GPG easier, the `gpg-agent` daemon can cache the passphrase for the `gpg` keyfile. This allows the passphrase to be used once and then cached for the determined amount of time.&#x20;
+
+The configuration for `gpg-agent` is stored in the `~/.gnupg/gpg-agent.conf` file.
+
+```bash
+sysadmin@localhost:~$ more gpg-agent.conf
+default-cache-ttl 600
+max-cache-ttl 7200
+
+--More--
+```
+
+he following table describes the output of the example above:
+
+| Option              | Meaning                                                                                                                            |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `default-cache-ttl` | Determines the number of seconds to cache the passphrase. The timer is reset each time the cache is accessed.                      |
+| `max-cache-ttl`     | Determines the maximum time a passphrase is cached. After the time has expired, the passphrase will be asked for when using `gpg`. |
+
+The <mark style="color:red;">**`gpg-agent`**</mark> can be started in **daemon mode** by using the <mark style="color:red;">**`--daemon`**</mark> option. This will allow <mark style="color:red;">`gpg-agent`</mark> to be started in the background and allow connections by <mark style="color:red;">`gpg`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> authentication requests. If the needed <mark style="color:red;">`gpg`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> directories and files are missing, they are created when <mark style="color:red;">`gpg-agent`</mark> is started the first time.
+
+```bash
+sysadmin@localhost:~$ gpg-agent --daemon 
+gpg-agent[27154]: directory '/home/sysadmin/.gnupg' created 
+gpg-agent[27154]: directory '/home/sysadmin/.gnupg/private-keys-v1.d' created 
+gpg-agent[27155]: gpg-agent (GnuPG) 2.2.17 started
+```

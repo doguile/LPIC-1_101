@@ -42,7 +42,7 @@ description: '110.3: Securing data with encryption v2  Weight: 4'
 
 ## Configuring OpenSSH Client
 
-The SSH configuration file, `/etc/ssh/ssh_config` , is used to configure the options for clients programs such as `ssh`, `sftp` , and `scp` and contains key-value pairs on each line. The file can be edited and changes can be made as necessary.
+The SSH configuration file, `/etc/ssh/ssh_config` , is used to configure the options for clients programs such as <mark style="color:red;">`ssh`</mark>, <mark style="color:red;">`sftp`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> , and <mark style="color:red;">`scp`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> and contains key-value pairs on each line. The file can be edited and changes can be made as necessary.
 
 ```bash
 sysadmin@localhost:~$ cat /etc/ssh/ssh_config
@@ -83,7 +83,7 @@ The importnt keywords and their meanings are explained below:
 | `Cipher`                 | Specifies the cipher method to be used for encryption                                                                                                                                    |
 
 {% hint style="info" %}
-The `/etc/ssh/ssh_config` file is the default file for all systemwide users using `ssh` services. However, an `ssh` configuration file in a user's home directory `~/.ssh/config` takes precedence over the systemwide configuration file.
+The <mark style="color:orange;">`/etc/ssh/ssh_config`</mark> file is the default file for all systemwide users using `ssh` services. However, an `ssh` configuration file in a user's home directory `~/.ssh/config` takes precedence over the systemwide configuration file.
 {% endhint %}
 
 Some of the other client configuration files are listed below:
@@ -103,7 +103,7 @@ Some of the other client configuration files are listed below:
 
 A sample `~/.ssh/known_hosts` file can be generated using the following commands:
 
-```
+```bash
 sysadmin@localhost:~$ cat ~/.ssh/known_hosts
 cat: /home/sysadmin/.ssh/known_hosts: No such file or directory
 sysadmin@localhost:~$ ssh sysadmin@192.168.1.2
@@ -119,7 +119,7 @@ sysadmin@localhost:~$ cat ~/.ssh/known_hosts
 
 ## Configuring SSHD
 
-The `/etc/ssh/sshd_config` file is used to continue the SSH daemon. This file also contains key value pairs on each line. A snippet of the `/etc/ssh/sshd_config` file is below:
+The <mark style="color:orange;">`/etc/ssh/sshd_config`</mark> file is used to continue the SSH daemon. This file also contains key value pairs on each line. A snippet of the `/etc/ssh/sshd_config` file is below:
 
 ```bash
 sysadmin@localhost:~$ cat /etc/ssh/sshd_config
@@ -271,7 +271,7 @@ The <mark style="color:red;">`password -l`</mark> command can be used to lock a 
 
 The host-based authentication model allows a host to authenticate on behalf of all or some users on that host. For example, a team is working remotely at two locations, London and Tokyo, then the system administrator may want to configure SSH such that instead of maintaining key pairs for all 25 users in the London team accessing the Tokyo server, they will setup host-based authentication on the Tokyo server instead.
 
-The <mark style="color:orange;">`/etc/ssh/shs_known_hosts`</mark> file on the server must hold the public keys of all the hosts that need to be authenticated. The entry in this file implies that the host is trusted by the server and knows its public key. This file contains three fields for each record: hostname or IP address, key type and the public key itself. A sample record will look like:
+The <mark style="color:orange;">**`/etc/ssh/ssh_known_hosts`**</mark> file on the server must **hold the public keys of all the hosts that need to be authenticated**. The entry in this file implies that the host is trusted by the server and knows its public key. This file contains three fields for each record: hostname or IP address, key type and the public key itself. A sample record will look like:
 
 ```bash
 122.110.17.32 ssh-rsa ABFFB3NzaC1yc2EABFFDAQABAAABAQC6XtOSGVEY9PUnMXS6vzvJigeQQtGYwdX2v2zAAsqwYRlaNN/ddV76btf4PL812r91WYGTgcXT0r0bfSGJ9dmJQ8dPenMAKyviR2BLV1SaIqxqUSjdkXFrlHkC7alILoKrwhMvNWb+Jaa3ecuYffKThNadFTHftyntdaVkYxwW7Hr1MknksfZKMPsJjW+Mp3aZVV2wVnQkOgkSsVY8y2pT7h7KuTa66IdqkwO2ZTEXL2D1X1wIEqGqAJ2VFPQayzclqaGbCzFUYyFsCT1WUL+BzRnehI9L9IVlP3katLSokoBzbxHeu0eb92VXngnrQJ1C0dA+5O4vp2KxFGEMuwdV
@@ -335,7 +335,7 @@ The authenticity of host 'netdevgroup1.com (212.18.12.34)' can't be established.
 
 This will add the server to the client's list of known hosts as seen in the last line of the output above.
 
-To execute only the single `ls` command without logging on, execute the command:
+To execute only the single <mark style="color:red;">`ls`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command without logging on, execute the command:
 
 ```bash
 ssh -l user1 netdevgroup1.com `ls -l /usr/games`
@@ -356,7 +356,7 @@ Some of the key options of the `ssh` command are as follows:
 | `-p port_num`      | Specifies the port to connect to on the remote server                                                                                                                  |
 | `-e escape_char`   | <p>Sets the escape character for the session</p><p>The default is <code>~</code></p>                                                                                   |
 
-For secure copying of remote files over an encrypted channel, the `scp` command is used. For example, to copy all the files from the local archives directory to the user's directory on the server execute the command:
+**For secure copying of remote files over an encrypted channel, the **<mark style="color:red;">**`scp`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark>** command is used**. For example, to copy all the files from the local archives directory to the user's directory on the server execute the command:
 
 ```bash
 scp / archives/* user1@pluto.netdevgroup.com:/archives/
@@ -413,7 +413,7 @@ The `ssh-add` utility is a helper program and is used to add RSA or DSA identiti
 
 > If the identity file requires a passphrase then the user will be prompted to enter the passphrase.
 
-The `ssh-add` program works only if the `ssh-agent` process is running. The identity file should be readable only to the user, if they can be read by other users then it indicates possible incorrect configuration or some unauthorizes acces. The `ssh-add` program will not add such identity files.
+**The **<mark style="color:red;">**`ssh-add`**</mark>** program works only if the **<mark style="color:red;">**`ssh-agent`**</mark>** process is running**. The identity file should be readable only to the user, if they can be read by other users then it indicates possible incorrect configuration or some unauthorizes acces. The `ssh-add` program will not add such identity files.
 
 To add identity files, execute the command:
 
@@ -438,7 +438,7 @@ sysadmin@localhost:~$ ssh-add -l
 (RSA)
 ```
 
-Some of the most useful options of the `ssh-add` command are as follows:
+Some of the most useful options of the <mark style="color:red;">`ssh-add`</mark> command are as follows:
 
 | Option       | Meaning                                                                                                                             |
 | ------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -493,7 +493,7 @@ The system administrator can select any port as long as it is not privileged por
 These 2 examples are based on local port forwarding.
 {% endhint %}
 
-SSH also allows remote port forwarding, which is used for connecting the SSH server to another host where the connection is initiated by the server.
+**SSH also allows remote port forwarding**, which is used for connecting the SSH server to another host where the connection is initiated by the server.
 
 For example, a team member has an Apache server setup and running on a laptop in their home office. If the development `dev` team at the office needs to access it for making prototype urgently, then SSH remote port forwarding can be used to make this Apache instance accessible to all the team members.
 

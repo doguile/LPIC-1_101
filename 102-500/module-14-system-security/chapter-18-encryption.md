@@ -681,13 +681,13 @@ Wed Oct 29 02:41:16 PDT 2014
 
 **You can use your key to create digital signatures for others as well**. The significance of a signatures is that it authenticates your identity and links it with the signed item.&#x20;
 
-For example, if you digitally sign a software package, then it means that the package has been verified and authenticated by you and is trustworthy. To sign a file with the user's private key, execute the command:
+For example, if you digitally sign a software package, then it means that the package has been verified and authenticated by you and is trustworthy. To **sign a file with the user's private key**, execute the command:
 
 ```
 gpg -a --output pkg.sig --detach-sig pkg
 ```
 
-To verify the signature, the reciever can execute the command:
+To **verify the signature**, the reciever can execute the command:
 
 ```bash
 sysadmin@localhost:~$ gpg --verify  pkg.sig
@@ -718,9 +718,9 @@ display-charset utf-8       # bypass all translation
 
 ### `gpg-agent`
 
-To help make the use of GPG easier, the `gpg-agent` daemon can cache the passphrase for the `gpg` keyfile. This allows the passphrase to be used once and then cached for the determined amount of time.&#x20;
+To help make the use of GPG easier, the <mark style="color:red;">**`gpg-agent`**</mark> daemon can **cache the passphrase for the `gpg` keyfile.** This allows the passphrase to be used once and then cached for the determined amount of time.&#x20;
 
-The configuration for `gpg-agent` is stored in the `~/.gnupg/gpg-agent.conf` file.
+The configuration for <mark style="color:red;">`gpg-agent`</mark> is stored in the `~/.gnupg/gpg-agent.conf` file.
 
 ```bash
 sysadmin@localhost:~$ more gpg-agent.conf

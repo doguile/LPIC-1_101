@@ -82,7 +82,7 @@ authpriv.*                             /var/log/secure
 
 #### Facility
 
-![](<../.gitbook/assets/imagen (1) (1).png>)
+![](<../../.gitbook/assets/imagen (1) (1).png>)
 
 **The facility identifies the part of the system that produced some kind of message**. For example, messages from the Linux kernel can be selected using the `kern` facility.
 
@@ -108,7 +108,7 @@ To make up the first part of a selector, the following standard facilities are i
 
 **Priority**
 
-![](<../.gitbook/assets/imagen (4).png>)
+![](<../../.gitbook/assets/imagen (4).png>)
 
 The other part of the selector is the _priority_, which defines the severity of the message.&#x20;
 
@@ -131,7 +131,7 @@ There is also a special priority called `none` ,which means do not log from that
 
 #### Selector
 
-![](<../.gitbook/assets/imagen (3) (1).png>)
+![](<../../.gitbook/assets/imagen (3) (1).png>)
 
 The selector is comprised of both the _facility_ and the _priority_ separated by a period `.` character. The following table illustrates some common selectors. Note that an asterisk `*` wildcard character can be used to represent either all facilities or all priorities in a selector:
 
@@ -148,7 +148,7 @@ The selector is comprised of both the _facility_ and the _priority_ separated by
 
 #### Action
 
-![](<../.gitbook/assets/imagen (2) (1) (1).png>)
+![](<../../.gitbook/assets/imagen (2) (1) (1).png>)
 
 Combining a selector with an action results in a complete line in the `/etc/rsyslog.conf` file. The most common action is to specify the absolute path, the file that will store the information that is selected. The following table demonstrates the available actions:
 

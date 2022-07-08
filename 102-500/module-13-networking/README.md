@@ -1,4 +1,4 @@
-# Module 5: Networking
+# Module 13: Networking
 
 ## Chapter 13: Network Fundamentals
 
@@ -508,9 +508,9 @@ netdevgroup.com name server ns-703.awsdns-23.net
 
 ### `dig` Command
 
-The `dig` (Domain Information Groper) command is used for troubleshooting the configuration of DNS servers. DNS server administrators like the output of `dig` command because it is in the same format that the information is entered into a DNS server configuration file.
+The <mark style="color:red;">`dig`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> (Domain Information Groper) command is **used for troubleshooting the configuration of DNS servers.** DNS server administrators like the output of `dig` command because it is in the same format that the information is entered into a DNS server configuration file.
 
-The utility performs DNS lookups and displays the responses received from the name servers listed in the `/etc/resolv.conf` file.
+The utility **performs DNS lookups** and displays the responses received from the name servers listed in the <mark style="color:orange;">`/etc/resolv.conf`</mark> file.
 
 To perform a simple lookup of a hostname, execute the following:
 
@@ -532,13 +532,13 @@ example.com.            86400   IN      NS      example.com.
 ;; MSG SIZE  rcvd: 70
 ```
 
-To view the trace of domain name servers from the servers where the lookup begins, and each name server along the way, execute the `+trace` option to the `dig` command:
+To **view the trace of domain name servers** from the servers where the lookup begins, and each name server along the way, execute the <mark style="color:red;">`+trace`</mark> option to the <mark style="color:red;">`dig`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command:
 
 ```bash
 sysadmin@localhost:~$  dig +trace example.com
 ```
 
-For a reverse lookup, using an IP address instead of a hostname, execute the `-x` option:
+For a **reverse lookup,** using an IP address instead of a hostname, execute the <mark style="color:red;">`-x`</mark> option:
 
 ```bash
 sysadmin@localhost:~$  dig -x 192.168.1.2

@@ -1,4 +1,4 @@
-# Module 1: Advanced Shell Features
+# Module 9: Advanced Shell Features
 
 ## Chapter 1: Advanced Shell Features
 
@@ -58,7 +58,7 @@ Administrators can make the shell environment easier to use for entire sets of u
 
 Variables typically hold a single value, like `0` or `bob` .Some may contain multiple values separated by spaces like `Joe Brown` or by other characters, such as colons:  `/usr/bin:/usr/sbin:/bin:/usr/bin:/home/joe/bin.`
 
-You assign a value to a variable by typing the name of the variable, immediately followed by an equal sign `=` and then the value. For example:
+You assign a value to a variable by typing the name of the variable, immediately followed by an equal sign <mark style="color:red;">`=`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> and then the value. For example:
 
 ```bash
 name="Bob Doe"
@@ -149,13 +149,13 @@ sysadmin@localhost:~$ ENVIRONMENT_A=1
 sysadmin@localhost:~$ export ENVIRONMENT_A
 ```
 
-Second, a new variable can be _exported_ and assigned a value with a single command:
+Second, **a new variable can be exported and assigned a value with a single command**:
 
 ```bash
 sysadmin@localhost:~$ export ENVIRONMENT_B=2
 ```
 
-Third, the <mark style="color:red;">**`declare`**</mark> or <mark style="color:red;">**`typeset`**</mark> command can be used, to declare a variable to be an enviroment variable. These commands are synonymous and work the same way.
+Third, the <mark style="color:red;">**`declare`**</mark> or <mark style="color:red;">**`typeset`**</mark> command can be used, to **declare a variable to be an enviroment variable**. These commands are synonymous and work the same way.
 
 ```bash
 sysadmin@localhost:~$ declare -x ENVIRONMENT_C=3
@@ -168,7 +168,7 @@ Using the following syntax, the <mark style="color:red;">**`env`**</mark> comman
 env VARIABLE_NAME=TEMP_VALUE command
 ```
 
-To temporarily set the time zone variable `TZ` to Eastern Standard Time (EST), use the `env` command:
+To temporarily set the time zone variable `TZ` to Eastern Standard Time (EST), use the <mark style="color:red;">`env`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command:
 
 ```bash
 sysadmin@localhost:~$ env TZ=EST date
@@ -177,11 +177,11 @@ Fri Sep 18 16:27:54 EST 2020
 
 ## Unsetting Variables
 
-If the shell option <mark style="color:red;">`nounset`</mark> is enabled with the <mark style="color:red;">`set -o nounset`</mark> command, then referring to an unset variable will result in an **`unbound variable`** error. When the command is used within a script, referencing an unset variable will cause the script to exit.
+If the shell option <mark style="color:red;">**`nounset`**</mark>** ** is enabled with the <mark style="color:red;">**`set -o nounset`**</mark> command, then referring to an unset variable will result in an **`unbound variable`** error. When the command is used within a script, referencing an unset variable will cause the script to exit.
 
 This option may be turned off, using the <mark style="color:red;">`set +o nounset`</mark> command, where any reference to an unset variable will return a null value.
 
-If you create a variable and then no longer want that variable to be defined, use the <mark style="color:red;">**`unset`**</mark> command to delete it.
+If you create a variable and then **no longer want that variable to be defined, use the **<mark style="color:red;">**`unset`**</mark> command to delete it.
 
 ```bash
 sysadmin@localhost:~$ variable_1="This is a variable." 
@@ -199,9 +199,9 @@ sysadmin@localhost:~$
 
 ## Understanding the PATH variable
 
-The `PATH` variable is one of the most critical environment variables for the shell.
+The <mark style="color:red;">`PATH`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> variable is one of the most critical environment variables for the shell.
 
-The following graphic displays a typical `PATH` variable, with directory names separated from each other by the colon `:` character:
+The following graphic displays a typical <mark style="color:red;">`PATH`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> variable, with directory names separated from each other by the colon `:` character:
 
 ```bash
 sysadmin@localhost:~$ echo $PATH
@@ -493,7 +493,7 @@ Each shell uses different initialization files. Additionally, most shells execut
 
 The following diagram ilustrates the different files that are started with a typical login shell versus an interactive shell.
 
-![](<../.gitbook/assets/image (21).png>)
+![](<../../.gitbook/assets/image (21).png>)
 
 When Bash is started as an interactive shell, it executes the `~/.bashrc` file, which may also execute the `/etc/bashrc` file, if exists. Again, since the `~/.bashrc` file is owned by the user who is logging in, the user can prevent execution of the `/etc/bashrc` file.
 

@@ -1,4 +1,4 @@
-# Module 3: User and System Administration
+# Module 11: User and System Administration
 
 ## Chapter 6: User and Group Accounts
 
@@ -759,7 +759,7 @@ root@localhost:~ tail -1 /etc/group
 programmers:x:1008:
 ```
 
-By default, the <mark style="color:red;">`groupadd`</mark> command automatically assigns a GID to the new group using the next available GID. **To create a group with a specific GID, use the **<mark style="color:red;">**`-`**</mark>**`g` option**:
+By default, the <mark style="color:red;">**`groupadd`**</mark>** ** command automatically assigns a GID to the new group using the next available GID. **To create a group with a specific GID, use the **<mark style="color:red;">**`-g`**</mark>** option**:
 
 ```bash
 root@localhost:~ groupadd programmers -g 1980

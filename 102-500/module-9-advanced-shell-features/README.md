@@ -10,15 +10,15 @@
 
 <summary>key terms</summary>
 
-`&&` This is an AND list. If the command on the left side of `&&` does execute successfully, then the command on the right of `&&` will execute
+<mark style="color:red;">`&&`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> This is an AND list. If the command on the left side of `&&` does execute successfully, then the command on the right of `&&` will execute
 
-`.` Command used to re-execute a bash shell configuration file (.profile, .bashrc, etc) after changes are made
+<mark style="color:red;">`.`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> Command used to re-execute a bash shell configuration file (.profile, .bashrc, etc) after changes are made
 
-`/etc/bash.bash.rc` Systemwide configuration file read when a new shell starts. Contains variables, commands, and aliases common to all users.
+<mark style="color:red;">`/etc/bash.bashrc`</mark> Systemwide configuration file read when a new shell starts. Contains variables, commands, and aliases common to all users.
 
-`/etc/profile` Systemwide bash configuration file read at login. Contains bash settings and environment variables common to all users.
+<mark style="color:red;">`/etc/profile`</mark> Systemwide bash configuration file read at login. Contains bash settings and environment variables common to all users.
 
-`alias` Alias and unalias utilities create or remove a nickname for a command or series of commands.
+<mark style="color:red;">`alias`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> Alias and unalias utilities create or remove a nickname for a command or series of commands.
 
 <mark style="color:red;">`env`</mark> Displays all environmental variables available to all shells.
 

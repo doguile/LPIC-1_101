@@ -449,12 +449,20 @@ Some of the most useful options of the <mark style="color:red;">`ssh-add`</mark>
 
 ## SSH Tunneling
 
-When a client connects to a host via programs such as <mark style="color:red;">`telnet`</mark>, <mark style="color:red;">`ftp`</mark>, or <mark style="color:red;">`ssh`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> the socket created for communication on each side uses the IP address and the port number of the service. By default **TCP/IP is not secure connection stream** and is open to network attacks. SSH encapsulates the TCP/IP connections in a secure layer and thus creates a tunnel for communication.
+When a client connects to a host via programs such as <mark style="color:red;">`telnet`</mark>, <mark style="color:red;">`ftp`</mark>, or <mark style="color:red;">`ssh`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> the socket created for communication on each side uses the IP address and the port number of the service. By default TCP/IP is not secure connection stream and is open to network attacks. **SSH encapsulates the TCP/IP connections in a secure layer and thus creates a tunnel for communication**.
 
 The data passing through the tunnel is encrypted as well as verified for integrity. As per the requirements of the users, **multiple tunnels can be created. This feature is called SSH tunneling or SSH Port Forwarding.**
 
+```bash
+ssh -N -f -L 8080[origendeltunel]:destino:80[destino] usuariocliente@origen
+
+-N: no ejecuta un comando en concreto
+-f: se procesa en segundo plano
+-L: establece el puerto origen y destino
+```
+
 {% hint style="danger" %}
-To use this feature, the <mark style="color:red;">`AllowTcpForwarding`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> option in the SSH daemon's configuration file must be set to `yes`
+To use this feature, the <mark style="color:red;">`AllowTcpForwarding`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> option in the SSH daemon's configuration file must be set to **`yes`**
 {% endhint %}
 
 The port forwarding implementation maps the local port of the user with the remote port on the server and forwards all the network traffic bound for the local port to the remote host.
@@ -490,7 +498,7 @@ sysadmin@localhost:~$ ssh -L 8586:localhost:8586 test_user@weblogicserver1
 Now if the user opens an instance of the web browser and accesses the WebLogic console port `8586`, it will be accessible.
 
 {% hint style="info" %}
-The system administrator can select any port as long as it is not privileged port and currently not in use by any other service.
+**The system administrator can select any port as long as it is not privileged port** and currently not in use by any other service.
 {% endhint %}
 
 {% hint style="danger" %}
@@ -540,13 +548,13 @@ Linux systems can install GnuPG via the `gnupg` package. Window-based systems ca
 
 ## Using GPG
 
-The <mark style="color:red;">`gpg`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command with the <mark style="color:red;">`--gen-key`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> option is used to create GPG keys. To generate a new key execute the command:
+The <mark style="color:red;">**`gpg`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command with the <mark style="color:red;">**`--gen-key`**</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> option is used to create GPG keys. To generate a new key execute the command:
 
 ```bash
 gpg --gen-key
 ```
 
-The <mark style="color:red;">`gpg`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> command operates in an interactive mode and the user will be prompted to provide options . The output will look like:
+The <mark style="color:red;">**`gpg`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">****</mark> command operates in an interactive mode and the user will be prompted to provide options . The output will look like:
 
 ```bash
 gpg: directory `/home/sysadmin/.gnupg' created                                  
@@ -613,7 +621,7 @@ The RSA and DSA methods are the same as those used in SSH encryption while Elgam
 * The username, email ID and comment must be specified. This is for linking the key with a user.
 * A passphrase for proctecting the key must be entered twice.
 
-When the process is complete, an asymmetric public and private key pair is created. Whatever data is encrypted by one key, can be decrypted by the other. In practice, the user will publish their public key. Then, they will use their private key to encrypt data, so others can use the public key to decrypt it.
+When the process is complete, **an asymmetric public and private key pair is created**. Whatever data is encrypted by one key, can be decrypted by the other. In practice, the user will publish their public key. Then, they will use their private key to encrypt data, so others can use the public key to decrypt it.
 
 The output from the process will include some information about the keys:
 
@@ -660,7 +668,7 @@ If a match for `sysadmin@example.com` is found, then the user will be prompted t
 sysadmin@localhost:~$ gpg --recv-keys 950B76C6
 ```
 
-To send something to a user securely, you can encrypt the data with that user's public key, and then they will be able to decrypt it with their private key. For example, to send the file `data.txt` to the user `sysadmin@example.com` after you have received their public key, execute:
+**To send something to a user securely, you can encrypt the data with that user's public key, and then they will be able to decrypt it with their private key.** For example, to send the file `data.txt` to the user `sysadmin@example.com` after you have received their public key, execute:
 
 ```
 gpg --encrypt --recipient sysadmin@example.com data.txt
@@ -687,17 +695,17 @@ Wed Oct 29 02:41:16 PDT 2014
 
 For example, if you digitally sign a software package, then it means that the package has been verified and authenticated by you and is trustworthy. To **sign a file with the user's private key**, execute the command:
 
-```
+```bash
 gpg -a --output pkg.sig --detach-sig pkg
 ```
 
 To **verify the signature**, the reciever can execute the command:
 
 ```bash
-sysadmin@localhost:~$ gpg --verify  pkg.sig
+sysadmin@localhost:~$ gpg --verify pkg.sig
 ```
 
-The default configuration file used by `gpg` is `~/.gnupg/gpg.conf` and is read at initialization. **The **<mark style="color:orange;">**`gpg.conf`**</mark><mark style="color:orange;">** **</mark><mark style="color:orange;">****</mark>** file is automatically created the first time a key is generated with the **<mark style="color:red;">**`gpg --gen-key`**</mark>** command**.&#x20;
+The default configuration file used by <mark style="color:red;">`gpg`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> is `~/.gnupg/gpg.conf` and is read at initialization. **The **<mark style="color:orange;">**`gpg.conf`**</mark><mark style="color:orange;">** **</mark><mark style="color:orange;">****</mark>** file is automatically created the first time a key is generated with the **<mark style="color:red;">**`gpg --gen-key`**</mark>** command**.&#x20;
 
 ```bash
 # Options for GnuPG                                                             
@@ -748,4 +756,9 @@ sysadmin@localhost:~$ gpg-agent --daemon
 gpg-agent[27154]: directory '/home/sysadmin/.gnupg' created 
 gpg-agent[27154]: directory '/home/sysadmin/.gnupg/private-keys-v1.d' created 
 gpg-agent[27155]: gpg-agent (GnuPG) 2.2.17 started
+```
+
+```bash
+sysadmin@localhost:~$ gpg --sign document.txt
+sysadmin@localhost:~$ gpg --verify document.txt.gpg
 ```

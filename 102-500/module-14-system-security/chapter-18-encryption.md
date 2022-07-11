@@ -453,7 +453,11 @@ When a client connects to a host via programs such as <mark style="color:red;">`
 
 The data passing through the tunnel is encrypted as well as verified for integrity. As per the requirements of the users, **multiple tunnels can be created. This feature is called SSH tunneling or SSH Port Forwarding.**
 
-To use this feature, the <mark style="color:red;">`AllowTcpForwarding`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> option in the SSH daemon's configuration file must be set to `yes`. **The port forwarding implementation maps the local port of the user with the remote port on the server and forwards all the network traffic bound for the local port to the remote host.**
+{% hint style="danger" %}
+To use this feature, the <mark style="color:red;">`AllowTcpForwarding`</mark> <mark style="color:red;"></mark><mark style="color:red;"></mark> option in the SSH daemon's configuration file must be set to `yes`
+{% endhint %}
+
+The port forwarding implementation maps the local port of the user with the remote port on the server and forwards all the network traffic bound for the local port to the remote host.
 
 For example, if the system administrator wants to protect the network traffic of users accessing sensitive Oracle data, they can setup and use SSH Tunneling. The host where the Oracle server is running should have the SSH server setup and the clients who are accessing the Oracle server instance should have the SSH client installed. The following steps should be followed:
 

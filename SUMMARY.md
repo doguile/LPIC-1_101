@@ -48,3 +48,7 @@
 * [Module 14: System Security](102-500/module-14-system-security/README.md)
   * [Chapter 17: Host Security](102-500/module-14-system-security/chapter-17-host-security.md)
   * [Chapter 18: Encryption](102-500/module-14-system-security/chapter-18-encryption.md)
+
+***
+
+* [⛔ Hardening Linux](hardening-linux.md)

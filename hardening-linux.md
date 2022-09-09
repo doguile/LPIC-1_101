@@ -13,7 +13,7 @@ Iptables es una herramienta de filtrado de paquetes en Linux que permite a un ad
 Iptables se encuentra estructurado de la siguiente forma:
 
 * Reglas
-* Cadenas (INPUT, OUTPUT, etc)
+* Cadenas (INPUT, OUTPUT, FORWARD,etc)
 * Tablas (FILTER, NAT, etc)
 
 Dentro de las cadenas tenemos **INPUT** y **OUTPUT**, estas cadenas nos permite decidir que paquete entra y sale, estas 2 cadenas forman parte de la tabla **FILTER** que su nombre propio lo indica y se encarga de filtrar en base a la cadena que se le especifique.
@@ -28,7 +28,7 @@ Iptables por defecto toma la tabla `FILTER` en caso de que no se lo especifiquem
 iptables [-t tabla] -A/I cadena [opciones] -j acción
 ```
 
-Cuando establecemos reglas en iptables la propia herramienta tiene un orden descendente por lo que va leyendo las reglas desde arriba hacia abajo, para poder añadir una regla al principio o al final tenemos que especificarselo mediante la siguiente opcion:
+Cuando establecemos reglas en iptables la herramienta tiene un orden de lectura ascendente por lo que va leyendo las reglas de acuerdo al orden en que se agreguen. Para poder añadir una regla al principio o al final tenemos que especificarselo mediante la siguiente opcion:
 
 `-A [APPEND]:` Esta opcion inserta la regla al final de la lista
 
@@ -46,13 +46,29 @@ iptables -A OUTPUT -o lo -j ACCEPT
 ```
 {% endcode %}
 
+#### Cadena FORWARD
 
+Esta cadena permite el paso directo de los paquetes a traves del firewall
 
+<img src=".gitbook/assets/file.drawing.svg" alt="" class="gitbook-drawing">
 
+#### Tabla NAT
 
+Existen 4 tipos mas de cadena para la tabla `NAT` en iptables:
 
+\- `SNAT` \[->] - cuando el paquete sale desde la red interna hacia afuera
 
+\- `DNAT` \[<-] - cuando el paquete llega desde internet hacia la red interna
 
+> **SNAT transforms the source address of packets passing through the NAT device.**
+>
+> **DNAT transforms the destination address of packets passing through the Router**.
+>
+> SNAT is implemented after the routing decision is built (POSTROUTING). DNAT is implemented before the routing decision is built (PREROUTING)
+
+\-`PREROUTING`: decision de enrutamiento al llegar el paquete al fw, va con `DNAT`
+
+\-`POSTROUTING`: decision de enrutamiento al salir el paquete del fw, va con `SNAT`
 
 
 
